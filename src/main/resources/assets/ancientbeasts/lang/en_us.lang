@@ -1,0 +1,26 @@
+#Mobs
+entity.SandMonster.name=Sandmonster
+#Items
+item.sandmonster_scale.name=Sandmonster Scale
+item.cactus_broth.name=Cactus Broth
+item.scale_armor.name=Desert Robes
+item.scale_hood.name=Desert Hood
+#Tab
+itemGroup.beaststab=Ancient Beasts
+#Advancements
+advancements.ancientbeasts.root.title=Ancient Beasts
+advancements.ancientbeasts.root.description=New threads and friends appear in your world
+advancements.ancientbeasts.kill_sandmonster.title=Desert of Madness
+advancements.ancientbeasts.kill_sandmonster.description=Slay a sandmonster
+advancements.ancientbeasts.tame_sandmonster.title=Yandere
+advancements.ancientbeasts.tame_sandmonster.description=She's jealous!
+#Sounds
+subtitles.tornado_ambient=Tornado blows
+subtitles.sandmonster_ambient=Sandmonster hisses
+subtitles.sandmonster_hurt=Sandmonster hurts
+subtitles.sandmonster_death=Sandmonster dies
+
+#Vanilla overrides
+subtitles.entity.evocation_illager.cast_spell=A spell is casted
+subtitles.entity.evocation_illager.prepare_summon=A summoning is prepared
+subtitles.entity.evocation_illager.prepare_attack=An attack is prepared

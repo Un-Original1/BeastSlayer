@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:sandy_love"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.tame_sandmonster.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.tame_sandmonster.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Sandy": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Sandy"
+        }
+      }
+    }
+  }
+}

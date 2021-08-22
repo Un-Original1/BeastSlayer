@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xxx",
+    "x x"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "ancientbeasts:sandmonster_scale"
+    }
+  },
+  "result":
+  {
+    "item": "ancientbeasts:scale_hood"
+  }
+}
