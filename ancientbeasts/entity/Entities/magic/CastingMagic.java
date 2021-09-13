@@ -1,0 +1,58 @@
+package com.unoriginal.ancientbeasts.entity.Entities.magic;
+
+import com.unoriginal.ancientbeasts.entity.Entities.EntitySandy;
+import com.unoriginal.ancientbeasts.util.IMagicUser;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAIBase;
+
+public class CastingMagic<T extends EntityLiving & IMagicUser> extends EntityAIBase {
+    private T hostMobEntity;
+    public CastingMagic(T magicUserMob)
+    {
+        this.hostMobEntity = magicUserMob;
+        this.setMutexBits(3);
+    }
+
+    /**
+     * Returns whether the EntityAIBase should begin execution.
+     */
+    public boolean shouldExecute()
+    {
+        if(hostMobEntity instanceof EntitySandy && ((EntitySandy) hostMobEntity).isSitting() || ((EntitySandy) hostMobEntity).isBuried())
+        {
+            return false;
+        }
+        else {
+            return this.hostMobEntity.getMagicUseTicks() > 0;
+        }
+    }
+
+    /**
+     * Execute a one shot task or start executing a continuous task
+     */
+    public void startExecuting()
+    {
+        super.startExecuting();
+        this.hostMobEntity.getNavigator().clearPath();
+    }
+
+    /**
+     * Reset the task's internal state. Called when this task is interrupted by another one
+     */
+    public void resetTask()
+    {
+        super.resetTask();
+        this.hostMobEntity.setMagicType(MagicType.NONE);
+    }
+
+    /**
+     * Keep ticking a continuous task that has already been started
+     */
+    public void updateTask()
+    {
+        if (this.hostMobEntity.getAttackTarget() != null)
+        {
+            this.hostMobEntity.getLookHelper().setLookPositionWithEntity(this.hostMobEntity.getAttackTarget(), (float) this.hostMobEntity.getHorizontalFaceSpeed(), (float) this.hostMobEntity.getVerticalFaceSpeed());
+        }
+    }
+}
