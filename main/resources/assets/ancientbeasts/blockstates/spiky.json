@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down": { "model": "ancientbeasts:spiky", "x": 180 },
+    "facing=up": { "model": "ancientbeasts:spiky" },
+    "facing=north": { "model": "ancientbeasts:spiky", "x":90 },
+    "facing=south": { "model": "ancientbeasts:spiky", "x":90, "y": 180 },
+    "facing=west": { "model": "ancientbeasts:spiky", "x":90, "y": 270 },
+    "facing=east": { "model": "ancientbeasts:spiky", "x":90, "y": 90 }
+  }
+}

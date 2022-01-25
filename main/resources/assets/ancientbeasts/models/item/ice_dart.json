@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ancientbeasts:items/ice_dart"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "red": 1
+      },
+      "model": "ancientbeasts:item/ice_dart_red"
+    }
+  ]
+}
