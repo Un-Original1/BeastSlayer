@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:spike"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_annoyance.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_annoyance.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Damcell": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Damcell"
+        }
+      }
+    }
+  }
+}

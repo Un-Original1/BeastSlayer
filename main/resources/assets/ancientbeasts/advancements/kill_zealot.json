@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:shield_book"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_zealot.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_zealot.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Zealot": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Zealot"
+        }
+      }
+    }
+  }
+}

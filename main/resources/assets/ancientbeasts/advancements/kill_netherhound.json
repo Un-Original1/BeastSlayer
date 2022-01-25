@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:charred_fur"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_netherhound.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_netherhound.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Netherhound": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Netherhound"
+        }
+      }
+    }
+  }
+}

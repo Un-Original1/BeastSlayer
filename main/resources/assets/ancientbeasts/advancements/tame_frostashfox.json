@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:ice_dart"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.tame_fox.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.tame_fox.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Frostash_fox": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Frostash_fox"
+        }
+      }
+    }
+  }
+}

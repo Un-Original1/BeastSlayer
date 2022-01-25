@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "CCC",
+    "CSC",
+    "CRC"
+  ],
+  "key":
+  {
+    "C":
+    {
+      "item": "minecraft:cobblestone"
+    },
+    "R":
+    {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "ancientbeasts:spike"
+    }
+  },
+  "result":
+  {
+    "item": "ancientbeasts:pokey"
+  }
+}

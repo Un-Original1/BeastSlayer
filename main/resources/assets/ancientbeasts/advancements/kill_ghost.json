@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:ectoplasm"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_ghost.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_ghost.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Ghost": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Ghost"
+        }
+      }
+    }
+  }
+}
