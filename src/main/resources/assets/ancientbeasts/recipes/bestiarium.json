@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "#MOD_ITEMS"
+    }
+  ],
+  "result": {
+    "item": "ancientbeasts:bestiary",
+    "count": 1
+  }
+}

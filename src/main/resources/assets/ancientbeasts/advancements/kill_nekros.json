@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:dark_goop"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_nekros.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_nekros.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Ghost": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Nekros"
+        }
+      }
+    }
+  }
+}

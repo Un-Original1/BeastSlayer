@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=down": { "model": "ancientbeasts:skewer", "x": 90 },
+    "facing=up": { "model": "ancientbeasts:skewer", "x": 270 },
+    "facing=north": { "model": "ancientbeasts:skewer" },
+    "facing=south": { "model": "ancientbeasts:skewer", "y": 180 },
+    "facing=west": { "model": "ancientbeasts:skewer", "y": 270 },
+    "facing=east": { "model": "ancientbeasts:skewer", "y": 90 }
+  }
+}

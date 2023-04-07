@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:sandmonster_scale"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_sandmonster.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_sandmonster.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Sandy": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Sandy"
+        }
+      }
+    }
+  }
+}

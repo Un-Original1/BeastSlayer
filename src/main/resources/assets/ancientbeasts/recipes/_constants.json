@@ -1,0 +1,55 @@
+[
+  {
+    "name": "MOD_ITEMS",
+    "ingredient": [
+      {
+        "item": "ancientbeasts:shield_book"
+      },
+      {
+        "item": "ancientbeasts:ectoplasm"
+      },
+      {
+        "item": "ancientbeasts:tough_glove",
+        "data": 32767
+      },
+      {
+        "item": "ancientbeasts:spike"
+      },
+      {
+        "item": "ancientbeasts:vessel",
+        "data": 32767
+      },
+      {
+        "item": "ancientbeasts:miner_helmet",
+        "data": 32767
+      },
+      {
+        "item": "ancientbeasts:sandmonster_scale"
+      },
+      {
+        "item": "ancientbeasts:ice_dart",
+        "data": 32767
+      },
+      {
+        "item": "ancientbeasts:ice_wand",
+        "data": 32767
+      },
+      {
+        "item": "ancientbeasts:ice_wand_red",
+        "data": 32767
+      },
+      {
+        "item": "ancientbeasts:charred_fur"
+      },
+      {
+        "item": "ancientbeasts:rifted_pearl"
+      },
+      {
+        "item": "ancientbeasts:kunai"
+      },
+      {
+        "item": "ancientbeasts:dark_goop"
+      }
+    ]
+  }
+]

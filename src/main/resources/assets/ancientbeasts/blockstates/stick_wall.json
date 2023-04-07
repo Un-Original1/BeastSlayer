@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=y":  { "model": "ancientbeasts:stick_wall" },
+    "axis=z":   { "model": "ancientbeasts:stick_wall", "x": 90 },
+    "axis=x":   { "model": "ancientbeasts:stick_wall", "x": 90, "y": 90 }
+  }
+}

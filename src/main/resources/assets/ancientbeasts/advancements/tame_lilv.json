@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:vessel"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.tame_lilv.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.tame_lilv.description"
+    }
+  },
+  "parent": "ancientbeasts:kill_vessel",
+  "criteria": {
+    "Lil_Vessel": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Lil_Vessel"
+        }
+      }
+    }
+  }
+}

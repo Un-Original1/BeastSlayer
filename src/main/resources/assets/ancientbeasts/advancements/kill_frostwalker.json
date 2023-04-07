@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:ice_wand"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_frost.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_frost.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Frost_walker": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Frost_walker"
+        }
+      }
+    }
+  }
+}

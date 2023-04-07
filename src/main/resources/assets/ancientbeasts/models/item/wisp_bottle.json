@@ -1,0 +1,27 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ancientbeasts:items/wisp_bottle_speed"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "type": 1
+      },
+      "model": "ancientbeasts:item/wisp_bottle_strength"
+    },
+    {
+      "predicate": {
+        "type": 2
+
+      },
+      "model": "ancientbeasts:item/wisp_bottle_purity"
+    },
+    {
+      "predicate": {
+        "type": 3
+      },
+      "model": "ancientbeasts:item/wisp_bottle_fire"
+    }
+  ]
+}

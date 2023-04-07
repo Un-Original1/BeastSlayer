@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:rifted_pearl"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_riftedEnderman.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_riftedEnderman.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Netherhound": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Rifted_Enderman"
+        }
+      }
+    }
+  }
+}

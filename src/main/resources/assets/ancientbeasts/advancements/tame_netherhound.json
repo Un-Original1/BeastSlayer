@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:charred_cloak"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.tame_netherhound.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.tame_netherhound.description"
+    }
+  },
+  "parent": "ancientbeasts:kill_netherhound",
+  "criteria": {
+    "Netherhound": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Netherhound"
+        }
+      }
+    }
+  }
+}

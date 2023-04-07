@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:string"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_vessel.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_vessel.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Vessel": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Vessel"
+        }
+      }
+    }
+  }
+}

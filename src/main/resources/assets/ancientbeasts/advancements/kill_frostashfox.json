@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_fox.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_fox.description"
+    }
+  },
+  "parent": "ancientbeasts:tame_frostashfox",
+  "criteria": {
+    "Frostash_fox": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Frostash_fox"
+        }
+      }
+    }
+  }
+}

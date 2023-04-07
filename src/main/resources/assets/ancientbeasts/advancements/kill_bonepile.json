@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:kunai"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_bonepile.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_bonepile.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Boulderer": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Bonepile"
+        }
+      }
+    }
+  }
+}

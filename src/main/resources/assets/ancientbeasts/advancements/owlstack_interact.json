@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:stick"
+    },
+    "title": {
+      "translate": "advancements.owlstack_interact.title"
+    },
+    "description": {
+      "translate": "advancements.owlstack_interact.description"
+    }
+  },
+
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "place_cloud_sapling": {
+      "trigger": "owlstack_interact"
+    }
+  }
+}

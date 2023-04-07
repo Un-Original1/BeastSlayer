@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ancientbeasts",
+  "name": "Beast Slayer",
+  "description": "Powerful enemies and fantasy like creatures in minecraft",
+  "version": "1.9.9999",
+  "mcversion": "1.12.2",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["UnOriginal"],
+  "credits": "Me and the pals who helped with ideas, also Blueberry_Soda who made some of the sounds!",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

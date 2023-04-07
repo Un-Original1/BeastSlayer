@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=y":  { "model": "ancientbeasts:thatch" },
+    "axis=z":   { "model": "ancientbeasts:thatch", "x": 90 },
+    "axis=x":   { "model": "ancientbeasts:thatch", "x": 90, "y": 90 }
+  }
+}

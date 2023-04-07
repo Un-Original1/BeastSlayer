@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:miner_helmet"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_boulderer.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_boulderer.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Boulderer": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Boulderer"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " b ",
+    "xxx",
+    "x x"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "ancientbeasts:charred_fur"
+    },
+    "b":
+    {
+      "item": "minecraft:bone"
+    }
+  },
+  "result":
+  {
+    "item": "ancientbeasts:charred_cloak"
+  }
+}

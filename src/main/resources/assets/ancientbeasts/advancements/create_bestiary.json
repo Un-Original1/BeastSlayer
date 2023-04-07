@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:bestiary"
+    },
+    "title": {
+      "translate": "advancements.craft_bestiary.title"
+    },
+    "description": {
+      "translate": "advancements.craft_bestiary.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "bestiary": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "ancientbeasts:bestiary"
+          }
+        ]
+      }
+    }
+  }
+}

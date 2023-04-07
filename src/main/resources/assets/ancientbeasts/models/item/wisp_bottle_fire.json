@@ -1,0 +1,6 @@
+{
+  "parent": "ancientbeasts:item/wisp_bottle",
+  "textures": {
+    "layer0": "ancientbeasts:items/wisp_bottle_fire"
+  }
+}

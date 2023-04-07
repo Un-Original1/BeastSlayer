@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "ancientbeasts:blocks/skewer_bottom",
+    "side": "ancientbeasts:blocks/skewer_side",
+    "top": "ancientbeasts:blocks/skewer_top"
+  }
+}

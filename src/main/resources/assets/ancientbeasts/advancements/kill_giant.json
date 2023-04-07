@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:tough_glove"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_giant.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_giant.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Giant_Zombie": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:Giant_Zombie"
+        }
+      }
+    }
+  }
+}

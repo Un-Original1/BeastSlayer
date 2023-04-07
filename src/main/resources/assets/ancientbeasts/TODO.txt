@@ -1,0 +1,64 @@
+2.0 UPDATE
+Priest wisps
+priest anim
+trade items
+masks
+charms
+wind force
+
+witchcraft table
+
+structure
+
+FIRE GOD
+
+
+New entities
+
+For Frozen zones (all)
+
+Jungles (hostile - neutral)WIP NAMES!
+Wisps
+Fire God
+
+
+Dark oak forest (hostile - neutral)
+Plains (all)
+Birch forest (passive - neutral)
+-Creatures should be nature-focused (not like jungles or tribal, much more fantazy like fairies or smth)
+normal forest (passive - neutral)
+???
+Mountains (all)
+???
+Savanna (passive - neutral - hostile)
+???
+Desert (hostile - neutral)
+thieves
+Ocean (all)
+Ocean giant anglerfish
+Stronghold (hostile)
+Possessed tome?
+Swamps (hostile - neutral - Passive)
+Axolong
+Mesa (hostile - neutral)
+???
+Mushroom fields (passive)
+???
+CAVES:
+The Nether (hostile)
+Ghouls, note: remeber ragers from GOW? 4
+The End (hostile)
+???
+Flower Forest:
+Earthling
+
+
+What does animated?
+
+walk
+attack
+special?:
+transform
+special move
+
+

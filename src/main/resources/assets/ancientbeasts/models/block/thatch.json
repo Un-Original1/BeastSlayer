@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "ancientbeasts:blocks/thatch_top",
+    "side": "ancientbeasts:blocks/thatch_side"
+  }
+}

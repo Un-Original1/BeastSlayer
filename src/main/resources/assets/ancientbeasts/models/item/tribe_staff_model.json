@@ -1,0 +1,28 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "ancientbeasts:items/tribe_staff_model"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 0, -270, 35 ],
+      "translation": [ 0, 3.0, 0.5 ],
+      "scale": [ 1.7, 1.7, 0.85 ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [ 0, 270, -35 ],
+      "translation": [ 0, 3.0, 0.5 ],
+      "scale": [ 1.7, 1.7, 0.85 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 100, 45 ],
+      "translation": [ 1.13, 3.2, 1.13 ],
+      "scale": [ 1.36, 1.36, 0.68 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, -80, -45 ],
+      "translation": [ 1.13, 3.2, 1.13 ],
+      "scale": [ 1.36, 1.36, 0.68 ]
+    }
+  }
+}
