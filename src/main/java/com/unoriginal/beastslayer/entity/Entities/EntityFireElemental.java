@@ -20,7 +20,7 @@ public class EntityFireElemental extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(30.0D);
 
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((600.0D)  * BeastSlayerConfig.GlobalHealthMultiplier );
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((400.0D)  * BeastSlayerConfig.GlobalHealthMultiplier );
 
 
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D * BeastSlayerConfig.GlobalDamageMultiplier);
@@ -52,5 +52,5 @@ public class EntityFireElemental extends EntityMob {
     {
         return 15728880;
     }
-    //attacks: punch, smash, push, get over here!, summons, flame shot, life steal, meteor rain
+    //attacks: 	sxqfk, vpdvk, sxvk, jhw ryhu khuh!, vxpprqv, iodph vkrw, olih vwhdo, phwhru udlq
 }

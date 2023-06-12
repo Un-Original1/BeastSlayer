@@ -26,87 +26,98 @@ public class ModelTribeWarrior extends ModelBase {
 	private final ModelRenderer LeftArm;
 	private final ModelRenderer RightArm;
 	private final ModelRenderer RightLeg;
+	private final ModelRenderer rightFoot;
 	private final ModelRenderer LeftLeg;
+	private final ModelRenderer leftFoot;
+
+
 	public ModelTribeWarrior() {
-		this(0.0F);
-	}
-	public ModelTribeWarrior(float scale) {
-		textureWidth = 64;
-		textureHeight = 64;
+		textureWidth = 80;
+		textureHeight = 80;
 
 		body = new ModelRenderer(this);
 		body.setRotationPoint(0.0F, 16.0F, 0.0F);
-		body.cubeList.add(new ModelBox(body, 0, 20, -6.0F, -11.0F, -2.1F, 12, 4, 7, scale + 0.25F, false));
-		body.cubeList.add(new ModelBox(body, 30, 31, -3.0F, -10.0F, -2.0F, 6, 13, 4, scale + 0.5F, false));
-		body.cubeList.add(new ModelBox(body, 36, 13, -3.0F, -10.0F, -2.0F, 6, 9, 4, scale + 0.0F, false));
-		body.cubeList.add(new ModelBox(body, 16, 48, -6.0F, -6.5F, -1.1F, 12, 4, 6, scale + 0.25F, false));
+		body.cubeList.add(new ModelBox(body, 0, 69, -6.0F, -11.0F, -2.1F, 12, 4, 7, 0.25F, false));
+		body.cubeList.add(new ModelBox(body, 32, 0, -3.0F, -11.0F, -2.0F, 6, 14, 4, 0.5F, false));
+		body.cubeList.add(new ModelBox(body, 22, 46, -3.0F, -10.0F, -2.0F, 6, 11, 4, 0.0F, false));
+		body.cubeList.add(new ModelBox(body, 0, 28, -6.0F, -6.5F, -1.1F, 12, 4, 6, 0.25F, false));
 
 		tail = new ModelRenderer(this);
 		tail.setRotationPoint(0.0F, -2.0F, 2.0F);
 		body.addChild(tail);
-		tail.cubeList.add(new ModelBox(tail, 22, 55, 0.0F, 0.0F, -1.0F, 0, 1, 8, scale + 0.0F, false));
+		tail.cubeList.add(new ModelBox(tail, 31, 10, 0.0F, 0.0F, -1.0F, 0, 1, 8, 0.0F, false));
 
 		art1 = new ModelRenderer(this);
 		art1.setRotationPoint(0.0F, 0.5F, 6.5F);
 		tail.addChild(art1);
-		art1.cubeList.add(new ModelBox(art1, 22, 54, -0.001F, -0.5F, -0.5F, 0, 1, 8, scale + 0.0F, false));
+		art1.cubeList.add(new ModelBox(art1, 30, 22, -0.001F, -0.5F, -0.5F, 0, 1, 8, 0.0F, false));
 
 		point = new ModelRenderer(this);
 		point.setRotationPoint(0.0F, 0.0F, 7.5F);
 		art1.addChild(point);
-		point.cubeList.add(new ModelBox(point, 3, 48, -2.0F, 0.0F, -1.0F, 4, 0, 6, scale + 0.0F, false));
+		point.cubeList.add(new ModelBox(point, 46, 0, -2.0F, 0.0F, -1.0F, 4, 0, 6, 0.0F, false));
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, -10.0F, 0.0F);
 		body.addChild(head);
-		head.cubeList.add(new ModelBox(head, 0, 31, -4.0F, -8.0F, -3.0F, 8, 8, 7, scale + 0.0F, false));
-		head.cubeList.add(new ModelBox(head, 50, 36, 4.0F, -3.0F, -2.0F, 4, 2, 3, scale + 0.0F, false));
-		head.cubeList.add(new ModelBox(head, 50, 36, -8.0F, -3.0F, -2.0F, 4, 2, 3, scale + 0.0F, true));
+		head.cubeList.add(new ModelBox(head, 29, 31, -4.0F, -8.0F, -3.0F, 8, 8, 7, 0.0F, false));
+		head.cubeList.add(new ModelBox(head, 52, 17, 4.0F, -3.0F, -2.0F, 4, 2, 3, 0.0F, false));
+		head.cubeList.add(new ModelBox(head, 52, 17, -8.0F, -3.0F, -2.0F, 4, 2, 3, 0.0F, true));
 
 		horn0 = new ModelRenderer(this);
 		horn0.setRotationPoint(-14.5F, -5.0F, -0.5F);
 		head.addChild(horn0);
-		horn0.cubeList.add(new ModelBox(horn0, 56, 18, 9.5F, -2.0F, -1.5F, 1, 3, 3, scale + 0.0F, true));
-		horn0.cubeList.add(new ModelBox(horn0, 52, 51, 7.5F, -9.0F, -1.5F, 2, 10, 3, scale + 0.0F, true));
-		horn0.cubeList.add(new ModelBox(horn0, 54, 13, 7.5F, -9.0F, 1.5F, 2, 1, 1, scale + 0.0F, true));
+		horn0.cubeList.add(new ModelBox(horn0, 52, 31, 9.5F, -2.0F, -1.5F, 1, 3, 3, 0.0F, true));
+		horn0.cubeList.add(new ModelBox(horn0, 42, 46, 7.5F, -9.0F, -1.5F, 2, 10, 3, 0.0F, true));
+		horn0.cubeList.add(new ModelBox(horn0, 0, 69, 7.5F, -9.0F, 1.5F, 2, 1, 1, 0.0F, false));
 
 		horn1 = new ModelRenderer(this);
 		horn1.setRotationPoint(5.5F, -5.0F, -0.5F);
 		head.addChild(horn1);
-		horn1.cubeList.add(new ModelBox(horn1, 56, 18, -1.5F, -2.0F, -1.5F, 1, 3, 3, scale + 0.0F, false));
-		horn1.cubeList.add(new ModelBox(horn1, 52, 51, -0.5F, -9.0F, -1.5F, 2, 10, 3, scale + 0.0F, false));
-		horn1.cubeList.add(new ModelBox(horn1, 54, 13, -0.5F, -9.0F, 1.5F, 2, 1, 1,  scale +0.0F, true));
+		horn1.cubeList.add(new ModelBox(horn1, 52, 31, -1.5F, -2.0F, -1.5F, 1, 3, 3, 0.0F, false));
+		horn1.cubeList.add(new ModelBox(horn1, 42, 46, -0.5F, -9.0F, -1.5F, 2, 10, 3, 0.0F, false));
+		horn1.cubeList.add(new ModelBox(horn1, 0, 69, -0.5F, -9.0F, 1.5F, 2, 1, 1, 0.0F, false));
 
 		mask = new ModelRenderer(this);
 		mask.setRotationPoint(0.0F, -4.0F, -3.0F);
 		head.addChild(mask);
-		mask.cubeList.add(new ModelBox(mask, 36, 0, -5.0F, -7.0F, -1.001F, 10, 12, 1, scale + 0.0F, false));
-		mask.cubeList.add(new ModelBox(mask, 1, 0, -8.0F, -14.0F, 0.01F, 16, 17, 0, scale + 0.0F, false));
-		mask.cubeList.add(new ModelBox(mask, 0, 61, -5.0F, -4.0F, -1.0F, 10, 0, 1, scale + 0.0F, false));
+		mask.cubeList.add(new ModelBox(mask, 0, 38, -5.0F, -7.0F, -1.001F, 10, 12, 1, 0.0F, false));
+		mask.cubeList.add(new ModelBox(mask, 0, 0, -8.0F, -14.0F, 0.01F, 16, 19, 0, 0.0F, false));
+		mask.cubeList.add(new ModelBox(mask, 45, 30, -5.0F, -4.0F, -1.0F, 10, 0, 1, 0.0F, false));
 
 		LeftArm = new ModelRenderer(this);
 		LeftArm.setRotationPoint(3.0F, -9.0F, 0.0F);
 		body.addChild(LeftArm);
-		LeftArm.cubeList.add(new ModelBox(LeftArm, 0, 46, 0.0F, -1.0F, -1.0F, 2, 10, 2, scale + 0.0F, true));
-		LeftArm.cubeList.add(new ModelBox(LeftArm, 11, 59, 0.0F, 11.5F, -2.0F, 3, 1, 4, scale + 0.25F, false));
-		LeftArm.cubeList.add(new ModelBox(LeftArm, 50, 42, 0.0F, 6.0F, -2.0F, 3, 5, 4, scale + 0.25F, true));
-		LeftArm.cubeList.add(new ModelBox(LeftArm, 38, 58, 0.0F, 3.5F, -2.0F, 3, 2, 4, scale + 0.25F, true));
+		LeftArm.cubeList.add(new ModelBox(LeftArm, 14, 51, 0.0F, -1.0F, -1.0F, 2, 10, 2, 0.0F, true));
+		LeftArm.cubeList.add(new ModelBox(LeftArm, 52, 12, 0.0F, 11.5F, -2.0F, 3, 1, 4, 0.25F, false));
+		LeftArm.cubeList.add(new ModelBox(LeftArm, 0, 51, 0.0F, 6.0F, -2.0F, 3, 5, 4, 0.25F, true));
+		LeftArm.cubeList.add(new ModelBox(LeftArm, 52, 6, 0.0F, 3.5F, -2.0F, 3, 2, 4, 0.25F, true));
 
 		RightArm = new ModelRenderer(this);
 		RightArm.setRotationPoint(-3.0F, -9.0F, 0.0F);
 		body.addChild(RightArm);
-		RightArm.cubeList.add(new ModelBox(RightArm, 11, 59, -3.0F, 11.5F, -2.0F, 3, 1, 4, scale + 0.25F, true));
-		RightArm.cubeList.add(new ModelBox(RightArm, 38, 58, -3.0F, 3.5F, -2.0F, 3, 2, 4, scale + 0.25F, false));
-		RightArm.cubeList.add(new ModelBox(RightArm, 0, 46, -2.0F, -1.0F, -1.0F, 2, 10, 2, scale + 0.0F, false));
-		RightArm.cubeList.add(new ModelBox(RightArm, 50, 42, -3.0F, 6.0F, -2.0F, 3, 5, 4, scale + 0.25F, false));
+		RightArm.cubeList.add(new ModelBox(RightArm, 52, 12, -3.0F, 11.5F, -2.0F, 3, 1, 4, 0.25F, true));
+		RightArm.cubeList.add(new ModelBox(RightArm, 52, 6, -3.0F, 3.5F, -2.0F, 3, 2, 4, 0.25F, false));
+		RightArm.cubeList.add(new ModelBox(RightArm, 14, 51, -2.0F, -1.0F, -1.0F, 2, 10, 2, 0.0F, false));
+		RightArm.cubeList.add(new ModelBox(RightArm, 0, 51, -3.0F, 6.0F, -2.0F, 3, 5, 4, 0.25F, false));
 
 		RightLeg = new ModelRenderer(this);
-		RightLeg.setRotationPoint(-2.0F, 15.0F, 0.0F);
-		RightLeg.cubeList.add(new ModelBox(RightLeg, 56, 24, -1.0F, 0.0F, -1.0F, 2, 9, 2, scale + 0.0F, true));
+		RightLeg.setRotationPoint(-3.0F, 15.0F, 0.0F);
+		RightLeg.cubeList.add(new ModelBox(RightLeg, 43, 18, -1.0F, -1.0F, -3.0F, 2, 5, 5, 0.05F, true));
+
+		rightFoot = new ModelRenderer(this);
+		rightFoot.setRotationPoint(0.0F, 3.0F, 2.0F);
+		RightLeg.addChild(rightFoot);
+		rightFoot.cubeList.add(new ModelBox(rightFoot, 56, 54, -1.0F, -1.0F, 0.0F, 2, 7, 2, 0.0F, true));
 
 		LeftLeg = new ModelRenderer(this);
-		LeftLeg.setRotationPoint(2.0F, 15.0F, 0.0F);
-		LeftLeg.cubeList.add(new ModelBox(LeftLeg, 56, 24, -1.0F, 0.0F, -1.0F, 2, 9, 2, scale + 0.0F, false));
+		LeftLeg.setRotationPoint(3.0F, 15.0F, -1.0F);
+		LeftLeg.cubeList.add(new ModelBox(LeftLeg, 43, 18, -1.0F, -1.0F, -2.0F, 2, 5, 5, 0.05F, false));
+
+		leftFoot = new ModelRenderer(this);
+		leftFoot.setRotationPoint(0.0F, 3.0F, 3.0F);
+		LeftLeg.addChild(leftFoot);
+		leftFoot.cubeList.add(new ModelBox(leftFoot, 56, 54, -1.0F, -1.0F, 0.0F, 2, 7, 2, 0.0F, false));
 	}
 
 	@Override

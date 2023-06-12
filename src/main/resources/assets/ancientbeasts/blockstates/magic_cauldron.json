@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "level=0": { "model": "cauldron_empty" },
+        "level=1": { "model": "ancientbeasts:magic_cauldron_level1" },
+        "level=2": { "model": "ancientbeasts:magic_cauldron_level2" },
+        "level=3": { "model": "ancientbeasts:magic_cauldron_level3" }
+    }
+}

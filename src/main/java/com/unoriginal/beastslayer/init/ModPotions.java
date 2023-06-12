@@ -5,6 +5,7 @@ import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.potions.*;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionHelper;
@@ -12,6 +13,7 @@ import net.minecraft.potion.PotionType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 @Mod.EventBusSubscriber(modid = BeastSlayer.MODID)
 public class ModPotions {
@@ -61,6 +63,8 @@ public class ModPotions {
 
         PotionHelper.addMix(PotionTypes.AWKWARD, ModItems.DARK_GOOP, undead);
         PotionHelper.addMix(undead, Items.REDSTONE, undead);
+
+        for(ItemStack itemstack : OreDictionary.getOres("ectoplasm")){ PotionHelper.addMix(PotionTypes.AWKWARD, itemstack.getItem(), ghostly); } //by Jon
 
     }
 }

@@ -57,4 +57,5 @@ public class ClientProxy extends CommonProxy
         Minecraft.getMinecraft().displayGuiScreen(new GuiWiki(bestiary));
     }
 
+
 }

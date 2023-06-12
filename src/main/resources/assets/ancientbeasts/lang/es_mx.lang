@@ -11,7 +11,7 @@ entity.Lil_Vessel.name=Receptáculo
 entity.Giant_Zombie.name=Zombi Gigante
 entity.Damcell.name=Damicelda
 entity.Netherhound.name=Sabueso del Nether
-entity.Boulderer.name=Zombie de Cueva
+entity.Boulderer.name=Zombi de Cueva
 entity.Owlstack.name=Apilúho
 entity.Rifted_Enderman.name=Enderman Inverso
 entity.Bonepile.name=Purohueso
@@ -163,3 +163,111 @@ subtitles.entity.evocation_illager.prepare_summon=Una invocación es preparada
 subtitles.entity.evocation_illager.prepare_attack=Un ataque es preparado
 #bestiary
 bestiary.items=Items & Crafteos
+
+
+bestiary.hint0_0top=Los Enderman inversos se comportan como uno normal
+bestiary.hint0_0bottom=Aunque no se llevan bien
+bestiary.hint0_1top=Atento a la armadura de cristal
+bestiary.hint0_1bottom=Rompela cuando brille!
+bestiary.hint0_2top=Ten cuidado con la onda de choque
+bestiary.hint0_2bottom=Mantente lejos
+
+bestiary.hint1_0top=Los ocultistas protejen a otros enemigos
+bestiary.hint1_0bottom=Eliminalos antes de que se te vaya de las manos
+bestiary.hint1_1top=Ten cuidado con el hechizo de debilidad
+bestiary.hint1_1bottom=Mantente siempre alerta
+bestiary.hint1_2top=Los ocultistas arden a la luz del día
+bestiary.hint1_2bottom=Arderán
+
+bestiary.hint2_0top=Los fantasmas pueden poseer a otros enemigos!
+bestiary.hint2_0bottom=Los hacen más fuertes
+bestiary.hint2_1top=No les permitas poseerte
+bestiary.hint2_1bottom=No siempre tienes un exorcista a la mano...
+bestiary.hint2_2top=Los fantasmas se desvanecen en la luz
+bestiary.hint2_2bottom=De vuelta a la tumba
+
+bestiary.hint3_0top=Los gigantes pueden tirar piedras
+bestiary.hint3_0bottom=Que no te aplasten!
+bestiary.hint3_1top=Recuerda tu tamaño
+bestiary.hint3_1bottom=Los gigantes te van a aplastar si vas sin cuidado
+bestiary.hint3_2top=Puños poderosos
+bestiary.hint3_2bottom=Los golpes de un gigante te mandarán a volar
+
+bestiary.hint4_0top=No pierdas la cabeza!
+bestiary.hint4_0bottom=Los receptáculos lanzaran su cabeza como ataque
+bestiary.hint4_1top=Caos!
+bestiary.hint4_1bottom=Esas pelotas pueden causar un montón de destrozos
+bestiary.hint4_2top=¿Cuál es cual?
+bestiary.hint4_2bottom=Los receptáculos crean copias para confundirte
+
+bestiary.hint5_0top=Trampa mortal
+bestiary.hint5_0bottom=Los ataques de la damicelda traspasan la armadura
+bestiary.hint5_1top=Ataque sorpresa
+bestiary.hint5_1bottom=Cuidado con las espinas!
+bestiary.hint5_2top=Las damiceldas pueden intentar atraparte
+bestiary.hint5_2bottom=Estas muerto si lo consiguen
+
+
+bestiary.hint6_0top=Nigromancia
+bestiary.hint6_0bottom=Los nekros pueden revivir a los muertos
+bestiary.hint6_1top=Ladrón de vida
+bestiary.hint6_1bottom=Los nekros regeneran su vida a expensas de la tuya
+bestiary.hint6_2top=Los nekros se desvanecen con la luz del día
+bestiary.hint6_2bottom=Muy oportuno, si sobrevives hasta entonces
+
+bestiary.hint7_0top=Ataque molesto
+bestiary.hint7_0bottom=Los puerohueso atacarán con un kunai con cadena
+bestiary.hint7_1top=Get over here!
+bestiary.hint7_1bottom=Los ataques de los purohueso te arrastrarán a un lugar aleatorio
+bestiary.hint7_2top=Los purohueso arden en el día
+bestiary.hint7_2bottom=Igual a un esqueleto cualquiera
+
+bestiary.hint8_0top=Guerrero personalizado
+bestiary.hint8_0bottom=Personaliza al receptáculo con lo mejor que tengas!
+bestiary.hint8_1top=Guardia Eficiente
+bestiary.hint8_1bottom=Usa polvora para que ataque a jugadores cercanos!
+bestiary.hint8_2top=Dos variantes, doble diversión
+bestiary.hint8_2bottom=Viene en dos presentaciones, Alex y Steve
+
+bestiary.hint9_0top=Los engendros de arena crean tornados!
+bestiary.hint9_0bottom=Más te vale saber hacer un waterdrop...
+bestiary.hint9_1top=Peligro bajo el suelo
+bestiary.hint9_1bottom=Los engendros de arena intentarán emboscarte excavando debajo tuyo
+bestiary.hint9_2top=Explosiones de arena
+bestiary.hint9_2bottom=Preparate para cuando lanze el hechizo
+
+bestiary.hint10_0top=Búhos adorables
+bestiary.hint10_0bottom=Les encanta apilarse entre ellos
+bestiary.hint10_1top=Búh-o
+bestiary.hint10_1bottom=Los no muertos se alejan de los apilúhos
+bestiary.hint10_2top=Pesado
+bestiary.hint10_2bottom=Puedes llevartelos por ahí, aunque no son "peso pluma"
+
+bestiary.hint11_0top=Minero no muerto
+bestiary.hint11_0bottom=El zombi de cueva puede moverse bajo tierra
+bestiary.hint11_1top=Escalador experto
+bestiary.hint11_1bottom=Un muro no será suficiente
+bestiary.hint11_2top=Los zombis de cueva arden en la luz del día
+bestiary.hint11_2bottom=Eso pasa cuando no sales muy seguido...
+
+
+bestiary.hint12_0top=Ataque de pánico... literalmente
+bestiary.hint12_0bottom=los zorros disparan púas cuando se sienten amenazados
+bestiary.hint12_1top=Flojo
+bestiary.hint12_1bottom=Los zorros duermen de día
+bestiary.hint12_2top=Muchas variantes!
+bestiary.hint12_2bottom=¿Podrás encontrar a todas?
+
+bestiary.hint13_0top=Muerte helada
+bestiary.hint13_0bottom=Los zombies congelados atacan con picos de hielo
+bestiary.hint13_1top=El doble de poder
+bestiary.hint13_1bottom=Cuidado con la variante de hielo rojo...
+bestiary.hint13_2top=Los zombies congelados arden en la luz del día
+bestiary.hint13_2bottom=El hielo seguramente lo mantenía entero...
+
+bestiary.hint14_0top=Una furía ardiente!
+bestiary.hint14_0bottom=Mantente cerca por mucho tiempo y te quemarás
+bestiary.hint14_1top=Embestida a alta velocidad
+bestiary.hint14_1bottom=No te quedes quieto si es que un sabueso lo hace
+bestiary.hint14_2top=KABOOM!
+bestiary.hint14_2bottom=Los sabuesos explotan al ser derrotados

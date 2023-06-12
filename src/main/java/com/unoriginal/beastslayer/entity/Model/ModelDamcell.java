@@ -28,7 +28,7 @@ public class ModelDamcell extends ModelBase {
 		door_1 = new ModelRenderer(this);
 		door_1.setRotationPoint(-6.0F, 4.0F, -2.0F);
 		door_1.cubeList.add(new ModelBox(door_1, 0, 40, 0.0F, -16.0F, -4.0F, 6, 32, 4, 0.0F, false));
-		door_1.cubeList.add(new ModelBox(door_1, 60, 60, 0.0F, -16.0F, -4.0F, 6, 32, 4, 0.26F, false));
+		door_1.cubeList.add(new ModelBox(door_1, 60, 60, 0.0F, -16.0F, -4.0F, 6, 32, 4, 0.2F, false));
 
 		spikes3 = new ModelRenderer(this);
 		spikes3.setRotationPoint(6.0F, 4.0F, 2.0F);

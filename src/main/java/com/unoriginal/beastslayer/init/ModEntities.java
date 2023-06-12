@@ -91,15 +91,16 @@ public class ModEntities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Rifted_Enderman"), EntityRiftedEnderman.class, "Rifted_Enderman", id++, BeastSlayer.instance, 64, 3, true, 16777215, 12833728);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Rifted_pearl"), EntityRiftedPearl.class, "Rifted_pearl", id++, BeastSlayer.instance, 64, 3, true);
 
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "TribeWarrior"), EntityTribeWarrior.class, "Tribe_Warrior", id++, BeastSlayer.instance, 64, 3, true, 0 ,0);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter"), EntityHunter.class, "Hunter", id++, BeastSlayer.instance, 64, 3, true, 0 ,0);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Scorcher"), EntityTank.class, "Scorcher", id++, BeastSlayer.instance, 64, 3, true, 0, 0);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Priest"), EntityPriest.class, "Priest", id++, BeastSlayer.instance, 64, 3, true, 0, 0);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wispfire"), EntityWispfire.class, "Wispfire", id++, BeastSlayer.instance, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wisp"), EntityWisp.class, "Wisp", id++, BeastSlayer.instance, 64, 3, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Fire_Elemental"), EntityFireElemental.class, "Fire_Elemental", id++, BeastSlayer.instance, 128, 3, true, 0, 0);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Windforce_dart"), EntityWindforceDart.class, "Windforce_dart", id++, BeastSlayer.instance, 64, 1, true);
-
+        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "TribeWarrior"), EntityTribeWarrior.class, "Tribe_Warrior", id++, BeastSlayer.instance, 64, 3, true, 4679293, 4864586);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter"), EntityHunter.class, "Hunter", id++, BeastSlayer.instance, 64, 3, true, 9061427, 4864586);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Scorcher"), EntityTank.class, "Scorcher", id++, BeastSlayer.instance, 64, 3, true, 4679293, 6759439);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Priest"), EntityPriest.class, "Priest", id++, BeastSlayer.instance, 64, 3, true, 6759439, 4864586);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wispfire"), EntityWispfire.class, "Wispfire", id++, BeastSlayer.instance, 64, 1, true);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wisp"), EntityWisp.class, "Wisp", id++, BeastSlayer.instance, 64, 3, true);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Fire_Elemental"), EntityFireElemental.class, "Fire_Elemental", id++, BeastSlayer.instance, 128, 3, true, 0, 0);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Windforce_dart"), EntityWindforceDart.class, "Windforce_dart", id++, BeastSlayer.instance, 64, 1, true);
+        }
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Bonepile"), EntityBonepile.class, "Bonepile", id++, BeastSlayer.instance, 64, 3, true, 14540253, 11315887);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Chained"), EntityChained.class, "Chained", id++, BeastSlayer.instance,64, 3, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Nekros"), EntityNekros.class, "Nekros", id++, BeastSlayer.instance, 64, 3, true, 5058665, 3416400);
@@ -131,14 +132,16 @@ public class ModEntities
         RenderingRegistry.registerEntityRenderingHandler(EntityRiftedEnderman.class, RenderRiftedEnderman.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityRiftedPearl.class, RenderRiftedPearl.FACTORY);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityTribeWarrior.class, RenderTribeWarrior.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityHunter.class, RenderHunter.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityTank.class, RenderTank.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityPriest.class, RenderPriest.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityWispfire.class, RenderWispFire.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityWisp.class, RenderWisp.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityFireElemental.class, RenderFireElemental.FACTORY);
-        RenderingRegistry.registerEntityRenderingHandler(EntityWindforceDart.class, RenderWindforceDart.FACTORY);
+        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+            RenderingRegistry.registerEntityRenderingHandler(EntityTribeWarrior.class, RenderTribeWarrior.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntityHunter.class, RenderHunter.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntityTank.class, RenderTank.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntityPriest.class, RenderPriest.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntityWispfire.class, RenderWispFire.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntityWisp.class, RenderWisp.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntityFireElemental.class, RenderFireElemental.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntityWindforceDart.class, RenderWindforceDart.FACTORY);
+        }
 
         RenderingRegistry.registerEntityRenderingHandler(EntityBonepile.class, RenderBonePile.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityChained.class, RenderChained.FACTORY);

@@ -47,8 +47,7 @@ public class JungleVillagePieces {
             }
         }
         public int houseStringtoInt(String s){
-            int i = Integer.parseInt(s.replaceAll("[\\D]", ""));
-            return i;
+            return Integer.parseInt(s.replaceAll("[\\D]", ""));
         }
 
         public String RandHouseLog(Random random) {
@@ -566,7 +565,7 @@ public class JungleVillagePieces {
 
 
          //   houseNumber = 0;
-            JungleVillageTemplate t = new JungleVillageTemplate(this.templateManager, s,    pos, rotation, world);
+            JungleVillageTemplate t = new JungleVillageTemplate(this.templateManager, s,pos, rotation, world);
             list.add(t);
             placeBridge(s, random, list, world, pos, rotation, t, components,0);
 
@@ -592,7 +591,6 @@ public class JungleVillagePieces {
                         String bridge_slab = collection.RandBridgeSlab(rand, false);
                         String bridge_slab_top = collection.RandBridgeSlab(rand, true);
                         String log = collection.RandBridgeLog(rand);
-                        String log_h = collection.RandHalfBridgeLog(rand);
                         BlockPos position = entry.getKey();
 
                         //  BlockPos booleanPos = position.add(0, fix, 1).rotate(rotation);

@@ -16,6 +16,12 @@ entity.Owlstack.name=Owlstack
 entity.Rifted_Enderman.name=Rifted Enderman
 entity.Bonepile.name=Bonepile
 entity.Nekros.name=Nekros
+
+entity.Tribe_Warrior.name=Marauder
+entity.Hunter.name=Hunter
+entity.Scorcher.name=Scorcher
+entity.Priest.name=Charmer
+
 #Items
 item.sandmonster_scale.name=Sandmonster Scale
 item.cactus_broth.name=Cactus Broth
@@ -164,3 +170,112 @@ subtitles.entity.evocation_illager.prepare_summon=A summoning is prepared
 subtitles.entity.evocation_illager.prepare_attack=An attack is prepared
 #bestiary
 bestiary.items=Items & Crafting
+
+
+#bestiary text
+bestiary.hint0_0top=Rifted Endermen behave just as endermen would
+bestiary.hint0_0bottom=But they don't get along...
+bestiary.hint0_1top=Keep an eye on the crystal armor
+bestiary.hint0_1bottom=Break it when it glows!
+bestiary.hint0_2top=Careful with the deadly shockwave
+bestiary.hint0_2bottom=Better stay away
+
+bestiary.hint1_0top=Zealots can create shields and protect mobs
+bestiary.hint1_0bottom=Take 'em out before it gets out of control
+bestiary.hint1_1top=Mind the weakness spell...
+bestiary.hint1_1bottom=Avoid getting caught off guard
+bestiary.hint1_2top=Zealots burn in sunlight
+bestiary.hint1_2bottom=Light 'em up
+
+bestiary.hint2_0top=Ghosts can possess other mobs!
+bestiary.hint2_0bottom=They make them stronger
+bestiary.hint2_1top=Don't get possessed!
+bestiary.hint2_1bottom=You can't always afford the exorcism
+bestiary.hint2_2top=Ghosts vanish in sunlight
+bestiary.hint2_2bottom=Back where they belong
+
+bestiary.hint3_0top=Giants can throw boulders
+bestiary.hint3_0bottom=Make sure not to get crushed!
+bestiary.hint3_1top=Remember your size
+bestiary.hint3_1bottom=Giants may squeeze you if you aren't careful
+bestiary.hint3_2top=Powerful fists
+bestiary.hint3_2bottom=Giants hits have huge knockback
+
+bestiary.hint4_0top=Don't lose your head!
+bestiary.hint4_0bottom=Vessel launch his head as an attack
+bestiary.hint4_1top=Chaos! Chaos!
+bestiary.hint4_1bottom=Enough bouncy balls can cause a lot of trouble
+bestiary.hint4_2top=There's no harm in a little tomfoolery
+bestiary.hint4_2bottom=Vessels can create mimics and confuse the player
+
+bestiary.hint5_0top=A deadly trap
+bestiary.hint5_0bottom=Damcell attacks pierce through armor
+bestiary.hint5_1top=A Sharp and unexpected attack
+bestiary.hint5_1bottom=Careful with those spikes it shoots!
+bestiary.hint5_2top=Damcell drags you in from time to time
+bestiary.hint5_2bottom=if you get trapped you are doomed
+
+
+bestiary.hint6_0top=Necromancy
+bestiary.hint6_0bottom=Nekros can summon undead mobs
+bestiary.hint6_1top=Life stealing
+bestiary.hint6_1bottom=Nekros might regenerate a bit of its health in exchange of yours
+bestiary.hint6_2top=Nekros vanish in sunlight
+bestiary.hint6_2bottom=Useful if you survive until then
+
+bestiary.hint7_0top=Annoying attack
+bestiary.hint7_0bottom=Bonepile shoots a kunai with a chain
+bestiary.hint7_1top=Get over here!
+bestiary.hint7_1bottom=Bonepile's chain can drag you to a random spot
+bestiary.hint7_2top= Bonepile burns in sunlight
+bestiary.hint7_2bottom=Just like many other undead mobs
+
+bestiary.hint8_0top=Customizable warrior
+bestiary.hint8_0bottom=Equip lil' vessel with the best you can afford!
+bestiary.hint8_1top=An efficient guard
+bestiary.hint8_1bottom=Use gunpowder to make it target players to defend your base!
+bestiary.hint8_2top=Two variants, twice the fun
+bestiary.hint8_2bottom=Lil' vessel can resemble alex or steve
+
+bestiary.hint9_0top=Sandmonster can summon tornadoes!
+bestiary.hint9_0bottom=Hope you are good at waterdrops...
+bestiary.hint9_1top=A danger under our feet
+bestiary.hint9_1bottom=Sandmonster can bury on the floor, don't get ambushed
+bestiary.hint9_2top=Sand explosions
+bestiary.hint9_2bottom=Be ready when it is casting this spell
+
+bestiary.hint10_0top=Cute little owls
+bestiary.hint10_0bottom=They love stacking on top of each other
+bestiary.hint10_1top=A spooky fella?
+bestiary.hint10_1bottom=Undead mobs fear and run away from owlstack
+bestiary.hint10_2top=Not exactly lightweight
+bestiary.hint10_2bottom=You can carry owlstacks around, in an inefficient fashion
+
+bestiary.hint11_0top=Undead miner
+bestiary.hint11_0bottom=Bouldering zombies can bury themselves
+bestiary.hint11_1top=Climbing expert
+bestiary.hint11_1bottom=Don't think a high wall will keep you safe
+bestiary.hint11_2top=Bouldering zombies burn in daylight
+bestiary.hint11_2bottom=That's what you get for being underground so long
+
+
+bestiary.hint12_0top=Panic attack... literally
+bestiary.hint12_0bottom=Frostash shoots ice spikes when scared
+bestiary.hint12_1top=Lazy fox
+bestiary.hint12_1bottom=Frostash foxes sleep mostly on daytime
+bestiary.hint12_2top=Several variants!
+bestiary.hint12_2bottom=Can you see them all?
+
+bestiary.hint13_0top=A frozen death
+bestiary.hint13_0bottom=Frostwalkers can summon big ice spikes, careful!
+bestiary.hint13_1top=Twice the power
+bestiary.hint13_1bottom=Beware the powerful red variant of the Frostwalker
+bestiary.hint13_2top=Frostwalker burns in daylight
+bestiary.hint13_2bottom=The ice might've been keeping them together...
+
+bestiary.hint14_0top=Hot headed dog
+bestiary.hint14_0bottom=Stay too long nearby a netherhound and get smoked
+bestiary.hint14_1top=Ramming speed
+bestiary.hint14_1bottom=If you see a netherhound staying still be careful
+bestiary.hint14_2top=Going off with a BANG!
+bestiary.hint14_2bottom=Netherhounds explode when defeated

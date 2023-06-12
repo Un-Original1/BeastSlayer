@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer.init;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMobAvoidOwlstack;
@@ -7,6 +8,8 @@ import com.unoriginal.beastslayer.items.ItemSpear;
 import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
 import com.unoriginal.beastslayer.network.MessageAttackER;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
@@ -27,12 +30,16 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -249,6 +256,33 @@ public class ModEvents {
                         BeastSlayerPacketHandler.sendToServer(new MessageAttackER(player, entity));
 
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equals(BeastSlayer.MODID)) {
+            ConfigManager.sync(BeastSlayer.MODID, Config.Type.INSTANCE);
+        }
+    }
+
+    @SubscribeEvent
+    public void BlockRightClick(PlayerInteractEvent.RightClickBlock e){
+        World world = e.getWorld();
+        EntityPlayer player = e.getEntityPlayer();
+        ItemStack stack = player.getHeldItemMainhand();
+        BlockPos pos = e.getPos();
+        IBlockState state = world.getBlockState(pos);
+        if(!world.isRemote && world.getBlockState(pos).getBlock() == Blocks.CAULDRON && BeastSlayerConfig.EnableExperimentalFeatures ){
+            BlockCauldron cauldron = (BlockCauldron) world.getBlockState(pos).getBlock();
+            if(cauldron.getMetaFromState(state) == 3 && stack.getItem() == ModItems.DARK_GOOP){
+                world.setBlockState(pos, ModBlocks.CAULDRON.getDefaultState());
+                player.swingArm(EnumHand.MAIN_HAND);
+                world.playSound(null, pos, SoundEvents.BLOCK_BREWING_STAND_BREW, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                if(!player.capabilities.isCreativeMode) {
+                    player.getHeldItemMainhand().shrink(1);
                 }
             }
         }

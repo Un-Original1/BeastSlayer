@@ -6,6 +6,13 @@ masks
 charms
 wind force
 
+
+
+ok, how do we fix the structures, simple, we add a beginning and an end to them, a bridge entry must be not available and that must be our entry, and the rest
+should be kept the same, my main concern is that this means that we'll mess this up, if I could find how jigsaw locates the intersections.
+
+
+
 witchcraft table
 
 structure

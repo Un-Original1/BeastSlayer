@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer;
 
+import com.unoriginal.beastslayer.gui.ABGuiHandler;
 import com.unoriginal.beastslayer.proxy.CommonProxy;
 import com.unoriginal.beastslayer.tab.ModTab;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,7 +9,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import org.apache.logging.log4j.Logger;
 
 
@@ -27,6 +27,12 @@ public class BeastSlayer
     public static BeastSlayer instance;
 
     public static Logger logger;
+
+    public static ABGuiHandler guiHandler = new ABGuiHandler();
+
+    public enum GUIs {
+        WITCHCRAFT_TABLE
+    }
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

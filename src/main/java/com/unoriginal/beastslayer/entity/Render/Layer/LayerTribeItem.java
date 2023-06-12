@@ -41,30 +41,9 @@ public class LayerTribeItem implements LayerRenderer<EntityLivingBase> {
                 GlStateManager.translate(0.0F, 0.75F, 0.0F);
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
-            if (this.livingEntityRenderer.getMainModel() instanceof ModelHunter)
-            {
-                GlStateManager.translate(0.0F, 1.0F, 0.0F);
-                //GlStateManager.scale(0.75F, 0.75F, 0.75F);
 
-            }
-            if (this.livingEntityRenderer.getMainModel() instanceof ModelPriest)
-            {
-                GlStateManager.translate(0.0F, 1.0F, 0.0F);
-              //  GlStateManager.scale(0.83F, 0.83F, 0.83F);
+            GlStateManager.translate(0.0F, 1.0F, 0.0F);
 
-            }
-            if (this.livingEntityRenderer.getMainModel() instanceof ModelTank)
-            {
-                GlStateManager.translate(0.0F, 1.0F, 0.0F);
-               // GlStateManager.scale(1.66F, 1.66F, 1.66F);
-
-            }
-            if (this.livingEntityRenderer.getMainModel() instanceof ModelTribeWarrior)
-            {
-                GlStateManager.translate(0.0F, 1.0F, 0.0F);
-                //GlStateManager.scale(0.75F, 0.75F, 0.75F);
-
-            }
             if(entity instanceof EntityTribeWarrior){
                 EntityTribeWarrior t = (EntityTribeWarrior) entity;
                 if(t.getAngryTick() < 0){
@@ -116,7 +95,7 @@ public class LayerTribeItem implements LayerRenderer<EntityLivingBase> {
                 GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
             }
 
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(livingBase, itemstack, camera, flag);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(livingBase, itemstack, camera, flag); //item renderer (the item in question, not pos)
             GlStateManager.popMatrix();
         }
     }

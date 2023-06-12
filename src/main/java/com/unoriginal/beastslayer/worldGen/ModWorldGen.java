@@ -52,7 +52,7 @@ public class ModWorldGen implements IWorldGenerator {
     }
 
     private void generateNether(World world, Random rand, int chunkX, int chunkZ) {
-        //I don't believe I'll ever touch this
+        //I don't think I'll ever touch this
     }
     private void generateEnd(World world, Random rand, int chunkX, int chunkZ) {}
 

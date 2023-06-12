@@ -69,15 +69,15 @@ public class ModelFrostashFox extends ModelBase {
 
 		legFrontLeft = new ModelRenderer(this);
 		legFrontLeft.setRotationPoint(2.0F, 16.0F, -5.0F);
-		legFrontLeft.cubeList.add(new ModelBox(legFrontLeft, 49, 44, -0.999F, 0.0F, -1.001F, 2, 8, 2, 0.0F, false));
+		legFrontLeft.cubeList.add(new ModelBox(legFrontLeft, 49, 54, -0.999F, 0.0F, -1.001F, 2, 8, 2, 0.0F, true));
 
 		legBackRight = new ModelRenderer(this);
 		legBackRight.setRotationPoint(-2.0F, 16.0F, 3.0F);
-		legBackRight.cubeList.add(new ModelBox(legBackRight, 38, 54, -1.001F, 0.0F, -1.0F, 2, 8, 2, 0.0F, false));
+		legBackRight.cubeList.add(new ModelBox(legBackRight, 38, 44, -1.001F, 0.0F, -1.0F, 2, 8, 2, 0.0F, false));
 
 		legBackLeft = new ModelRenderer(this);
 		legBackLeft.setRotationPoint(2.0F, 16.0F, 3.0F);
-		legBackLeft.cubeList.add(new ModelBox(legBackLeft, 49, 54, -0.999F, 0.0F, -1.0F, 2, 8, 2, 0.0F, false));
+		legBackLeft.cubeList.add(new ModelBox(legBackLeft, 49, 44, -0.999F, 0.0F, -1.0F, 2, 8, 2, 0.0F, true));
 	}
 
 	@Override

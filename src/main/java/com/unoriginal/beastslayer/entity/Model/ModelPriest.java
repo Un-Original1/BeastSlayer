@@ -21,7 +21,8 @@ import java.util.Arrays;
 @SideOnly(Side.CLIENT)
 public class ModelPriest extends ModelBase {
 	private final ModelRenderer body;
-	private final ModelRenderer bone3;
+	private final ModelRenderer decor;
+	private final ModelRenderer cloak;
 	private final ModelRenderer tail;
 	private final ModelRenderer art1;
 	private final ModelRenderer point;
@@ -32,11 +33,11 @@ public class ModelPriest extends ModelBase {
 	private final ModelRenderer bone;
 	private final ModelRenderer LeftArm;
 	private final ModelRenderer RightArm;
-	private final ModelRenderer thingr;
-	private final ModelRenderer thingl;
 	private final ModelRenderer robes;
-	private final ModelRenderer RightLeg;
 	private final ModelRenderer LeftLeg;
+	private final ModelRenderer leftFoot;
+	private final ModelRenderer RightLeg;
+	private final ModelRenderer rightFoot;
 
 	public ModelPriest() {
 		textureWidth = 80;
@@ -45,15 +46,20 @@ public class ModelPriest extends ModelBase {
 		body = new ModelRenderer(this);
 		body.setRotationPoint(0.0F, 14.0F, 0.0F);
 		body.cubeList.add(new ModelBox(body, 27, 42, -5.0F, -10.0F, -2.0F, 10, 4, 7, 0.3F, false));
-		body.cubeList.add(new ModelBox(body, 0, 64, -3.0F, -9.0F, -1.5F, 6, 9, 3, 0.0F, false));
 		body.cubeList.add(new ModelBox(body, 52, 53, -3.0F, -9.0F, -1.5F, 6, 9, 3, 0.25F, false));
+		body.cubeList.add(new ModelBox(body, 0, 64, -3.0F, -9.0F, -1.5F, 6, 11, 3, 0.0F, false));
 
-		bone3 = new ModelRenderer(this);
-		bone3.setRotationPoint(0.0F, 9.0F, 0.0F);
-		body.addChild(bone3);
-		bone3.cubeList.add(new ModelBox(bone3, 35, 31, -7.0F, -19.0F, -2.0F, 14, 4, 7, 0.0F, false));
-		bone3.cubeList.add(new ModelBox(bone3, 0, 38, -5.0F, -19.0F, -2.0F, 10, 4, 7, 0.25F, false));
-		bone3.cubeList.add(new ModelBox(bone3, 0, 21, -7.0F, -15.0F, -2.0F, 14, 10, 7, 0.0F, false));
+		decor = new ModelRenderer(this);
+		decor.setRotationPoint(0.0F, -5.75F, -2.25F);
+		body.addChild(decor);
+		decor.cubeList.add(new ModelBox(decor, 44, 66, -2.0F, 0.0F, 0.0F, 4, 8, 0, 0.0F, false));
+
+		cloak = new ModelRenderer(this);
+		cloak.setRotationPoint(0.0F, 9.0F, 0.0F);
+		body.addChild(cloak);
+		cloak.cubeList.add(new ModelBox(cloak, 35, 31, -7.0F, -19.0F, -2.0F, 14, 4, 7, 0.0F, false));
+		cloak.cubeList.add(new ModelBox(cloak, 0, 38, -5.0F, -19.0F, -2.0F, 10, 4, 7, 0.25F, false));
+		cloak.cubeList.add(new ModelBox(cloak, 0, 21, -7.0F, -15.0F, -2.0F, 14, 10, 7, 0.0F, false));
 
 		tail = new ModelRenderer(this);
 		tail.setRotationPoint(0.0F, -1.0F, 2.0F);
@@ -97,9 +103,9 @@ public class ModelPriest extends ModelBase {
 		mask = new ModelRenderer(this);
 		mask.setRotationPoint(0.0F, -4.0F, -3.0F);
 		head.addChild(mask);
-		mask.cubeList.add(new ModelBox(mask, 30, 53, -5.0F, -6.0F, -1.001F, 10, 10, 1, 0.0F, false));
+		mask.cubeList.add(new ModelBox(mask, 30, 54, -5.0F, -5.0F, -1.001F, 10, 9, 1, 0.0F, false));
 		mask.cubeList.add(new ModelBox(mask, 0, 0, -12.0F, -15.0F, -0.01F, 24, 21, 0, 0.0F, false));
-		mask.cubeList.add(new ModelBox(mask, 0, 21, -1.0F, -6.0F, -1.0F, 2, 2, 1, 0.0F, false));
+		mask.cubeList.add(new ModelBox(mask, 0, 21, -1.0F, -5.0F, -1.0F, 2, 1, 1, 0.0F, false));
 
 		bone = new ModelRenderer(this);
 		bone.setRotationPoint(0.0F, -7.0F, 6.0F);
@@ -108,38 +114,37 @@ public class ModelPriest extends ModelBase {
 		bone.cubeList.add(new ModelBox(bone, 54, 42, -4.0F, 0.5007F, -1.8947F, 8, 2, 3, 0.24F, false));
 
 		LeftArm = new ModelRenderer(this);
-		body.addChild(LeftArm);
 		LeftArm.setRotationPoint(3.0F, -8.0F, 0.0F);
+		body.addChild(LeftArm);
 		LeftArm.cubeList.add(new ModelBox(LeftArm, 28, 64, 0.0F, -1.0F, -1.0F, 2, 10, 2, 0.0F, true));
 
 		RightArm = new ModelRenderer(this);
-		body.addChild(RightArm);
 		RightArm.setRotationPoint(-3.0F, -8.0F, 0.0F);
+		body.addChild(RightArm);
 		RightArm.cubeList.add(new ModelBox(RightArm, 28, 64, -2.0F, -1.0F, -1.0F, 2, 10, 2, 0.0F, false));
-
-		thingr = new ModelRenderer(this);
-		thingr.setRotationPoint(-3.5F, -6.0436F, -2.0019F);
-		body.addChild(thingr);
-		setRotationAngle(thingr, -0.0436F, 0.0F, 0.0F);
-		thingr.cubeList.add(new ModelBox(thingr, 44, 64, -1.75F, 0.2936F, -0.2481F, 3, 12, 0, 0.0F, true));
-
-		thingl = new ModelRenderer(this);
-		thingl.setRotationPoint(3.5F, -6.0F, -2.0F);
-		body.addChild(thingl);
-		thingl.cubeList.add(new ModelBox(thingl, 44, 64, -1.25F, 0.25F, -0.25F, 3, 12, 0, 0.0F, false));
 
 		robes = new ModelRenderer(this);
 		robes.setRotationPoint(0.0F, 0.0F, 0.0F);
 		body.addChild(robes);
 		robes.cubeList.add(new ModelBox(robes, 48, 0, -3.0F, -1.0F, -2.0F, 6, 10, 4, 0.4F, false));
 
-		RightLeg = new ModelRenderer(this);
-		RightLeg.setRotationPoint(-2.0F, 15.0F, 0.0F);
-		RightLeg.cubeList.add(new ModelBox(RightLeg, 36, 64, -1.0F, -1.0F, -1.0F, 2, 10, 2, 0.0F, false));
-
 		LeftLeg = new ModelRenderer(this);
-		LeftLeg.setRotationPoint(2.0F, 15.0F, 0.0F);
-		LeftLeg.cubeList.add(new ModelBox(LeftLeg, 36, 64, -1.0F, -1.0F, -1.0F, 2, 10, 2, 0.0F, true));
+		LeftLeg.setRotationPoint(3.0F, 14.0F, -1.0F);
+		LeftLeg.cubeList.add(new ModelBox(LeftLeg, 66, 70, -1.0F, -1.0F, -2.0F, 2, 5, 5, 0.05F, false));
+
+		leftFoot = new ModelRenderer(this);
+		leftFoot.setRotationPoint(0.0F, 3.0F, 3.0F);
+		LeftLeg.addChild(leftFoot);
+		leftFoot.cubeList.add(new ModelBox(leftFoot, 36, 66, -1.0F, -1.0F, 0.0F, 2, 8, 2, 0.0F, true));
+
+		RightLeg = new ModelRenderer(this);
+		RightLeg.setRotationPoint(-3.0F, 14.0F, -1.0F);
+		RightLeg.cubeList.add(new ModelBox(RightLeg, 66, 70, -1.0F, -1.0F, -2.0F, 2, 5, 5, 0.05F, true));
+
+		rightFoot = new ModelRenderer(this);
+		rightFoot.setRotationPoint(0.0F, 3.0F, 3.0F);
+		RightLeg.addChild(rightFoot);
+		rightFoot.cubeList.add(new ModelBox(rightFoot, 36, 66, -1.0F, -1.0F, 0.0F, 2, 8, 2, 0.0F, false));
 	}
 
 	@Override

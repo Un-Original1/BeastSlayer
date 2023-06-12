@@ -1,7 +1,6 @@
 package com.unoriginal.beastslayer.config;
 
 import com.unoriginal.beastslayer.BeastSlayer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.Name;
@@ -9,8 +8,6 @@ import net.minecraftforge.common.config.Config.RequiresMcRestart;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Config(modid = BeastSlayer.MODID)
@@ -212,16 +209,12 @@ public class BeastSlayerConfig {
     public static int nekrosSpawnChance = 10;
 
 
-    @Mod.EventBusSubscriber(modid = BeastSlayer.MODID)
-    private static class ConfigEventHandler {
+    @Name("Enable Experimental features")
+    @Comment("Toggle experimental features (likely buggy and unfinished)")
+    @RequiresMcRestart
+    public static boolean EnableExperimentalFeatures = false;
 
-        @SubscribeEvent
-        public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
-            if (event.getModID().equals(BeastSlayer.MODID)) {
-                ConfigManager.sync(BeastSlayer.MODID, Config.Type.INSTANCE);
-            }
-        }
-    }
+
 
 
 }

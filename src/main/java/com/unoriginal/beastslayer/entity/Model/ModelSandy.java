@@ -24,118 +24,107 @@ public class ModelSandy extends ModelBase {
 	private final ModelRenderer body6;
 	private final ModelRenderer tail;
 	private final ModelRenderer tail2;
-	private final ModelRenderer hairRight;
-	private final ModelRenderer hairLeft;
+	private final ModelRenderer hair_r;
+	private final ModelRenderer hair_l;
+	private final ModelRenderer awooga;
 	private State state = State.NORMAL;
 
 	public ModelSandy() {
-		textureWidth = 256;
+		textureWidth = 128;
 		textureHeight = 128;
 
-		body1 = new ModelRenderer(this);
-		body1.setRotationPoint(0.0F, -4.0F, -2.0F);
-		body1.cubeList.add(new ModelBox(body1, 88, 0, -4.0F, -12.0F, -1.0F, 8, 12, 4, 0.0F, false));
-		body1.cubeList.add(new ModelBox(body1, 2, 104, -9.0F, -19.0F, 3.0F, 18, 19, 5, 0.0F, false));
-		body1.cubeList.add(new ModelBox(body1, 168, 53, -22.0F, -24.0F, 3.0F, 44, 31, 0, 0.01F, false));
-		body1.cubeList.add(new ModelBox(body1, 3, 34, -14.0F, -25.0F, -4.0F, 28, 6, 12, 0.0F, false));
-
-		ModelRenderer cube_r1 = new ModelRenderer(this);
-		cube_r1.setRotationPoint(0.0F, -9.0F, -3.0F);
-		body1.addChild(cube_r1);
-		setRotationAngle(cube_r1, -0.7854F, 0.0F, 0.0F);
-		cube_r1.cubeList.add(new ModelBox(cube_r1, 86, 41, -4.0F, -3.0F, 0.0F, 8, 4, 4, 0.25F, false));
-
-		ModelRenderer cube_r2 = new ModelRenderer(this);
-		cube_r2.setRotationPoint(-5.0F, -8.0F, 2.5F);
-		body1.addChild(cube_r2);
-		setRotationAngle(cube_r2, 0.0F, -0.0873F, -0.48F);
-		cube_r2.cubeList.add(new ModelBox(cube_r2, 45, 52, 21.5F, -7.0F, -3.5F, 10, 6, 4, 0.0F, false));
-
-		ModelRenderer cube_r3 = new ModelRenderer(this);
-		cube_r3.setRotationPoint(-17.0F, -24.0F, 7.0F);
-		body1.addChild(cube_r3);
-		setRotationAngle(cube_r3, 0.0F, 0.0873F, 0.48F);
-		cube_r3.cubeList.add(new ModelBox(cube_r3, 45, 52, -4.5F, -3.0F, -6.0F, 10, 6, 4, 0.0F, true));
-
-		ModelRenderer cube_r4 = new ModelRenderer(this);
-		cube_r4.setRotationPoint(0.0F, -24.0F, 3.0F);
-		body1.addChild(cube_r4);
-		setRotationAngle(cube_r4, 0.2182F, 0.0F, 0.0F);
-		cube_r4.cubeList.add(new ModelBox(cube_r4, 5, 57, -7.0F, -3.0F, -8.0F, 14, 7, 12, 0.0F, false));
-
-		head = new ModelRenderer(this);
-		head.setRotationPoint(0.0F, -12.0F, 0.0F);
-		body1.addChild(head);
-		head.cubeList.add(new ModelBox(head, 68, 82, -4.0F, -8.0F, -3.0F, 8, 8, 8, 0.0F, false));
-		head.cubeList.add(new ModelBox(head, 36, 76, -4.0F, -7.0F, -3.0F, 8, 4, 8, 0.25F, false));
-
-		hairRight = new ModelRenderer(this);
-		hairRight.setRotationPoint(5.0F, -7.0F, 0.0F);
-		head.addChild(hairRight);
-		setRotationAngle(hairRight, 0.0F, -0.48F, 0.0F);
-		hairRight.cubeList.add(new ModelBox(hairRight, 0, 76, -2.6F, 0.0F, -2.28F, 6, 8, 6, 0.0F, true));
-		hairRight.cubeList.add(new ModelBox(hairRight, 0, 90, -2.6F, 8.0F, -2.28F, 6, 1, 6, 0.0F, true));
-
-		hairLeft = new ModelRenderer(this);
-		hairLeft.setRotationPoint(-5.0F, -7.0F, 0.0F);
-		head.addChild(hairLeft);
-		setRotationAngle(hairLeft, 0.0F, 0.48F, 0.0F);
-		hairLeft.cubeList.add(new ModelBox(hairLeft, 0, 76, -3.4F, 0.0F, -2.28F, 6, 8, 6, 0.0F, false));
-		hairLeft.cubeList.add(new ModelBox(hairLeft, 0, 90, -3.4F, 8.0F, -2.28F, 6, 1, 6, 0.0F, false));
-
-
-		rightArm = new ModelRenderer(this);
-		rightArm.setRotationPoint(-4.0F, -10.0F, 1.0F);
-		body1.addChild(rightArm);
-		rightArm.cubeList.add(new ModelBox(rightArm, 0, 52, -3.0F, -2.0F, -2.0F, 3, 12, 4, 0.0F, false));
-		rightArm.cubeList.add(new ModelBox(rightArm, 94, 92, -4.0F, 10.0F, -3.0F, 5, 8, 6, 0.0F, false));
-
-		leftArm = new ModelRenderer(this);
-		leftArm.setRotationPoint(4.0F, -10.0F, 1.0F);
-		body1.addChild(leftArm);
-		leftArm.cubeList.add(new ModelBox(leftArm, 0, 52, 0.0F, -2.0F, -2.0F, 3, 12, 4, 0.0F, true));
-		leftArm.cubeList.add(new ModelBox(leftArm, 94, 92, -1.0F, 10.0F, -3.0F, 5, 8, 6, 0.0F, true));
-
 		body2 = new ModelRenderer(this);
-		body2.setRotationPoint(0.0F, 0.0F, 0.0F);
-		body1.addChild(body2);
-		body2.cubeList.add(new ModelBox(body2, 80, 21, -6.0F, 0.0F, -3.0F, 12, 10, 10, 0.0F, false));
+		body2.setRotationPoint(0.0F, -4.0F, -2.0F);
+		body2.cubeList.add(new ModelBox(body2, 0, 66, -6.0F, 0.0F, -3.0F, 12, 10, 10, 0.0F, false));
 
 		body3 = new ModelRenderer(this);
 		body3.setRotationPoint(0.0F, 10.0F, 0.0F);
 		body2.addChild(body3);
-		body3.cubeList.add(new ModelBox(body3, 62, 52, -8.0F, 0.0F, -4.0F, 16, 18, 12, 0.0F, false));
+		body3.cubeList.add(new ModelBox(body3, 52, 0, -7.0F, 0.0F, -4.0F, 14, 18, 12, 0.0F, false));
 
 		body4 = new ModelRenderer(this);
 		body4.setRotationPoint(0.0F, 18.0F, 2.0F);
 		body3.addChild(body4);
-		body4.cubeList.add(new ModelBox(body4, 192, 90, -9.0F, 0.0F, -7.0F, 18, 24, 14, 0.0F, false));
+		body4.cubeList.add(new ModelBox(body4, 0, 0, -7.0F, 0.0F, -6.0F, 14, 24, 12, 0.1F, false));
 
 		body5 = new ModelRenderer(this);
 		body5.setRotationPoint(0.0F, 24.0F, 0.0F);
 		body4.addChild(body5);
-		body5.cubeList.add(new ModelBox(body5, 204, 0, -7.0F, 0.0F, -6.0F, 14, 18, 12, 0.0F, false));
+		body5.cubeList.add(new ModelBox(body5, 0, 36, -7.0F, 0.0F, -6.0F, 14, 18, 12, 0.0F, false));
 
 		body6 = new ModelRenderer(this);
 		body6.setRotationPoint(0.0F, 18.0F, 0.0F);
 		body5.addChild(body6);
-		body6.cubeList.add(new ModelBox(body6, 49, 102, -5.0F, 0.0F, -5.0F, 10, 16, 10, 0.0F, false));
+		body6.cubeList.add(new ModelBox(body6, 52, 49, -5.0F, 0.0F, -5.0F, 10, 16, 10, 0.0F, false));
 
 		tail = new ModelRenderer(this);
-		tail.setRotationPoint(0.0F, 16.0F, 0.0F);
+		tail.setRotationPoint(0.0F, 16.0F, -1.0F);
 		body6.addChild(tail);
-		tail.cubeList.add(new ModelBox(tail, 127, 0, -3.0F, 0.0F, -3.0F, 6, 16, 6, 0.0F, false));
+		tail.cubeList.add(new ModelBox(tail, 48, 97, -3.0F, 0.0F, -3.0F, 6, 16, 6, 0.0F, false));
 
 		tail2 = new ModelRenderer(this);
 		tail2.setRotationPoint(0.0F, 16.0F, 0.0F);
 		tail.addChild(tail2);
-		tail2.cubeList.add(new ModelBox(tail2, 138, 26, -2.0F, 0.0F, -2.0F, 4, 16, 4, 0.0F, false));
-		tail2.cubeList.add(new ModelBox(tail2, 156, 12, 0.0F, 13.0F, -9.0F, 0, 16, 16, 0.0F, false));
+		tail2.cubeList.add(new ModelBox(tail2, 0, 102, -2.0F, 0.0F, -2.0F, 4, 16, 4, 0.0F, false));
+		tail2.cubeList.add(new ModelBox(tail2, 0, 74, 0.0F, 12.0F, -6.0F, 0, 16, 12, 0.0F, false));
+
+		body1 = new ModelRenderer(this);
+		body1.setRotationPoint(0.0F, -4.0F, -2.0F);
+		body1.cubeList.add(new ModelBox(body1, 72, 98, -4.0F, -12.0F, -1.0F, 8, 12, 4, 0.0F, false));
+		body1.cubeList.add(new ModelBox(body1, 84, 75, -7.0F, -19.0F, 4.0F, 14, 19, 4, 0.0F, false));
+		body1.cubeList.add(new ModelBox(body1, 44, 75, -22.0F, -24.0F, 2.0F, 18, 20, 2, 0.0F, false));
+		body1.cubeList.add(new ModelBox(body1, 44, 75, 4.0F, -24.0F, 2.0F, 18, 20, 2, 0.0F, true));
+		body1.cubeList.add(new ModelBox(body1, 96, 98, -14.0F, -4.0F, 2.0F, 10, 12, 2, 0.0F, false));
+		body1.cubeList.add(new ModelBox(body1, 96, 98, 4.0F, -4.0F, 2.0F, 10, 12, 2, 0.0F, true));
+		body1.cubeList.add(new ModelBox(body1, 40, 8, -22.0F, -26.0F, 2.0F, 6, 2, 2, 0.0F, false));
+		body1.cubeList.add(new ModelBox(body1, 40, 8, 16.0F, -26.0F, 2.0F, 6, 2, 2, 0.0F, true));
+		body1.cubeList.add(new ModelBox(body1, 52, 30, -7.0F, -26.0F, -4.0F, 14, 7, 12, 0.0F, false));
+		body1.cubeList.add(new ModelBox(body1, 104, 14, -4.0F, 0.0F, 2.0F, 8, 8, 2, 0.0F, false));
+
+		awooga = new ModelRenderer(this);
+		awooga.setRotationPoint(0.0F, -9.0F, -3.0F);
+		body1.addChild(awooga);
+		setRotationAngle(awooga, -0.7854F, 0.0F, 0.0F);
+		awooga.cubeList.add(new ModelBox(awooga, 40, 0, -4.0F, -3.0F, 0.0F, 8, 4, 4, 0.25F, false));
+
+		head = new ModelRenderer(this);
+		head.setRotationPoint(0.0F, -12.0F, 0.0F);
+		body1.addChild(head);
+		head.cubeList.add(new ModelBox(head, 92, 49, -4.0F, -7.0F, -3.0F, 8, 8, 8, 0.25F, false));
+		head.cubeList.add(new ModelBox(head, 16, 94, -4.0F, -8.0F, -3.0F, 8, 8, 8, 0.0F, false));
+
+		hair_l = new ModelRenderer(this);
+		hair_l.setRotationPoint(5.0F, -7.0F, 0.0F);
+		head.addChild(hair_l);
+		hair_l.cubeList.add(new ModelBox(hair_l, 98, 24, -2.6F, 0.0F, -2.3F, 6, 8, 6, 0.0F, true));
+		hair_l.cubeList.add(new ModelBox(hair_l, 92, 65, -2.6F, 8.0F, -2.3F, 6, 1, 6, 0.0F, true));
+		setRotationAngle(hair_l, 0.0F, -0.479F, 0.0F);
+
+		hair_r = new ModelRenderer(this);
+		hair_r.setRotationPoint(-5.0F, -7.0F, 0.0F);
+		head.addChild(hair_r);
+		hair_r.cubeList.add(new ModelBox(hair_r, 98, 24, -3.4F, 0.0F, -2.3F, 6, 8, 6, 0.0F, false));
+		hair_r.cubeList.add(new ModelBox(hair_r, 92, 65, -3.4F, 8.0F, -2.3F, 6, 1, 6, 0.0F, false));
+		setRotationAngle(hair_r, 0.0F, 0.479F, 0.0F);
+
+		rightArm = new ModelRenderer(this);
+		rightArm.setRotationPoint(-4.0F, -10.0F, 1.0F);
+		body1.addChild(rightArm);
+		rightArm.cubeList.add(new ModelBox(rightArm, 16, 110, -3.0F, -2.0F, -2.0F, 3, 12, 4, 0.0F, false));
+		rightArm.cubeList.add(new ModelBox(rightArm, 104, 0, -4.0F, 10.0F, -3.0F, 5, 8, 6, 0.0F, false));
+
+		leftArm = new ModelRenderer(this);
+		leftArm.setRotationPoint(4.0F, -10.0F, 1.0F);
+		body1.addChild(leftArm);
+		leftArm.cubeList.add(new ModelBox(leftArm, 16, 110, 0.0F, -2.0F, -2.0F, 3, 12, 4, 0.0F, true));
+		leftArm.cubeList.add(new ModelBox(leftArm, 104, 0, -1.0F, 10.0F, -3.0F, 5, 8, 6, 0.0F, true));
 	}
 
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		if(!((EntitySandy) entity).isBuried())
+		if(!((EntitySandy) entity).isBuried()) {
 			body1.render(f5);
+			body2.render(f5);
+		}
 	}
 
 	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
@@ -148,10 +137,10 @@ public class ModelSandy extends ModelBase {
 		this.head.rotateAngleY = netHeadYaw * 0.003F;
 		this.head.rotateAngleX = headPitch * 0.002F;
 																		//speed 			//distance
-		this.hairLeft.rotateAngleX = MathHelper.cos(ageInTicks * 0.05F * (float) Math.PI) * 0.005F;
-		this.hairLeft.rotateAngleZ = MathHelper.cos(ageInTicks * 0.05F * (float) Math.PI) * 0.025F;
-		this.hairRight.rotateAngleX = this.hairLeft.rotateAngleX;
-		this.hairRight.rotateAngleZ = this.hairLeft.rotateAngleZ;
+		this.hair_l.rotateAngleX = MathHelper.cos(ageInTicks * 0.05F * (float) Math.PI) * 0.005F;
+		this.hair_l.rotateAngleZ = MathHelper.cos(ageInTicks * 0.05F * (float) Math.PI) * 0.025F;
+		this.hair_r.rotateAngleX = this.hair_l.rotateAngleX;
+		this.hair_r.rotateAngleZ = this.hair_l.rotateAngleZ;
 
 		this.body4.rotateAngleX = (float)Math.PI / 3.25F - MathHelper.cos(ageInTicks * 0.05F * (float) Math.PI) * 0.025F;
 

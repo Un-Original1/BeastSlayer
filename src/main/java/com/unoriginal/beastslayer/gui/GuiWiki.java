@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer.gui;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.init.ModPotions;
@@ -19,6 +20,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiWiki extends GuiScreen {
@@ -41,10 +45,14 @@ public class GuiWiki extends GuiScreen {
     private CreaturePageButton pageButton1;
     private CreaturePageButton pageButton2;
     private CreaturePageButton pageButton3;
+    public static GuiWiki self;
+
+    private HintButton hintButton;
     private float time = 0F;
 
     public GuiWiki(ItemStack book) {
         this.book = book;
+        self = this;
     }
     /** -- is moving to left ++ is moving smth to the right side of the screen **/
     public void initGui()
@@ -84,16 +92,35 @@ public class GuiWiki extends GuiScreen {
         }
         for(int x = 0; x < 3; x++) {
             boolean xflag = x % 2 == 0;
-            int xpos = xflag ?  43 : 0;
-            if(x < 2 ) {
+            int xpos = xflag ? 43 : 0;
+            if (x < 2) {
                 this.pageButton3 = this.addButton(new CreaturePageButton(15 + x, 76 + i - xpos, 65 + (((x / 3) - 1) * 21), x + 12, x + 15, 2));
-            }
-            else {
+            } else {
                 this.pageButton3 = this.addButton(new CreaturePageButton(15 + x, 207 + i - xpos, 65 + (((x / 3) - 1) * 21), x + 12, x + 15, 2));
             }
         }
+        for(int y = 0; y < 46; y++) {
+          //0, ..., 14
+
+             for (int x = 0; x < 3; x++) { //0, 1, 2
+                 this.hintButton = this.addButton(new HintButton((x+70) + (y+1), (this.width - 208 + (54 * x)) / 2, 129, y, x, y + 3)); //hint = 61 and above
+                 //154 100
+             }
+         }
+     /*   }*/
         this.updateButtons();
     }
+
+    protected void drawGuiContainerForegroundLayer(int x, int y) {
+
+        for (GuiButton guibutton : this.buttonList) {
+            if (guibutton.isMouseOver()) {
+                guibutton.drawButtonForegroundLayer(x - this.width, y - this.height);
+                break;
+            }
+        }
+    }
+
     public void drawScreen(int mouse_x, int mouse_y, float p_ticks){
         this.drawDefaultBackground();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -122,7 +149,7 @@ public class GuiWiki extends GuiScreen {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, short1, short2);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();
-
+        this.drawGuiContainerForegroundLayer(mouse_x, mouse_y);
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
         GlStateManager.enableLighting();
@@ -131,23 +158,27 @@ public class GuiWiki extends GuiScreen {
 
     }
 
-    private void updateButtons()
-    {
+    private void updateButtons() {
         this.buttonNextPage.visible = this.currPage < this.bookTotalPages - 1;
         this.buttonPreviousPage.visible = this.currPage > 0;
         for (GuiButton button : this.buttonList) {
             if (button.id >= 3 && button.id < 11) {
                 button.enabled = this.currPage == this.pageButton1.getRenderOrder();
                 button.visible = this.currPage == this.pageButton1.getRenderOrder();
-            }
-            else if (button.id >= 11 && button.id < 15) {
+            } else if (button.id >= 11 && button.id < 15) {
                 button.enabled = this.currPage == this.pageButton2.getRenderOrder();
                 button.visible = this.currPage == this.pageButton2.getRenderOrder();
-            }
-            else if (button.id >= 15) {
+            } else if (button.id >= 15) {
                 button.enabled = this.currPage == this.pageButton3.getRenderOrder();
                 button.visible = this.currPage == this.pageButton3.getRenderOrder();
             }
+
+            if(button instanceof HintButton){
+                HintButton hintButton = (HintButton) button;
+                button.visible = this.currPage == hintButton.getRenderOrder();
+                button.enabled = this.currPage == hintButton.getRenderOrder();
+            }
+
         }
     }
 
@@ -173,7 +204,7 @@ public class GuiWiki extends GuiScreen {
                     --this.currPage;
                 }
             }
-            else if (button.id >= 3){
+            else if (button.id >= 3 && button.id < 70){
                 CreaturePageButton button1 = (CreaturePageButton)button;
                 this.currPage = button1.getPage();
             }
@@ -224,7 +255,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(4);
                 this.drawBiome(3);
-                this.drawEvenMoreStuff(12);
+               // this.drawEvenMoreStuff(12);
                 this.drawItemType(2, 56);
                 this.drawItemStack(new ItemStack(ModItems.RIFTED_PEARL), (this.width + 58 * 2) / 2,54);
                 ItemStack potionRift = new ItemStack(Items.POTIONITEM);
@@ -247,7 +278,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(1);
-                this.drawEvenMoreStuff(1);
+               // this.drawEvenMoreStuff(1);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -267,7 +298,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(1);
-                this.drawEvenMoreStuff(2);
+              //  this.drawEvenMoreStuff(2);
                 this.drawItemType(2, 56);
                 this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 58 * 2) / 2 ,54);
                 ItemStack potionIn1 = new ItemStack(Items.POTIONITEM);
@@ -290,7 +321,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(3);
                 this.drawElement(1);
                 this.drawBiome(3);
-                this.drawEvenMoreStuff(3);
+                //this.drawEvenMoreStuff(3);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -310,7 +341,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(3);
                 this.drawElement(1);
                 this.drawBiome(1);
-                this.drawEvenMoreStuff(6);
+                //this.drawEvenMoreStuff(6);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -330,7 +361,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(4);
-                this.drawEvenMoreStuff(8);
+             //   this.drawEvenMoreStuff(8);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -351,7 +382,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(1);
-                this.drawEvenMoreStuff(13);
+              //  this.drawEvenMoreStuff(13);
                 this.drawItemType(2, 56);
                 this.drawItemStack(new ItemStack(ModItems.DARK_GOOP), (this.width + 58 * 2) / 2 ,54);
                 ItemStack potionIn2 = new ItemStack(Items.POTIONITEM);
@@ -374,7 +405,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(3);
-                this.drawEvenMoreStuff(14);
+               // this.drawEvenMoreStuff(14);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -394,7 +425,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(0);
                 this.drawElement(3);
                 this.drawBiome(1);
-                this.drawEvenMoreStuff(7);
+                //this.drawEvenMoreStuff(7);
                 this.drawItemType(0, 0);
                 this.drawItemType(1, 56);
                 this.drawItemType(1, 114);
@@ -414,7 +445,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(3);
                 this.drawElement(0);
                 this.drawBiome(0);
-                this.drawEvenMoreStuff(0);
+                //this.drawEvenMoreStuff(0);
                 this.drawItemType(0, 0);
                 this.drawItemType(0, 56);
                 this.drawItemType(2, 114);
@@ -436,7 +467,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(0);
                 this.drawElement(0);
                 this.drawBiome(6);
-                this.drawEvenMoreStuff(11);
+              //  this.drawEvenMoreStuff(11);
                 this.drawItemType(1, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -456,7 +487,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(0);
                 this.drawBiome(4);
-                this.drawEvenMoreStuff(10);
+                //this.drawEvenMoreStuff(10);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -476,7 +507,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(0);
                 this.drawElement(2);
                 this.drawBiome(2);
-                this.drawEvenMoreStuff(4);
+                //this.drawEvenMoreStuff(4);
                 this.drawItemType(0, 0);
                 this.drawItemType(1, 56);
                 this.drawItemType(1, 114);
@@ -496,7 +527,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(2);
                 this.drawBiome(2);
-                this.drawEvenMoreStuff(5);
+             //   this.drawEvenMoreStuff(5);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -516,7 +547,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(1);
                 this.drawElement(5);
                 this.drawBiome(5);
-                this.drawEvenMoreStuff(9);
+              //  this.drawEvenMoreStuff(9);
                 this.drawItemType(0, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -933,5 +964,255 @@ public class GuiWiki extends GuiScreen {
                 drawModalRectWithCustomSizedTexture(this.x, this.y, i, j, 36, 16, 360, 160);
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    static class HintButton extends GuiButton {
+        private final Minecraft mc = Minecraft.getMinecraft();
+        private int creatureNum;
+        private int num2;
+        private int renderOrder;
+
+        protected HintButton(int buttonID, int x, int y, int creatureNum, int num2, int renderOrder) {
+            super(buttonID, x, y, 23, 13, "");
+            this.creatureNum = creatureNum;
+            this.num2 = num2;
+            this.renderOrder = renderOrder;
+        }
+        public int getRenderOrder(){
+            return this.renderOrder;
+        }
+
+
+        @Override
+        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+            if (this.visible) {
+
+                this.drawEvenMoreStuff(this.creatureNum);
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            }
+        }
+
+        @Override
+        public void drawButtonForegroundLayer(int x, int y) {
+            BeastSlayer.logger.debug("writing down");
+            BeastSlayer.logger.debug("page" + this.creatureNum);
+            List<String> list = new ArrayList<>();
+
+            list.add(I18n.format("bestiary.hint" + this.creatureNum + "_" + num2 + "top"));
+            list.add(I18n.format("bestiary.hint" + this.creatureNum + "_" + num2 + "bottom"));
+            //GuiUtils.drawHoveringText(list, x, y, 276, 180, 300, mc.fontRenderer);
+            GuiWiki.self.drawText(list, this.x - 130, this.y);
+           // this.drawToolTip(list,x,y);
+        }
+      /*  public void drawToolTip(List<String> stringList, int x, int y)
+        {
+            GuiUtils.drawHoveringText(stringList, x, y, width, height, 300, mc.fontRenderer);
+        }*/
+        private void drawEvenMoreStuff(int ctrNumIn){
+            this.mc.renderEngine.bindTexture(OTHER);
+            switch (ctrNumIn){
+                case 9: //sandy
+                default:
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 1, 1, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture( this.x, this.y,26, 1, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 51, 1, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 1: //zealot
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 1, 16, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 26, 16, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 51, 16, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 2: //ghost
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 1, 16, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y,26, 31, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y,51, 31, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 3: //giant
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 1, 46, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 26, 46, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 51, 46, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 12: //frostash
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y,1, 61, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y,26, 61, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 51, 61, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 13: //frost walker
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y,1, 76, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 26, 76, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 51, 76, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 4: //vessel
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 76, 1, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 101, 1, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 126, 1, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 8: //lil v
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 76, 16, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 101, 16, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 126, 16, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 5: //damcell
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 76, 31, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 101, 31, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 126, 31, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 14: //netherhound
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 76, 46, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 101, 46, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 126, 46, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 11: //b zombie
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 76, 61, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 101, 61, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 126, 61, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 10: //owlstack
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 76, 76, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y,101, 76, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 126, 76, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 0: // renderman
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 151, 1, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 176, 1, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y,  201, 1, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 6: //Nekros
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 151, 16, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 176, 16, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 201, 16, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+                case 7: //Bonepile
+                    switch (this.num2){
+                        case 0:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 151, 31, 23, 13, 576, 112);
+                            break;
+                        case 1:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 176, 31, 23, 13, 576, 112);
+                            break;
+                        case 2:
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 201, 31, 23, 13, 576, 112);
+                            break;
+                    }
+                    break;
+            }
+        }
+    }
+    public void drawText(List<String> list, int x, int y) {
+        this.drawHoveringText(list, x,y);
     }
 }

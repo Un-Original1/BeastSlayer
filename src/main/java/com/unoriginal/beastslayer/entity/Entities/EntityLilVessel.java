@@ -28,6 +28,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -231,7 +232,7 @@ public class EntityLilVessel extends EntityTameable implements IRangedAttackMob{
                 }
                 this.setAttackTarget(null);
             }
-            if(itemstack.getItem() == ModItems.ECTOPLASM && this.getHealth() < 18.0F){
+            if((itemstack.getItem() == ModItems.ECTOPLASM || OreDictionary.getOres("ectoplasm").contains(itemstack)) && this.getHealth() < this.getMaxHealth()){
                 if(!player.capabilities.isCreativeMode) {
                     itemstack.shrink(1);
                 }

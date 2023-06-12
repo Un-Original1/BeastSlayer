@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.init;
 
 import com.unoriginal.beastslayer.blocks.*;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -23,14 +24,21 @@ public class ModBlocks {
     public static Block LIGHT;
     public static Block STICK;
     public static Block THATCH;
+    public static Block CAULDRON;
+    public static Block WITCHCRAFT_TABLE;
 
     public static void init(){
         POKEY = new BlockSpikeTrap("pokey");
         SKEWER = new BlockSkewer("skewer");
         SPIKE = new BlockSpike("spiky");
         LIGHT = new BlockMovingLight("moving_light_source");
+
         STICK = new BlockRotatedPillarBase("stick_wall", Material.WOOD, SoundType.WOOD, 1.0F, true, 60);
         THATCH = new BlockRotatedPillarBase("Thatch", Material.GRASS, SoundType.PLANT, 0.8F, false, 60);
+        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+            CAULDRON = new BlockModCauldron("magic_cauldron");
+            WITCHCRAFT_TABLE = new BlockWitchcraftTable("witchcraft_table");
+        }
     }
     @SubscribeEvent
     public static void registerBlock(RegistryEvent.Register<Block> event) {
@@ -38,8 +46,13 @@ public class ModBlocks {
          event.getRegistry().registerAll(SKEWER);
          event.getRegistry().registerAll(SPIKE);
          event.getRegistry().registerAll(LIGHT);
-         event.getRegistry().registerAll(STICK);
-         event.getRegistry().registerAll(THATCH);
+
+            event.getRegistry().registerAll(STICK);
+            event.getRegistry().registerAll(THATCH);
+        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+            event.getRegistry().registerAll(CAULDRON);
+            event.getRegistry().registerAll(WITCHCRAFT_TABLE);
+        }
     }
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
@@ -49,6 +62,10 @@ public class ModBlocks {
         event.getRegistry().registerAll(new ItemBlock(LIGHT).setRegistryName(LIGHT.getRegistryName()));
         event.getRegistry().registerAll(new ItemBlock(STICK).setRegistryName(STICK.getRegistryName()));
         event.getRegistry().registerAll(new ItemBlock(THATCH).setRegistryName(THATCH.getRegistryName()));
+        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+            event.getRegistry().registerAll(new ItemBlock(CAULDRON).setRegistryName(CAULDRON.getRegistryName()));
+            event.getRegistry().registerAll(new ItemBlock(WITCHCRAFT_TABLE).setRegistryName(WITCHCRAFT_TABLE.getRegistryName()));
+        }
     }
 
     @SubscribeEvent
@@ -60,6 +77,10 @@ public class ModBlocks {
          registerRender(Item.getItemFromBlock(LIGHT));
          registerRender(Item.getItemFromBlock(STICK));
          registerRender(Item.getItemFromBlock(THATCH));
+        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+            registerRender(Item.getItemFromBlock(CAULDRON));
+            registerRender(Item.getItemFromBlock(WITCHCRAFT_TABLE));
+        }
     }
 
     public static void registerRender(Item item) {
