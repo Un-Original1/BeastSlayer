@@ -1,0 +1,85 @@
+buildscript {
+    repositories {
+        maven { url = "https://files.minecraftforge.net/maven" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+
+
+version = "2.0.test_1.01"
+group = "com.unoriginal.beastslayer" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "beastslayer"
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+
+minecraft {
+    mappings channel: 'snapshot', version: '20171003-1.12'
+
+    accessTransformer = file('src/main/resources/META-INF/beastslayer_at.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    //before 2855
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+      
+    // real examples
+    //compile 'com.mod-buildcraft:  buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
+    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
+    // except that these dependencies get remapped to your current MCP mappings
+    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+}
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "beastslayer",
+                "Specification-Vendor": "unoriginal",
+                "Specification-Version": "1",
+                "Implementation-Title": project.name,
+                "Implementation-Version": "1.0.0",
+                "Implementation-Vendor" :"unoriginal",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'FMLAT': 'beastslayer_at.cfg'
+        ])
+    }
+}
+
+sourceSets { main { output.resourcesDir = output.getClassesDirs().getAsPath() } }
