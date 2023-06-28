@@ -1,5 +1,7 @@
 package com.unoriginal.beastslayer.network;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -14,6 +16,7 @@ public class BeastSlayerPacketHandler {
         WRAPPER.registerMessage(MessageAttackER.Handler.class, MessageAttackER.class, id++, Side.SERVER);
         WRAPPER.registerMessage(MessageSpawnParticle.Handler.class, MessageSpawnParticle.class, id++ ,Side.CLIENT);
         WRAPPER.registerMessage(MessageSpawnParticle.Handler.class, MessageSpawnParticle.class, id++ ,Side.SERVER);
+        WRAPPER.registerMessage(MessageItemWitchcraft.MessageHandler.class, MessageItemWitchcraft.class, id++, Side.CLIENT);
       //  WRAPPER.registerMessage(MessageDismountRidingEntity.MessageHandler.class, MessageDismountRidingEntity.class, id++, Side.SERVER);
     }
 
@@ -26,5 +29,9 @@ public class BeastSlayerPacketHandler {
 
     public static void sendToAllAround(final IMessage message, NetworkRegistry.TargetPoint point){
         WRAPPER.sendToAllAround(message, point);
+    }
+
+    public static void SendTo(final IMessage message, EntityPlayerMP player){
+        WRAPPER.sendTo(message, player);
     }
 }

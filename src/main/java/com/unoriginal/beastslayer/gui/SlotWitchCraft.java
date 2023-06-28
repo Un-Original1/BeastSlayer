@@ -16,7 +16,12 @@ public class SlotWitchCraft extends Slot {
     private static final Set<Item> TAME_ITEMS = Sets.newHashSet(
             ModItems.CURSED_WOOD,
             ModItems.DARK_GOOP,
-            ModItems.DUST);
+            ModItems.DUST,
+            ModItems.WISP_BOTTLE,
+            ModItems.BROKEN_TALISMAN,
+            ModItems.TABLET,
+            ModItems.CLOTH
+    );
 
     public SlotWitchCraft(IInventory p_i1824_1_, int p_i1824_2_, int p_i1824_3_, int p_i1824_4_) {
         super(p_i1824_1_, p_i1824_2_, p_i1824_3_, p_i1824_4_);
@@ -24,6 +29,6 @@ public class SlotWitchCraft extends Slot {
     //basically just for item classification
     @Override
     public boolean isItemValid(@Nullable ItemStack stack) {
-        return stack != null && TAME_ITEMS.contains(stack);
+        return stack == null || TAME_ITEMS.contains(stack.getItem());
     }
 }

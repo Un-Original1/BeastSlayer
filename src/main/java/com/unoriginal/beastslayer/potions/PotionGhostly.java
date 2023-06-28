@@ -9,7 +9,7 @@ public class PotionGhostly extends PotionBase{
     public PotionGhostly(boolean isBadEffectIn, int liquidColorIn) {
         super(isBadEffectIn, liquidColorIn);
         setPotionName("potion.ghostly");
-        setIconIndex(1,1);
+        setIconIndex(2,0);
     }
     @Override
     public boolean isReady(int duration, int amplifier) {

@@ -996,8 +996,6 @@ public class GuiWiki extends GuiScreen {
 
         @Override
         public void drawButtonForegroundLayer(int x, int y) {
-            BeastSlayer.logger.debug("writing down");
-            BeastSlayer.logger.debug("page" + this.creatureNum);
             List<String> list = new ArrayList<>();
 
             list.add(I18n.format("bestiary.hint" + this.creatureNum + "_" + num2 + "top"));

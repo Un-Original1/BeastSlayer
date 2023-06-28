@@ -19,7 +19,7 @@ public class ABGuiHandler implements IGuiHandler {
             BlockPos pos = new BlockPos(x, y, z);
             Block block =world.getBlockState( pos).getBlock();
             if(block == ModBlocks.WITCHCRAFT_TABLE){
-                return new ContainerWitchcraft(player.inventory, new InventoryWitchcraft("witchcraft_table"), player);
+                return new ContainerWitchcraft(player.inventory, new InventoryWitchcraft("witchcraft_table", pos), new InventoryWitchcraftResult("witchcraft_table", pos), player, pos);
             }
         }
         return null;
@@ -32,7 +32,7 @@ public class ABGuiHandler implements IGuiHandler {
             BlockPos pos = new BlockPos(x, y, z);
             Block block = world.getBlockState(pos).getBlock();
             if(block == ModBlocks.WITCHCRAFT_TABLE){
-                return new GuiWitchcraft(new ContainerWitchcraft(player.inventory, new InventoryWitchcraft("witchcraft_table"), player), player.inventory);
+                return new GuiWitchcraft(new ContainerWitchcraft(player.inventory, new InventoryWitchcraft("witchcraft_table", pos), new InventoryWitchcraftResult("witchcraft_table", pos), player, pos), player.inventory);
             }
         }
         return null;

@@ -52,5 +52,5 @@ public class EntityFireElemental extends EntityMob {
     {
         return 15728880;
     }
-    //attacks: 	sxqfk, vpdvk, sxvk, jhw ryhu khuh!, vxpprqv, iodph vkrw, olih vwhdo, phwhru udlq
+    //  punch, smash, push, get over here!, summons, flame shot, life steal, meteor rain
 }

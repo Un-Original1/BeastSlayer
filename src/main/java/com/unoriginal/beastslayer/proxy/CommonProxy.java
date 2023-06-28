@@ -21,6 +21,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import paulscode.sound.SoundSystem;
+
+import java.lang.reflect.Field;
 
 @Mod.EventBusSubscriber
 public class CommonProxy
@@ -31,7 +34,7 @@ public class CommonProxy
         ModBlocks.init();
         ModEntities.init();
         ModItems.init();
-        OreDictionary.registerOre("ectoplasm", ModItems.ECTOPLASM);
+
         MinecraftForge.EVENT_BUS.register(new ModEvents());
         GameRegistry.registerWorldGenerator(new ModWorldGen(), 0);
         GameRegistry.registerTileEntity(TileEntityMovingLight.class, D_LIGHT);
@@ -53,6 +56,7 @@ public class CommonProxy
     public void init(FMLInitializationEvent e) {
         ModParticles.init();
         ConfigManager.sync(BeastSlayer.MODID, Config.Type.INSTANCE);
+        OreDictionary.registerOre("ectoplasm", ModItems.ECTOPLASM);
         NetworkRegistry.INSTANCE.registerGuiHandler(BeastSlayer.instance, new ABGuiHandler());
     }
    public void postInit(FMLPostInitializationEvent e) {

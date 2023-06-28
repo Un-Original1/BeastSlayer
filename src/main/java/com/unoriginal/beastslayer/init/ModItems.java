@@ -51,6 +51,11 @@ public class ModItems {
     public static Item WISP_BOTTLE;
     public static Item WINDFORCE_DART;
     public static Item WINDFORCE;
+    public static Item BROKEN_TALISMAN;
+    public static Item TABLET;
+    public static Item CLOTH;
+
+    public static Item CONCOCTION;
 
     public static Item KUNAI;
     public static Item DARK_GOOP;
@@ -75,6 +80,7 @@ public class ModItems {
         MINER_HELMET = new MinerHelmet("miner_helmet", ItemArmor.ArmorMaterial.IRON, 0 , EntityEquipmentSlot.HEAD);
         PORTABLE_WIKI = new ItemBestiary("bestiary");
         RIFTED_PEARL = new ItemRiftedPearl("rifted_pearl");
+
         CURSED_WOOD = new ItemBase("cursed_wood");
         SPEAR = new ItemSpear("spear");
         STAFF = new ItemStaff("tribe_staff");
@@ -85,6 +91,12 @@ public class ModItems {
         DARK_GOOP = new ItemBase("dark_goop");
         WINDFORCE_DART = new ItemBase("windforce_dart");
         WINDFORCE = new ItemWindforce("windforce");
+        BROKEN_TALISMAN = new ItemBase("broken_talisman");
+        TABLET = new ItemBase("ancient_tablet");
+        CLOTH = new ItemBase("cloth");
+
+        CONCOCTION = new ItemConcoction("concoction");
+
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             SCALE_ARMOR = new ScaleArmor("scale_armor", ModItems.DESERT_ROBES, 1, EntityEquipmentSlot.CHEST);
             SCALE_HOOD = new ScaleArmor("scale_hood", ModItems.DESERT_ROBES, 0, EntityEquipmentSlot.HEAD);
@@ -121,6 +133,12 @@ public class ModItems {
         event.getRegistry().registerAll(DARK_GOOP);
         event.getRegistry().registerAll(WINDFORCE_DART);
         event.getRegistry().registerAll(WINDFORCE);
+        event.getRegistry().registerAll(BROKEN_TALISMAN);
+        event.getRegistry().registerAll(TABLET);
+        event.getRegistry().registerAll(CLOTH);
+
+        event.getRegistry().registerAll(CONCOCTION);
+
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             event.getRegistry().registerAll(SCALE_ARMOR);
             event.getRegistry().registerAll(SCALE_HOOD);
@@ -156,6 +174,12 @@ public class ModItems {
         registerRender(DARK_GOOP);
         registerRender(WINDFORCE_DART);
         registerRender(WINDFORCE);
+        registerRender(BROKEN_TALISMAN);
+        registerRender(TABLET);
+        registerRender(CLOTH);
+
+        registerRender(CONCOCTION);
+
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             registerRender(SCALE_ARMOR);
             registerRender(SCALE_HOOD);

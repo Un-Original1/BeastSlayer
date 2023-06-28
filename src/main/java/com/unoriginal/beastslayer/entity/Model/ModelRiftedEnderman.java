@@ -273,13 +273,13 @@ public class ModelRiftedEnderman extends ModelBase {
 				}*/
 				this.bipedBody.rotateAngleX= -(47.069F * MathHelper.sin(0.3177F * real_i + 0.1658F) - 11.4133F) *  (float) Math.PI / 180F;
 				this.bipedHead.rotateAngleX= -(-0.7291666F * real_i * real_i + 14.5833F * real_i) * (float) Math.PI / 180F;
-				this.bipedRightArm.rotateAngleX= -(float) (-0.015F * Math.pow(real_i, 4) + 0.8643F * Math.pow(real_i, 3) -17.0598F * Math.pow(real_i, 2) + 115.8845 * real_i - 1.528) *  (float) Math.PI / 180F;
+				this.bipedRightArm.rotateAngleX= -(float) (-0.015F * Math.pow(real_i, 4) + 0.8643F * Math.pow(real_i, 3) -17.0598F * Math.pow(real_i, 2) + 115.8845F * real_i - 1.528F) *  (float) Math.PI / 180F;
 				this.bipedLeftArm.rotateAngleX= this.bipedRightArm.rotateAngleX;
 
-				this.bipedRightArm.rotateAngleY= -(float) (-0.0021F * Math.pow(real_i, 4) + 0.0575F * Math.pow(real_i, 3) -0.3297 * Math.pow(real_i, 2) + 0.2586 * real_i + 0.1752) *  (float) Math.PI / 180F;
+				this.bipedRightArm.rotateAngleY= -(float) (-0.0021F * Math.pow(real_i, 4) + 0.0575F * Math.pow(real_i, 3) -0.3297F * Math.pow(real_i, 2) + 0.2586F * real_i + 0.1752F) *  (float) Math.PI / 180F;
 				this.bipedLeftArm.rotateAngleY = -this.bipedRightArm.rotateAngleY;
 
-				this.bipedRightArm.rotateAngleZ= -(float) (-0.00021F * Math.pow(real_i, 4) + 0.03981F * Math.pow(real_i, 3) -1.1393 * Math.pow(real_i, 2) + 8.6089 *real_i - 0.1919) *  (float) Math.PI / 180F;
+				this.bipedRightArm.rotateAngleZ= -(float) (-0.00021F * Math.pow(real_i, 4) + 0.03981F * Math.pow(real_i, 3) -1.1393F * Math.pow(real_i, 2) + 8.6089F *real_i - 0.1919F) *  (float) Math.PI / 180F;
 				this.bipedLeftArm.rotateAngleZ = -this.bipedRightArm.rotateAngleZ;
 			}
 		}
