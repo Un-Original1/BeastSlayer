@@ -2,19 +2,25 @@ package com.unoriginal.beastslayer.worldGen;
 
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import net.minecraft.block.Block;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ModWorldGen implements IWorldGenerator {
     public static final JungleVillageWorldGen jungle_t = new JungleVillageWorldGen();
+    private static final List<Biome> JUNGLES = Arrays.asList(Biomes.JUNGLE, Biomes.JUNGLE_HILLS, Biomes.MUTATED_JUNGLE);
+
     @Override
     public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
             int blockX = chunkX * 16;
@@ -38,11 +44,11 @@ public class ModWorldGen implements IWorldGenerator {
     {
         int y = getGroundFromAbove(world, blockX, blockZ);
         BlockPos pos = new BlockPos(blockX, y, blockZ);
-       /* if (canStructureSpawn(blockX / 16, blockZ /16, world, 1)) {
-            if (pos.getY() > 31) {
+        if (canStructureSpawn(blockX / 16, blockZ /16, world, 1)) {
+            if (pos.getY() > 31 && JUNGLES.contains(world.getBiome(pos))) {
                 jungle_t.generate(world, rand, pos);
             }
-        }*/
+        }
         if (canStructureSpawn(blockX / 16, blockZ /16, world, BeastSlayerConfig.CircusSpawnChance))
         {
             WorldGenerator structure = new CircusWorldGen();

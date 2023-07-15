@@ -148,11 +148,13 @@ public class EntityWindforceDart extends EntityProjectileGeneric {
             rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile(), 4.0F);
             if(this.targetmax < 7) {
                 EntityLivingBase target = this.getTarget();
-                EntityLivingBase base = this.setRandTarget(false);
-                EntityWindforceDart dart = new EntityWindforceDart(world, this.getOwner(), base, this.targetmax + 1);
-                Vec3d vec3d = this.getLookVec();
-                dart.setPosition(target.posX + vec3d.x * 1.4D,target.posY + vec3d.y + target.getEyeHeight(), target.posZ + vec3d.z * 1.4D);
-                this.world.spawnEntity(dart);
+                EntityLivingBase newTarget = this.setRandTarget(false);
+                if(target != null) {
+                    EntityWindforceDart dart = new EntityWindforceDart(world, this.getOwner(), newTarget, this.targetmax + 1);
+                    Vec3d vec3d = this.getLookVec();
+                    dart.setPosition(target.posX + vec3d.x * 1.4D, target.posY + vec3d.y + target.getEyeHeight(), target.posZ + vec3d.z * 1.4D);
+                    this.world.spawnEntity(dart);
+                }
 
             }
         } else {

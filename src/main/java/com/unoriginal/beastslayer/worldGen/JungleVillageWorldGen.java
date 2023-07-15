@@ -34,7 +34,7 @@ public class JungleVillageWorldGen extends WorldGenerator {
         this.spacing = 40;
         boolean canSpawn = canSpawnStructureAtCoords(world, position.getX() >> 4, position.getZ() >> 4);
         if (new Random().nextInt(9) == 0) {
-            int new_size = 32;
+            int new_size = 64;
              getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
         }
         return canSpawn;
@@ -96,14 +96,14 @@ public class JungleVillageWorldGen extends WorldGenerator {
             Rotation rotation = Rotation.values()[rand.nextInt(Rotation.values().length)];
             BlockPos pos = new BlockPos(x * 16 + 8, getGroundFromAbove(worldIn, x * 16 + 8,z * 16 + 8), z * 16 + 8);
             List<JungleVillagePieces.JungleVillageTemplate> houses = Lists.newLinkedList();
-            JungleVillagePieces.generateVillage(worldIn.getSaveHandler().getStructureTemplateManager(), pos, rotation, houses, rand, worldIn, this.components);
+            JungleVillagePieces.generateVillage(worldIn.getSaveHandler().getStructureTemplateManager(), pos, rotation, rand, this.components);
 
             this.components.addAll(houses);
             this.updateBoundingBox();
             this.valid = true;
         }
 
-        public void generateStructure(World worldIn, Random rand, StructureBoundingBox structurebb)
+      /*  public void generateStructure(World worldIn, Random rand, StructureBoundingBox structurebb)
         {
             super.generateStructure(worldIn, rand, structurebb);
             int i = this.boundingBox.minY;
@@ -144,7 +144,7 @@ public class JungleVillageWorldGen extends WorldGenerator {
                     }
                 }
             }
-        }
+        }*/
         public static int getGroundFromAbove(World world, int x, int z)
         {
             int y = 255;
@@ -174,4 +174,5 @@ public class JungleVillageWorldGen extends WorldGenerator {
             this.valid = tagCompound.getBoolean("Valid");
         }
     }
+
 }
