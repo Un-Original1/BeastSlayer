@@ -6,7 +6,8 @@ import com.unoriginal.beastslayer.entity.Entities.EntityHunter;
 import com.unoriginal.beastslayer.entity.Entities.EntityPriest;
 import com.unoriginal.beastslayer.entity.Entities.EntityTank;
 import com.unoriginal.beastslayer.entity.Entities.EntityTribeWarrior;
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +24,8 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -47,7 +50,7 @@ public class JungleVillagePieces {
     */
 
             //all of above -3!
-
+    //TODO:  fix overlapping, smoothing terrain?
     public static void generateVillage(TemplateManager manager, BlockPos pos, Rotation rot, Random rand, List<StructureComponent> components){
         BRIDGE_LOG_END_GENERATOR.init();
         SLAB_END_GENERATOR.init();
@@ -57,9 +60,6 @@ public class JungleVillagePieces {
         int i = rand.nextInt(12) + 1;
         String s = "house_" + i;
         JungleVillageTemplate villageTemplate = JungleVillagePieces.addHelper(components, new JungleVillageTemplate(manager, s, pos, rot));
-        //init generators
-        //add new base
-        //recursive children
         if(JungleVillagePieces.getBridgesbyInt(i) != null && !JungleVillagePieces.getBridgesbyInt(i).isEmpty()) {
             for (Tuple<Rotation, BlockPos> tuple : JungleVillagePieces.getBridgesbyInt(i)) {
 
@@ -101,17 +101,94 @@ public class JungleVillagePieces {
             return this.templatePosition;
         }
 
-
-
         public Template getTemplate(){
             return this.template;
         }
+
         public PlacementSettings getPlacementSettings(){
             return this.placeSettings;
         }
 
+        public Rotation getRotation() {
+            return rotation;
+        }
+
         public StructureBoundingBox getBoundingBox(){
             return this.boundingBox;
+        }
+
+
+        public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
+            super.addComponentParts(worldIn, randomIn, structureBoundingBoxIn);
+            int extrax = 0;
+            int extraz = 0;
+            switch (this.rotation){
+                case NONE:
+                    extraz = 1;
+                    break;
+                case CLOCKWISE_90:
+                    extraz = 1;
+                    extrax = 1;
+                    break;
+                case CLOCKWISE_180:
+                    extrax = 1; //this is somehow right?
+                    break;
+                case COUNTERCLOCKWISE_90:
+                    //this one also works
+                    break;
+            }
+
+            if(this.templateName.contains("house")) {
+
+                for (int i = 0; i < this.template.getSize().getX(); i++) {
+                    for (int j = 0; j < this.template.getSize().getZ(); j++) {
+                        for (int k = 0; k < 30; k++) {
+
+                            boolean b = this.getRotation() == Rotation.CLOCKWISE_90 || this.getRotation() == Rotation.COUNTERCLOCKWISE_90;
+                            BlockPos pos = new BlockPos((b ? j : i) + extrax, -1-k, (b ? i : j) + extraz);
+                            if(worldIn.isAirBlock(pos) || worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER) {
+                                this.replaceAirAndLiquidDownwards(worldIn, Blocks.GRASS.getDefaultState(),(b ? j : i) + extrax, -1 - k, (b ? i : j) + extraz, structureBoundingBoxIn);
+                            }
+                        }
+                    }
+                }
+            }
+            else if(this.templateName.contains("cross_pillar")) {
+
+                for (int i = 0; i < this.template.getSize().getX(); i++) {
+                    for (int j = 0; j < this.template.getSize().getZ(); j++) {
+                        for (int k = 0; k < 30; k++) {
+
+                            boolean b = this.getRotation() == Rotation.CLOCKWISE_90 || this.getRotation() == Rotation.COUNTERCLOCKWISE_90;
+                            BlockPos pos = new BlockPos((b ? j : i) + extrax, -1-k, (b ? i : j) + extraz);
+                            if(worldIn.isAirBlock(pos) || worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER) {
+                                this.replaceAirAndLiquidDownwards(worldIn, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),(b ? j : i) + extrax, -1 - k, (b ? i : j) + extraz, structureBoundingBoxIn);
+                            }
+                        }
+                    }
+                }
+            }
+            else if(this.templateName.contains("bridge")) {
+
+                for (int i = 0; i < this.template.getSize().getX(); i++) {
+                    for (int j = 0; j < this.template.getSize().getZ(); j++) {
+                        for (int k = 0; k < 4; k++) {
+                            boolean b = this.getRotation() == Rotation.CLOCKWISE_90 || this.getRotation() == Rotation.COUNTERCLOCKWISE_90;
+                            this.clearCurrentPositionBlocksUpwards(worldIn,(b ? j : i) + extrax, this.template.getSize().getY() + k, (b ? i : j) + extraz, structureBoundingBoxIn );
+                        }
+                    }
+                }
+            }
+            else if(this.templateName.contains("cross") && this.templateName.contains("log")){
+                for (int k = 0; k < 30; k++) {
+
+                    BlockPos pos = new BlockPos((1) + extrax, -1-k, (1) + extraz);
+                    if(worldIn.isAirBlock(pos) ||  worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER) {
+                        this.replaceAirAndLiquidDownwards(worldIn, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),1 + extrax, -1 - k, 1 + extraz, structureBoundingBoxIn);
+                    }
+                }
+            }
+            return true;
         }
 
         private void loadTemplate(TemplateManager manager)
@@ -211,6 +288,33 @@ public class JungleVillagePieces {
                     break;
             }
         }
+
+        public boolean isCollidingExcParent(TemplateManager manager, JungleVillageTemplate parent, List<StructureComponent> structures) {
+            List<StructureComponent> collisions = findAllIntersecting(structures);
+
+            boolean foundCollision = false;
+
+            for (StructureComponent collision : collisions) {
+                if (((JungleVillageTemplate) collision).getId() != parent.getId()) {
+                    foundCollision = true;
+                    break;
+                }
+            }
+
+            return foundCollision;
+        }
+
+        public List<StructureComponent> findAllIntersecting(List<StructureComponent> listIn) {
+            List<StructureComponent> list = new ArrayList<>();
+            for (StructureComponent structurecomponent : listIn) {
+                StructureBoundingBox intersection = new StructureBoundingBox(this.boundingBox.minX + 1, this.boundingBox.minY + 1, this.boundingBox.minZ + 1, this.boundingBox.maxX - 1, this.boundingBox.maxY - 1, this.boundingBox.maxZ - 1);
+                if (structurecomponent.getBoundingBox() != null && structurecomponent.getBoundingBox().intersectsWith(intersection)) {
+                    list.add(structurecomponent);
+                }
+            }
+
+            return list;
+        }
     }
 
     private static JungleVillageTemplate addPiece(TemplateManager manager, JungleVillageTemplate jungleVillageTemplate, BlockPos pos, String templateName, Rotation rotation)
@@ -229,7 +333,7 @@ public class JungleVillagePieces {
 
     private static boolean recursiveChildren(TemplateManager manager, IGenerator generator, int generation, JungleVillageTemplate cityTemplate, BlockPos pos, List<StructureComponent> components, Random random)
     {
-        if (generation <= 20) {
+        if (generation <= 2) {
             List<StructureComponent> list = Lists.newArrayList();
 
             if (generator.generate(manager, generation, cityTemplate, pos, list, random)) {
@@ -263,17 +367,7 @@ public class JungleVillagePieces {
         boolean generate(TemplateManager p_191086_1_, int p_191086_2_, JungleVillageTemplate p_191086_3_, BlockPos p_191086_4_, List<StructureComponent> p_191086_5_, Random p_191086_6_);
     }
 
-    public static int getGroundFromAbove(World world, int x, int z) {
-        int y = 255;
-        boolean foundGround = false;
-        while (!foundGround && y-- >= 31) {
-            Block blockAt = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-            foundGround = blockAt == Blocks.GRASS || blockAt == Blocks.SAND || blockAt == Blocks.SNOW || blockAt == Blocks.SNOW_LAYER || blockAt == Blocks.MYCELIUM;
-        }
-        return y;
-    }
-
-//logs
+    //logs
 /*** hey! unoriginal here, the tuples are wrong... I rotated them all -90° to actually make this work **/
 
 //cc = x+1, 180 = z-1, 0 = z+1, c = x-1
@@ -334,6 +428,9 @@ public class JungleVillagePieces {
                 finallist = HOUSE_12_BRIDGES;
                 break;
         }
+        if (finallist != null && finallist.size() > 1) {
+            Collections.shuffle(finallist);
+        }
         return finallist;
     }
 
@@ -369,6 +466,9 @@ public class JungleVillagePieces {
             case 12:
                 finallist = HOUSE_12_SLABS;
                 break;
+        }
+        if (finallist != null && finallist.size() > 1) {
+            Collections.shuffle(finallist);
         }
         return finallist;
     }
@@ -426,10 +526,6 @@ public class JungleVillagePieces {
             String s =  randLength == 0 ? "bridge_log" : "bridge_log_s";
             JungleVillageTemplate bridge_piece =  JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, jungleVillageTemplate, new BlockPos(0, 0, 0), s, rotation)); //first log piece is added
            // bridge_piece.setComponentType(-1);
-          /*  if (!JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.BRIDGE_LOG_END_GENERATOR, generation, bridge_piece, new BlockPos(-3,  1, -11), structureComponents, random))
-            {
-                return false;
-            }*/
             int selector = random.nextInt(4);
             boolean b = randLength == 0;
             bridge_piece = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece,new BlockPos(0,0, b ? 12 : 8), this.getBridgeCorner(selector), rotation)); //the z offset here is rotated for all instances so no need to create several offsets
@@ -439,11 +535,11 @@ public class JungleVillagePieces {
                 for (Tuple<Rotation, BlockPos> tuple : getConnectorById(selector)) {
 
                     JungleVillageTemplate structureendcitypieces$citytemplate1 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, tuple.getSecond(), "log_end", rotation.add(tuple.getFirst())));
-                    return JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.BRIDGE_LOG_END_GENERATOR, generation + 1, structureendcitypieces$citytemplate1, null, structureComponents, random);
+                    JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.BRIDGE_LOG_END_GENERATOR, generation, structureendcitypieces$citytemplate1, null, structureComponents, random);
 
                 }
             }
-            return true;
+            return generation < 3;
         }
 
         public String getBridgeCorner(int i){
@@ -483,6 +579,9 @@ public class JungleVillagePieces {
                     break;
 
             }
+            if (finallist != null && finallist.size() > 1) {
+                Collections.shuffle(finallist);
+            }
             return finallist;
         }
     };
@@ -499,23 +598,20 @@ public class JungleVillagePieces {
         public boolean generate(TemplateManager manager, int generation, JungleVillageTemplate jungleVillageTemplate, BlockPos pos, List<StructureComponent> structureComponents, Random random) {
             Rotation rotation = jungleVillageTemplate.getPlacementSettings().getRotation();
             int randLenght = random.nextInt(3);
+            int i = 0;
             String s =  randLenght == 0 ? "bridge_slab_top" : "bridge_slab_top_s";
             JungleVillageTemplate bridge_piece =  JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, jungleVillageTemplate, new BlockPos(0, 0, 0), s, rotation));
             bridge_piece.setComponentType(-1);
-           /* if (!JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.HOUSE_GENERATOR, generation + 1, bridge_piece, new BlockPos(-3, j + 1, -11), structureComponents, random))
-            {
-                return false;
-            }*/
-            bridge_piece = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece ,new BlockPos(0,0,randLenght == 0 ? 12:8), "cross_slab", rotation));
+            bridge_piece = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece ,new BlockPos(0,0,randLenght == 0 ? 12:8), "cross_pillar", rotation));
             for (Tuple<Rotation, BlockPos> tuple : SLAB_CONNECTIONS){
-                if(random.nextBoolean()){
+                if(random.nextBoolean() || i == 0){
                     JungleVillageTemplate crossBridge = JungleVillagePieces.addHelper(structureComponents,JungleVillagePieces.addPiece(manager, bridge_piece, tuple.getSecond(), "cross_slab", rotation.add(tuple.getFirst())));
-                    return JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.SLAB_END_GENERATOR, generation + 1, crossBridge, null, structureComponents, random);
+                    JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.SLAB_END_GENERATOR, generation, crossBridge, null, structureComponents, random);
+                    i++;
                 }
             }
-
             bridge_piece.setComponentType(-1);
-            return true;
+            return generation < 3 && i > 0;
         }
     };
 
@@ -558,29 +654,33 @@ public class JungleVillagePieces {
 
             if(getBridgecByInt(selector) != null && !getBridgecByInt(selector).isEmpty()) {
                 for (Tuple<Rotation, BlockPos> tuple : getBridgecByInt(selector)) {
-                    BeastSlayer.logger.debug(house, tuple.getSecond(), pos);
+                   // BeastSlayer.logger.debug(house, tuple.getSecond(), pos);
 
                     JungleVillageTemplate structureendcitypieces$citytemplate1 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, tuple.getSecond(), house, rotation.add(tuple.getFirst())));
-                    if(JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)).isEmpty()) {
-                        for (Tuple<Rotation, BlockPos> tuple1 : JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house))) {
+                    if(generation < 3) {
+                        if (JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)).isEmpty()) {
+                            for (Tuple<Rotation, BlockPos> tuple1 : JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house))) {
 
-                            JungleVillageTemplate structureendcitypieces$citytemplate2 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, structureendcitypieces$citytemplate1, tuple1.getSecond()/*.add(new BlockPos(0,0,-1))*/, "log_end", rotation.add(tuple.getFirst()).add(tuple1.getFirst()).add(Rotation.COUNTERCLOCKWISE_90)));
-                            JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.BRIDGE_GENERATOR, generation + 1, structureendcitypieces$citytemplate2, null, structureComponents, random);
+                                JungleVillageTemplate structureendcitypieces$citytemplate2 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, structureendcitypieces$citytemplate1, tuple1.getSecond()/*.add(new BlockPos(0,0,-1))*/, "log_end", rotation.add(tuple.getFirst()).add(tuple1.getFirst()).add(Rotation.COUNTERCLOCKWISE_90)));
+                                JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.BRIDGE_GENERATOR, generation + 1, structureendcitypieces$citytemplate2, null, structureComponents, random);
+                            }
                         }
-                    }
 
-                    if(JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house)).isEmpty()) {
-                        for (Tuple<Rotation, BlockPos> tuple2 : JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house))) {
+                        if (JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house)).isEmpty()) {
+                            for (Tuple<Rotation, BlockPos> tuple2 : JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house))) {
 
-                            JungleVillageTemplate structureendcitypieces$citytemplate2 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, structureendcitypieces$citytemplate1, tuple2.getSecond()/*.add(new BlockPos(0,0,-1))*/, "cross_slab", rotation.add(tuple.getFirst()).add(tuple2.getFirst()).add(Rotation.COUNTERCLOCKWISE_90)));
-                            JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.SLAB_GENERATOR, generation + 1, structureendcitypieces$citytemplate2, null, structureComponents, random);
+                                JungleVillageTemplate structureendcitypieces$citytemplate2 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, structureendcitypieces$citytemplate1, tuple2.getSecond()/*.add(new BlockPos(0,0,-1))*/, "cross_slab", rotation.add(tuple.getFirst()).add(tuple2.getFirst()).add(Rotation.COUNTERCLOCKWISE_90)));
+                                JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.SLAB_GENERATOR, generation + 1, structureendcitypieces$citytemplate2, null, structureComponents, random);
+                            }
                         }
                     }
                     break;
                 }
             }
-            JungleVillageTemplate end = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, new BlockPos(0,0, 7).add(addposition), "log_end", rotation));
-          //  end.setComponentType(-1);
+            if(generation < 3) {
+                JungleVillageTemplate end = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, new BlockPos(0, 0, 7).add(addposition), "log_end", rotation));
+                //  end.setComponentType(-1);
+            }
             return true;
         }
 
@@ -615,6 +715,9 @@ public class JungleVillagePieces {
                 case 8:
                     finallist = HOUSE_12_BRIDGEC;
                     break;
+            }
+            if (finallist != null && finallist.size() > 1) {
+                Collections.shuffle(finallist);
             }
             return finallist;
         }
@@ -659,12 +762,12 @@ public class JungleVillagePieces {
     };
 
     private static final List<Tuple<Rotation, BlockPos>> HOUSE_1_SLABC = Lists.newArrayList(new Tuple<>(Rotation.NONE, new BlockPos(-4, -7, 8)), new Tuple<>(Rotation.COUNTERCLOCKWISE_90, new BlockPos(-7,-15,16)));//none lowest
-    private static final List<Tuple<Rotation, BlockPos>> HOUSE_2_SLABC = Lists.newArrayList(new Tuple<>(Rotation.NONE, new BlockPos(-4, -15, 8)), new Tuple<>(Rotation.CLOCKWISE_90, new BlockPos(8,-15,8)), new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(7,-15,21)));
-    private static final List<Tuple<Rotation, BlockPos>> HOUSE_3_SLABC = Lists.newArrayList(new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(8,-7,23)));
-    private static final List<Tuple<Rotation, BlockPos>> HOUSE_4_SLABC = Lists.newArrayList(new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(6,-4,19)));
+    private static final List<Tuple<Rotation, BlockPos>> HOUSE_2_SLABC = Lists.newArrayList(new Tuple<>(Rotation.NONE, new BlockPos(-4, -15, 8)), new Tuple<>(Rotation.CLOCKWISE_90, new BlockPos(8,-15,8)), new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(6,-15,21)));//
+    private static final List<Tuple<Rotation, BlockPos>> HOUSE_3_SLABC = Lists.newArrayList(new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(7,-7,23))); //reduced by 1 to hopefully fix wrong offset
+    private static final List<Tuple<Rotation, BlockPos>> HOUSE_4_SLABC = Lists.newArrayList(new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(5,-4,19)));//
     private static final List<Tuple<Rotation, BlockPos>> HOUSE_9_SLABC = Lists.newArrayList(new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(11,-18,21)));
     private static final List<Tuple<Rotation, BlockPos>> HOUSE_10_SLABC = Lists.newArrayList(new Tuple<>(Rotation.COUNTERCLOCKWISE_90, new BlockPos(-4,-7,20)));
-    private static final List<Tuple<Rotation, BlockPos>> HOUSE_12_SLABC = Lists.newArrayList(new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(7,-9,19)));
+    private static final List<Tuple<Rotation, BlockPos>> HOUSE_12_SLABC = Lists.newArrayList(new Tuple<>(Rotation.CLOCKWISE_180, new BlockPos(6,-9,19)));//
 
 
     private static final JungleVillagePieces.IGenerator SLAB_END_GENERATOR = new IGenerator() {
@@ -693,26 +796,30 @@ public class JungleVillagePieces {
                     BeastSlayer.logger.debug(house, tuple.getSecond(), pos);
 
                     JungleVillageTemplate structureendcitypieces$citytemplate1 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, tuple.getSecond(), house, rotation.add(tuple.getFirst())));
-                    if(JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)).isEmpty()) {
-                        for (Tuple<Rotation, BlockPos> tuple1 : JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house))) {
+                    if(generation < 3) {
+                        if (JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)).isEmpty()) {
+                            for (Tuple<Rotation, BlockPos> tuple1 : JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house))) {
 
-                            JungleVillageTemplate structureendcitypieces$citytemplate2 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, structureendcitypieces$citytemplate1, tuple1.getSecond()/*.add(new BlockPos(0,0,-1))*/, "log_end", rotation.add(tuple.getFirst()).add(tuple1.getFirst()).add(Rotation.COUNTERCLOCKWISE_90)));
-                            JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.BRIDGE_GENERATOR, generation + 1, structureendcitypieces$citytemplate2, null, structureComponents, random);
+                                JungleVillageTemplate structureendcitypieces$citytemplate2 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, structureendcitypieces$citytemplate1, tuple1.getSecond()/*.add(new BlockPos(0,0,-1))*/, "log_end", rotation.add(tuple.getFirst()).add(tuple1.getFirst()).add(Rotation.COUNTERCLOCKWISE_90)));
+                                JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.BRIDGE_GENERATOR, generation + 1, structureendcitypieces$citytemplate2, null, structureComponents, random);
+                            }
                         }
-                    }
 
-                    if(JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house)).isEmpty()) {
-                        for (Tuple<Rotation, BlockPos> tuple2 : JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house))) {
+                        if (JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house)).isEmpty()) {
+                            for (Tuple<Rotation, BlockPos> tuple2 : JungleVillagePieces.getSlabsbyInt(houseStringtoInt(house))) {
 
-                            JungleVillageTemplate structureendcitypieces$citytemplate2 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, structureendcitypieces$citytemplate1, tuple2.getSecond()/*.add(new BlockPos(0,0,-1))*/, "cross_slab", rotation.add(tuple.getFirst()).add(tuple2.getFirst()).add(Rotation.COUNTERCLOCKWISE_90)));
-                            JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.SLAB_GENERATOR, generation + 1, structureendcitypieces$citytemplate2, null, structureComponents, random);
+                                JungleVillageTemplate structureendcitypieces$citytemplate2 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, structureendcitypieces$citytemplate1, tuple2.getSecond()/*.add(new BlockPos(0,0,-1))*/, "cross_slab", rotation.add(tuple.getFirst()).add(tuple2.getFirst()).add(Rotation.COUNTERCLOCKWISE_90)));
+                                JungleVillagePieces.recursiveChildren(manager, JungleVillagePieces.SLAB_GENERATOR, generation + 1, structureendcitypieces$citytemplate2, null, structureComponents, random);
+                            }
                         }
                     }
                     break;
                 }
             }
-            JungleVillageTemplate end = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, new BlockPos(0,0, 7).add(addposition), "cross_slab", rotation));
-            //  end.setComponentType(-1);
+            if(generation < 3) {
+                JungleVillageTemplate end = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, new BlockPos(0, 0, 7).add(addposition), "cross_slab", rotation));
+                //  end.setComponentType(-1);
+            }
             return true;
         }
 
@@ -741,6 +848,9 @@ public class JungleVillagePieces {
                 case 6:
                     finallist = HOUSE_12_SLABC;
                     break;
+            }
+            if (finallist != null && finallist.size() > 1) {
+                Collections.shuffle(finallist);
             }
             return finallist;
         }
