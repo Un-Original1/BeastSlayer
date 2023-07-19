@@ -6,6 +6,7 @@ import com.unoriginal.beastslayer.entity.Entities.EntityHunter;
 import com.unoriginal.beastslayer.entity.Entities.EntityPriest;
 import com.unoriginal.beastslayer.entity.Entities.EntityTank;
 import com.unoriginal.beastslayer.entity.Entities.EntityTribeWarrior;
+import com.unoriginal.beastslayer.init.ModBlocks;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
@@ -50,7 +51,7 @@ public class JungleVillagePieces {
     */
 
             //all of above -3!
-    //TODO:  fix overlapping, smoothing terrain?
+    //TODO:  fix worldgen lag, smoothing terrain?
     public static void generateVillage(TemplateManager manager, BlockPos pos, Rotation rot, Random rand, List<StructureComponent> components){
         BRIDGE_LOG_END_GENERATOR.init();
         SLAB_END_GENERATOR.init();
@@ -59,6 +60,7 @@ public class JungleVillagePieces {
         SLAB_GENERATOR.init();
         int i = rand.nextInt(12) + 1;
         String s = "house_" + i;
+      //  BeastSlayer.logger.debug(pos);
         JungleVillageTemplate villageTemplate = JungleVillagePieces.addHelper(components, new JungleVillageTemplate(manager, s, pos, rot));
         if(JungleVillagePieces.getBridgesbyInt(i) != null && !JungleVillagePieces.getBridgesbyInt(i).isEmpty()) {
             for (Tuple<Rotation, BlockPos> tuple : JungleVillagePieces.getBridgesbyInt(i)) {
@@ -146,7 +148,7 @@ public class JungleVillagePieces {
 
                             boolean b = this.getRotation() == Rotation.CLOCKWISE_90 || this.getRotation() == Rotation.COUNTERCLOCKWISE_90;
                             BlockPos pos = new BlockPos((b ? j : i) + extrax, -1-k, (b ? i : j) + extraz);
-                            if(worldIn.isAirBlock(pos) || worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER) {
+                            if(worldIn.isAirBlock(pos) || worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER  || worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)) {
                                 this.replaceAirAndLiquidDownwards(worldIn, Blocks.GRASS.getDefaultState(),(b ? j : i) + extrax, -1 - k, (b ? i : j) + extraz, structureBoundingBoxIn);
                             }
                         }
@@ -161,9 +163,19 @@ public class JungleVillagePieces {
 
                             boolean b = this.getRotation() == Rotation.CLOCKWISE_90 || this.getRotation() == Rotation.COUNTERCLOCKWISE_90;
                             BlockPos pos = new BlockPos((b ? j : i) + extrax, -1-k, (b ? i : j) + extraz);
-                            if(worldIn.isAirBlock(pos) || worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER) {
+                            if(worldIn.isAirBlock(pos) || worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER  || worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)) {
                                 this.replaceAirAndLiquidDownwards(worldIn, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),(b ? j : i) + extrax, -1 - k, (b ? i : j) + extraz, structureBoundingBoxIn);
                             }
+                        }
+                    }
+                }
+                for (int i = 0; i < this.template.getSize().getX(); i++) {
+                    for (int j = 0; j < this.template.getSize().getZ(); j++) {
+                        for (int k = 0; k < 4; k++) {
+                            boolean b = this.getRotation() == Rotation.CLOCKWISE_90 || this.getRotation() == Rotation.COUNTERCLOCKWISE_90;
+                            BlockPos pos = new BlockPos((b ? j : i) + extrax, this.template.getSize().getY() + k, (b ? i : j) + extraz);
+                            if(worldIn.getBlockState(pos).getBlock() != Blocks.WOODEN_SLAB || worldIn.getBlockState(pos).getBlock() != ModBlocks.THATCH || worldIn.getBlockState(pos).getBlock() != ModBlocks.STICK || worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos))
+                                this.clearCurrentPositionBlocksUpwards(worldIn,(b ? j : i) + extrax, this.template.getSize().getY() + k, (b ? i : j) + extraz, structureBoundingBoxIn );
                         }
                     }
                 }
@@ -174,6 +186,8 @@ public class JungleVillagePieces {
                     for (int j = 0; j < this.template.getSize().getZ(); j++) {
                         for (int k = 0; k < 4; k++) {
                             boolean b = this.getRotation() == Rotation.CLOCKWISE_90 || this.getRotation() == Rotation.COUNTERCLOCKWISE_90;
+                            BlockPos pos = new BlockPos((b ? j : i) + extrax, this.template.getSize().getY() + k, (b ? i : j) + extraz);
+                            if(worldIn.getBlockState(pos).getBlock() != Blocks.WOODEN_SLAB || worldIn.getBlockState(pos).getBlock() != ModBlocks.THATCH || worldIn.getBlockState(pos).getBlock() != ModBlocks.STICK || worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos))
                             this.clearCurrentPositionBlocksUpwards(worldIn,(b ? j : i) + extrax, this.template.getSize().getY() + k, (b ? i : j) + extraz, structureBoundingBoxIn );
                         }
                     }
@@ -183,8 +197,18 @@ public class JungleVillagePieces {
                 for (int k = 0; k < 30; k++) {
 
                     BlockPos pos = new BlockPos((1) + extrax, -1-k, (1) + extraz);
-                    if(worldIn.isAirBlock(pos) ||  worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER) {
+                    if(worldIn.isAirBlock(pos) ||  worldIn.getBlockState(pos).getBlock() == Blocks.FLOWING_WATER  || worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)) {
                         this.replaceAirAndLiquidDownwards(worldIn, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),1 + extrax, -1 - k, 1 + extraz, structureBoundingBoxIn);
+                    }
+                }
+                for (int i = 0; i < this.template.getSize().getX(); i++) {
+                    for (int j = 0; j < this.template.getSize().getZ(); j++) {
+                        for (int k = 0; k < 4; k++) {
+                            boolean b = this.getRotation() == Rotation.CLOCKWISE_90 || this.getRotation() == Rotation.COUNTERCLOCKWISE_90;
+                            BlockPos pos = new BlockPos((b ? j : i) + extrax, this.template.getSize().getY() + k, (b ? i : j) + extraz);
+                            if(worldIn.getBlockState(pos).getBlock() != Blocks.WOODEN_SLAB || worldIn.getBlockState(pos).getBlock() != ModBlocks.THATCH || worldIn.getBlockState(pos).getBlock() != ModBlocks.STICK || worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos))
+                                this.clearCurrentPositionBlocksUpwards(worldIn,(b ? j : i) + extrax, this.template.getSize().getY() + k, (b ? i : j) + extraz, structureBoundingBoxIn );
+                        }
                     }
                 }
             }
@@ -644,6 +668,9 @@ public class JungleVillagePieces {
 
             String s = randLength == 0 ? "bridge_log" : "bridge_log_s";
             JungleVillageTemplate bridge_piece =  JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, jungleVillageTemplate, new BlockPos(0, 0, 0), s, rotation));
+            if(bridge_piece.isCollidingExcParent(manager, jungleVillageTemplate, structureComponents)){
+                return false;
+            }
             bridge_piece.setComponentType(-1);
 
             int selector = random.nextInt(9);
@@ -657,6 +684,9 @@ public class JungleVillagePieces {
                    // BeastSlayer.logger.debug(house, tuple.getSecond(), pos);
 
                     JungleVillageTemplate structureendcitypieces$citytemplate1 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, tuple.getSecond(), house, rotation.add(tuple.getFirst())));
+                    if(structureendcitypieces$citytemplate1.isCollidingExcParent(manager, jungleVillageTemplate, structureComponents)){
+                        return false;
+                    }
                     if(generation < 3) {
                         if (JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)).isEmpty()) {
                             for (Tuple<Rotation, BlockPos> tuple1 : JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house))) {
@@ -783,6 +813,9 @@ public class JungleVillagePieces {
 
             String s = randLength == 0 ? "bridge_slab_top" : "bridge_slab_top_s";
             JungleVillageTemplate bridge_piece =  JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, jungleVillageTemplate, new BlockPos(0, 0, 0), s, rotation));
+            if(bridge_piece.isCollidingExcParent(manager, jungleVillageTemplate, structureComponents)){
+                return false;
+            }
             bridge_piece.setComponentType(-1);
 
             int selector = random.nextInt(7);
@@ -793,9 +826,12 @@ public class JungleVillagePieces {
 
             if(getSlabcByInt(selector) != null && !getSlabcByInt(selector).isEmpty()) {
                 for (Tuple<Rotation, BlockPos> tuple : getSlabcByInt(selector)) {
-                    BeastSlayer.logger.debug(house, tuple.getSecond(), pos);
+                  //  BeastSlayer.logger.debug(house, tuple.getSecond(), pos);
 
                     JungleVillageTemplate structureendcitypieces$citytemplate1 = JungleVillagePieces.addHelper(structureComponents, JungleVillagePieces.addPiece(manager, bridge_piece, tuple.getSecond(), house, rotation.add(tuple.getFirst())));
+                    if(structureendcitypieces$citytemplate1.isCollidingExcParent(manager, jungleVillageTemplate, structureComponents)){
+                        return false;
+                    }
                     if(generation < 3) {
                         if (JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)) != null && !JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house)).isEmpty()) {
                             for (Tuple<Rotation, BlockPos> tuple1 : JungleVillagePieces.getBridgesbyInt(houseStringtoInt(house))) {

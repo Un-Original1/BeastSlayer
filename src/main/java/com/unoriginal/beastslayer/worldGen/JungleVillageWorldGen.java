@@ -70,7 +70,7 @@ public class JungleVillageWorldGen extends WorldGenerator {
         if (i == k && j == l)
         {
 
-            return world.getBiomeProvider().areBiomesViable(i * 16 + 8, j * 16 + 8, 0, VALID_BIOMES);
+            return world.getBiomeProvider().areBiomesViable((i << 4) + 8, (j << 4) + 8, 0, VALID_BIOMES);
         }
 
         return false;
@@ -94,7 +94,7 @@ public class JungleVillageWorldGen extends WorldGenerator {
         public void create(World worldIn, Random rand, int x, int z, int size)
         {
             Rotation rotation = Rotation.values()[rand.nextInt(Rotation.values().length)];
-            BlockPos pos = new BlockPos(x * 16 + 8, getGroundFromAbove(worldIn, x * 16 + 8,z * 16 + 8), z * 16 + 8);
+            BlockPos pos = new BlockPos((x << 4) + 8 - (96/2), getGroundFromAbove(worldIn, (x << 4) + 8 - (96/2),(z << 4) + 8 - (96/2)), (z << 4) + 8 - (96/2));
             List<JungleVillagePieces.JungleVillageTemplate> houses = Lists.newLinkedList();
             JungleVillagePieces.generateVillage(worldIn.getSaveHandler().getStructureTemplateManager(), pos, rotation, rand, this.components);
 
@@ -105,44 +105,6 @@ public class JungleVillageWorldGen extends WorldGenerator {
         public void generateStructure(World worldIn, Random rand, StructureBoundingBox structurebb)
         {
             super.generateStructure(worldIn, rand, structurebb);
-            int i = this.boundingBox.minY;
-
-            for (int j = structurebb.minX; j <= structurebb.maxX; ++j)
-            {
-                for (int k = structurebb.minZ; k <= structurebb.maxZ; ++k)
-                {
-                    BlockPos blockpos = new BlockPos(j, i, k);
-
-                    if (!worldIn.isAirBlock(blockpos) && this.boundingBox.isVecInside(blockpos))
-                    {
-                        boolean flag = false;
-
-                        for (StructureComponent structurecomponent : this.components)
-                        {
-                            if (structurecomponent.getBoundingBox().isVecInside(blockpos))
-                            {
-                                flag = true;
-                                break;
-                            }
-                        }
-
-                        if (flag)
-                        {
-                            for (int l = i - 1; l > 1; --l)
-                            {
-                                BlockPos blockpos1 = new BlockPos(j, l, k);
-
-                                if (!worldIn.isAirBlock(blockpos1) && !worldIn.getBlockState(blockpos1).getMaterial().isLiquid())
-                                {
-                                    break;
-                                }
-                                worldIn.setBlockState(blockpos1, Blocks.DIRT.getDefaultState(), 2);
-
-                            }
-                        }
-                    }
-                }
-            }
         }
         public static int getGroundFromAbove(World world, int x, int z)
         {
