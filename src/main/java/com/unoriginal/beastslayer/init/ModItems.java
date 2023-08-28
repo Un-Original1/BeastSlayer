@@ -55,6 +55,21 @@ public class ModItems {
     public static Item TABLET;
     public static Item CLOTH;
 
+    public static Item IRONGRASS;
+    public static Item SOUL_LOCKET;
+    public static Item PROTECTION_TALISMAN;
+    public static Item BLAST_SKULL;
+    public static Item TAMERS_CHARM;
+    public static Item WARRIORS_LOCK;
+    public static Item DREAM_CATCHER;
+    public static Item MAGIC_FEATHER;
+    public static Item HUNTERS_EYE;
+    public static Item BOUNTIFUL_SACK;
+    public static Item WOLF_AMULET;
+    public static Item FIRE_KEY;
+    public static Item AGILITY_TALON;
+    public static Item TELEKINESIS;
+
     public static Item CONCOCTION;
 
     public static Item KUNAI;
@@ -96,6 +111,20 @@ public class ModItems {
         CLOTH = new ItemBase("cloth");
 
         CONCOCTION = new ItemConcoction("concoction");
+        IRONGRASS = new ItemArtifact("irongrass");
+        SOUL_LOCKET = new ItemArtifact("wisp_locket");
+        PROTECTION_TALISMAN = new ItemArtifact("protection_talisman");
+        BLAST_SKULL = new ItemArtifact("blast_skull");
+        TAMERS_CHARM = new ItemArtifact("tamers_charm");
+        WARRIORS_LOCK = new ItemArtifact("warriors_lock");
+        DREAM_CATCHER = new ItemArtifact("dream_catcher");
+        MAGIC_FEATHER = new ItemArtifact("magic_feather");
+        HUNTERS_EYE = new ItemArtifact("hunters_eye");
+        BOUNTIFUL_SACK = new ItemArtifact("bountiful_sack");
+        WOLF_AMULET = new ItemArtifact("wolf_amulet");
+        FIRE_KEY = new ItemArtifact("fire_key");
+        AGILITY_TALON = new ItemArtifact("agility_talon");
+        TELEKINESIS = new ItemArtifact("telekinesis");
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             SCALE_ARMOR = new ScaleArmor("scale_armor", ModItems.DESERT_ROBES, 1, EntityEquipmentSlot.CHEST);
@@ -139,6 +168,21 @@ public class ModItems {
 
         event.getRegistry().registerAll(CONCOCTION);
 
+        event.getRegistry().registerAll(IRONGRASS);
+        event.getRegistry().registerAll(SOUL_LOCKET);
+        event.getRegistry().registerAll(PROTECTION_TALISMAN);
+        event.getRegistry().registerAll(BLAST_SKULL);
+        event.getRegistry().registerAll(TAMERS_CHARM);
+        event.getRegistry().registerAll(WARRIORS_LOCK);
+        event.getRegistry().registerAll(DREAM_CATCHER);
+        event.getRegistry().registerAll(MAGIC_FEATHER);
+        event.getRegistry().registerAll(HUNTERS_EYE);
+        event.getRegistry().registerAll(BOUNTIFUL_SACK);
+        event.getRegistry().registerAll(WOLF_AMULET);
+        event.getRegistry().registerAll(FIRE_KEY);
+        event.getRegistry().registerAll(AGILITY_TALON);
+        event.getRegistry().registerAll(TELEKINESIS);
+
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             event.getRegistry().registerAll(SCALE_ARMOR);
             event.getRegistry().registerAll(SCALE_HOOD);
@@ -179,6 +223,20 @@ public class ModItems {
         registerRender(CLOTH);
 
         registerRender(CONCOCTION);
+        registerRender(IRONGRASS);
+        registerRender(SOUL_LOCKET);
+        registerRender(PROTECTION_TALISMAN);
+        registerRender(BLAST_SKULL);
+        registerRender(TAMERS_CHARM);
+        registerRender(WARRIORS_LOCK);
+        registerRender(DREAM_CATCHER);
+        registerRender(MAGIC_FEATHER);
+        registerRender(HUNTERS_EYE);
+        registerRender(BOUNTIFUL_SACK);
+        registerRender(WOLF_AMULET);
+        registerRender(FIRE_KEY);
+        registerRender(AGILITY_TALON);
+        registerRender(TELEKINESIS);
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             registerRender(SCALE_ARMOR);

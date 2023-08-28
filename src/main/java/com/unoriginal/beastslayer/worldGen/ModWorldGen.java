@@ -44,7 +44,7 @@ public class ModWorldGen implements IWorldGenerator {
     {
         int y = getGroundFromAbove(world, blockX, blockZ);
         BlockPos pos = new BlockPos(blockX, y, blockZ);
-        if (canStructureSpawn((blockX >> 4) - 8, (blockZ >> 4) - 8, world, 1)) { //>> and << prevent wrong conversions with negative values
+        if (canStructureSpawn((blockX >> 4) - 8, (blockZ >> 4) - 8, world, 1) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
             if (pos.getY() > 31 && JUNGLES.contains(world.getBiome(pos))) {
                 jungle_t.generate(world, rand, pos);
             }

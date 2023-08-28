@@ -232,7 +232,7 @@ public class EntityLilVessel extends EntityTameable implements IRangedAttackMob{
                 }
                 this.setAttackTarget(null);
             }
-            if((itemstack.getItem() == ModItems.ECTOPLASM || OreDictionary.getOres("ectoplasm").contains(itemstack)) && this.getHealth() < this.getMaxHealth()){
+            if((itemstack.getItem() == ModItems.ECTOPLASM ||OreDictionary.containsMatch(false, OreDictionary.getOres("ectoplasm"), itemstack)) && this.getHealth() < this.getMaxHealth()){
                 if(!player.capabilities.isCreativeMode) {
                     itemstack.shrink(1);
                 }
