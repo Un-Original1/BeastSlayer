@@ -60,6 +60,9 @@ public class ModSounds {
     public static final SoundEvent KUNAI = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "kunai_chain")).setRegistryName("kunai_chain");
     public static final SoundEvent MAGIC_SHIELD = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "shield_magic")).setRegistryName("shield_magic");
     public static final SoundEvent KUNAI_HIT = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "kunai_hit")).setRegistryName("kunai_hit");
+
+    public static final SoundEvent SMOKE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "smoke")).setRegistryName("smoke");
+    public static final SoundEvent SHOCKWAVE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID,"shockwave")).setRegistryName("shockwave");
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
         @SubscribeEvent
@@ -113,6 +116,8 @@ public class ModSounds {
             event.getRegistry().register(KUNAI);
             event.getRegistry().registerAll(MAGIC_SHIELD);
             event.getRegistry().registerAll(KUNAI_HIT);
+            event.getRegistry().registerAll(SMOKE);
+            event.getRegistry().registerAll(SHOCKWAVE);
         }
 
     }

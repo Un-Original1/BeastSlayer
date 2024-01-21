@@ -1,0 +1,100 @@
+{
+  "pools": [
+    {
+      "name": "ancientbeasts:Tank_trade",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "ancientbeasts:wisp_torch",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+                  "type": "item",
+                  "name": "ancientbeasts:mysterious_dust",
+                  "weight": 1,
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 1,
+                        "max": 1
+                      }
+                    }
+                  ]
+        },
+        {
+                          "type": "item",
+                          "name": "minecraft:gunpowder",
+                          "weight": 1,
+                          "functions": [
+                            {
+                              "function": "set_count",
+                              "count": {
+                                "min": 2,
+                                "max": 4
+                              }
+                            }
+                          ]
+        },
+        {
+                  "type": "item",
+                  "name": "minecraft:charcoal",
+                  "weight": 1,
+                  "functions": [
+                    {
+                      "function": "set_count",
+                      "count": {
+                        "min": 3,
+                        "max": 6
+                      }
+                    }
+                  ]
+        },
+        {
+                          "type": "item",
+                          "name": "minecraft:leather",
+                          "weight": 1,
+                          "functions": [
+                            {
+                              "function": "set_count",
+                              "count": {
+                                "min": 2,
+                                "max": 4
+                              }
+                            }
+                          ]
+        }
+      ]
+    },
+         {
+
+              "name": "ancientbeasts:Tank_trade",
+              "conditions": [
+                              {
+                                  "condition": "random_chance",
+                                  "chance": 0.05
+
+                              }
+              ],
+                   "rolls": 1,
+              "entries": [
+                     {
+                       "type": "item",
+                       "name": "ancientbeasts:scorcher_mask",
+                       "weight": 1
+                     }
+              ]
+
+         }
+  ]
+}

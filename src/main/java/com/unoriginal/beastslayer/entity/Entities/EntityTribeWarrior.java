@@ -67,7 +67,6 @@ public class EntityTribeWarrior extends AbstractTribesmen{
         super.initEntityAI();
         this.tasks.addTask(4, new EntityAIMeleeConditional(this, rCS(), false, Predicate -> this.avoidTicks <= 0 && !this.isFiery()));
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        //this.tasks.addTask(5, new AIAmbushTargetAbove(this));
         this.tasks.addTask(4, new EntityAIMeleeConditional(this, rCS(), false, Predicate -> this.isFiery()));
         this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityLivingBase.class, Predicate -> this.avoidTicks > 0 && !this.isFiery() ,2F, 1.3D, 1.3D));
     }

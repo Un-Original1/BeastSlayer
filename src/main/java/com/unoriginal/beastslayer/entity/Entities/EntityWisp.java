@@ -1,15 +1,15 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.google.common.base.Predicate;
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.init.ModItems;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -23,10 +23,13 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 public class EntityWisp extends EntityCreature {
     public float squidPitch;
@@ -40,12 +43,23 @@ public class EntityWisp extends EntityCreature {
     private int burnTicks;
     private BlockPos spawnPosition;
 
+    private UUID casterPlayerID;
+    private EntityLivingBase casterPlayer;
+
+    private static final DataParameter<Boolean> PLAYER_CREATED = EntityDataManager.createKey(EntityWisp.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntityWisp.class, DataSerializers.VARINT);
     final Predicate<EntityLivingBase> selector = entityLivingBase -> !(entityLivingBase instanceof EntityWisp);
 
     public EntityWisp(World worldIn) {
         super(worldIn);
         this.setSize(0.4F, 0.7F);
+        this.setPlayerCreated(false);
+    }
+    public EntityWisp(World worldIn, boolean PlayerCreated, EntityLivingBase caster) {
+        super(worldIn);
+        this.setSize(0.4F, 0.7F);
+        this.setPlayerCreated(PlayerCreated);
+        this.setCaster(caster);
     }
 
     protected void applyEntityAttributes()
@@ -59,6 +73,7 @@ public class EntityWisp extends EntityCreature {
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask( 1, new EntityAILookIdle(this));
+        this.tasks.addTask(0, new EntityAIWatchClosest(this, EntityLivingBase.class, 8.0F));
     }
    protected void updateAITasks() {
        super.updateAITasks();
@@ -93,6 +108,7 @@ public class EntityWisp extends EntityCreature {
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(VARIANT, 0);
+        this.dataManager.register(PLAYER_CREATED, Boolean.FALSE);
     }
 
     public int getVariant()
@@ -109,12 +125,18 @@ public class EntityWisp extends EntityCreature {
     {
         super.writeEntityToNBT(compound);
         compound.setInteger("Variant", this.getVariant());
+        if(this.casterPlayerID != null){
+            compound.setUniqueId("owner", this.casterPlayerID);
+        }
     }
 
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         this.setVariant(compound.getInteger("Variant"));
+        if (compound.hasUniqueId("owner")){
+            this.casterPlayerID = compound.getUniqueId("owner");
+        }
     }
 
     protected PathNavigate createNavigator(World worldIn)
@@ -150,24 +172,41 @@ public class EntityWisp extends EntityCreature {
         }
         List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(8D), selector);
         if(!list.isEmpty() && !this.world.isRemote){
+
             for(EntityLivingBase livingBase : list){
-                if(this.getVariant() == 0) {
-                    livingBase.addPotionEffect(new PotionEffect(MobEffects.SPEED, 10));
-                } else if (this.getVariant() == 1) {
-                    livingBase.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 10));
-                } else if (this.getVariant() == 2) {
-                    livingBase.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 40));
-                    if (livingBase instanceof AbstractTribesmen && ((AbstractTribesmen) livingBase).isFiery()) {
-                        AbstractTribesmen t = (AbstractTribesmen) livingBase;
-                        t.setFiery(false);
-                        if(rand.nextInt(3) == 0){
-                            this.setHealth(0.0F);
+                //so to sum up b1 = the caster exists and is a Priest and the target a tribesmen who isn't fiery
+                //b2 the caster exists and it is a Player, the target is on the same team as the caster
+                boolean b1 = (this.getCaster() != null && this.getCaster() instanceof EntityPriest && livingBase instanceof AbstractTribesmen && !((AbstractTribesmen)livingBase).isFiery());
+                boolean b2 = (this.getCaster() != null && this.getCaster() instanceof EntityPlayer && livingBase.isOnSameTeam(this.getCaster()));
+                boolean b3 = (this.getCaster() != null && livingBase == this.getCaster());
+                if( b1 || b2 || b3) { // I think I overdid the booleans lol
+
+                  //  BeastSlayer.logger.debug("b1"+b1);
+                    if (this.getVariant() == 0) {
+                        livingBase.addPotionEffect(new PotionEffect(MobEffects.SPEED, 40));
+                    }
+                    else if (this.getVariant() == 1) {
+                        livingBase.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40));
+                    }
+                    else if (this.getVariant() == 2) {
+                        livingBase.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 40));
+                        livingBase.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 400));
+                        if (livingBase instanceof AbstractTribesmen && ((AbstractTribesmen) livingBase).isFiery()) {
+                            AbstractTribesmen t = (AbstractTribesmen) livingBase;
+                            t.setFiery(false);
+                            if (rand.nextInt(3) == 0) {
+                                this.setHealth(0.0F);
+                            }
                         }
                     }
-                } else if (this.getVariant() == 3 && this.burnTicks == 0) {
+                }
+                else if (this.getVariant() == 3 && this.burnTicks == 0) {
                     this.burnTicks = 80;
-                    livingBase.setFire(6);
-                    this.world.setEntityState(this, (byte) 5);
+                    if(!(livingBase instanceof AbstractTribesmen && ((AbstractTribesmen) livingBase).isFiery())) {
+                        livingBase.setFire(6);
+                        this.playSound(SoundEvents.ENTITY_FIREWORK_SHOOT,0.5F, 0.5F + rand.nextFloat());
+                        this.world.setEntityState(this, (byte) 5);
+                    }
                 }
             }
         }
@@ -255,6 +294,31 @@ public class EntityWisp extends EntityCreature {
         }
 
         return super.processInteract(player, hand);
+    }
+
+    public boolean isPlayerCreated(){
+        return this.dataManager.get(PLAYER_CREATED);
+    }
+
+    public void setPlayerCreated(boolean isPlayerCreated){
+        this.dataManager.set(PLAYER_CREATED, isPlayerCreated);
+    }
+
+    public void setCaster(@Nullable EntityLivingBase caster) {
+        this.casterPlayer = caster;
+        this.casterPlayerID = caster == null ? null : caster.getUniqueID();
+    }
+
+    @Nullable
+    public EntityLivingBase getCaster() {
+        if (this.casterPlayer == null && this.casterPlayerID != null && this.world instanceof WorldServer) {
+            Entity entity = ((WorldServer)this.world).getEntityFromUuid(this.casterPlayerID);
+            if (entity instanceof EntityLivingBase) {
+                this.casterPlayer = (EntityLivingBase)entity;
+            }
+        }
+
+        return this.casterPlayer;
     }
 
     @SideOnly(Side.CLIENT)

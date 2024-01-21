@@ -69,6 +69,14 @@ public class ModItems {
     public static Item FIRE_KEY;
     public static Item AGILITY_TALON;
     public static Item TELEKINESIS;
+    public static Item WATER_RUNE;
+    public static Item WHETSTONE;
+    public static Item PAW;
+
+    public static Item MASK_W;
+    public static Item MASK_H;
+    public static Item MASK_S;
+    public static Item MASK_P;
 
     public static Item CONCOCTION;
 
@@ -125,6 +133,14 @@ public class ModItems {
         FIRE_KEY = new ItemArtifact("fire_key");
         AGILITY_TALON = new ItemArtifact("agility_talon");
         TELEKINESIS = new ItemArtifact("telekinesis");
+        WATER_RUNE = new ItemArtifact("water_rune");
+        WHETSTONE = new ItemArtifact("mossy_whetstone");
+        PAW = new ItemArtifact("ocelot_paw");
+
+        MASK_W = new ItemMask("marauder_mask").setTier(0);
+        MASK_H = new ItemMask("hunter_mask").setTier(1);
+        MASK_S = new ItemMask("scorcher_mask").setTier(2);
+        MASK_P = new ItemMask("spiritweaver_mask").setTier(3);
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             SCALE_ARMOR = new ScaleArmor("scale_armor", ModItems.DESERT_ROBES, 1, EntityEquipmentSlot.CHEST);
@@ -182,6 +198,14 @@ public class ModItems {
         event.getRegistry().registerAll(FIRE_KEY);
         event.getRegistry().registerAll(AGILITY_TALON);
         event.getRegistry().registerAll(TELEKINESIS);
+        event.getRegistry().registerAll(WATER_RUNE);
+        event.getRegistry().registerAll(WHETSTONE);
+        event.getRegistry().registerAll(PAW);
+
+        event.getRegistry().registerAll(MASK_W);
+        event.getRegistry().registerAll(MASK_H);
+        event.getRegistry().registerAll(MASK_S);
+        event.getRegistry().registerAll(MASK_P);
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             event.getRegistry().registerAll(SCALE_ARMOR);
@@ -237,6 +261,14 @@ public class ModItems {
         registerRender(FIRE_KEY);
         registerRender(AGILITY_TALON);
         registerRender(TELEKINESIS);
+        registerRender(WATER_RUNE);
+        registerRender(WHETSTONE);
+        registerRender(PAW);
+
+        registerRender(MASK_W);
+        registerRender(MASK_H);
+        registerRender(MASK_S);
+        registerRender(MASK_P);
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             registerRender(SCALE_ARMOR);

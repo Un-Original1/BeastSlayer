@@ -306,6 +306,10 @@ public class EntityLilVessel extends EntityTameable implements IRangedAttackMob{
         if(!world.isRemote && this.isTamed()){
             this.dropEquipment(true, 100);
             ItemStack me = new ItemStack(ModItems.VESSEL, 1, this.itemDamage + 1);
+            if (me.getTagCompound() == null) {
+                me.setTagCompound(new NBTTagCompound());
+            }
+            me.getTagCompound().setInteger("Variant", this.getVariant());
             if(this.itemDamage <= 4) {
                 if(this.hasCustomName()) {
                     me.setStackDisplayName(this.getCustomNameTag());

@@ -1,13 +1,17 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMeleeConditional;
 import com.unoriginal.beastslayer.entity.Entities.magic.CastingMagic;
 import com.unoriginal.beastslayer.entity.Entities.magic.MagicType;
 import com.unoriginal.beastslayer.entity.Entities.magic.UseMagic;
 import com.unoriginal.beastslayer.init.ModItems;
+import com.unoriginal.beastslayer.init.ModPotions;
+import com.unoriginal.beastslayer.items.ItemMask;
 import com.unoriginal.beastslayer.util.IMagicUser;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
@@ -15,11 +19,14 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
@@ -31,9 +38,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityPriest extends AbstractTribesmen implements IMagicUser {
+    private ResourceLocation TRADE = new ResourceLocation(BeastSlayer.MODID, "trades/Priest");
     private static final DataParameter<Boolean> MAGIC_CAST = EntityDataManager.createKey(EntityPriest.class, DataSerializers.BOOLEAN);
     private int magicUseTicks;
     private int CDTicks;
+    private int Mticks;
+
+    private static final DataParameter<Byte> MAGIC = EntityDataManager.createKey(EntityPriest.class, DataSerializers.BYTE);
+    private MagicType activeMagic = MagicType.NONE;
+
     public EntityPriest(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 1.8F);
@@ -52,7 +65,7 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
     @Override
     protected void updateAITasks(){
         super.updateAITasks();
-        if (this.magicUseTicks > 0) {
+        if (this.magicUseTicks >= 0) {
             --this.magicUseTicks;
         }
     }
@@ -61,6 +74,7 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(MAGIC_CAST, Boolean.FALSE);
+        this.getDataManager().register(MAGIC, (byte)0);
     }
 
     @Override
@@ -69,7 +83,7 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
         this.tasks.addTask(1, new CastingMagic<>(this));
         this.tasks.addTask(3, new AITarget(this));
         this.tasks.addTask(3, new EntityAIMeleeConditional(this, 1.2F, false, Predicate -> this.CDTicks <= 0));
-        this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, Predicate -> !this.isFiery() && this.CDTicks > 0 ,8.0F, 1.0, 1.2));
+        this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, Predicate -> (!this.isFiery() && this.CDTicks > 0) || this.getHealth() < this.getMaxHealth() / 2F,8.0F, 1.0, 1.2));
         this.tasks.addTask(4, new EntityPriest.AIWisp(this));
         this.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(this, AbstractTribesmen.class, 10, true, false, p_apply_1_ -> p_apply_1_.isFiery() && !this.isFiery()));
     }
@@ -90,25 +104,28 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
         this.setEnchantmentBasedOnDifficulty(difficulty);
         return livingdata;
     }
-    public void setMagicCast(boolean magicCast)
+    /*public void setMagicCast(boolean magicCast)
     {
         this.dataManager.set(MAGIC_CAST, magicCast);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public boolean isCastingMagic()
-    {
-        return this.dataManager.get(MAGIC_CAST);
-    }
+    }*/
 
     @Override
     public boolean isUsingMagic() {
-        return this.dataManager.get(MAGIC_CAST);
+        if (this.world.isRemote) {
+            return this.dataManager.get(MAGIC) > 0;
+        } else {
+            return this.magicUseTicks > 0;
+        }
     }
 
     @Override
     public int getMagicUseTicks() {
         return this.magicUseTicks;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getMagicUseTicksClient() {
+        return this.Mticks;
     }
 
     @Override
@@ -118,12 +135,13 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
 
     @Override
     public MagicType getMagicType() {
-        return null;
+        return !this.world.isRemote ? this.activeMagic : MagicType.getFromId(this.dataManager.get(MAGIC));
     }
 
     @Override
-    public void setMagicType(MagicType spellTypeIn) {
-
+    public void setMagicType(MagicType magicType) {
+        this.activeMagic = magicType;
+        this.dataManager.set(MAGIC, (byte)magicType.getId());
     }
 
     class AIWisp extends UseMagic<EntityPriest> {
@@ -133,44 +151,54 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
 
         public void updateTask() {
             super.updateTask();
-            if(this.magicWarmup < 100) {
+         /*   if(this.magicWarmup < 100) {
                 EntityPriest.this.setMagicCast(true);
-            }
+
+            }*/
+        }
+
+        @Override
+        public void startExecuting() {
+
+            EntityPriest.this.world.setEntityState(EntityPriest.this, (byte) 8);
+            super.startExecuting();
         }
 
         @Override
         public boolean shouldExecute() {
             List<EntityWisp> list = EntityPriest.this.world.getEntitiesWithinAABB(EntityWisp.class, EntityPriest.this.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
 
-            return list.size() < 5 && super.shouldExecute();
+            return list.size() < 10 && !EntityPriest.this.isTrading() && super.shouldExecute();
         }
 
         @Override
         protected void useMagic() {
-            for(int i = 0; i < 3; ++i) {
-                BlockPos blockpos = (new BlockPos(EntityPriest.this)).add(-4 + EntityPriest.this.rand.nextInt(8), 1, -4 + EntityPriest.this.rand.nextInt(8));
+            if(!EntityPriest.this.world.isRemote) {
+                for (int i = 0; i < 3; ++i) {
+                    BlockPos blockpos = (new BlockPos(EntityPriest.this)).add(-4 + EntityPriest.this.rand.nextInt(8), 1, -4 + EntityPriest.this.rand.nextInt(8));
 
-                EntityWisp wisp = new EntityWisp(EntityPriest.this.world);
-                wisp.moveToBlockPosAndAngles(blockpos, 0, 0);
-                if(EntityPriest.this.isFiery()){
-                    wisp.setVariant(3);
-                } else if(EntityPriest.this.getAttackTarget() instanceof AbstractTribesmen && ((AbstractTribesmen) EntityPriest.this.getAttackTarget()).isFiery()) {
-                    wisp.setVariant(2);
-                } else {
-                    wisp.setVariant(rand.nextInt(3));
+                    EntityWisp wisp = new EntityWisp(EntityPriest.this.world, false, EntityPriest.this);
+                    wisp.moveToBlockPosAndAngles(blockpos, 0, 0);
+                    if (EntityPriest.this.isFiery()) {
+                        wisp.setVariant(3);
+                    } else if (EntityPriest.this.getAttackTarget() instanceof AbstractTribesmen && ((AbstractTribesmen) EntityPriest.this.getAttackTarget()).isFiery()) {
+                        wisp.setVariant(2);
+                    } else {
+                        wisp.setVariant(rand.nextInt(3));
+                    }
+                    EntityPriest.this.world.spawnEntity(wisp);
                 }
-                EntityPriest.this.world.spawnEntity(wisp);
             }
         }
         @Override
         public void resetTask() {
             super.resetTask();
-            EntityPriest.this.setMagicCast(false);
+           // EntityPriest.this.setMagicCast(false);
         }
 
         @Override
         protected int getMagicUseTime() {
-            return 200;
+            return 60;
         }
 
         @Override
@@ -186,7 +214,7 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
 
         @Override
         protected MagicType getMagicType() {
-            return null;
+            return MagicType.WISP;
         }
     }
 
@@ -197,37 +225,40 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
 
         public void updateTask() {
             super.updateTask();
-            if(this.magicWarmup < 100) {
+          /*  if(this.magicWarmup < 100) {
+
                 EntityPriest.this.setMagicCast(true);
-            }
+            }*/
+        }
+        @Override
+        public void startExecuting() {
+            super.startExecuting();
+            EntityPriest.this.world.setEntityState(EntityPriest.this, (byte) 8);
         }
 
         @Override
         public boolean shouldExecute() {
             List<EntityMob> list = EntityPriest.this.world.getEntitiesWithinAABB(EntityMob.class, EntityPriest.this.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
 
-            return list.size() > 2 && super.shouldExecute();
+            return list.size() > 0 && EntityPriest.this.getAttackTarget() != null && !EntityPriest.this.getAttackTarget().isPotionActive(ModPotions.TARGETED) && !EntityPriest.this.isTrading()  && super.shouldExecute();
         }
 
         @Override
         protected void useMagic() {
-            List<EntityMob> list = EntityPriest.this.world.getEntitiesWithinAABB(EntityMob.class, EntityPriest.this.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
-
-            if(!list.isEmpty() && EntityPriest.this.getAttackTarget() != null){
-                for (EntityMob mob : list){
-                    mob.setAttackTarget(EntityPriest.this.getAttackTarget());
-                }
+            EntityLivingBase livingBase = EntityPriest.this.getAttackTarget();
+            if(livingBase != null) {
+                livingBase.addPotionEffect(new PotionEffect(ModPotions.TARGETED, 400));
             }
         }
         @Override
         public void resetTask() {
             super.resetTask();
-            EntityPriest.this.setMagicCast(false);
+          //  EntityPriest.this.setMagicCast(false);
         }
 
         @Override
         protected int getMagicUseTime() {
-            return 100;
+            return 60;
         }
 
         @Override
@@ -243,7 +274,7 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
 
         @Override
         protected MagicType getMagicType() {
-            return null;
+            return MagicType.TARGET;
         }
     }
     public void writeEntityToNBT(NBTTagCompound compound) {
@@ -268,6 +299,14 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
         if(this.CDTicks >= 0){
             --this.CDTicks;
         }
+        if (this.Mticks >= 0) {
+            --this.Mticks;
+        }
+        if(this.isUsingMagic()) {
+            IMagicUser.spawnMagicParticles(this);
+        }  else {
+            this.dataManager.set(MAGIC, (byte)0);
+        }
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {
@@ -275,4 +314,25 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
         this.magicUseTicks = compound.getInteger("MagicUseTicks");
         this.CDTicks = compound.getInteger("CD");
     }
+    @SideOnly(Side.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if(id == 8){
+            this.Mticks = 60;
+        }
+        else {
+            super.handleStatusUpdate(id);
+        }
+    }
+    public boolean shouldTradeWithplayer(EntityPlayer player){
+        Item stack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
+        boolean b = stack instanceof ItemMask && ((ItemMask) stack).getTier() >=2;
+        return super.shouldTradeWithplayer(player) && !this.isUsingMagic() && b;
+    }
+    @Nullable
+    @Override
+    protected ResourceLocation getBarteringTable()
+    {
+        return TRADE;
+    }
+    //TODO: Make a 2nd lootable for special trades when players have an equal or higher tier mask, to compensate the -1 shift
 }

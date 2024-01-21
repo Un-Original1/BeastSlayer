@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 
 import java.util.Arrays;
@@ -42,7 +41,7 @@ public class JungleVillageWorldGen extends WorldGenerator {
     }
 
     public String getStructureName() {
-        return "Jungle Tribal Village";
+        return "Jungle_village";
     }
 
     protected boolean canSpawnStructureAtCoords(World world, int chunkX, int chunkZ) {

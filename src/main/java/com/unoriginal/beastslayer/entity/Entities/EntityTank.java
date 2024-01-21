@@ -1,8 +1,10 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModItems;
+import com.unoriginal.beastslayer.items.ItemMask;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -14,12 +16,14 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -31,6 +35,7 @@ import javax.annotation.Nullable;
 
 public class EntityTank extends AbstractTribesmen {
     private static final DataParameter<Boolean> TORCH = EntityDataManager.createKey(EntityTank.class, DataSerializers.BOOLEAN);
+    private ResourceLocation TRADE = new ResourceLocation(BeastSlayer.MODID, "trades/Tank");
     private int blockTicks;
     private int attackTick;
 
@@ -274,6 +279,14 @@ public class EntityTank extends AbstractTribesmen {
     }
 
     public boolean shouldTradeWithplayer(EntityPlayer player){
-        return super.shouldTradeWithplayer(player) && !this.isBlocking() && !this.isAttacking();
+        Item stack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
+        boolean b = stack instanceof ItemMask && ((ItemMask) stack).getTier() >=1;
+        return super.shouldTradeWithplayer(player) && !this.isBlocking() && !this.isAttacking() && b;
+    }
+    @Nullable
+    @Override
+    protected ResourceLocation getBarteringTable()
+    {
+        return TRADE;
     }
 }

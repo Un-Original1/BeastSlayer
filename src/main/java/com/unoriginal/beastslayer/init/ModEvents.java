@@ -4,45 +4,52 @@ import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMobAvoidOwlstack;
+import com.unoriginal.beastslayer.items.ItemArtifact;
 import com.unoriginal.beastslayer.items.ItemSpear;
 import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
 import com.unoriginal.beastslayer.network.MessageAttackER;
+import com.unoriginal.beastslayer.network.MessageGlowing;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.AbstractIllager;
+import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -107,7 +114,7 @@ public class ModEvents {
 
     }
     @SubscribeEvent
-    public void OnArmorRightClick(PlayerInteractEvent.EntityInteractSpecific e) {
+    public void OnPlayerRightClick(PlayerInteractEvent.EntityInteractSpecific e) {
         World world = e.getWorld();
         if(!world.isRemote) {
             Entity target = e.getTarget();
@@ -128,12 +135,39 @@ public class ModEvents {
                     }
                 }
             }
+            else if (player.getHeldItemOffhand().getItem() == ModItems.TELEKINESIS && player.getHeldItemMainhand().isEmpty()){
+                if(!player.getCooldownTracker().hasCooldown(ModItems.TELEKINESIS) && target instanceof EntityLivingBase){
+                    EntityHand hand = new EntityHand(world, player, (EntityLivingBase) target);
+                    world.spawnEntity(hand);
+                    target.startRiding(hand);
+                    player.swingArm(EnumHand.MAIN_HAND);
+                    player.getCooldownTracker().setCooldown(ModItems.TELEKINESIS, 300);
+                    e.setCancellationResult(EnumActionResult.SUCCESS);
+                    e.setCanceled(true);
+                }
+            }
+        }
+    }
+    @SubscribeEvent
+    public void BlockEvents(PlayerInteractEvent.RightClickBlock e){
+        World world = e.getWorld();
+        EntityPlayer player = e.getEntityPlayer();
+        if (player.getHeldItemOffhand().getItem() == ModItems.TELEKINESIS && !world.isRemote && player.getCooldownTracker().hasCooldown(ModItems.TELEKINESIS) && player.getHeldItemMainhand().isEmpty()){
+            List<EntityHand> hands = world.getEntitiesWithinAABB(EntityHand.class, player.getEntityBoundingBox().grow(32.0D, 32.0D, 32.0D));
+            if(!hands.isEmpty()){
+                for (EntityHand hand : hands){
+                    if(hand.getCaster() == player){
+                        hand.setTargetPos(new BlockPos(e.getPos().getX(), e.getPos().getY(), e.getPos().getZ()));
+                    }
+                }
+            }
         }
     }
     @SubscribeEvent
     public void hurtEvents(LivingHurtEvent e){
         World world = e.getEntityLiving().getEntityWorld();
         EntityLivingBase entity = e.getEntityLiving();
+        Entity attacker = e.getSource().getTrueSource();
         if(entity.isPotionActive(ModPotions.SHIELDED)){
             if(!world.isRemote) {
                 world.playSound(null, entity.posX, entity.posY, entity.posZ, ModSounds.MAGIC_SHIELD, SoundCategory.NEUTRAL, 1.0F, 1.0F / world.rand.nextFloat() * 0.4F + 0.9F);
@@ -163,10 +197,60 @@ public class ModEvents {
                 }
             }
         }
+        if(entity.getHeldItemOffhand().getItem() instanceof ItemArtifact){
+            Item item = entity.getHeldItemOffhand().getItem();
+            if(item == ModItems.PAW){
+                if(e.getSource() == DamageSource.FALL){
+                    e.setCanceled(true);
+                }
+            }
+        }
+        if(attacker instanceof EntityLivingBase){
+            EntityLivingBase livingAttack = (EntityLivingBase)attacker;
+
+            Item item = livingAttack.getHeldItemOffhand().getItem();
+            if(item == ModItems.WATER_RUNE){
+                entity.extinguish();
+                if(entity instanceof EntityBlaze || entity instanceof EntityFireElemental || (entity instanceof AbstractTribesmen && ((AbstractTribesmen) entity).isFiery()) || entity.isBurning()){
+                    float amount = e.getAmount();
+                    e.setAmount(amount * 1.75F);
+                }
+            }
+            if(item == ModItems.WHETSTONE){
+                entity.addPotionEffect(new PotionEffect(MobEffects.POISON, 60, 1));
+            }
+            if(item == ModItems.WOLF_AMULET){
+                if(attacker instanceof EntityPlayer && !((EntityPlayer) attacker).getCooldownTracker().hasCooldown(ModItems.WOLF_AMULET)) {
+                    EntityPlayer p = (EntityPlayer) attacker;
+                    EntitySpiritWolf spiritWolf = new EntitySpiritWolf(world, livingAttack);
+                    //attacker = wielder
+                    BlockPos blockpos = (new BlockPos(livingAttack)).add(-4 + livingAttack.getRNG().nextInt(8), 1, -4 + livingAttack.getRNG().nextInt(8));
+                    spiritWolf.setAttackTarget(entity);
+                    spiritWolf.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+                    p.getCooldownTracker().setCooldown(ModItems.WOLF_AMULET, 800);
+                    world.spawnEntity(spiritWolf);
+                    spiritWolf.setStalkTicks(200);
+                }
+            }
+        }
+        if(entity instanceof EntityPlayer && attacker instanceof EntityLivingBase){
+            if(entity instanceof EntityPlayer && !((EntityPlayer) entity).getCooldownTracker().hasCooldown(ModItems.WOLF_AMULET)) {
+                EntityPlayer p = (EntityPlayer)entity;
+                EntitySpiritWolf spiritWolf = new EntitySpiritWolf(world, entity);
+                //victim = wielder
+                BlockPos blockpos = (new BlockPos(entity)).add(-4 +entity.getRNG().nextInt(8), 1, -4 + entity.getRNG().nextInt(8));
+                spiritWolf.setAttackTarget((EntityLivingBase) attacker);
+                spiritWolf.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+                p.getCooldownTracker().setCooldown(ModItems.WOLF_AMULET, 800);
+                world.spawnEntity(spiritWolf);
+                spiritWolf.setStalkTicks(200);
+            }
+        }
     }
     @SubscribeEvent
     public void oooSpuki(LivingEvent.LivingUpdateEvent event){
         EntityLivingBase e = event.getEntityLiving();
+        World world = event.getEntityLiving().world;
         if(e.isPotionActive(ModPotions.POSSESSED)){
             Random rand = new Random();
             if(rand.nextInt(4) == 0){
@@ -182,6 +266,15 @@ public class ModEvents {
         if (e.isPotionActive(ModPotions.UNDEAD)){
             if(e.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty() && e.world.canSeeSky(e.getPosition()) && e.world.isDaytime()) {
                 e.setFire(4);
+            }
+        }
+        if (e.isPotionActive(ModPotions.TARGETED)){
+            List<EntityMob> list = world.getEntitiesWithinAABB(EntityMob.class, e.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
+
+            if(!list.isEmpty() && !world.isRemote ){
+                for (EntityMob mob : list){
+                    mob.setAttackTarget(e);
+                }
             }
         }
     }
@@ -213,12 +306,24 @@ public class ModEvents {
                     }
                 }
             }
+            if(l instanceof EntityTameable){
+                EntityTameable t = (EntityTameable) l;
+                EntityLivingBase p = t.getAttackTarget();
+                if(t.getAttackTarget() != null && t.getAttackTarget() instanceof EntityPlayer){
+                    EntityPlayer player = (EntityPlayer)p;
+                    if(t.isTamed() && player.getHeldItemOffhand().getItem() == ModItems.TAMERS_CHARM){
+                        t.getNavigator().clearPath();
+                        t.setAttackTarget(null);
+                    }
+                }
+            }
         }
     }
 
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(LivingEvent.LivingUpdateEvent event)
     {
+        World world = event.getEntity().getEntityWorld();
         EntityLivingBase entityLiving = event.getEntityLiving();
         Random rand = new Random();
         if (!entityLiving.world.isRemote && BeastSlayerConfig.MinerHelmetLight)
@@ -232,6 +337,42 @@ public class ModEvents {
                     Block blockAtLocation = entityLiving.world.getBlockState(blockLocation).getBlock();
                     if (blockAtLocation == Blocks.AIR) {
                         entityLiving.world.setBlockState(blockLocation, ModBlocks.LIGHT.getDefaultState());
+                    }
+                }
+            }
+        }
+        if(!world.isRemote){
+            if(entityLiving.getHeldItemOffhand().getItem() == ModItems.AGILITY_TALON){
+                entityLiving.addPotionEffect(new PotionEffect(MobEffects.SPEED, 40, 0, true, false));
+            }
+            if(entityLiving.getHeldItemOffhand().getItem() == ModItems.WARRIORS_LOCK){
+                if(entityLiving.getHealth() < entityLiving.getMaxHealth() / 2F) {
+                    entityLiving.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40, 1, true, false));
+                } else if (entityLiving.getHealth() < entityLiving.getMaxHealth() / 3F){
+                    entityLiving.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40, 2, true, false));
+                } else {
+                    entityLiving.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40, 0, true, false));
+                }
+            }
+            if(entityLiving.getHeldItemOffhand().getItem() == ModItems.PROTECTION_TALISMAN){
+                entityLiving.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 40, 1, true, false));
+            }
+            if(entityLiving.getHeldItemOffhand().getItem() == ModItems.PAW){
+                entityLiving.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 40, 3, true, false));
+            }
+            if( entityLiving instanceof EntityPlayer){ //DO NOT ADD A CONDITIONAL FOR THE ARTIFACT HERE, IT'll PREVENT THE MOBS STOP GLOWING AFTER USE
+                EntityPlayer player = (EntityPlayer) entityLiving;
+                List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, entityLiving.getEntityBoundingBox().grow(16.0D, 16.0D, 16.0D));
+                for (EntityLivingBase targets : list){
+                    //if (!player.canEntityBeSeen(targets)){
+                      //  targets.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 40, 0, true, false));//packet then?
+
+                        BeastSlayerPacketHandler.SendTo(new MessageGlowing(player, targets), (EntityPlayerMP) player);
+
+                  //  }
+                    if(targets instanceof EntityTameable && ((EntityTameable)targets).getOwner() == player && player.getHeldItemOffhand().getItem() == ModItems.TAMERS_CHARM){
+                        targets.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 40, 2, true, false));
+                        targets.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40, 1, true, false));
                     }
                 }
             }
@@ -286,6 +427,119 @@ public class ModEvents {
                 }
             }
         }
+    }
+    @SubscribeEvent
+    public void SleepEvents(PlayerSleepInBedEvent event){
+        EntityPlayer player = event.getEntityPlayer();
+        EntityPlayer.SleepResult result = event.getResultStatus();
+        BlockPos location = event.getPos();
+        World world = player.getEntityWorld();
+        if(player.getHeldItemOffhand().getItem() == ModItems.DREAM_CATCHER && !world.isRemote){
+
+            List<EntityMob> list = world.getEntitiesWithinAABB(EntityMob.class,new AxisAlignedBB((double)location.getX() - 8.0D, (double)location.getY() - 5.0D, (double)location.getZ() - 8.0D, (double)location.getX() + 8.0D, (double)location.getY() + 5.0D, (double)location.getZ() + 8.0D));
+            if (event.getResultStatus() != null) {
+                return;
+            }
+
+            if (!list.isEmpty())
+            {
+                event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
+                for(EntityMob mob : list){
+                    mob.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 300));
+                }
+            }
+
+        }
+    }
+
+    @SubscribeEvent
+    public void LivingDeathEvents(LivingDeathEvent e){
+        World world = e.getEntity().getEntityWorld();
+        EntityLivingBase entityLivingBase = e.getEntityLiving();
+        if(!world.isRemote && e.getSource().getTrueSource() != null){
+            Entity source = e.getSource().getTrueSource();
+            if(source instanceof EntityPlayer){
+                EntityPlayer player = (EntityPlayer)source;
+                Item item = ((EntityPlayer)source).getHeldItemOffhand().getItem();
+                if(item instanceof ItemArtifact){
+                    if(item == ModItems.SOUL_LOCKET){
+                        if(entityLivingBase.isEntityUndead() || entityLivingBase.getRNG().nextInt(3) == 0){
+                            EntityWisp wisp = new EntityWisp(world, true, player);
+                            wisp.setVariant(entityLivingBase.getRNG().nextInt(3));
+                            wisp.moveToBlockPosAndAngles(entityLivingBase.getPosition(), 0.0F, 0.0F);
+                            world.spawnEntity(wisp);
+                            if(!player.capabilities.isCreativeMode) {
+                                player.getHeldItemOffhand().damageItem(1, player);
+                            }
+                        }
+                    }
+                    else if(item == ModItems.BLAST_SKULL){
+                        if(entityLivingBase.getRNG().nextInt(3) == 0){
+
+                            player.world.newExplosion(player, entityLivingBase.posX, entityLivingBase.posY, entityLivingBase.posZ, 1.0F, true, false);
+                            world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE,  entityLivingBase.posX, entityLivingBase.posY, entityLivingBase.posZ, 1.0D, 0.0D, 0.0D);
+
+                            Collection<PotionEffect> collection = entityLivingBase.getActivePotionEffects();
+                            if (!collection.isEmpty())
+                            {
+                                EntityAreaEffectCloud entityareaeffectcloud = new EntityAreaEffectCloud(world,  entityLivingBase.posX,  entityLivingBase.posY,  entityLivingBase.posZ);
+                                entityareaeffectcloud.setRadius(2.5F);
+                                entityareaeffectcloud.setRadiusOnUse(-0.5F);
+                                entityareaeffectcloud.setWaitTime(10);
+                                entityareaeffectcloud.setDuration(entityareaeffectcloud.getDuration() / 2);
+                                entityareaeffectcloud.setRadiusPerTick(-entityareaeffectcloud.getRadius() / (float)entityareaeffectcloud.getDuration());
+                                for (PotionEffect potioneffect : collection)
+                                {
+                                    entityareaeffectcloud.addEffect(new PotionEffect(potioneffect));
+                                }
+                                world.spawnEntity(entityareaeffectcloud);
+                            }
+
+                            if(!player.capabilities.isCreativeMode) {
+                                player.getHeldItemOffhand().damageItem(1, player);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @SubscribeEvent
+    public void DropEvents(LivingDropsEvent e){
+        World world = e.getEntity().getEntityWorld();
+        EntityLivingBase entityLivingBase = e.getEntityLiving();
+        if(!world.isRemote && e.getSource().getTrueSource() != null) {
+            Entity source = e.getSource().getTrueSource();
+            if (source instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) source;
+                Item item = player.getHeldItemOffhand().getItem();
+                if (item instanceof ItemArtifact) {
+                    if(item == ModItems.BOUNTIFUL_SACK){
+                        if(!e.getDrops().isEmpty() && player.getRNG().nextInt(2) == 0) {
+                            EntityItem drop = new EntityItem(world);
+                            drop.setItem(new ItemStack(e.getDrops().get(entityLivingBase.getRNG().nextInt(e.getDrops().size())).getItem().getItem(), 1));
+                            drop.setPosition(entityLivingBase.getPosition().getX(), entityLivingBase.getPosition().getY(), entityLivingBase.getPosition().getZ());
+                            world.spawnEntity(drop);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @SubscribeEvent
+    public void XPEvents(LivingExperienceDropEvent e){
+        World world = e.getEntity().getEntityWorld();
+        if(!world.isRemote && e.getAttackingPlayer() != null) {
+                EntityPlayer player = e.getAttackingPlayer();
+                Item item = player.getHeldItemOffhand().getItem();
+                int xp = e.getOriginalExperience();
+                if (item instanceof ItemArtifact) {
+                    if (item == ModItems.BOUNTIFUL_SACK) {
+                        e.setDroppedExperience(xp * 2);
+                    }
+                }
+        }
+
     }
 
 }

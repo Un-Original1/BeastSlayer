@@ -14,19 +14,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderPriest extends RenderLiving<EntityPriest> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("ancientbeasts:textures/entity/tribe/tribe_p.png");
-    private static final ResourceLocation FIRE = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_p.png");
-    private static final ResourceLocation OVERLAY = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_p_e.png"); //+25 saturation
+    private static final ResourceLocation TEXTURE = new ResourceLocation("ancientbeasts:textures/entity/tribe/spiritweaver.png");
+    private static final ResourceLocation OVERLAY2 = new ResourceLocation("ancientbeasts:textures/entity/tribe/spiritweaver_e.png");
+    private static final ResourceLocation FIRE = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_spiritweaver.png");
+    private static final ResourceLocation OVERLAY = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_spiritweaver_e.png"); //+25 saturation
     public static final Factory FACTORY = new Factory();
 
     public RenderPriest(RenderManager manager) {
         super(manager, new ModelPriest(), 0.8F);
-        this.addLayer(new LayerGlowIf(this, OVERLAY));
+        this.addLayer(new LayerGlowIf(this, OVERLAY, OVERLAY2));
         this.addLayer(new LayerTribeItem(this));
     }
 
     public void transformHeldFull3DItemLayer() {
-        GlStateManager.translate(0.09375F, 0.0F, 0.0F);
+        GlStateManager.translate(0.09375F, 0.1875F, 0.0F);
     }
 
 

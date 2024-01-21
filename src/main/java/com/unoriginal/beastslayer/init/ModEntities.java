@@ -10,7 +10,6 @@ import com.unoriginal.beastslayer.entity.Render.*;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -35,11 +34,11 @@ public class ModEntities
                 biomesAndTypes.put(t, b);
             }
         }
-        if(BeastSlayerConfig.isSandmonsterEnabled) {
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Sandy"), EntitySandy.class, "SandMonster", id++, BeastSlayer.instance, 140, 3, true, 10577723, 10038792);
-        }
 
-        EntityRegistry.addSpawn(EntitySandy.class, 1 , 1, 1, EnumCreatureType.MONSTER, Biomes.DESERT, Biomes.DESERT_HILLS);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Sandy"), EntitySandy.class, "SandMonster", id++, BeastSlayer.instance, 140, 3, true, 10577723, 10038792);
+
+
+        EntityRegistry.addSpawn(EntitySandy.class, BeastSlayerConfig.sandmonsterSpawnRate , 1, 1, EnumCreatureType.MONSTER, Biomes.DESERT, Biomes.DESERT_HILLS);
         EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotSpawnChance, 1, 1, EnumCreatureType.MONSTER, biomesAndTypes.get(BiomeDictionary.Type.SPOOKY).toArray(new Biome[0]));
 
         EntityRegistry.addSpawn(EntityGhost.class, BeastSlayerConfig.ghostSpawnChance, 1, 3, EnumCreatureType.MONSTER, biomesAndTypes.get(BiomeDictionary.Type.SPOOKY).toArray(new Biome[0]));
@@ -104,6 +103,10 @@ public class ModEntities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Bonepile"), EntityBonepile.class, "Bonepile", id++, BeastSlayer.instance, 64, 3, true, 14540253, 11315887);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Chained"), EntityChained.class, "Chained", id++, BeastSlayer.instance,64, 3, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Nekros"), EntityNekros.class, "Nekros", id++, BeastSlayer.instance, 64, 3, true, 5058665, 3416400);
+
+        //artifact entities
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hand"), EntityHand.class, "Hand", id++, BeastSlayer.instance, 64, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter_Wolf"), EntitySpiritWolf.class, "Hunter_Wolf", id++,BeastSlayer.instance, 64, 3, true);
     }
     @SideOnly(Side.CLIENT)
     public static void initModels() {
@@ -141,6 +144,9 @@ public class ModEntities
             RenderingRegistry.registerEntityRenderingHandler(EntityWisp.class, RenderWisp.FACTORY);
             RenderingRegistry.registerEntityRenderingHandler(EntityFireElemental.class, RenderFireElemental.FACTORY);
             RenderingRegistry.registerEntityRenderingHandler(EntityWindforceDart.class, RenderWindforceDart.FACTORY);
+
+            RenderingRegistry.registerEntityRenderingHandler(EntityHand.class, RenderHand.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntitySpiritWolf.class, RenderSpiritWolf.FACTORY);
         }
 
         RenderingRegistry.registerEntityRenderingHandler(EntityBonepile.class, RenderBonePile.FACTORY);

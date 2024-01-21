@@ -20,7 +20,7 @@ entity.Nekros.name=Nekros
 entity.Tribe_Warrior.name=Marauder
 entity.Hunter.name=Hunter
 entity.Scorcher.name=Scorcher
-entity.Priest.name=Charmer
+entity.Priest.name=Spiritweaver
 
 #Items
 item.sandmonster_scale.name=Sandmonster Scale
@@ -148,6 +148,8 @@ potion.possessed=Possessed
 potion.ghostly=Ghostly Form
 potion.rifted=Rifted
 potion.undead=Undead
+
+potion.target=Targeted
 #potion types
 potion.effect.potionGhostly=Potion of Ghostly Form
 splash_potion.effect.potionGhostly=Splash Potion of Ghostly Form
@@ -279,3 +281,41 @@ bestiary.hint14_1top=Ramming speed
 bestiary.hint14_1bottom=If you see a netherhound staying still be careful
 bestiary.hint14_2top=Going off with a BANG!
 bestiary.hint14_2bottom=Netherhounds explode when defeated
+
+
+#2.0
+item.cursed_wood.name=Cursed Wood
+item.spear.name=Spear
+item.tribe_staff.name=Spiritweaver's Staff
+item.wisp_torch.name=Wisp Torch
+item.mysterious_dust.name=Mysterious Dust
+item.wisp_bottle.name=Wisp in a Bottle
+item.windforce_dart.name=Windforce Dart
+item.windforce.name=Windforce
+item.broken_talisman.name=Broken Talisman
+item.ancient_tablet.name=Ancient Tablet
+item.cloth.name=Cloth
+item.concoction.name=Concoction
+item.wisp_locket.name=Wisp Locket
+item.protection_talisman.name=Protection Talisman
+item.blast_skull.name=Blast Skull
+item.tamers_charm.name=Tamer's whistle
+item.warriors_lock.name=Warrior's Lock
+item.dream_catcher.name=Dream Catcher
+item.hunters_eye.name=Hunter's Eye
+item.bountiful_sack.name=Bountiful Sack
+item.fire_key.name=Fire Rune
+item.agility_talon.name=Agility Talon
+item.water_rune.name=Water Rune
+item.mossy_whetstone.name=Mossy Whetstone
+item.ocelot_paw.name=Ocelot Paw
+item.telekinesis.name=Telekinesis
+item.wolf_amulet.name=Monster Amulet
+
+item.marauder_mask.name=Marauder Mask
+item.hunter_mask.name=Hunter Mask
+item.scorcher_mask.name=Scorcher Mask
+item.spiritweaver_mask.name=Spiritweaver Mask
+
+tile.witchcraft_table.name=Witchcraft Table
+tile.magic_cauldron.name=Magic Cauldron

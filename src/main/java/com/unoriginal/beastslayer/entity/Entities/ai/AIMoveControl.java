@@ -1,13 +1,14 @@
 package com.unoriginal.beastslayer.entity.Entities.ai;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.math.MathHelper;
 
 public class AIMoveControl extends EntityMoveHelper
 {
-    EntityMob mob;
-    public AIMoveControl(EntityMob mob)
+    EntityLiving mob;
+    public AIMoveControl(EntityLiving mob)
     {
         super(mob);
         this.mob = mob;

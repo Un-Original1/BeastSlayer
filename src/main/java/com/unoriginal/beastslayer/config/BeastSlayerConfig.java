@@ -12,10 +12,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Config(modid = BeastSlayer.MODID)
 public class BeastSlayerConfig {
-    @Name("Sandmonster Enabled")
-    @Comment("Is sandmonster enabled")
-    @RequiresMcRestart
-    public static boolean isSandmonsterEnabled = true;
 
     @Name("Desert Robes Enabled")
     @Comment("Are desert robes enabled")
@@ -36,6 +32,11 @@ public class BeastSlayerConfig {
     @Comment("Zealot spawn chance everywhere")
     @RequiresMcRestart
     public static int zealotEverywhereSpawnChance = 15;
+
+    @Name("Sandmonster Spawn Rate")
+    @Comment("Sandmonster spawn rate, higher numbers make it more common")
+    @RequiresMcRestart
+    public static int sandmonsterSpawnRate = 1;
 
     @Name("Sandmonster Spawn")
     @Comment("Sandmonster spawn chance 5 is uncommon, 1 is common")
@@ -96,7 +97,7 @@ public class BeastSlayerConfig {
     @Name("Frost wand cooldown")
     @Comment("20 = + 1 sec")
     @RequiresMcRestart
-    public static int frostWandCooldown = 400;
+    public static int frostWandCooldown = 240;
 
     @Name("Should Vessel Consume item")
     @Comment("Applied for Gunpowder and Sugar")

@@ -46,7 +46,7 @@ public class ItemWispBottle extends ItemBase {
                     BlockPos blockpos = raytraceresult.getBlockPos();
 
                     if (world.isBlockModifiable(player, blockpos) && player.canPlayerEdit(blockpos, raytraceresult.sideHit, itemstack)) {
-                        EntityWisp wisp = new EntityWisp(world);
+                        EntityWisp wisp = new EntityWisp(world, true, player);
                         wisp.setVariant(this.getMetadata(itemstack));
                         if (itemstack.hasDisplayName()) {
                             wisp.setCustomNameTag(itemstack.getDisplayName());

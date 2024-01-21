@@ -28,11 +28,11 @@ public class ItemStaff extends ItemAbstractMultimodel{
         ItemStack stack = player.getHeldItem(hand);
         World world = player.getEntityWorld();
         if (!world.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
-            EntityWisp wisp = new EntityWisp(worldIn);
+            EntityWisp wisp = new EntityWisp(worldIn, true, player);
             wisp.setPosition(player.posX, player.posY + player.getEyeHeight(), player.posZ);
             wisp.setVariant(itemRand.nextInt(3));
             world.spawnEntity(wisp);
-            player.getCooldownTracker().setCooldown(this, 400);
+            player.getCooldownTracker().setCooldown(this, 200);
             world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.EVOCATION_ILLAGER_PREPARE_ATTACK, SoundCategory.PLAYERS, 1.0F, 1.0F);
             stack.damageItem(1, player);
             player.swingArm(hand);

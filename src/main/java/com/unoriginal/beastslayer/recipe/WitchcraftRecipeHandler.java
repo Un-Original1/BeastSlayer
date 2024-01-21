@@ -23,21 +23,14 @@ public class WitchcraftRecipeHandler {
     private int expectedQuality;
     public World world;
     private static final Set<Item> Q1 = Sets.newHashSet(
-            Items.FEATHER,
-            Items.STRING,
-           Items.BONE);
+            ModItems.CLOTH);
     private static final Set<Item> Q2 = Sets.newHashSet(
-            ModItems.CURSED_WOOD,
-            ModItems.CLOTH,
             ModItems.BROKEN_TALISMAN
     );
     private static final Set<Item> Q3 = Sets.newHashSet(
-            ModItems.DARK_GOOP,
             ModItems.DUST
     );
     private static final Set<Item> Q4 = Sets.newHashSet(
-
-            ModItems.WISP_BOTTLE,
             ModItems.TABLET
     );
     public WitchcraftRecipeHandler(World world){
@@ -77,26 +70,26 @@ public class WitchcraftRecipeHandler {
         if(quality <= 0.5 || count != 5){
             return ItemStack.EMPTY;
         }
-        if(this.getLastCraftablebyQuality((int) quality) != null){
+        else if(this.getLastCraftablebyQuality((int) quality) != null){
             return this.stack;
         }
         else {
-            return pickLootTable(quality, seed, null);
+            return pickLootTable((int)quality, seed, null);
         }
 
     }
 
-    public ItemStack pickLootTable(double quality, long seed, @Nullable String tag)
+    public ItemStack pickLootTable(int quality, long seed, @Nullable String tag)
     {
         ItemStack result = ItemStack.EMPTY;
-        ResourceLocation location = new ResourceLocation(BeastSlayer.MODID, "magic/witchcraft_" + (int) quality + (tag == null ? "" : tag));
+        ResourceLocation location = new ResourceLocation(BeastSlayer.MODID, "magic/witchcraft_" + quality + (tag == null ? "" : tag));
         if(!this.world.isRemote) {
             LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(location);
             LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) this.world);
             List<ItemStack> itemlist = loottable.generateLootForPools(new Random(seed), lootcontext$builder.build());
             if (!itemlist.isEmpty()) {
                 result = itemlist.get(new Random().nextInt(itemlist.size()));
-                this.setLastCraftablebyQuality((int)quality, result);
+                this.setLastCraftablebyQuality(quality, result);
             }
        }
         return result; //source of desync

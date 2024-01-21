@@ -1,8 +1,10 @@
 package com.unoriginal.beastslayer.util;
 
+import com.unoriginal.beastslayer.entity.Entities.EntityPriest;
 import com.unoriginal.beastslayer.entity.Entities.EntitySandy;
 import com.unoriginal.beastslayer.entity.Entities.magic.MagicType;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 
@@ -22,6 +24,13 @@ public interface IMagicUser
             if(magicUser instanceof EntitySandy){
                 magicUser.world.spawnParticle(EnumParticleTypes.SPELL_MOB, magicUser.posX  + (double) f1, magicUser.posY + 3D, magicUser.posZ + (double) f2, d0, d1, d2);
                 magicUser.world.spawnParticle(EnumParticleTypes.SPELL_MOB, magicUser.posX  - (double) f1, magicUser.posY + 3D, magicUser.posZ - (double) f2, d0, d1, d2);
+            }
+            if(magicUser instanceof EntityPriest){
+                if(magicUser.getPrimaryHand() == EnumHandSide.LEFT){
+                    magicUser.world.spawnParticle(EnumParticleTypes.SPELL_MOB, magicUser.posX + (double) f1 * 0.6D, magicUser.posY + 1.8D, magicUser.posZ + (double) f2 * 0.6D, d0, d1, d2);
+                } else {
+                    magicUser.world.spawnParticle(EnumParticleTypes.SPELL_MOB, magicUser.posX - (double) f1 * 0.6D, magicUser.posY + 1.8D, magicUser.posZ - (double) f2 * 0.6D, d0, d1, d2);
+                }
             }
             else {
                 magicUser.world.spawnParticle(EnumParticleTypes.SPELL_MOB, magicUser.posX + (double) f1 * 0.6D, magicUser.posY + 1.8D, magicUser.posZ + (double) f2 * 0.6D, d0, d1, d2);

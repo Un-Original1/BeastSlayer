@@ -22,22 +22,21 @@ public class ModelWisp extends ModelBase {
 		textureWidth = 32;
 		textureHeight = 32;
 
-
 		main = new ModelRenderer(this);
-		main.setRotationPoint(0.0F, 3.0F, 0.0F);
-		main.cubeList.add(new ModelBox(main, 0, 1, -3.0F, -3.0F, -3.0F, 6, 7, 6, 0.0F, false));
-		main.cubeList.add(new ModelBox(main, 12, 1, -3.0F, 3.0F, -3.0F, 6, 0, 6, 0.0F, false));
+		main.setRotationPoint(0.0F, 20.0F, 0.0F);
+		main.cubeList.add(new ModelBox(main, 0, 0, -4.0F, -5.0F, -3.0F, 8, 9, 7, 0.0F, false));
 
 		trail = new ModelRenderer(this);
 		trail.setRotationPoint(0.0F, 4.0F, 0.0F);
 		main.addChild(trail);
-		trail.cubeList.add(new ModelBox(trail, 0, 14, -3.0F, 0.001F, -3.0F, 6, 4, 6, 0.0F, false));
+		trail.cubeList.add(new ModelBox(trail, 0, 21, -4.0F, 0.001F, -3.0F, 8, 4, 7, 0.0F, false));
 
 		top = new ModelRenderer(this);
 		top.setRotationPoint(0.0F, -3.0F, 0.0F);
 		main.addChild(top);
-		top.cubeList.add(new ModelBox(top, 0, 14, -3.0F, -3.999F, -3.0F, 6, 4, 6, 0.0F, false));
+		top.cubeList.add(new ModelBox(top, 0, 21, -4.0F, -5.999F, -3.0F, 8, 4, 7, 0.0F, false));
 	}
+
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -52,13 +51,13 @@ public class ModelWisp extends ModelBase {
 				this.trail.isHidden = true;
 				this.top.isHidden = false;
 				this.main.rotateAngleY = netHeadYaw * 0.017453292F;
-				this.main.rotateAngleX = headPitch * 0.017453292F;
+				this.main.rotateAngleX = headPitch * 0.017453292F + MathHelper.sin(ageInTicks * 1.0F) * 0.05F;
 			}
 			else {
 				this.trail.isHidden = false;
 				this.top.isHidden = true;
+				this.main.rotateAngleX = MathHelper.sin(ageInTicks * 1.0F) * 0.05F;
 			}
 		}
-		this.main.rotateAngleX = MathHelper.sin(ageInTicks * 1.0F) * 0.05F;
 	}
 }

@@ -29,7 +29,7 @@ public class ItemIceWand extends ItemBase{
         {
             if (!player.getCooldownTracker().hasCooldown(ModItems.ICE_WAND) && !player.getCooldownTracker().hasCooldown(ModItems.ICE_WAND_RED) && !world.isRemote) {
                 for (int k = 0; k < 10; ++k) {
-                    float f = (float) MathHelper.atan2(((double)pos.getZ()) - (player.posZ + 0.5), (double)pos.getX() - (player.posX + 0.5));
+                    float f = (float) MathHelper.atan2(((double)pos.getZ() + 0.5) - (player.posZ), ((double)pos.getX() + 0.5) - (player.posX));
                     double d2 = 1.5D * (double)(k + 1);
 
                     EntityIceCrystal crystal = new EntityIceCrystal(world, player.posX + (double) MathHelper.cos(f) * d2, player.posY, player.posZ + (double) MathHelper.sin(f) * d2, player.rotationYaw, k, player, flag);

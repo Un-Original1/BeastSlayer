@@ -1,38 +1,18 @@
 2.0 UPDATE
-Priest wisps
-priest anim
+
 trade items
-masks
 charms
-wind force
-
-
-
-ok, how do we fix the structures, simple, we add a beginning and an end to them, a bridge entry must be not available and that must be our entry, and the rest
-should be kept the same, my main concern is that this means that we'll mess this up, if I could find how jigsaw locates the intersections.
-
-
-
-witchcraft table
-
-structure
 
 FIRE GOD
 
 
 New entities
 
-For Frozen zones (all)
-
-Jungles (hostile - neutral)WIP NAMES!
-Wisps
-Fire God
-
 
 Dark oak forest (hostile - neutral)
 Plains (all)
 Birch forest (passive - neutral)
--Creatures should be nature-focused (not like jungles or tribal, much more fantazy like fairies or smth)
+
 normal forest (passive - neutral)
 ???
 Mountains (all)

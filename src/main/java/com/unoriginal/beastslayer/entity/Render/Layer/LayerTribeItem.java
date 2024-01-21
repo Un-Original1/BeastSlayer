@@ -1,6 +1,8 @@
 package com.unoriginal.beastslayer.entity.Render.Layer;
 
 
+import com.unoriginal.beastslayer.entity.Entities.EntityHunter;
+import com.unoriginal.beastslayer.entity.Entities.EntityPriest;
 import com.unoriginal.beastslayer.entity.Entities.EntityTribeWarrior;
 import com.unoriginal.beastslayer.entity.Model.ModelHunter;
 import com.unoriginal.beastslayer.entity.Model.ModelPriest;
@@ -14,6 +16,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -68,7 +71,26 @@ public class LayerTribeItem implements LayerRenderer<EntityLivingBase> {
             {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
+            if(livingBase instanceof EntityHunter){
+                EntityHunter hunter = (EntityHunter) livingBase;
+                if (hunter.isFiery() && !hunter.isSwingingArms()){
 
+                    GlStateManager.rotate(36.5F, 1.0F, 0F, 0F);
+
+                }
+            }
+            if(livingBase instanceof EntityPriest){
+                EntityPriest priest = (EntityPriest) livingBase;
+                ModelPriest model = (ModelPriest) this.livingEntityRenderer.getMainModel();
+                if (priest.getMagicUseTicksClient() >= 0){
+
+                    GlStateManager.rotate(model.getBody().rotateAngleX  * 180F / (float) Math.PI, 1.0F, 0F, 0F);
+                    GlStateManager.rotate(model.getBody().rotateAngleY  * 180F / (float) Math.PI, 0.0F, 1F, 0F);
+                    GlStateManager.rotate(model.getBody().rotateAngleZ  * 180F / (float) Math.PI, 0.0F, 0F, 1F);
+                    //GlStateManager.translate(0.0F, 0.2F, 0.0F);
+
+                }
+            }
             this.translateToHand(handSide);
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
@@ -76,15 +98,22 @@ public class LayerTribeItem implements LayerRenderer<EntityLivingBase> {
 
             if (this.livingEntityRenderer.getMainModel() instanceof ModelHunter)
            {
-               GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.525F); //the z value affects the item pos on the model's y-axis. The lower the value the lower the pos
+
+               GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.5625F); //the z value affects the item pos on the model's y-axis. The lower the value the lower the pos
 
 
             }
             else if (this.livingEntityRenderer.getMainModel() instanceof ModelPriest)
             {
-                GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.54F);
-
-
+                if(livingBase instanceof EntityPriest) {
+                    EntityPriest p = (EntityPriest) livingBase;
+                    if(p.getMagicUseTicksClient() >= 0){
+                        GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.5625F);
+                    } else {
+                        GlStateManager.translate((float) (flag ? -1 : 1) / 16.0F, 0.125F, -0.46875F);
+                    }
+                    //GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.5625F);
+                }
             }
             else if (this.livingEntityRenderer.getMainModel() instanceof ModelTank)
             {
@@ -92,7 +121,7 @@ public class LayerTribeItem implements LayerRenderer<EntityLivingBase> {
 
 
             } else {
-                GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
+                GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -1F);
             }
 
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(livingBase, itemstack, camera, flag); //item renderer (the item in question, not pos)
@@ -103,7 +132,7 @@ public class LayerTribeItem implements LayerRenderer<EntityLivingBase> {
     protected void translateToHand(EnumHandSide hand)
     {
         if(this.livingEntityRenderer.getMainModel() instanceof ModelTribeWarrior) {
-            ((ModelTribeWarrior) this.livingEntityRenderer.getMainModel()).getArm(hand).postRender(0.0625F);
+            ((ModelTribeWarrior) this.livingEntityRenderer.getMainModel()).getArm(hand).postRender(0.0625F); //1 / 16 what does it mean?
         }
         else if (this.livingEntityRenderer.getMainModel() instanceof ModelHunter)
         {

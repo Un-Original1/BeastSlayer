@@ -24,6 +24,7 @@ public class ModPotions {
     public static final PotionGhostly GHOSTLY = (PotionGhostly) new PotionGhostly(false, 1486006).setRegistryName(BeastSlayer.MODID, "ghostly");
     public static final PotionRifted RIFTED = (PotionRifted) new PotionRifted(false, 6335322).setRegistryName(BeastSlayer.MODID, "rifted");
     public static final PotionUndead UNDEAD = (PotionUndead) new PotionUndead(false, 989477).setRegistryName(BeastSlayer.MODID,"undead");
+    public static final PotionTarget TARGETED = (PotionTarget) new PotionTarget(true, 12650761).setRegistryName(BeastSlayer.MODID,"target");
 
     public static PotionType ghostly =  new PotionType("potionGhostly", new PotionEffect[]{new PotionEffect(ModPotions.GHOSTLY, 100)}).setRegistryName("poison_ghostly");
     public static PotionType longGhostly = new PotionType("potionGhostly", new PotionEffect[]{new PotionEffect(ModPotions.GHOSTLY, 200)}).setRegistryName("long_potion_ghostly");
@@ -41,7 +42,8 @@ public class ModPotions {
                 POSSESSED,
                 GHOSTLY,
                 RIFTED,
-                UNDEAD
+                UNDEAD,
+                TARGETED
         );
     }
     @SubscribeEvent

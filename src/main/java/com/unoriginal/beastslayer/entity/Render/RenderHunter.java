@@ -15,15 +15,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderHunter extends RenderLiving<EntityHunter> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("ancientbeasts:textures/entity/tribe/tribe_h.png");
-    private static final ResourceLocation FIRE = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_h.png");
-    private static final ResourceLocation OVERLAY = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_h_e.png"); //+25 saturation
-    private static final ResourceLocation CAMO = new ResourceLocation("ancientbeasts:textures/entity/tribe/tribe_h_camo.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("ancientbeasts:textures/entity/tribe/hunter.png");
+    private static final ResourceLocation FIRE = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_hunter.png");
+    private static final ResourceLocation OVERLAY2 = new ResourceLocation("ancientbeasts:textures/entity/tribe/hunter_e.png");
+    private static final ResourceLocation OVERLAY = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_hunter_e.png"); //+25 saturation
+    private static final ResourceLocation CAMO = new ResourceLocation("ancientbeasts:textures/entity/tribe/hunter_camo.png");
     public static final Factory FACTORY = new Factory();
 
     public RenderHunter(RenderManager manager) {
         super(manager, new ModelHunter(), 0.8F);
-        this.addLayer(new LayerGlowIf(this, OVERLAY));
+        this.addLayer(new LayerGlowIf(this, OVERLAY, OVERLAY2));
         this.addLayer(new LayerTribeItem(this));
     }
 

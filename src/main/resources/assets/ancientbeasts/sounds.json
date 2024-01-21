@@ -372,5 +372,19 @@
       "sounds" : [
           "ancientbeasts:kunai_hit"
       ]
-    }
+  },
+  "smoke":{
+    "subtitle":"subtitles.smoke_bomb",
+    "sounds":[
+        "ancientbeasts:smoke"
+    ]
+  },
+  "shockwave":{
+    "subtitle":"subtitles.shockwave",
+    "sounds":[
+        "ancientbeasts:shockwave_1",
+        "ancientbeasts:shockwave_2",
+        "ancientbeasts:shockwave_3"
+    ]
+  }
 }

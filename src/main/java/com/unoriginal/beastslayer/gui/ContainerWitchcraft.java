@@ -28,7 +28,7 @@ public class ContainerWitchcraft extends Container {
         this.inventoryWitchcraft = inventoryWitchcraft;
         this.result = witchcraftResult;
         this.handler = new WitchcraftRecipeHandler(player.world);
-        //
+
         this.addSlotToContainer(new SlotWitchCraft(inventoryWitchcraft, 0, 30 + 18, 17));
         for(int x = 0; x < 3; ++x){
             this.addSlotToContainer(new SlotWitchCraft(inventoryWitchcraft, x + 1, 30 + x * 18, 17 + 18));
@@ -41,10 +41,10 @@ public class ContainerWitchcraft extends Container {
                 this.addSlotToContainer(new Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18)); //inv
             }
         for (int x = 0; x < 9; ++x) {
-            this.addSlotToContainer(new Slot(playerInventory, x, 8 + x * 18, 142)); //main
+            this.addSlotToContainer(new Slot(playerInventory, x, 8 + x * 18, 142)); //main hand
         }
 
-        this.addSlotToContainer(new SlotWitchResult(player, this.inventoryWitchcraft, this.result,0, 124,35, this.handler));
+        this.addSlotToContainer(new SlotWitchResult(player, this.inventoryWitchcraft, this.result,0, 124,35, this.handler, this.result));
 
     }
 
@@ -77,6 +77,7 @@ public class ContainerWitchcraft extends Container {
                 ItemStack result = this.handler.getResults(list);
                 if (result != null && !this.handler.world.isRemote) {
                     this.result.setInventorySlotContents(0, result);
+                    this.handler.setLastCraftablebyQuality(0, null);
                     BeastSlayerPacketHandler.sendPacketToAllPlayers(new MessageItemWitchcraft(null, result));
 
             }
@@ -104,22 +105,29 @@ public class ContainerWitchcraft extends Container {
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-            if (index == 0)
+            // //42 is the max size of our slots
+            if (index == 0) //guess index is the slot we click,  merge item stack the range we can return it to
             {
                 itemstack1.getItem().onCreated(itemstack1, playerIn.world, playerIn);
 
-                if (!this.mergeItemStack(itemstack1, 10, 46, true))
+                if (!this.mergeItemStack(itemstack1, 5, 42, true))
                 {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
             }
-            if (index < 45 && index > 8) {
-                if (!this.mergeItemStack(itemstack1, 0, 9, false))
+            else if (index < 32 && index > 5) { //5 - 31
+                if (!this.mergeItemStack(itemstack1, 32, 42, false)) {
                     return ItemStack.EMPTY;
+                }
+            } else if (index < 42 && index >= 32){ // 32 - 41
+                if (!this.mergeItemStack(itemstack1, 5, 32, false)) {
+                    return ItemStack.EMPTY;
+                }
             }
-            else if (!this.mergeItemStack(itemstack1, 9, 45, true)) {
+
+            else if (!this.mergeItemStack(itemstack1, 5, 42, false)) { //1-5
                 return ItemStack.EMPTY;
             }
 

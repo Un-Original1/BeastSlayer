@@ -1,17 +1,22 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModItems;
+import com.unoriginal.beastslayer.init.ModSounds;
+import com.unoriginal.beastslayer.items.ItemMask;
 import com.unoriginal.beastslayer.items.ItemWindforce;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRangedBow;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +25,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
@@ -35,6 +41,7 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
 
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityHunter.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CAMOUFLAGED = EntityDataManager.createKey(EntityHunter.class, DataSerializers.BOOLEAN);
+    private ResourceLocation TRADE = new ResourceLocation(BeastSlayer.MODID, "trades/Hunter");
     private final EntityAIAttackRangedBow<EntityHunter> aiArrowAttack = new EntityAIAttackRangedBow<>(this, 1.0D, 20, 20.0F);
    private int camoTicks;
     private int camoCD;
@@ -201,6 +208,7 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
         if (this.getAttackTarget() != null && --this.camoCD <= 0 && !this.isCamo() && !this.isFiery() && !this.world.isRemote){
             this.setCamouflaged(true);
             this.camoTicks = 400 + rand.nextInt(400);
+            this.playSound(ModSounds.SMOKE, 0.75F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
         }
         if(--this.camoTicks <= 0 && this.isCamo() && !this.world.isRemote){
             this.setCamouflaged(false);
@@ -265,6 +273,18 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
     @SideOnly(Side.CLIENT)
     public int getCamoTicks(){
         return this.camoTicks;
+    }
+
+    @Nullable
+    @Override
+    protected ResourceLocation getBarteringTable()
+    {
+        return TRADE;
+    }
+    public boolean shouldTradeWithplayer(EntityPlayer player){
+        Item stack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
+        boolean b = stack instanceof ItemMask && ((ItemMask) stack).getTier() >=0;
+        return super.shouldTradeWithplayer(player) && !this.isCamo() && b;
     }
 
 }

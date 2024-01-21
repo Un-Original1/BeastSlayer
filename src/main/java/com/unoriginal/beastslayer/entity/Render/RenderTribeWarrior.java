@@ -14,15 +14,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderTribeWarrior extends RenderLiving<EntityTribeWarrior> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("ancientbeasts:textures/entity/tribe/tribe_w.png");
-    private static final ResourceLocation FIRE = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_w.png");
-    private static final ResourceLocation OVERLAY = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_w_e.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("ancientbeasts:textures/entity/tribe/marauder.png");
+    private static final ResourceLocation FIRE = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_marauder.png");
+    private static final ResourceLocation OVERLAY = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_marauder_e.png");
+    private static final ResourceLocation OVERLAY2 = new ResourceLocation("ancientbeasts:textures/entity/tribe/marauder_e.png");
     public static final Factory FACTORY = new Factory();
 
     public RenderTribeWarrior(RenderManager manager)
     {
         super(manager, new ModelTribeWarrior(), 0.8F);
-        this.addLayer(new LayerGlowIf(this, OVERLAY));
+        this.addLayer(new LayerGlowIf(this, OVERLAY, OVERLAY2));
         this.addLayer(new LayerTribeItem(this));
     }
     public void transformHeldFull3DItemLayer()

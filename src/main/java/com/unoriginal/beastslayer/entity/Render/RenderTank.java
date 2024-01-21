@@ -16,17 +16,18 @@ import javax.annotation.Nullable;
 
 @SideOnly(Side.CLIENT)
 public class RenderTank extends RenderLiving<EntityTank> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("ancientbeasts:textures/entity/tribe/tribe_t.png");
-    private static final ResourceLocation FIRE = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_t.png");
-    private static final ResourceLocation OVERLAY = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_t_e.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("ancientbeasts:textures/entity/tribe/scorcher.png");
+    private static final ResourceLocation OVERLAY2 = new ResourceLocation("ancientbeasts:textures/entity/tribe/scorcher_e.png");
+    private static final ResourceLocation FIRE = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_scorcher.png");
+    private static final ResourceLocation OVERLAY = new ResourceLocation("ancientbeasts:textures/entity/tribe/fire_scorcher_e.png");
     public static final Factory FACTORY = new Factory();
     public RenderTank(RenderManager manager) {
         super(manager, new ModelTank(), 1.2F);
-        this.addLayer(new LayerGlowIf(this, OVERLAY));
+        this.addLayer(new LayerGlowIf(this, OVERLAY, OVERLAY2));
         this.addLayer(new LayerTribeItem(this));
     }
     public void transformHeldFull3DItemLayer() {
-        GlStateManager.translate(0.09375F, 11875F, 0.0F);
+        GlStateManager.translate(0.09375F, 0.1875F, 0.0F);
     }
     @Nullable
     @Override

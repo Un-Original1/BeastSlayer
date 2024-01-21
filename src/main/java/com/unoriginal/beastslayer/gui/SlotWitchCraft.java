@@ -2,7 +2,6 @@ package com.unoriginal.beastslayer.gui;
 
 import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.init.ModItems;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -13,11 +12,8 @@ import java.util.Set;
 
 public class SlotWitchCraft extends Slot {
 
-    private static final Set<Item> TAME_ITEMS = Sets.newHashSet(
-            ModItems.CURSED_WOOD,
-            ModItems.DARK_GOOP,
+    private static final Set<Item> CRAFT_ITEMS = Sets.newHashSet(
             ModItems.DUST,
-            ModItems.WISP_BOTTLE,
             ModItems.BROKEN_TALISMAN,
             ModItems.TABLET,
             ModItems.CLOTH
@@ -29,6 +25,6 @@ public class SlotWitchCraft extends Slot {
     //basically just for item classification
     @Override
     public boolean isItemValid(@Nullable ItemStack stack) {
-        return stack == null || TAME_ITEMS.contains(stack.getItem());
+        return stack == null || CRAFT_ITEMS.contains(stack.getItem());
     }
 }

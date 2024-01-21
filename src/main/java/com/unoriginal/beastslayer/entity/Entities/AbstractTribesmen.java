@@ -62,6 +62,7 @@ public class AbstractTribesmen extends EntityMob {
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, AbstractTribesmen.class, p_apply_1_ -> p_apply_1_.isFiery() && p_apply_1_ != this && !this.isFiery(),this.avoidDistance(20F), 1.0F, 1.5F));
+        this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, Predicate -> !this.isFiery() && this.getHealth() < this.getMaxHealth() / 4F,8.0F, 1.0, 1.2));
         this.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(this, AbstractTribesmen.class, 10, true, false, p_apply_1_ -> !p_apply_1_.isFiery() && this.isFiery()));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this,EntityPlayer.class, 10, true, false, p_apply_1_ -> this.isFiery()));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
@@ -119,7 +120,7 @@ public class AbstractTribesmen extends EntityMob {
         }
         if(this.isTrading() && !this.isFiery()){
             if(--this.tradeTicks <= 0 && !this.world.isRemote){
-                this.dropBartering();
+                this.dropBartering(null);
                 this.swingArm(EnumHand.MAIN_HAND);
                 this.setTrading(false);
                 this.getHeldItemMainhand().setCount(0);
@@ -198,7 +199,7 @@ public class AbstractTribesmen extends EntityMob {
         return null;
     }
 
-    protected void dropBartering()
+    protected void dropBartering(@Nullable EntityPlayer player)
     {
         ResourceLocation resourcelocation = this.sellingTable;
 
@@ -210,8 +211,8 @@ public class AbstractTribesmen extends EntityMob {
         if (resourcelocation != null) {
             LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(resourcelocation);
             this.sellingTable = null;
-            LootContext.Builder lootcontext$builder = (new LootContext.Builder((WorldServer) this.world)).withLootedEntity(this);
-
+            LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) this.world);
+            //TODO add Player to loottable context
             List<ItemStack> itemlist = loottable.generateLootForPools(this.sellingTableSeed == 0L ? this.rand : new Random(this.sellingTableSeed), lootcontext$builder.build());
             if (itemlist.size() > 0){
                 ItemStack itemstack = itemlist.get(0);

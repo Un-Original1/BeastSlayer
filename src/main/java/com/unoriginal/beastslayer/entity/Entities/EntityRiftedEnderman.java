@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModParticles;
+import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -220,6 +221,7 @@ public class EntityRiftedEnderman extends EntityMob {
                 List<EntityLiving> list = this.world.getEntitiesWithinAABB(EntityLiving.class, this.getEntityBoundingBox().grow(3D, 1D, 3D), selector);
                 if(!list.isEmpty()) {
                     this.shockwaveTicks = 20;
+                    this.playSound(ModSounds.SHOCKWAVE, 1.0F, 1.0F);
                     this.world.setEntityState(this, (byte) 10);
                     for (EntityLiving living : list){
                         if(!(living instanceof EntityRiftedEnderman)) {

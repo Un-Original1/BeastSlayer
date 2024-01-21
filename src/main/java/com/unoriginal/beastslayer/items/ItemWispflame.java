@@ -3,15 +3,13 @@ package com.unoriginal.beastslayer.items;
 import com.unoriginal.beastslayer.entity.Entities.EntityWispfire;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -85,6 +83,7 @@ public class ItemWispflame extends ItemBase{
                 Vec3d vec3d = player.getLookVec();
                 entityWispfire.setPosition(player.posX + vec3d.x * 1.4D,player.posY + vec3d.y + player.getEyeHeight(), player. posZ + vec3d.z * 1.4D);
                 entityWispfire.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.0F, 1.0F);
+                player.world.playSound(null ,player.posX, player.posY, player.posZ, SoundEvents.ITEM_FIRECHARGE_USE,SoundCategory.PLAYERS, 1.0F, (itemRand.nextFloat() - itemRand.nextFloat()) * 0.2F + 1.0F);
                 player.world.spawnEntity(entityWispfire);
                 if(player instanceof EntityPlayer){
                     EntityPlayer p = (EntityPlayer) player;

@@ -1,6 +1,5 @@
 package com.unoriginal.beastslayer.gui;
 
-import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.init.ModPotions;
@@ -48,6 +47,8 @@ public class GuiWiki extends GuiScreen {
     public static GuiWiki self;
 
     private HintButton hintButton;
+    private HintButton hintButton2;
+    private HintButton hintButton3;
     private float time = 0F;
 
     public GuiWiki(ItemStack book) {
@@ -99,14 +100,19 @@ public class GuiWiki extends GuiScreen {
                 this.pageButton3 = this.addButton(new CreaturePageButton(15 + x, 207 + i - xpos, 65 + (((x / 3) - 1) * 21), x + 12, x + 15, 2));
             }
         }
-        for(int y = 0; y < 46; y++) {
+        //for(int y = 0; y < 46; y++) {
           //0, ..., 14
 
-             for (int x = 0; x < 3; x++) { //0, 1, 2
-                 this.hintButton = this.addButton(new HintButton((x+70) + (y+1), (this.width - 208 + (54 * x)) / 2, 129, y, x, y + 3)); //hint = 61 and above
+         //    for (int x = 0; x < 3; x++) { //0, 1, 2
+                 int y = 0;
+                 this.hintButton = this.addButton(new HintButton((0+70) + (y+1), (this.width - 208 + (54 * 0)) / 2, 129, 0, 0, y + 3)); //hint = 71 and above
+                 this.hintButton2 = this.addButton(new HintButton((1+70) + (y+1), (this.width - 208 + (54 * 1)) / 2, 129, 0, 1, y + 3));
+                 this.hintButton3 = this.addButton(new HintButton((2+70) + (y+1), (this.width - 208 + (54 * 2)) / 2, 129, 0, 2, y + 3));
                  //154 100
-             }
-         }
+                 //currpage can be called from here and stored correctly?
+                    //Nope, it can't
+           //  }
+       //  }
      /*   }*/
         this.updateButtons();
     }
@@ -175,8 +181,8 @@ public class GuiWiki extends GuiScreen {
 
             if(button instanceof HintButton){
                 HintButton hintButton = (HintButton) button;
-                button.visible = this.currPage == hintButton.getRenderOrder();
-                button.enabled = this.currPage == hintButton.getRenderOrder();
+                button.visible = this.currPage > 2;
+                button.enabled = this.currPage > 2;
             }
 
         }
@@ -255,6 +261,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(4);
                 this.drawBiome(3);
+                this.updateHintPage(0);
                // this.drawEvenMoreStuff(12);
                 this.drawItemType(2, 56);
                 this.drawItemStack(new ItemStack(ModItems.RIFTED_PEARL), (this.width + 58 * 2) / 2,54);
@@ -282,6 +289,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
+                this.updateHintPage(1);
                 this.drawItemStack(new ItemStack(ModItems.SHIELD_BOOK), (this.width + 30 * 2) / 2,54);
                 this.drawItemStack(new ItemStack(Items.BONE), (this.width + 58 * 2) / 2 ,54);
                 this.drawItemStack(new ItemStack(Items.EMERALD), (this.width + 86 * 2)/ 2 ,54);
@@ -307,6 +315,7 @@ public class GuiWiki extends GuiScreen {
                 ItemStack potionIn = new ItemStack(Items.POTIONITEM);
                 PotionUtils.addPotionToItemStack(potionIn, PotionTypes.AWKWARD);
                 this.drawItemStack(potionIn, (this.width + 57 * 2) / 2 ,126);
+                this.updateHintPage(2);
                 this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 30 * 2) / 2 ,99);
                 this.drawText(1, 4, 28, "entity.Ghost.name");
                 GlStateManager.popMatrix();
@@ -322,6 +331,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(1);
                 this.drawBiome(3);
                 //this.drawEvenMoreStuff(3);
+                this.updateHintPage(3);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -342,6 +352,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(1);
                 this.drawBiome(1);
                 //this.drawEvenMoreStuff(6);
+                this.updateHintPage(4);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -362,6 +373,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(1);
                 this.drawBiome(4);
              //   this.drawEvenMoreStuff(8);
+                this.updateHintPage(5);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -383,6 +395,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(1);
                 this.drawBiome(1);
               //  this.drawEvenMoreStuff(13);
+                this.updateHintPage(6);
                 this.drawItemType(2, 56);
                 this.drawItemStack(new ItemStack(ModItems.DARK_GOOP), (this.width + 58 * 2) / 2 ,54);
                 ItemStack potionIn2 = new ItemStack(Items.POTIONITEM);
@@ -406,6 +419,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(1);
                 this.drawBiome(3);
                // this.drawEvenMoreStuff(14);
+                this.updateHintPage(7);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -426,6 +440,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(3);
                 this.drawBiome(1);
                 //this.drawEvenMoreStuff(7);
+                this.updateHintPage(8);
                 this.drawItemType(0, 0);
                 this.drawItemType(1, 56);
                 this.drawItemType(1, 114);
@@ -446,6 +461,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(0);
                 this.drawBiome(0);
                 //this.drawEvenMoreStuff(0);
+                this.updateHintPage(9);
                 this.drawItemType(0, 0);
                 this.drawItemType(0, 56);
                 this.drawItemType(2, 114);
@@ -468,6 +484,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(0);
                 this.drawBiome(6);
               //  this.drawEvenMoreStuff(11);
+                this.updateHintPage(10);
                 this.drawItemType(1, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -488,6 +505,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(0);
                 this.drawBiome(4);
                 //this.drawEvenMoreStuff(10);
+                this.updateHintPage(11);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -508,6 +526,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(2);
                 this.drawBiome(2);
                 //this.drawEvenMoreStuff(4);
+                this.updateHintPage(12);
                 this.drawItemType(0, 0);
                 this.drawItemType(1, 56);
                 this.drawItemType(1, 114);
@@ -528,6 +547,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(2);
                 this.drawBiome(2);
              //   this.drawEvenMoreStuff(5);
+                this.updateHintPage(13);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -548,6 +568,7 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(5);
                 this.drawBiome(5);
               //  this.drawEvenMoreStuff(9);
+                this.updateHintPage(14);
                 this.drawItemType(0, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
@@ -781,6 +802,11 @@ public class GuiWiki extends GuiScreen {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
     }
+    public void updateHintPage(int creatureNum){
+        hintButton.setCreatureNum(creatureNum);
+        hintButton2.setCreatureNum(creatureNum);
+        hintButton3.setCreatureNum(creatureNum);
+    }
 
     private void drawRecipe(int recipeIn){
         int c = (this.width - X) / 2;
@@ -983,6 +1009,14 @@ public class GuiWiki extends GuiScreen {
             return this.renderOrder;
         }
 
+        public void setNum2(int num2){
+            this.num2 = num2;
+        }
+
+        public void setCreatureNum(int creatureNum){
+            this.creatureNum = creatureNum;
+        }
+
 
         @Override
         public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
@@ -1041,7 +1075,7 @@ public class GuiWiki extends GuiScreen {
                 case 2: //ghost
                     switch (this.num2){
                         case 0:
-                            drawModalRectWithCustomSizedTexture(this.x, this.y, 1, 16, 23, 13, 576, 112);
+                            drawModalRectWithCustomSizedTexture(this.x, this.y, 1, 31, 23, 13, 576, 112);
                             break;
                         case 1:
                             drawModalRectWithCustomSizedTexture(this.x, this.y,26, 31, 23, 13, 576, 112);

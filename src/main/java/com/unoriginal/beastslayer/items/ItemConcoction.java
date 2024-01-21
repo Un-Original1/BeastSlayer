@@ -23,7 +23,7 @@ public class ItemConcoction extends ItemBase {
         super(name );
         this.setMaxStackSize(1);
         this.setCreativeTab(BeastSlayer.BEASTSTAB);
-        this.setMaxDamage(64);
+        this.setMaxDamage(16);
     }
 
     public EnumAction getItemUseAction(ItemStack stack)

@@ -4,18 +4,15 @@ import com.unoriginal.beastslayer.gui.GuiWiki;
 import com.unoriginal.beastslayer.init.ModEntities;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.init.ModParticles;
-import com.unoriginal.beastslayer.items.models.ModelCharredCloak;
-import com.unoriginal.beastslayer.items.models.ModelMinerHelmet;
-import com.unoriginal.beastslayer.items.models.ModelScaleArmor;
-import com.unoriginal.beastslayer.particles.*;
+import com.unoriginal.beastslayer.items.models.*;
+import com.unoriginal.beastslayer.particles.ParticleRift;
+import com.unoriginal.beastslayer.particles.ParticleSandSpit;
+import com.unoriginal.beastslayer.particles.ParticleWispFire;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,6 +22,10 @@ public class ClientProxy extends CommonProxy
     private final ModelBiped MODEL_SCALE_ARMOR = new ModelScaleArmor(0.5F);
     private final ModelBiped MODEL_CHARRED_ARMOR = new ModelCharredCloak(1.0F);
     private final ModelBiped MODEL_MINER_HELMET = new ModelMinerHelmet(0.75F);
+    private final ModelBiped MODEL_MASK_W = new MaskMarauder(0.0F);
+    private final ModelBiped MODEL_MASK_H = new MaskHunter(0.0F);
+    private final ModelBiped MODEL_MASK_S = new MaskScorcher(0.0F);
+    private final ModelBiped MODEL_MASK_P = new MaskSpiritweaver(0.0F);
 
     @Override
     public void preInit(FMLPreInitializationEvent e) {
@@ -47,6 +48,18 @@ public class ClientProxy extends CommonProxy
         }
         if(item == ModItems.MINER_HELMET){
             return MODEL_MINER_HELMET;
+        }
+        if(item == ModItems.MASK_W){
+            return MODEL_MASK_W;
+        }
+        if(item == ModItems.MASK_H){
+            return MODEL_MASK_H;
+        }
+        if(item == ModItems.MASK_S){
+            return MODEL_MASK_S;
+        }
+        if(item == ModItems.MASK_P){
+            return MODEL_MASK_P;
         }
         return null;
     }

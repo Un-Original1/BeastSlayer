@@ -206,8 +206,11 @@ public class EntityWindforceDart extends EntityProjectileGeneric {
                 if(sort) {
                     list2.sort(Comparator.comparingDouble(t -> t.getDistanceSq(this.posX, this.posY, this.posZ)));
                 }
-                target = list2.get(0);
-            } else if (!livingBase.isOnSameTeam(this.owner)) {
+                if((this.getOwner() instanceof AbstractTribesmen && list2.get(0) instanceof AbstractTribesmen && ((AbstractTribesmen)list2.get(0)).isFiery()) || !(this.getOwner() instanceof AbstractTribesmen)) //this should prevent tribesmen to kill themselves
+                {
+                    target = list2.get(0);
+                }
+            } else if (!livingBase.isOnSameTeam(this.owner) && ((this.getOwner() instanceof AbstractTribesmen && livingBase instanceof AbstractTribesmen && ((AbstractTribesmen)livingBase).isFiery())) || !(this.getOwner() instanceof AbstractTribesmen)) {
                 target = livingBase;
             }
         }

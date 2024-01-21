@@ -11,19 +11,22 @@ import net.minecraft.util.ResourceLocation;
 
 public class LayerGlowIf implements LayerRenderer<EntityLiving> {
     private final ResourceLocation TEXTURE;
+    private final ResourceLocation TEXTURE2;
     private final RenderLiving renderLiving;
 
-    public LayerGlowIf(RenderLiving renderLiving, ResourceLocation resourceLocation)
+    public LayerGlowIf(RenderLiving renderLiving, ResourceLocation resourceLocation, ResourceLocation resourceLocation2)
     {
         this.renderLiving = renderLiving;
         TEXTURE = resourceLocation;
+        TEXTURE2 = resourceLocation2;
     }
 
     public void doRenderLayer(EntityLiving entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        if(entitylivingbaseIn instanceof AbstractTribesmen && ((AbstractTribesmen) entitylivingbaseIn).isFiery()) {
-            if (TEXTURE != null) {
-                this.renderLiving.bindTexture(TEXTURE);
+        if(entitylivingbaseIn instanceof AbstractTribesmen) {
+            AbstractTribesmen tribesmen = (AbstractTribesmen)entitylivingbaseIn;
+            if (TEXTURE != null && TEXTURE2 != null) {
+                this.renderLiving.bindTexture(tribesmen.isFiery() ? TEXTURE : TEXTURE2);
             }
 
             GlStateManager.enableBlend();

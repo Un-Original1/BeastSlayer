@@ -2,7 +2,6 @@ package com.unoriginal.beastslayer.proxy;
 
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.blocks.tile.TileEntityMovingLight;
-import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.gui.ABGuiHandler;
 import com.unoriginal.beastslayer.init.*;
 import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
@@ -18,12 +17,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import paulscode.sound.SoundSystem;
-
-import java.lang.reflect.Field;
 
 @Mod.EventBusSubscriber
 public class CommonProxy
@@ -58,8 +55,12 @@ public class CommonProxy
         ConfigManager.sync(BeastSlayer.MODID, Config.Type.INSTANCE);
         OreDictionary.registerOre("ectoplasm", ModItems.ECTOPLASM);
         NetworkRegistry.INSTANCE.registerGuiHandler(BeastSlayer.instance, new ABGuiHandler());
+
     }
    public void postInit(FMLPostInitializationEvent e) {
+   }
+   @Mod.EventHandler
+   public void ServerLoad(FMLServerStartingEvent e){
 
    }
 

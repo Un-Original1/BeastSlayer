@@ -7,6 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemCactusBroth extends ItemFood{
@@ -16,7 +17,7 @@ public class ItemCactusBroth extends ItemFood{
         setRegistryName(name);
         setUnlocalizedName(name);
         setCreativeTab(BeastSlayer.BEASTSTAB);
-        this.setMaxStackSize(64);
+        this.setMaxStackSize(1);
     }
     protected void onFoodEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
@@ -26,9 +27,11 @@ public class ItemCactusBroth extends ItemFood{
             }
         }
     }
+    @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
         super.onItemUseFinish(stack, worldIn, entityLiving);
+
         return new ItemStack(Items.BOWL);
     }
 }

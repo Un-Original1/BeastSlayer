@@ -3,6 +3,7 @@ package com.unoriginal.beastslayer.items;
 import com.unoriginal.beastslayer.entity.Entities.EntityLilVessel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -22,6 +23,16 @@ public class ItemVessel extends ItemBase{
     {
         ItemStack itemstack = player.getHeldItem(hand);
         pos = pos.offset(facing);
+        int i = world.rand.nextInt(2);
+        NBTTagCompound compound = itemstack.getTagCompound();
+        if(compound == null){
+            compound = new NBTTagCompound();
+            itemstack.setTagCompound(compound);
+        }
+        if(!compound.hasKey("Variant")) {
+            compound.setInteger("Variant", i);
+        }
+
         if (world.isAirBlock(pos))
         {
             if (!world.isRemote) {
@@ -36,7 +47,7 @@ public class ItemVessel extends ItemBase{
 
                     if (world.isBlockModifiable(player, blockpos) && player.canPlayerEdit(blockpos, raytraceresult.sideHit, itemstack)) {
                         EntityLilVessel lilV = new EntityLilVessel(world, player, this.getDamage(itemstack));
-                        lilV.setVariant(world.rand.nextInt(2));
+                        lilV.setVariant(compound.getInteger("Variant"));
                         if (itemstack.hasDisplayName()) {
                             lilV.setCustomNameTag(itemstack.getDisplayName());
                         }
