@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer.proxy;
 
+import com.unoriginal.beastslayer.animation.IAnimatedEntity;
 import com.unoriginal.beastslayer.gui.GuiWiki;
 import com.unoriginal.beastslayer.init.ModEntities;
 import com.unoriginal.beastslayer.init.ModItems;
@@ -9,6 +10,7 @@ import com.unoriginal.beastslayer.particles.ParticleRift;
 import com.unoriginal.beastslayer.particles.ParticleSandSpit;
 import com.unoriginal.beastslayer.particles.ParticleWispFire;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -70,5 +72,19 @@ public class ClientProxy extends CommonProxy
         Minecraft.getMinecraft().displayGuiScreen(new GuiWiki(bestiary));
     }
 
-
+    @Override
+    public void handleAnimationPacket(int entityId, int index) {
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        if (player != null) {
+            IAnimatedEntity entity = (IAnimatedEntity) player.world.getEntityByID(entityId);
+            if (entity != null) {
+                if (index == -1) {
+                    entity.setAnimation(IAnimatedEntity.NO_ANIMATION);
+                } else {
+                    entity.setAnimation(entity.getAnimations()[index]);
+                }
+                entity.setAnimationTick(0);
+            }
+        }
+    }
 }

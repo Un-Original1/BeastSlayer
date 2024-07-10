@@ -66,4 +66,8 @@ public class CommonProxy
 
    }
 
+    public void handleAnimationPacket(int entityId, int index) {
+
+    }
+
 }

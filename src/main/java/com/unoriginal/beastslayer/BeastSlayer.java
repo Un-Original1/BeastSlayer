@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import org.apache.logging.log4j.Logger;
 
 
@@ -47,6 +48,22 @@ public class BeastSlayer
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         commonProxy.postInit(e);
+    }
+
+
+    /**
+     * Make sure Unseen finishes this before going public using this animation system!
+     * Reference this for examples
+     * https://github.com/Jboymercs/test-ai-3/tree/main/animation/example
+     * @param message
+     * @param <MSG>
+     */
+    public static <MSG extends IMessage> void sendMSGToAll(MSG message) {
+        //TODO Still searching for proper method
+        //  for(EntityPlayerMP playerMP : Minecraft.getMinecraft().) {
+        //  sendNonLocal(message, playerMP);
+        //  }
+        //network.sendToAll(message);
     }
 
 }

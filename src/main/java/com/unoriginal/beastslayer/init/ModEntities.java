@@ -5,6 +5,7 @@ import static net.minecraftforge.common.BiomeDictionary.Type;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.entity.Render.*;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
@@ -16,8 +17,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Set;
 
 @Mod.EventBusSubscriber
 public class ModEntities

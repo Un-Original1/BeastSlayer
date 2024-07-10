@@ -1,6 +1,6 @@
 package com.unoriginal.beastslayer.entity.Render;
 
-import com.unoriginal.beastslayer.entity.Entities.EntityFireElemental;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.entity.Model.ModelFireElemental;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

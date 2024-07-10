@@ -1,14 +1,12 @@
 package com.unoriginal.beastslayer.blocks;
 
 import com.unoriginal.beastslayer.BeastSlayer;
-import com.unoriginal.beastslayer.entity.Entities.EntityFireElemental;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
