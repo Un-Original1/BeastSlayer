@@ -1,9 +1,7 @@
-2.0 UPDATE
+2.0 TODO STUFF
 
-trade items
-charms
-
-FIRE GOD
+Mainly fire elemental bossfight, there is an annotation in its class of some attack ideas, ask if instructions unclear
+everything else is on our clickup
 
 
 New entities
