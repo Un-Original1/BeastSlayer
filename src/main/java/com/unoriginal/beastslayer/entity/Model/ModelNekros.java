@@ -24,39 +24,45 @@ public class ModelNekros extends ModelBase {
 	private State state = State.NORMAL;
 
 	public ModelNekros() {
-		textureWidth = 64;
-		textureHeight = 64;
-
-		arm_left = new ModelRenderer(this);
-		arm_left.setRotationPoint(3.0F, 3.0F, -1.0F);
-		arm_left.cubeList.add(new ModelBox(arm_left, 40, 32, 0.0F, -1.0F, -1.0F, 4, 8, 4, 0.0F, false));
-		arm_left.cubeList.add(new ModelBox(arm_left, 20, 32, 0.0F, -1.0F, 3.0F, 4, 10, 6, 0.0F, false));
-		arm_left.cubeList.add(new ModelBox(arm_left, 0, 48, 0.0F, 7.0F, -1.0F, 4, 5, 4, 0.25F, false));
-
-		arm_right = new ModelRenderer(this);
-		arm_right.setRotationPoint(-3.0F, 3.0F, -1.0F);
-		arm_right.cubeList.add(new ModelBox(arm_right, 40, 32, -4.0F, -1.0F, -1.0F, 4, 10, 4, 0.0F, true));
-		arm_right.cubeList.add(new ModelBox(arm_right, 20, 32, -4.0F, -1.0F, 3.0F, 4, 10, 6, 0.0F, true));
-		arm_right.cubeList.add(new ModelBox(arm_right, 0, 48, -4.0F, 7.0F, -1.0F, 4, 5, 4, 0.25F, true));
-
-		body = new ModelRenderer(this);
-		body.setRotationPoint(0.0F, 2.0F, 0.0F);
-		body.cubeList.add(new ModelBox(body, 0, 17, -4.0F, 0.0F, -2.5F, 8, 12, 5, 0.0F, false));
-
-		trailthing = new ModelRenderer(this);
-		trailthing.setRotationPoint(0.0F, 12.0F, -2.0F);
-		body.addChild(trailthing);
-		trailthing.cubeList.add(new ModelBox(trailthing, 26, 17, -4.0F, -0.15F, -0.5F, 8, 10, 5, 0.1F, false));
+		textureWidth = 128;
+		textureHeight = 128;
 
 		head = new ModelRenderer(this);
-		head.setRotationPoint(0.0F, 2.0F, 0.0F);
-		head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -9.0F, -4.0F, 8, 9, 8, 0.1F, false));
+		head.setRotationPoint(0.0F, -2.0F, 0.0F);
+		head.cubeList.add(new ModelBox(head, 0, 93, -5.0F, -5.0F, -2.0F, 10, 5, 7, 0.75F, false));
+		head.cubeList.add(new ModelBox(head, 0, 0, -5.0F, -12.0F, -5.0F, 10, 12, 10, 0.1F, false));
 
 		bone = new ModelRenderer(this);
-		bone.setRotationPoint(0.0F, -7.0F, 6.0F);
+		bone.setRotationPoint(0.0F, -8.0F, 6.0F);
 		head.addChild(bone);
 		setRotationAngle(bone, -0.7854F, 0.0F, 0.0F);
-		bone.cubeList.add(new ModelBox(bone, 33, 9, -4.0F, 0.0F, -3.0F, 8, 4, 4, 0.0F, false));
+		bone.cubeList.add(new ModelBox(bone, 30, 0, -5.0F, -2.2627F, -3.5355F, 10, 4, 6, 0.0F, false));
+
+		body = new ModelRenderer(this);
+		body.setRotationPoint(0.0F, -2.0F, 0.0F);
+		body.cubeList.add(new ModelBox(body, 0, 22, -5.0F, 0.0F, -2.5F, 10, 14, 5, 0.0F, false));
+		body.cubeList.add(new ModelBox(body, 0, 60, -7.0F, 0.0F, -3.0F, 14, 8, 8, 0.1F, false));
+		body.cubeList.add(new ModelBox(body, 0, 117, -4.0F, 0.0F, -3.0F, 8, 3, 7, 0.5F, false));
+		body.cubeList.add(new ModelBox(body, 0, 1, -2.0F, 2.0F, -4.0F, 4, 4, 1, 0.0F, false));
+
+		trailthing = new ModelRenderer(this);
+		trailthing.setRotationPoint(0.0F, 14.0F, -2.0F);
+		body.addChild(trailthing);
+		trailthing.cubeList.add(new ModelBox(trailthing, 30, 22, -5.0F, -0.15F, -0.5F, 10, 12, 5, 0.1F, false));
+
+		arm_left = new ModelRenderer(this);
+		arm_left.setRotationPoint(5.0F, -1.0F, -1.0F);
+		arm_left.cubeList.add(new ModelBox(arm_left, 0, 78, 0.0F, -1.0F, -1.0F, 5, 6, 6, 0.2F, false));
+		arm_left.cubeList.add(new ModelBox(arm_left, 25, 44, 0.0F, -1.0F, -1.0F, 5, 10, 4, 0.0F, false));
+		arm_left.cubeList.add(new ModelBox(arm_left, 0, 41, 0.0F, -1.0F, 3.0F, 5, 10, 7, 0.0F, false));
+		arm_left.cubeList.add(new ModelBox(arm_left, 44, 44, 0.0F, 9.0F, -1.0F, 5, 6, 4, 0.25F, false));
+
+		arm_right = new ModelRenderer(this);
+		arm_right.setRotationPoint(-5.0F, -1.0F, -1.0F);
+		arm_right.cubeList.add(new ModelBox(arm_right, 0, 78, -5.0F, -1.0F, -1.0F, 5, 6, 6, 0.2F, false));
+		arm_right.cubeList.add(new ModelBox(arm_right, 25, 44, -5.0F, -1.0F, -1.0F, 5, 10, 4, 0.0F, true));
+		arm_right.cubeList.add(new ModelBox(arm_right, 0, 41, -5.0F, -1.0F, 3.0F, 5, 10, 7, 0.0F, true));
+		arm_right.cubeList.add(new ModelBox(arm_right, 44, 44, -5.0F, 9.0F, -1.0F, 5, 6, 4, 0.25F, true));
 	}
 
 	@Override

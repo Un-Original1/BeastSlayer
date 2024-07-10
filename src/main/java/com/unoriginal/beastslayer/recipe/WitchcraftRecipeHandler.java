@@ -2,10 +2,13 @@ package com.unoriginal.beastslayer.recipe;
 
 import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModItems;
-import net.minecraft.init.Items;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -13,6 +16,7 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -22,6 +26,8 @@ public class WitchcraftRecipeHandler {
     private ItemStack stack;
     private int expectedQuality;
     public World world;
+    private NBTTagCompound customData;
+
     private static final Set<Item> Q1 = Sets.newHashSet(
             ModItems.CLOTH);
     private static final Set<Item> Q2 = Sets.newHashSet(
@@ -65,7 +71,17 @@ public class WitchcraftRecipeHandler {
             }
 
         }
+        BigDecimal decimal = new BigDecimal(String.valueOf(quality / 5D));
+        int randChance = decimal.subtract(new BigDecimal(decimal.intValue())).multiply(new BigDecimal(10)).intValue();
+
+        BeastSlayer.logger.debug(randChance + "chance");
+        BeastSlayer.logger.debug(quality/5D + "quality");
         quality = Math.round(quality / 5D);
+        //TODO add config for rng
+        if(quality > 0.5 && BeastSlayerConfig.WitchcraftTableQualityDecimalRand && randChance > 0) {
+            quality = new Random().nextInt(randChance) == 0 ? quality - 1 : quality;
+        }
+
         long seed = this.world.getSeed();
         if(quality <= 0.5 || count != 5){
             return ItemStack.EMPTY;
@@ -100,7 +116,7 @@ public class WitchcraftRecipeHandler {
         this.expectedQuality = quality;
     }
     public ItemStack getLastCraftablebyQuality(int quality){
-        if(quality == this.expectedQuality && this.expectedQuality != 0){
+        if(quality <= this.expectedQuality && this.expectedQuality != 0){
             return this.stack;
         } else {
             return null;

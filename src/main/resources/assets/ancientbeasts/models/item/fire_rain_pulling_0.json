@@ -1,0 +1,6 @@
+{
+    "parent": "item/bow",
+    "textures": {
+        "layer0": "ancientbeasts:items/fire_rain_pull0"
+    }
+}

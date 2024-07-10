@@ -1,13 +1,11 @@
 package com.unoriginal.beastslayer.items;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.EntityWispfire;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
@@ -18,9 +16,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class ItemWispflame extends ItemBase{
+public class ItemWispflame extends Item {
     public ItemWispflame(String name) {
-        super(name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
+        setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxDamage(128);
         this.setMaxStackSize(1);
         this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter()

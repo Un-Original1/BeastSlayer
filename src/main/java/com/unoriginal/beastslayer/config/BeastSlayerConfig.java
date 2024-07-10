@@ -209,6 +209,10 @@ public class BeastSlayerConfig {
     @RequiresMcRestart
     public static int nekrosSpawnChance = 10;
 
+    @Name("Witchcraft Table Decimals")
+    @Comment("Wether witchcraft table can include lower quality items")
+    @RequiresMcRestart
+    public static boolean WitchcraftTableQualityDecimalRand = true;
 
     @Name("Enable Experimental features")
     @Comment("Toggle experimental features (likely buggy and unfinished)")

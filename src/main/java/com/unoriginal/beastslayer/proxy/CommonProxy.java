@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -58,6 +59,7 @@ public class CommonProxy
 
     }
    public void postInit(FMLPostInitializationEvent e) {
+        ModEntities.registerSpawns();
    }
    @Mod.EventHandler
    public void ServerLoad(FMLServerStartingEvent e){

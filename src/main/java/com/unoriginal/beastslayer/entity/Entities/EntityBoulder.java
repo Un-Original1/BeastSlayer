@@ -25,7 +25,7 @@ public class EntityBoulder extends EntityProjectileGeneric {
 
     public void onHit(RayTraceResult rayTraceResult)
     {
-        if (rayTraceResult.entityHit != null && this.owner != null &&  !(rayTraceResult.entityHit instanceof EntityProjectileGeneric) && !(rayTraceResult.entityHit == this.owner))
+        if (rayTraceResult.entityHit != null &&  !(rayTraceResult.entityHit instanceof EntityProjectileGeneric))
         {
             rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile(), 18.0F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
 

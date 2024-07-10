@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer.items;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.EntityIceDart;
 import com.unoriginal.beastslayer.init.ModSounds;
@@ -7,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
@@ -16,9 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class ItemDarts extends ItemBase{
+public class ItemDarts extends Item {
     public ItemDarts(String name) {
-        super(name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
+        setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setHasSubtypes(true);
         this.setMaxStackSize(16);
         this.addPropertyOverride(new ResourceLocation("red"), new IItemPropertyGetter() {

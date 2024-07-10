@@ -1,0 +1,25 @@
+{
+  "pools": [
+    {
+      "name": "ancientbeasts:treasure_t",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "ancientbeasts:protection_talisman",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        }
+
+      ]
+    }
+   ]
+  }

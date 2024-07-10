@@ -26,6 +26,7 @@ public class ModBlocks {
     public static Block THATCH;
     public static Block CAULDRON;
     public static Block WITCHCRAFT_TABLE;
+    public static Block FIRE_IDOL;
 
     public static void init(){
         POKEY = new BlockSpikeTrap("pokey");
@@ -34,10 +35,11 @@ public class ModBlocks {
         LIGHT = new BlockMovingLight("moving_light_source");
 
         STICK = new BlockRotatedPillarBase("stick_wall", Material.WOOD, SoundType.WOOD, 1.0F, true, 60);
-        THATCH = new BlockRotatedPillarBase("Thatch", Material.GRASS, SoundType.PLANT, 0.8F, false, 60);
+        THATCH = new BlockThatch("Thatch", Material.GRASS, SoundType.PLANT, 0.8F, false, 60);
         if(BeastSlayerConfig.EnableExperimentalFeatures) {
             CAULDRON = new BlockModCauldron("magic_cauldron");
             WITCHCRAFT_TABLE = new BlockWitchcraftTable("witchcraft_table");
+            FIRE_IDOL = new BlockFireIdol("fire_idol");
         }
     }
     @SubscribeEvent
@@ -52,6 +54,7 @@ public class ModBlocks {
         if(BeastSlayerConfig.EnableExperimentalFeatures) {
             event.getRegistry().registerAll(CAULDRON);
             event.getRegistry().registerAll(WITCHCRAFT_TABLE);
+            event.getRegistry().registerAll(FIRE_IDOL);
         }
     }
     @SubscribeEvent
@@ -65,6 +68,7 @@ public class ModBlocks {
         if(BeastSlayerConfig.EnableExperimentalFeatures) {
             event.getRegistry().registerAll(new ItemBlock(CAULDRON).setRegistryName(CAULDRON.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(WITCHCRAFT_TABLE).setRegistryName(WITCHCRAFT_TABLE.getRegistryName()));
+            event.getRegistry().registerAll(new ItemBlock(FIRE_IDOL).setRegistryName(FIRE_IDOL.getRegistryName()));
         }
     }
 
@@ -80,6 +84,7 @@ public class ModBlocks {
         if(BeastSlayerConfig.EnableExperimentalFeatures) {
             registerRender(Item.getItemFromBlock(CAULDRON));
             registerRender(Item.getItemFromBlock(WITCHCRAFT_TABLE));
+            registerRender(Item.getItemFromBlock(FIRE_IDOL));
         }
     }
 

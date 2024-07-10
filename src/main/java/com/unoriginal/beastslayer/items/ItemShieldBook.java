@@ -1,11 +1,13 @@
 package com.unoriginal.beastslayer.items;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.EntityBeam;
 import com.unoriginal.beastslayer.init.ModPotions;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
@@ -13,10 +15,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemShieldBook extends ItemBase{
+public class ItemShieldBook extends Item {
 
     public ItemShieldBook(String name) {
-        super(name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
+        setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxDamage(64);
         this.setMaxStackSize(1);
     }

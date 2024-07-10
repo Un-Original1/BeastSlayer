@@ -1,6 +1,5 @@
 package com.unoriginal.beastslayer.network;
 
-import com.unoriginal.beastslayer.entity.Entities.EntityOwlstack;
 import com.unoriginal.beastslayer.init.ModItems;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -8,8 +7,6 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -55,11 +52,11 @@ public class MessageGlowing implements IMessage {
         //   @Override
         public IMessage onMessage(MessageGlowing message, MessageContext ctx) {
             EntityPlayerSP player = Minecraft.getMinecraft().player;
-            Entity livingBase = player.world.getEntityByID(message.entityId);
-            if(livingBase instanceof EntityLivingBase){
-             //   ((EntityLivingBase) livingBase).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 40, 0, true, false));
-                livingBase.setGlowing(player.getHeldItemOffhand().getItem() == ModItems.HUNTERS_EYE && !player.canEntityBeSeen(livingBase));
-            }
+                Entity livingBase = player.world.getEntityByID(message.entityId);
+                if (livingBase instanceof EntityLivingBase) {
+                    //   ((EntityLivingBase) livingBase).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 40, 0, true, false));
+                    livingBase.setGlowing(player.getHeldItemOffhand().getItem() == ModItems.HUNTERS_EYE && !player.canEntityBeSeen(livingBase));
+                }
             return null;
         }
     }

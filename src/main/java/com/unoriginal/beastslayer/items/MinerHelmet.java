@@ -37,7 +37,7 @@ public class MinerHelmet extends ItemArmor {
 
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        if(itemRand.nextInt(8) == 0 && world.isRemote && !player.isInWater()){
+        if(player.ticksExisted % 15 == 0 && world.isRemote && !player.isInWater()){
             double d0 = player.posX;
             double d1 = player.posY + 0.5D + player.height;
             double d2 = player.posZ;

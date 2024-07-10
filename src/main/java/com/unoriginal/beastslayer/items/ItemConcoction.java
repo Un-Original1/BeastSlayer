@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -17,10 +18,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class ItemConcoction extends ItemBase {
+public class ItemConcoction extends Item {
 
     public ItemConcoction(String name) {
-        super(name );
+        setRegistryName(name);
+        setUnlocalizedName(name);
         this.setMaxStackSize(1);
         this.setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxDamage(16);

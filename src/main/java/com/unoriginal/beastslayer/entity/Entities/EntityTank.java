@@ -36,6 +36,7 @@ import javax.annotation.Nullable;
 public class EntityTank extends AbstractTribesmen {
     private static final DataParameter<Boolean> TORCH = EntityDataManager.createKey(EntityTank.class, DataSerializers.BOOLEAN);
     private ResourceLocation TRADE = new ResourceLocation(BeastSlayer.MODID, "trades/Tank");
+    private ResourceLocation TREASURE = new ResourceLocation(BeastSlayer.MODID, "trades/treasure_t");
     private int blockTicks;
     private int attackTick;
 
@@ -288,5 +289,16 @@ public class EntityTank extends AbstractTribesmen {
     protected ResourceLocation getBarteringTable()
     {
         return TRADE;
+    }
+
+    @Override
+    public int getTreasureTier(){
+        return 2;
+    }
+
+    @Nullable
+    @Override
+    protected ResourceLocation getTreasureTable() {
+        return TREASURE;
     }
 }

@@ -53,7 +53,7 @@ public class EntityNekros extends EntityMob implements IMagicUser {
 
     public EntityNekros(World worldIn) {
         super(worldIn);
-        this.setSize(0.6F, 1.9F);
+        this.setSize(0.8F, 2.5F);
         this.moveHelper = new AIMoveControl(this);
     }
     protected PathNavigate createNavigator(World worldIn)
@@ -257,7 +257,7 @@ public class EntityNekros extends EntityMob implements IMagicUser {
         protected void useMagic()
         {
             EntityLivingBase livingBase = EntityNekros.this.getAttackTarget();
-            if(livingBase != null && !EntityNekros.this.world.isRemote) {
+            if(livingBase != null && !EntityNekros.this.world.isRemote && EntityNekros.this.canEntityBeSeen(livingBase)) {
                 livingBase.attackEntityFrom(DamageSource.causeMobDamage(EntityNekros.this), 5F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
                 livingBase.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 200));
                 EntityNekros.this.heal(5.0F * (float) BeastSlayerConfig.GlobalDamageMultiplier);

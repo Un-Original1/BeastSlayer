@@ -41,7 +41,8 @@ public class EntityTribeWarrior extends AbstractTribesmen{
     private ResourceLocation TRADE = new ResourceLocation(BeastSlayer.MODID, "trades/Warrior");
     private static final DataParameter<Boolean> Angry = EntityDataManager.createKey(EntityTribeWarrior.class, DataSerializers.BOOLEAN);
     private static final UUID ANGRY_BOOST_ID = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
-    private static final AttributeModifier ANGRY_SPEED_BOOST = (new AttributeModifier(ANGRY_BOOST_ID, "Buried speed boost", 0.10D, 0)).setSaved(false);
+    private static final AttributeModifier ANGRY_SPEED_BOOST = (new AttributeModifier(ANGRY_BOOST_ID, "speed boost", 0.10D, 0)).setSaved(false);
+    private ResourceLocation TREASURE = new ResourceLocation(BeastSlayer.MODID, "trades/treasure_w");
 
     public EntityTribeWarrior(World worldIn) {
         super(worldIn);
@@ -218,4 +219,14 @@ public class EntityTribeWarrior extends AbstractTribesmen{
         return super.shouldTradeWithplayer(player) && !this.isAngry();
     }
 
+    @Override
+    public int getTreasureTier(){
+        return 0;
+    }
+
+    @Nullable
+    @Override
+    protected ResourceLocation getTreasureTable() {
+        return TREASURE;
+    }
 }

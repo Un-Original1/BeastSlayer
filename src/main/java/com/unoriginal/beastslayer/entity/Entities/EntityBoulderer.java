@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIBurrow;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAILeapLadder;
 import com.unoriginal.beastslayer.init.ModItems;
 import net.minecraft.block.Block;
@@ -37,10 +38,10 @@ import javax.annotation.Nullable;
 public class EntityBoulderer extends EntityZombie {
 
     private int buriedTicks;
-    private int buriedCooldown;
-    private boolean didBurrow;
-    public boolean didjump;
     private static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityBoulderer.class, DataSerializers.BYTE);
+
+    private EntityAIBurrow entityAIBurrow;
+
     public EntityBoulderer(World worldIn) {
         super(worldIn);
         this.setSize(0.8F, 1.95F);
@@ -53,7 +54,15 @@ public class EntityBoulderer extends EntityZombie {
     protected void applyEntityAI()
     {
         super.applyEntityAI();
+        this.entityAIBurrow = new EntityAIBurrow(this, 200, true);
+        this.tasks.addTask(5, this.entityAIBurrow);
         this.tasks.addTask(3, new EntityAILeapLadder(this, 0.4F));
+    }
+
+    protected void updateAITasks()
+    {
+        super.updateAITasks();
+        this.buriedTicks = this.entityAIBurrow.getBuriedTimer();
     }
 
     public boolean isChild(){return false;}
@@ -96,36 +105,9 @@ public class EntityBoulderer extends EntityZombie {
                 }
             }
         }
-        if(this.getAttackTarget() != null && this.onGround && buriedCooldown <= 0){
-            if(!this.didBurrow) {
-               // this.buriedTicks = 200;
-                this.setBuried(true);
-                this.didBurrow = true;
-                this.didjump = false;
-            }
-        }
-        else if (((this.inWater || this.isOnLadder()) && this.isBuried()) || (this.buriedTicks <= 0 && this.didBurrow)){
-          //  this.buriedTicks = 0;
-            this.buriedCooldown = 200 + this.rand.nextInt(300);
-            this.didBurrow = false;
-            this.setBuried(false);
-            if(!this.didjump) {
-                this.addVelocity(0D, 0.4D, 0.0D);
-                this.didjump = true;
-            }
-        }
-        if(this.buriedTicks > 0)
-            --this.buriedTicks;
-
-        if(this.buriedCooldown > 0)
-            --this.buriedCooldown;
-        if(this.buriedTicks <= 0 && !this.isBuried() && this.buriedCooldown <= 0 && this.getAttackTarget() != null){
-       //     this.buriedTicks = 200;
-            this.setBuried(false);
-            if(!this.didjump) {
-                this.addVelocity(0D, 0.4D, 0.0D);
-                this.didjump = true;
-            }
+        if (this.world.isRemote)
+        {
+            this.buriedTicks = Math.max(0, this.buriedTicks - 1);
         }
     }
 
@@ -175,14 +157,6 @@ public class EntityBoulderer extends EntityZombie {
                 entityIn.setFire(2 * (int)f);
             }
         }
-
-        if(this.isBuried()){
-            this.setBuried(false);
-            if(!this.didjump) {
-                this.addVelocity(0D, 0.4D, 0.0D);
-                this.didjump = true;
-            }
-        }
         return flag;
     }
 
@@ -207,30 +181,8 @@ public class EntityBoulderer extends EntityZombie {
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        this.setBuried(compound.getBoolean("Buried"));
     }
 
-    public void setBuried(boolean buried)
-    {
-        if(!this.world.isRemote){
-            if(buried){
-                if (!this.isPotionActive(MobEffects.SPEED))
-                {
-                    this.buriedTicks = 200;
-                    this.addPotionEffect(new PotionEffect(MobEffects.SPEED, this.buriedTicks, 1, false, false));
-                    this.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, this.buriedTicks, 1, false, false));
-                    this.world.setEntityState(this,(byte)10);
-
-                }
-            }
-            else{
-                this.removePotionEffect(MobEffects.SPEED);
-                this.removePotionEffect(MobEffects.INVISIBILITY);
-                this.world.setEntityState(this,(byte)12);
-                this.buriedTicks = 0;
-            }
-        }
-    }
 
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {
@@ -326,16 +278,4 @@ public class EntityBoulderer extends EntityZombie {
         }
         super.onDeath(cause);
     }
-
-   /* class EntityAILeapBoulderer extends EntityAILeapAtTarget{
-
-        public EntityAILeapBoulderer(EntityBoulderer leapingEntity, float leapMotionYIn) {
-            super(leapingEntity, leapMotionYIn);
-        }
-
-        @Override
-        public boolean shouldExecute() {
-            return super.shouldExecute() && EntityBoulderer.this.isOnLadder();
-        }
-    }*/
 }

@@ -2,16 +2,19 @@ package com.unoriginal.beastslayer.items;
 
 import com.unoriginal.beastslayer.BeastSlayer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class ItemBestiary extends ItemBase{
+public class ItemBestiary extends Item {
 
     public ItemBestiary(String name) {
-        super(name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
+        setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxStackSize(1);
     }
 

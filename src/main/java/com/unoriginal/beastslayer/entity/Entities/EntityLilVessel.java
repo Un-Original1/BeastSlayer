@@ -5,6 +5,7 @@ import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIPatrol;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIUseBow;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.init.ModSounds;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -56,7 +57,7 @@ public class EntityLilVessel extends EntityTameable implements IRangedAttackMob{
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityCreeper.class, 8F, 1.0F, 1.0F));
         this.tasks.addTask(4, new EntityAIUseBow<>(this, 1.0D, 20, 15.0F));
-        this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.5D, true));
+        this.tasks.addTask(5, new AIVesselMelee(this, 1.5D, true));
         this.tasks.addTask(5, new EntityAIPatrol(this, 1.0D));
         this.tasks.addTask(6, new AIFollowOwnerPatrol(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 1.0D));
@@ -404,6 +405,51 @@ public class EntityLilVessel extends EntityTameable implements IRangedAttackMob{
         public boolean shouldExecute()
         {
             return EntityLilVessel.this.shouldKillPlayer() && super.shouldExecute();
+        }
+    }
+
+    class AIVesselMelee extends EntityAIAttackMelee{
+
+        public AIVesselMelee(EntityCreature creature, double speedIn, boolean useLongMemory) {
+            super(creature, speedIn, useLongMemory);
+        }
+        protected double getAttackReachSqr(EntityLivingBase attackTarget)
+        {
+            return (this.attacker.width * 3.5F * this.attacker.width * 3.5F + attackTarget.width);
+        }
+    }
+
+    @Override
+    protected void dropEquipment(boolean wasRecentlyHit, int lootingModifier)
+    {
+        for (EntityEquipmentSlot entityequipmentslot : EntityEquipmentSlot.values())
+        {
+            ItemStack itemstack = this.getItemStackFromSlot(entityequipmentslot);
+            double d0;
+
+            switch (entityequipmentslot.getSlotType())
+            {
+                case HAND:
+                    d0 = this.inventoryHandsDropChances[entityequipmentslot.getIndex()];
+                    break;
+                case ARMOR:
+                    d0 = this.inventoryArmorDropChances[entityequipmentslot.getIndex()];
+                    break;
+                default:
+                    d0 = 0.0D;
+            }
+
+            boolean flag = d0 > 1.0D;
+
+            if (!itemstack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemstack) && (wasRecentlyHit || flag) && (double)(this.rand.nextFloat() - (float)lootingModifier * 0.01F) < d0)
+            {
+                if (!flag && itemstack.isItemStackDamageable())
+                {
+                    itemstack.setItemDamage(itemstack.getItemDamage() - this.rand.nextInt(5));
+                }
+
+                this.entityDropItem(itemstack, 0.0F);
+            }
         }
     }
 }

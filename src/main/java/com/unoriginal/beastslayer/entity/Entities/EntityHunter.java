@@ -42,7 +42,9 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(EntityHunter.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CAMOUFLAGED = EntityDataManager.createKey(EntityHunter.class, DataSerializers.BOOLEAN);
     private ResourceLocation TRADE = new ResourceLocation(BeastSlayer.MODID, "trades/Hunter");
-    private final EntityAIAttackRangedBow<EntityHunter> aiArrowAttack = new EntityAIAttackRangedBow<>(this, 1.0D, 20, 20.0F);
+    private ResourceLocation TREASURE = new ResourceLocation(BeastSlayer.MODID, "trades/treasure_h");
+
+    private final EntityAIAttackRangedBow<EntityHunter> aiArrowAttack = new EntityAIAttackRangedBow<>(this, 1.0D, this.isFiery() ? 45 : 20, 20.0F);
    private int camoTicks;
     private int camoCD;
 
@@ -217,7 +219,7 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
 
         if(this.isFiery() && this.getHeldItemMainhand().isEmpty() && !this.world.isRemote)
         {
-            this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+            this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.FIRERAIN));
         }
         if (!world.isRemote && this.ticksExisted % 150 == 0 && this.isCamo()) {
             List<EntityLiving> entities = this.world.getEntitiesWithinAABB(EntityLiving.class, this.getEntityBoundingBox().grow(14D));
@@ -287,4 +289,13 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
         return super.shouldTradeWithplayer(player) && !this.isCamo() && b;
     }
 
+    public int getTreasureTier(){
+        return 1;
+    }
+
+    @Nullable
+    @Override
+    protected ResourceLocation getTreasureTable() {
+        return TREASURE;
+    }
 }

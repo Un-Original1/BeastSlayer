@@ -1,11 +1,13 @@
 package com.unoriginal.beastslayer.items;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.EntityWisp;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.IItemPropertyGetter;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -16,10 +18,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class ItemWispBottle extends ItemBase {
+public class ItemWispBottle extends Item {
 
     public ItemWispBottle(String name) {
-        super(name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
+        setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxStackSize(16);
         this.setHasSubtypes(true);
         this.addPropertyOverride(new ResourceLocation("type"), new IItemPropertyGetter() {

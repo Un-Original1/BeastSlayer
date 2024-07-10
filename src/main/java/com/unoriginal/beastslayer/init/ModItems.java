@@ -1,8 +1,10 @@
 package com.unoriginal.beastslayer.init;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.items.*;
 import com.unoriginal.beastslayer.items.client.CustomModelLoader;
+import com.unoriginal.beastslayer.tab.ModTab;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -72,6 +74,8 @@ public class ModItems {
     public static Item WATER_RUNE;
     public static Item WHETSTONE;
     public static Item PAW;
+    public static Item HORN;
+    public static Item FIRERAIN;
 
     public static Item MASK_W;
     public static Item MASK_H;
@@ -86,37 +90,37 @@ public class ModItems {
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",28, new int[]{1, 4, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
 
     public static void init() {
-        SANDMONSTER_SCALE = new ItemBase("sandmonster_scale");
+        SANDMONSTER_SCALE = quickItemRegistry("sandmonster_scale");
         CACTUS_BROTH = new ItemCactusBroth("cactus_broth", 12, 0.8F, false);
         LOGO = new HiddenItem("logo");
         SANDY_LOVE = new HiddenItem("sandy_love");
         SHIELD_BOOK = new ItemShieldBook("shield_book");
-        ECTOPLASM = new ItemBase("ectoplasm");
+        ECTOPLASM = quickItemRegistry("ectoplasm");
         TOUGH_GLOVE = new ItemToughGlove("tough_glove");
         ICE_DART = new ItemDarts("ice_dart");
         ICE_WAND = new ItemIceWand("ice_wand");
         ICE_WAND_RED = new ItemIceWand("ice_wand_red");
         VESSEL = new ItemVessel("vessel");
-        SPIKE = new ItemBase("spike");
-        FUR = new ItemBase("charred_fur");
+        SPIKE = quickItemRegistry("spike");
+        FUR = quickItemRegistry("charred_fur");
         CHARRED_CLOAK = new CharredArmor("charred_cloak", ItemArmor.ArmorMaterial.LEATHER, 0, EntityEquipmentSlot.HEAD);
         MINER_HELMET = new MinerHelmet("miner_helmet", ItemArmor.ArmorMaterial.IRON, 0 , EntityEquipmentSlot.HEAD);
         PORTABLE_WIKI = new ItemBestiary("bestiary");
         RIFTED_PEARL = new ItemRiftedPearl("rifted_pearl");
 
-        CURSED_WOOD = new ItemBase("cursed_wood");
+        CURSED_WOOD = quickItemRegistry("cursed_wood");
         SPEAR = new ItemSpear("spear");
         STAFF = new ItemStaff("tribe_staff");
         TORCH = new ItemWispflame("wisp_torch");
-        DUST = new ItemBase("mysterious_dust");
+        DUST = quickItemRegistry("mysterious_dust");
         WISP_BOTTLE = new ItemWispBottle("wisp_bottle");
         KUNAI = new ItemKunai("kunai");
-        DARK_GOOP = new ItemBase("dark_goop");
-        WINDFORCE_DART = new ItemBase("windforce_dart");
+        DARK_GOOP = quickItemRegistry("dark_goop");
+        WINDFORCE_DART = quickItemRegistry("windforce_dart");
         WINDFORCE = new ItemWindforce("windforce");
-        BROKEN_TALISMAN = new ItemBase("broken_talisman");
-        TABLET = new ItemBase("ancient_tablet");
-        CLOTH = new ItemBase("cloth");
+        BROKEN_TALISMAN = quickItemRegistry("broken_talisman");
+        TABLET = quickItemRegistry("ancient_tablet");
+        CLOTH = quickItemRegistry("cloth");
 
         CONCOCTION = new ItemConcoction("concoction");
         IRONGRASS = new ItemArtifact("irongrass");
@@ -136,6 +140,8 @@ public class ModItems {
         WATER_RUNE = new ItemArtifact("water_rune");
         WHETSTONE = new ItemArtifact("mossy_whetstone");
         PAW = new ItemArtifact("ocelot_paw");
+        HORN = new ItemArtifact("fire_horn");
+        FIRERAIN = new ItemFireRain("fire_rain");
 
         MASK_W = new ItemMask("marauder_mask").setTier(0);
         MASK_H = new ItemMask("hunter_mask").setTier(1);
@@ -146,6 +152,10 @@ public class ModItems {
             SCALE_ARMOR = new ScaleArmor("scale_armor", ModItems.DESERT_ROBES, 1, EntityEquipmentSlot.CHEST);
             SCALE_HOOD = new ScaleArmor("scale_hood", ModItems.DESERT_ROBES, 0, EntityEquipmentSlot.HEAD);
         }
+    }
+
+    public static Item quickItemRegistry(String name){
+        return new Item().setRegistryName(name).setUnlocalizedName(name).setCreativeTab(BeastSlayer.BEASTSTAB).setMaxStackSize(64);
     }
 
     @SubscribeEvent
@@ -201,11 +211,14 @@ public class ModItems {
         event.getRegistry().registerAll(WATER_RUNE);
         event.getRegistry().registerAll(WHETSTONE);
         event.getRegistry().registerAll(PAW);
+        event.getRegistry().registerAll(HORN);
+        event.getRegistry().registerAll(FIRERAIN);
 
         event.getRegistry().registerAll(MASK_W);
         event.getRegistry().registerAll(MASK_H);
         event.getRegistry().registerAll(MASK_S);
         event.getRegistry().registerAll(MASK_P);
+
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             event.getRegistry().registerAll(SCALE_ARMOR);
@@ -264,6 +277,8 @@ public class ModItems {
         registerRender(WATER_RUNE);
         registerRender(WHETSTONE);
         registerRender(PAW);
+        registerRender(HORN);
+        registerRender(FIRERAIN);
 
         registerRender(MASK_W);
         registerRender(MASK_H);

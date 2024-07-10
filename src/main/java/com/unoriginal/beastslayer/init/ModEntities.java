@@ -1,8 +1,7 @@
 package com.unoriginal.beastslayer.init;
 
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import static net.minecraftforge.common.BiomeDictionary.Type;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
@@ -25,47 +24,11 @@ public class ModEntities
 {
     public static void init() {
         int id = 1;
-        Multimap<BiomeDictionary.Type, Biome> biomesAndTypes = HashMultimap.create();
-        for (Biome b : Biome.REGISTRY)
-        {
-            Set<BiomeDictionary.Type> types = BiomeDictionary.getTypes(b);
-            for (BiomeDictionary.Type t : types)
-            {
-                biomesAndTypes.put(t, b);
-            }
-        }
+
 
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Sandy"), EntitySandy.class, "SandMonster", id++, BeastSlayer.instance, 140, 3, true, 10577723, 10038792);
 
-
-        EntityRegistry.addSpawn(EntitySandy.class, BeastSlayerConfig.sandmonsterSpawnRate , 1, 1, EnumCreatureType.MONSTER, Biomes.DESERT, Biomes.DESERT_HILLS);
-        EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotSpawnChance, 1, 1, EnumCreatureType.MONSTER, biomesAndTypes.get(BiomeDictionary.Type.SPOOKY).toArray(new Biome[0]));
-
-        EntityRegistry.addSpawn(EntityGhost.class, BeastSlayerConfig.ghostSpawnChance, 1, 3, EnumCreatureType.MONSTER, biomesAndTypes.get(BiomeDictionary.Type.SPOOKY).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityGiant.class, BeastSlayerConfig.giantSpawnChance, 1, 1, EnumCreatureType.MONSTER, Biomes.PLAINS, Biomes.MUTATED_PLAINS);
-        EntityRegistry.addSpawn(EntityFrostashFox.class, BeastSlayerConfig.foxSpawnChance, 1, 6, EnumCreatureType.CREATURE, biomesAndTypes.get(BiomeDictionary.Type.SNOWY).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityFrostWalker.class, BeastSlayerConfig.frostWalkerSpawnChance, 1, 2, EnumCreatureType.MONSTER, biomesAndTypes.get(BiomeDictionary.Type.SNOWY).toArray(new Biome[0]));
-
-        EntityRegistry.addSpawn(EntityNetherhound.class, BeastSlayerConfig.netherhoundSpawnChance, 4, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(BiomeDictionary.Type.NETHER).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityOwlstack.class, BeastSlayerConfig.owlstackSpawnChance, 2, 4, EnumCreatureType.CREATURE, Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.MUTATED_BIRCH_FOREST, Biomes.MUTATED_BIRCH_FOREST_HILLS);
-
-        EntityRegistry.addSpawn(EntityNekros.class, BeastSlayerConfig.nekrosSpawnChance, 1, 1, EnumCreatureType.MONSTER, biomesAndTypes.get(BiomeDictionary.Type.SPOOKY).toArray(new Biome[0]));
-
-
-        for(BiomeDictionary.Type type : BiomeDictionary.Type.getAll()) {
-            if (!type.equals(BiomeDictionary.Type.NETHER) && !type.equals(BiomeDictionary.Type.END) && !type.equals(BiomeDictionary.Type.MUSHROOM)) {
-                EntityRegistry.addSpawn(EntityDamcell.class, BeastSlayerConfig.damcellSpawnChance, 1, 1, EnumCreatureType.MONSTER, biomesAndTypes.get(type).toArray(new Biome[0]));
-                EntityRegistry.addSpawn(EntityBoulderer.class, BeastSlayerConfig.boulderingSpawnChance, 1, 4, EnumCreatureType.MONSTER, biomesAndTypes.get(type).toArray(new Biome[0]));
-                EntityRegistry.addSpawn(EntityRiftedEnderman.class, BeastSlayerConfig.riftedEndermanSpawnChance, 1, 1, EnumCreatureType.MONSTER, biomesAndTypes.get(type).toArray(new Biome[0]));
-
-                EntityRegistry.addSpawn(EntityBonepile.class, BeastSlayerConfig.bonepileSpawnChance, 1, 3, EnumCreatureType.MONSTER, biomesAndTypes.get(type).toArray(new Biome[0]));
-
-
-                if(BeastSlayerConfig.zealotSpawnEverywhere){
-                    EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotEverywhereSpawnChance, 1, 1, EnumCreatureType.MONSTER, biomesAndTypes.get(type).toArray(new Biome[0]));
-                }
-            }
-        } // I have no idea why I declare spawns first and then register entities, bad habit
+ // I have no idea why I declare spawns first and then register entities, bad habit
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Ghost"), EntityGhost.class, "Ghost", id++, BeastSlayer.instance, 64, 3, true, 1936548, 10610664);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Zealot"), EntityZealot.class, "Zealot", id++, BeastSlayer.instance, 64, 3, true, 12698049, 6894452);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Ice_dart"), EntityIceDart.class, "Ice_dart", id++, BeastSlayer.instance, 64, 3, false);
@@ -107,6 +70,38 @@ public class ModEntities
         //artifact entities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hand"), EntityHand.class, "Hand", id++, BeastSlayer.instance, 64, 3, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter_Wolf"), EntitySpiritWolf.class, "Hunter_Wolf", id++,BeastSlayer.instance, 64, 3, true);
+    }
+    //it never worked cause it was run on pre init, it must be done on post init
+    public static void registerSpawns(){
+
+        EntityRegistry.addSpawn(EntitySandy.class, BeastSlayerConfig.sandmonsterSpawnRate , 1, 1, EnumCreatureType.MONSTER, Biomes.DESERT, Biomes.DESERT_HILLS);
+        EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
+
+        EntityRegistry.addSpawn(EntityGhost.class, BeastSlayerConfig.ghostSpawnChance, 1, 3, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityGiant.class, BeastSlayerConfig.giantSpawnChance, 1, 1, EnumCreatureType.MONSTER, Biomes.PLAINS, Biomes.MUTATED_PLAINS);
+        EntityRegistry.addSpawn(EntityFrostashFox.class, BeastSlayerConfig.foxSpawnChance, 1, 6, EnumCreatureType.CREATURE,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityFrostWalker.class, BeastSlayerConfig.frostWalkerSpawnChance, 1, 2, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
+
+        EntityRegistry.addSpawn(EntityNetherhound.class, BeastSlayerConfig.netherhoundSpawnChance, 4, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.NETHER).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityOwlstack.class, BeastSlayerConfig.owlstackSpawnChance, 2, 4, EnumCreatureType.CREATURE, Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.MUTATED_BIRCH_FOREST, Biomes.MUTATED_BIRCH_FOREST_HILLS);
+
+        EntityRegistry.addSpawn(EntityNekros.class, BeastSlayerConfig.nekrosSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
+
+
+        for(Type type : Type.getAll()) {
+            if (!type.equals(Type.NETHER) && !type.equals(Type.END) && !type.equals(Type.MUSHROOM)) {
+                EntityRegistry.addSpawn(EntityDamcell.class, BeastSlayerConfig.damcellSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
+                EntityRegistry.addSpawn(EntityBoulderer.class, BeastSlayerConfig.boulderingSpawnChance, 1, 4, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
+                EntityRegistry.addSpawn(EntityRiftedEnderman.class, BeastSlayerConfig.riftedEndermanSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
+
+                EntityRegistry.addSpawn(EntityBonepile.class, BeastSlayerConfig.bonepileSpawnChance, 1, 3, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
+
+
+                if(BeastSlayerConfig.zealotSpawnEverywhere){
+                    EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotEverywhereSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
+                }
+            }
+        }
     }
     @SideOnly(Side.CLIENT)
     public static void initModels() {

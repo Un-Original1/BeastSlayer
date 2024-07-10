@@ -1,7 +1,9 @@
 package com.unoriginal.beastslayer.items;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.EntityLilVessel;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
@@ -11,10 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class ItemVessel extends ItemBase{
+public class ItemVessel extends Item {
 
     public ItemVessel(String name) {
-        super(name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
+        setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxDamage(6);
         this.setMaxStackSize(1);
     }

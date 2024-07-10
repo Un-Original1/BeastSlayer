@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIBurrow;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMeleeConditional;
 import com.unoriginal.beastslayer.entity.Entities.magic.CastingMagic;
 import com.unoriginal.beastslayer.entity.Entities.magic.MagicType;
@@ -15,8 +16,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityTameable;
@@ -45,16 +44,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMultiPart, IMob {
     private int attackTicks;
     private int buriedTicks;
-    private int buriedCooldown;
-    private boolean didBurrow;
     private static final DataParameter<Byte> MAGIC = EntityDataManager.createKey(EntitySandy.class, DataSerializers.BYTE);
-    private static final UUID BURIED_SPEED_BOOST_ID = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
-    private static final AttributeModifier BURIED_SPEED_BOOST = (new AttributeModifier(BURIED_SPEED_BOOST_ID, "Buried speed boost", 0.15D, 0)).setSaved(false);
     private MagicType activeMagic = MagicType.NONE;
     private int magicUseTicks;
     public static final ResourceLocation LOOT = new ResourceLocation(BeastSlayer.MODID, "entities/Sandmonster");
@@ -66,9 +60,11 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     public MultiPartEntityPart sandyPartBody3 = new MultiPartEntityPart(this, "body3", 0.8F, 0.8F);
     public MultiPartEntityPart sandyPartTail1 = new MultiPartEntityPart(this, "tail1", 0.6F, 0.6F);
     public MultiPartEntityPart sandyPartTail2 = new MultiPartEntityPart(this, "tail2", 0.4F, 0.4F);
-    public boolean didjump;
+
     private int dodgeTicks;
     private int avoidTicks;
+
+    private EntityAIBurrow entityAIBurrow;
 
     public EntitySandy(World worldIn) {
 
@@ -96,12 +92,14 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     protected void initEntityAI()
     {
         super.initEntityAI();
+        this.entityAIBurrow = new EntityAIBurrow(this, 200, true);
         this.aiSit = new EntityAISit(this);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new CastingMagic<>(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(4, new EntitySandy.UseSandMagic(this));
        // this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, false));
+        this.tasks.addTask(5, this.entityAIBurrow);
         this.tasks.addTask(5, new EntityAIMeleeConditional(this, 1.0D, false, Predicate -> this.avoidTicks <= 0));
         this.tasks.addTask(6, new EntitySandy.SummonSandShooter(this));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
@@ -145,6 +143,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     protected void updateAITasks()
     {
         super.updateAITasks();
+        this.buriedTicks = this.entityAIBurrow.getBuriedTimer();
         if (this.magicUseTicks > 0) {
             --this.magicUseTicks;
         }
@@ -222,41 +221,12 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
                     this.playSound(iblockstate.getBlock().getSoundType().getBreakSound(), 1.0F, 1.0F); //this is deprecated! ... joe mama is deprecated
                 }
             }
-        }
-        if(this.getAttackTarget() != null && !this.isSitting() && !this.isAttacking() && !this.isUsingMagic() && this.onGround && buriedCooldown <= 0){
-            if(!this.didBurrow) {
-                this.buriedTicks = 200;
-                this.setBuried(true);
-                this.didBurrow = true;
-                this.didjump = false;
-            }
-        }
-        else if ((this.isSitting() || this.isAttacking() || this.inWater) && this.isBuried()){
-            this.buriedTicks = 0;
-            this.buriedCooldown = 200 + this.rand.nextInt(300);
-            this.didBurrow = false;
-            this.setBuried(false);
-            if(!this.didjump) {
-                this.addVelocity(0D, 0.4D, 0.0D);
-                this.didjump = true;
-            }
-        }
-        if(this.buriedTicks > 0)
-            --this.buriedTicks;
 
-        if(this.buriedTicks <= 0 && this.didBurrow) {
-            this.buriedCooldown = 200 + this.rand.nextInt(300);
-            this.didBurrow = false;
-            this.setBuried(false);
-            if(!this.didjump) {
-                this.addVelocity(0D, 0.4D, 0.0D);
-                this.didjump = true;
-            }
         }
-        if(this.buriedCooldown > 0)
-            --this.buriedCooldown;
-        if(this.buriedTicks <= 0 && !this.isBuried() && this.buriedCooldown <= 0 && this.getAttackTarget() != null){
-            this.buriedTicks = 200;
+
+        if (this.world.isRemote)
+        {
+            this.buriedTicks = Math.max(0, this.buriedTicks - 1);
         }
         if (!world.isRemote && this.ticksExisted % 150 == 0 && this.isTamed()) {
             List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(15D));
@@ -510,7 +480,6 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     {
         super.readEntityFromNBT(compound);
         this.setAngry(compound.getBoolean("Angry"));
-        this.setBuried(compound.getBoolean("Buried"));
         this.magicUseTicks = compound.getInteger("MagicUseTicks");
         this.dodgeTicks = compound.getInteger("Dodge");
         this.avoidTicks = compound.getInteger("Avoid");
@@ -739,24 +708,6 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     public boolean isAttacking(){ return this.attackTicks > 0; }
 
     public boolean isBuried(){ return this.buriedTicks > 0; }
-
-    public void setBuried(boolean buried)
-    {
-        if(!this.world.isRemote){
-            IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-            if(buried){
-                if (!iattributeinstance.hasModifier(BURIED_SPEED_BOOST))
-                {
-                iattributeinstance.applyModifier(BURIED_SPEED_BOOST);
-                }
-                this.world.setEntityState(this,(byte)10);
-            }
-            else{
-                iattributeinstance.removeModifier(BURIED_SPEED_BOOST);
-                this.world.setEntityState(this,(byte)12);
-            }
-        }
-    }
 
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id) {

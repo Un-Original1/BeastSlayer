@@ -23,6 +23,8 @@ public class ModelBonepile extends ModelBase {
 	private final ModelRenderer thing;
 	private final ModelRenderer arm_right;
 	private final ModelRenderer arm_left;
+	private final ModelRenderer thingy;
+	private final ModelRenderer chain;
 
 	public ModelBonepile() {
 		textureWidth = 64;
@@ -39,6 +41,18 @@ public class ModelBonepile extends ModelBase {
 		body = new ModelRenderer(this);
 		body.setRotationPoint(0.0F, 11.0F, 0.0F);
 		body.cubeList.add(new ModelBox(body, 0, 0, -5.0F, -12.0F, -3.0F, 10, 12, 6, 0.0F, false));
+
+		thingy = new ModelRenderer(this);
+		thingy.setRotationPoint(-4.0F, -12.0F, 3.0F);
+		body.addChild(thingy);
+		setRotationAngle(thingy, 0.2182F, 0.0F, -0.1309F);
+		thingy.cubeList.add(new ModelBox(thingy, 24, 12, -5.0F, -1.0F, -8.0F, 10, 3, 10, 0.0F, false));
+
+		chain = new ModelRenderer(this);
+		chain.setRotationPoint(0.0F, 1.0F, -8.0F);
+		thingy.addChild(chain);
+		setRotationAngle(chain, 0.9599F, 0.0F, 0.1745F);
+		chain.cubeList.add(new ModelBox(chain, 41, 2, -1.5F, 0.0F, -6.0F, 3, 0, 6, 0.0F, false));
 
 		head = new ModelRenderer(this);
 		head.setRotationPoint(-4.0F, -12.0F, 0.0F);
@@ -79,6 +93,12 @@ public class ModelBonepile extends ModelBase {
 		arm_left.cubeList.add(new ModelBox(arm_left, 34, 28, 0.001F, -2.0F, -1.0F, 2, 13, 2, 0.0F, true));
 	}
 
+	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+		modelRenderer.rotateAngleX = x;
+		modelRenderer.rotateAngleY = y;
+		modelRenderer.rotateAngleZ = z;
+	}
+
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
 		leg_left.render(f5);
@@ -91,7 +111,7 @@ public class ModelBonepile extends ModelBase {
 		float f = -22.5F * (float) Math.PI / 180F;
 		this.head.rotateAngleY = netHeadYaw * 0.017453292F;
 		this.head.rotateAngleX = entityIn instanceof EntityBonepile && ((EntityBonepile) entityIn).isSpook() ? f : 0 + headPitch * 0.017453292F;
-
+		this.chain.rotateAngleX = 0.9599F + MathHelper.cos(ageInTicks * 0.05F * (float) Math.PI) * 0.025F;
 
 
 		this.body.rotateAngleY = 0.0F;

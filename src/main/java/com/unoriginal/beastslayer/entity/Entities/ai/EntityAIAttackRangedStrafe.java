@@ -6,7 +6,8 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityAIAttackRangedStrafe<T extends EntityMob & IRangedAttackMob> extends EntityAIBase
+public class
+EntityAIAttackRangedStrafe<T extends EntityMob & IRangedAttackMob> extends EntityAIBase
     {
         private final T entity;
         private final double moveSpeedAmp;

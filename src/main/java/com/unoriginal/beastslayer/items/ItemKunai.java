@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.items;
 
 import com.google.common.collect.Multimap;
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.EntityChained;
 import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.block.state.IBlockState;
@@ -9,6 +10,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -18,10 +20,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ItemKunai extends ItemBase{
+public class ItemKunai extends Item {
     private final float attackDamage;
     public ItemKunai(String name) {
-        super(name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
+        setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxDamage(128);
         this.setMaxStackSize(1);
         this.attackDamage = 3.0F;

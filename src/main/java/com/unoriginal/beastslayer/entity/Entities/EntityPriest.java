@@ -39,6 +39,7 @@ import java.util.List;
 
 public class EntityPriest extends AbstractTribesmen implements IMagicUser {
     private ResourceLocation TRADE = new ResourceLocation(BeastSlayer.MODID, "trades/Priest");
+    private ResourceLocation TREASURE = new ResourceLocation(BeastSlayer.MODID, "trades/treasure_p");
     private static final DataParameter<Boolean> MAGIC_CAST = EntityDataManager.createKey(EntityPriest.class, DataSerializers.BOOLEAN);
     private int magicUseTicks;
     private int CDTicks;
@@ -334,5 +335,17 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
     {
         return TRADE;
     }
-    //TODO: Make a 2nd lootable for special trades when players have an equal or higher tier mask, to compensate the -1 shift
+
+    @Override
+    public int getTreasureTier(){
+        return 3;
+    }
+
+    @Nullable
+    @Override
+    protected ResourceLocation getTreasureTable() {
+        return TREASURE;
+    }
+
+
 }

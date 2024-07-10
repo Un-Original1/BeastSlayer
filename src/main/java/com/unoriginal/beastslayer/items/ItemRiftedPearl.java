@@ -1,8 +1,10 @@
 package com.unoriginal.beastslayer.items;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.EntityRiftedPearl;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
@@ -11,10 +13,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class ItemRiftedPearl extends ItemBase{
+public class ItemRiftedPearl extends Item {
 
     public ItemRiftedPearl(String name) {
-        super(name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
+        setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxStackSize(16);
     }
 

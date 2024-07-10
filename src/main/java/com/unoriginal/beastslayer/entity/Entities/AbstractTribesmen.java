@@ -1,6 +1,8 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.init.ModItems;
+import com.unoriginal.beastslayer.items.ItemMask;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
@@ -30,20 +32,27 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class AbstractTribesmen extends EntityMob {
     private ResourceLocation sellingTable;
+    private ResourceLocation treasureTable;
     private long sellingTableSeed;
+    private long treasureTableSeed;
     public int fieryTicks;
     protected static final DataParameter<Boolean> FIERY = EntityDataManager.createKey(AbstractTribesmen.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> TRADING = EntityDataManager.createKey(AbstractTribesmen.class, DataSerializers.BOOLEAN);
     private EntityAITempt aiTempt;
     public int tradeTicks;
+    private EntityPlayer player;
+    private UUID tradingPlayer;
 
     public AbstractTribesmen(World worldIn) {
         super(worldIn);
         this.setFiery(false);
         this.isImmuneToFire = this.isFiery();
+        this.player = null;
+        this.tradingPlayer = null;
     }
 
     protected void entityInit()
@@ -120,7 +129,7 @@ public class AbstractTribesmen extends EntityMob {
         }
         if(this.isTrading() && !this.isFiery()){
             if(--this.tradeTicks <= 0 && !this.world.isRemote){
-                this.dropBartering(null);
+                this.dropBartering(this.getBuyer());
                 this.swingArm(EnumHand.MAIN_HAND);
                 this.setTrading(false);
                 this.getHeldItemMainhand().setCount(0);
@@ -148,7 +157,9 @@ public class AbstractTribesmen extends EntityMob {
             this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(item));
             entityIn.getHeldItemMainhand().shrink(1);
             this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.CURSED_WOOD));
-            this.tradeTicks = 100;
+            this.tradeTicks = 1; //TODO dont forget to put it to 100
+            this.player = entityIn;
+            this.tradingPlayer = entityIn.getUniqueID();
             this.setTrading(true);
         }
     }
@@ -199,8 +210,21 @@ public class AbstractTribesmen extends EntityMob {
         return null;
     }
 
-    protected void dropBartering(@Nullable EntityPlayer player)
+    protected void dropBartering( EntityPlayer player)
     {
+        if(player == null){
+            return; //this shouldn't happen but to prevent crashes
+        }
+
+        Item item = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
+
+        int i = 6;
+        boolean b = false;
+        if(item instanceof ItemMask){
+            i = 6 - ((ItemMask) item).getTier() + this.getTreasureTier();
+            b = ((ItemMask) item).getTier() >= this.getTreasureTier();
+        }
+
         ResourceLocation resourcelocation = this.sellingTable;
 
         if (resourcelocation == null)
@@ -208,25 +232,54 @@ public class AbstractTribesmen extends EntityMob {
             resourcelocation = this.getBarteringTable();
         }
 
-        if (resourcelocation != null) {
+        ResourceLocation resourceLocation2 = this.treasureTable;
+
+        if(resourceLocation2 == null){
+            resourceLocation2 = this.getTreasureTable();
+        }
+
+        if (resourcelocation != null && resourceLocation2 != null) {
             LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(resourcelocation);
             this.sellingTable = null;
-            LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) this.world);
-            //TODO add Player to loottable context
-            List<ItemStack> itemlist = loottable.generateLootForPools(this.sellingTableSeed == 0L ? this.rand : new Random(this.sellingTableSeed), lootcontext$builder.build());
-            if (itemlist.size() > 0){
-                ItemStack itemstack = itemlist.get(0);
-                this.entityDropItem(itemstack, 0.0F);
-            }
 
+            LootTable loottable2 = this.world.getLootTableManager().getLootTableFromLocation(resourceLocation2);
+            this.treasureTable= null;
+
+            LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) this.world);
+
+            List<ItemStack> itemlist = loottable.generateLootForPools(this.sellingTableSeed == 0L ? this.rand : new Random(this.sellingTableSeed), lootcontext$builder.build());
+
+            List<ItemStack> treasure = loottable2.generateLootForPools(this.treasureTableSeed == 0L ? this.rand : new Random(this.treasureTableSeed), lootcontext$builder.build());
+            if(rand.nextInt(i) == 0 && b) {
+                if (treasure.size() > 0) {
+                    ItemStack itemstack = treasure.get(0);
+                    this.entityDropItem(itemstack, 0.0F);
+                }
+            } else {
+
+                if (itemlist.size() > 0) {
+                    ItemStack itemstack = itemlist.get(0);
+                    this.entityDropItem(itemstack, 0.0F);
+                }
+            }
 
         }
     }
+
+    @Nullable
+    protected ResourceLocation getTreasureTable()
+    {
+        return null;
+    }
+
     @Override
     public boolean canDespawn(){
         return false;
     }
 
+    public int getTreasureTier(){
+        return 0;
+    }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
@@ -240,8 +293,20 @@ public class AbstractTribesmen extends EntityMob {
                 compound.setLong("SellingTableSeed", this.sellingTableSeed);
             }
         }
+        if (this.treasureTable != null)
+        {
+            compound.setString("TTable", this.treasureTable.toString());
+
+            if (this.treasureTableSeed != 0L)
+            {
+                compound.setLong("TTableSeed", this.treasureTableSeed);
+            }
+        }
         compound.setBoolean("Fiery", this.isFiery());
         compound.setBoolean("Trading", this.isTrading());
+        if(this.tradingPlayer != null){
+            compound.setUniqueId("Buyer", this.tradingPlayer);
+        }
 
         compound.setInteger("TradeTicks", this.tradeTicks);
     }
@@ -254,6 +319,11 @@ public class AbstractTribesmen extends EntityMob {
             this.sellingTable = new ResourceLocation(compound.getString("SellingTable"));
             this.sellingTableSeed = compound.getLong("SellingTableSeed");
         }
+        if (compound.hasKey("TTable", 8))
+        {
+            this.sellingTable = new ResourceLocation(compound.getString("TTable"));
+            this.treasureTableSeed = compound.getLong("TTableSeed");
+        }
         if(compound.hasKey("Fiery")){
             this.dataManager.set(FIERY, compound.getBoolean("Fiery"));
         }
@@ -262,6 +332,9 @@ public class AbstractTribesmen extends EntityMob {
         }
         if(compound.hasKey("TradeTicks")){
             this.tradeTicks = compound.getInteger("TradeTicks");
+        }
+        if(compound.hasUniqueId("Buyer")){
+            this.tradingPlayer = compound.getUniqueId("Buyer");
         }
     }
 
@@ -337,5 +410,33 @@ public class AbstractTribesmen extends EntityMob {
     @SideOnly(Side.CLIENT)
     public int getFieryTicks(){
         return this.fieryTicks;
+    }
+
+    @Override
+    public boolean isOnSameTeam(Entity entityIn) {
+        if(this.isFiery()){
+            return false;
+        } else {
+            if(entityIn instanceof AbstractTribesmen){
+                if(!((AbstractTribesmen) entityIn).isFiery()){
+                    return this.getTeam() == null && entityIn.getTeam() == null;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public EntityPlayer getBuyer(){
+        if (this.player == null && this.tradingPlayer != null && this.world instanceof WorldServer) {
+            Entity entity = ((WorldServer)this.world).getEntityFromUuid(this.tradingPlayer);
+            if (entity instanceof EntityPlayer) {
+                this.player = (EntityPlayer) entity;
+            }
+        }
+
+        return this.player;
     }
 }
