@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.proxy;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.animation.AnimationMessage;
 import com.unoriginal.beastslayer.blocks.tile.TileEntityMovingLight;
 import com.unoriginal.beastslayer.gui.ABGuiHandler;
 import com.unoriginal.beastslayer.init.*;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Mod.EventBusSubscriber
@@ -56,6 +58,8 @@ public class CommonProxy
         ConfigManager.sync(BeastSlayer.MODID, Config.Type.INSTANCE);
         OreDictionary.registerOre("ectoplasm", ModItems.ECTOPLASM);
         NetworkRegistry.INSTANCE.registerGuiHandler(BeastSlayer.instance, new ABGuiHandler());
+        int packetId = 0;
+        BeastSlayer.network.registerMessage(AnimationMessage.Handler.class, AnimationMessage.class, packetId++, Side.SERVER);
 
     }
    public void postInit(FMLPostInitializationEvent e) {

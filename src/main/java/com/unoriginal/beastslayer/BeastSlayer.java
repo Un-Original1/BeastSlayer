@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import org.apache.logging.log4j.Logger;
 
 
@@ -20,7 +21,7 @@ public class BeastSlayer
     public static final String NAME = "Beast Slayer";
     public static final String VERSION = "1.9.99999";
     public static final CreativeTabs BEASTSTAB = new ModTab("beaststab");
-
+    public static SimpleNetworkWrapper network;
     @SidedProxy(serverSide = "com.unoriginal.beastslayer.proxy.CommonProxy", clientSide = "com.unoriginal.beastslayer.proxy.ClientProxy")
     public static CommonProxy commonProxy;
 
