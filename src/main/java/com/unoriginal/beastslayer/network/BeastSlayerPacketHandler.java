@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer.network;
 
+import com.unoriginal.beastslayer.animation.AnimationMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -18,6 +19,7 @@ public class BeastSlayerPacketHandler {
         WRAPPER.registerMessage(MessageSpawnParticle.Handler.class, MessageSpawnParticle.class, id++ ,Side.SERVER);
         WRAPPER.registerMessage(MessageItemWitchcraft.MessageHandler.class, MessageItemWitchcraft.class, id++, Side.CLIENT);
         WRAPPER.registerMessage(MessageGlowing.MessageHandler.class, MessageGlowing.class, id++, Side.CLIENT);
+        WRAPPER.registerMessage(AnimationMessage.Handler.class, AnimationMessage.class, id++, Side.SERVER);
       //  WRAPPER.registerMessage(MessageDismountRidingEntity.MessageHandler.class, MessageDismountRidingEntity.class, id++, Side.SERVER);
     }
 
