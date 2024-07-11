@@ -10,6 +10,13 @@ import com.unoriginal.beastslayer.entity.Entities.boss.EntityAbstractBoss;
 import com.unoriginal.beastslayer.util.ModRand;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,7 +28,19 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class EntityFireElemental extends EntityAbstractBoss implements IAttack, IAnimatedEntity {
-    public static final EZAnimation ANIMATION_EXAMPLE = EZAnimation.create(20);
+    public static final EZAnimation ANIMATION_PUNCH = EZAnimation.create(55);
+    public static final EZAnimation ANIMATION_SMASH_GROUND = EZAnimation.create(40);
+    public static final EZAnimation ANIMATION_SUMMONS = EZAnimation.create(40);
+
+    protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SUMMON_MINIONS_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    public boolean isPunchAttack() {return this.dataManager.get(PUNCH_ATTACK);}
+    public void setPunchAttack(boolean value) {this.dataManager.set(PUNCH_ATTACK, Boolean.valueOf(value));}
+    public boolean isSmashGroundAttack() {return this.dataManager.get(SMASH_GROUND_ATTACK);}
+    public void setSmashGroundAttack(boolean value) {this.dataManager.set(SMASH_GROUND_ATTACK, Boolean.valueOf(value));}
+    public boolean isSummonMinionsAttack() {return this.dataManager.get(SUMMON_MINIONS_ATTACK);}
+    public void setSummonMinionsAttack(boolean value) {this.dataManager.set(SUMMON_MINIONS_ATTACK, Boolean.valueOf(value));}
     //Used in the attack brains
     private Consumer<EntityLivingBase> previousAttack;
 
@@ -37,10 +56,22 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
 
 
     @Override
+    public void entityInit() {
+        this.dataManager.register(PUNCH_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(SMASH_GROUND_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(SUMMON_MINIONS_ATTACK, Boolean.valueOf(false));
+        super.entityInit();
+    }
+
+
+    @Override
     public void initEntityAI() {
         super.initEntityAI();
             // Expect changes to added Paramaters in the future, still working on some more complex stuff in Unseens Box of Curiosities
         this.tasks.addTask(4, new FireElementalAI<>(this, 1.0, 40, 10F, 0.3f));
+        this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 1, true, false, null));
+        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
     }
 
     protected void applyEntityAttributes()
@@ -57,6 +88,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D + BeastSlayerConfig.GlobalArmor);
     }
 
+    int testAnimationTick = 400;
+
     public void onUpdate() {
         super.onUpdate();
         if(this.world.isRemote){
@@ -70,6 +103,30 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
             }
         }
 
+        //used for testing purposes of animations
+        if(testAnimationTick < 0) {
+            this.setAnimation(ANIMATION_PUNCH);
+            testAnimationTick = 500;
+        } else {
+            testAnimationTick--;
+        }
+
+        //handles animations
+        if(this.isFightMode() && this.getAnimation() == NO_ANIMATION) {
+            //Punch Attack
+            if(this.isPunchAttack()) {
+                this.setAnimation(ANIMATION_PUNCH);
+            }
+            //Smash Ground Attack
+            if(this.isSmashGroundAttack()) {
+                this.setAnimation(ANIMATION_SMASH_GROUND);
+            }
+            //Summon Minions Attack
+            if(this.isSummonMinionsAttack()) {
+                this.setAnimation(ANIMATION_SUMMONS);
+            }
+
+        }
         //sends the Animation Handler constant updates on the animations
         EZAnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -112,22 +169,38 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     private final Consumer<EntityLivingBase> punch = (target) -> {
         //begins the attack and makes sure that no other attacks play
     this.setFightMode(true);
+    this.setPunchAttack(true);
+
+    addEvent(()-> this.lockLook = true, 12);
 
     //the timed event system, basically allow certain things to activate in ticks from now
     addEvent(()-> {
+
         //Do action with whatever code you want
-    }, 40);
+    }, 23);
 
 
 
         //at 4 seconds this attack will be over
      addEvent(()-> {
          this.setFightMode(false);
-     }, 80);
+         this.setPunchAttack(false);
+         this.setAnimation(NO_ANIMATION);
+         this.lockLook = false;
+     }, 55);
     };
 
     private final Consumer<EntityLivingBase> smash = (target) -> {
+        this.setFightMode(true);
+        this.setSmashGroundAttack(true);
 
+
+
+        addEvent(()-> {
+            this.setFightMode(false);
+            this.setSmashGroundAttack(false);
+            this.setAnimation(NO_ANIMATION);
+        }, 40);
     };
 
 
@@ -155,7 +228,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     //This is where you store a collective list of all the animations this entity is capable of ONLY USING THIS SYSTEM, there is no walk or idle animations
     @Override
     public EZAnimation[] getAnimations() {
-        return new EZAnimation[]{ANIMATION_EXAMPLE};
+        return new EZAnimation[]{ANIMATION_PUNCH, ANIMATION_SMASH_GROUND, ANIMATION_SUMMONS};
     }
     //  punch, smash, push, get over here!, summons, flame shot, life steal, meteor rain
 }
