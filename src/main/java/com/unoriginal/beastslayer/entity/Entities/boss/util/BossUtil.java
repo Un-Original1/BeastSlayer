@@ -5,8 +5,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.function.Function;
@@ -87,4 +89,6 @@ public class BossUtil {
     public static Vec3d yVec(double heightAboveGround) {
         return new Vec3d(0, heightAboveGround, 0);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer.entity.Entities.boss;
 
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -14,6 +15,7 @@ public abstract class EntityAbstractBoss extends EntityMob {
 
     //the basis of all DataParameter booleans usually ties in with a lot of things
     private static final DataParameter<Boolean> FIGHT_MODE = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> IMMOVABLE = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
 
     //This is just a boolean for locking the look of the boss, the Constructor as an example
     public boolean lockLook = false;
@@ -25,14 +27,22 @@ public abstract class EntityAbstractBoss extends EntityMob {
     }
 
 
+
     @Override
     public void entityInit() {
         this.dataManager.register(FIGHT_MODE, Boolean.valueOf(false));
+        this.dataManager.register(IMMOVABLE, Boolean.valueOf(false));
         super.entityInit();
     }
 
 
+    protected boolean isImmovable() {
+        return this.dataManager == null ? false : this.dataManager.get(IMMOVABLE);
+    }
 
+    protected void setImmovable(boolean immovable) {
+        this.dataManager.set(IMMOVABLE, immovable);
+    }
     public boolean isFightMode() {return this.dataManager.get(FIGHT_MODE);}
     public void setFightMode(boolean value) {this.dataManager.set(FIGHT_MODE, Boolean.valueOf(value));}
     @Override
@@ -87,5 +97,13 @@ public abstract class EntityAbstractBoss extends EntityMob {
             return event.ticks < ticks ? 1 : -1;
         }
     }
+
+    @Override
+    public void move(MoverType type, double x, double y, double z) {
+        if(!this.isImmovable()) {
+            super.move(type, x, y, z);
+        }
+    }
+
     //You can use this to put whatever basis of things, such as if you wanted the scaling system in
 }

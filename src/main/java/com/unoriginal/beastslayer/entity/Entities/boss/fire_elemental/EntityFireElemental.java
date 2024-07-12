@@ -4,9 +4,11 @@ import com.unoriginal.beastslayer.animation.EZAnimation;
 import com.unoriginal.beastslayer.animation.EZAnimationHandler;
 import com.unoriginal.beastslayer.animation.IAnimatedEntity;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.entity.Entities.*;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.IAttack;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.fire_elemental.FireElementalAI;
 import com.unoriginal.beastslayer.entity.Entities.boss.EntityAbstractBoss;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSummonMinions;
 import com.unoriginal.beastslayer.entity.Entities.boss.util.BossUtil;
 import com.unoriginal.beastslayer.util.ModRand;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +22,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,7 +37,7 @@ import java.util.function.Consumer;
 public class EntityFireElemental extends EntityAbstractBoss implements IAttack, IAnimatedEntity {
     public static final EZAnimation ANIMATION_PUNCH = EZAnimation.create(55);
     public static final EZAnimation ANIMATION_SMASH_GROUND = EZAnimation.create(50);
-    public static final EZAnimation ANIMATION_SUMMONS = EZAnimation.create(40);
+    public static final EZAnimation ANIMATION_SUMMONS = EZAnimation.create(70);
 
     protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
@@ -53,9 +56,12 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     //just a variable that holds what the current animation is
     private EZAnimation currentAnimation;
 
+    private boolean hasMinionsNearby = false;
+
     public EntityFireElemental(World worldIn) {
         super(worldIn);
         this.setSize(2.0F, 5.0F);
+        this.isImmuneToFire = true;
     }
 
 
@@ -98,6 +104,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
 
     public void onUpdate() {
         super.onUpdate();
+
         if(this.world.isRemote){
             for (int i = 0; i < 1; ++i)
             {
@@ -133,6 +140,15 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
             }
 
         }
+
+        //minion Sensing
+        if(hasMinionsNearby) {
+            List<AbstractTribesmen> nearbyMinions = this.world.getEntitiesWithinAABB(AbstractTribesmen.class, this.getEntityBoundingBox().grow(30D), e -> !e.getIsInvulnerable());
+            //just a quick sense to see if minions are nearby, once there is not the boolean sets to false
+            if(nearbyMinions.isEmpty()) {
+                hasMinionsNearby = false;
+            }
+        }
         //sends the Animation Handler constant updates on the animations
         EZAnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -159,8 +175,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
                     //this is where you add weights to the attacks and add a lot of parameters if you want
                     //these first two are just saying if the distance is less than 4 and the attack is not a repeat then do this attack
                     (distance < 4 && previousAttack != punch) ? 1/distance : 0, // Punch attack
-                    (distance <= 10 && previousAttack != smash) ? 1/distance : 1, // Smash Attack
-                    (distance <= 10 && previousAttack != summonMinions) ? 1/distance : 0 // Summon minions, probably have a paramater check to see if theres a current minion nearby before doing it again
+                    (distance <= 10) ? 1/distance : 1, // Smash Attack, will edit later, just now to prevent crashing
+                    (distance <= 10 && previousAttack != summonMinions && !hasMinionsNearby) ? 1/distance : 0 // Summon minions
 
             };
 
@@ -206,6 +222,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         this.setSmashGroundAttack(true);
         addEvent(()-> {
             this.lockLook = true;
+            this.setImmovable(true);
         }, 20);
 
         addEvent(()-> {
@@ -221,6 +238,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         addEvent(()-> {
             this.setFightMode(false);
             this.setSmashGroundAttack(false);
+            this.setImmovable(false);
             this.lockLook = false;
             this.setAnimation(NO_ANIMATION);
         }, 50);
@@ -230,13 +248,19 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     private final Consumer<EntityLivingBase> summonMinions = (target) -> {
       this.setFightMode(true);
       this.setSummonMinionsAttack(true);
-
-
+      this.setImmovable(true);
+      this.lockLook = true;
+      addEvent(()-> {
+          new ActionSummonMinions().performAction(this, target);
+        hasMinionsNearby = true;
+      }, 20);
       addEvent(()-> {
           this.setFightMode(false);
           this.setSummonMinionsAttack(false);
           this.setAnimation(NO_ANIMATION);
-      }, 40);
+          this.setImmovable(false);
+          this.lockLook = false;
+      }, 70);
     };
 
     @Override
@@ -265,4 +289,25 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         return new EZAnimation[]{ANIMATION_PUNCH, ANIMATION_SMASH_GROUND, ANIMATION_SUMMONS};
     }
     //  punch, smash, push, get over here!, summons, flame shot, life steal, meteor rain
+
+
+    public int getSurfaceHeight(World world, BlockPos pos, int min, int max)
+    {
+        int maxY = max;
+        int minY = min;
+        int currentY = maxY;
+
+        while(currentY >= minY)
+        {
+            if(!world.isAirBlock(pos.add(0, currentY, 0))) {
+                //checks for air above the ground block
+                if(world.isAirBlock(pos.add(0, currentY + 1, 0)) && world.isAirBlock(pos.add(0, currentY + 2, 0))) {
+                    return currentY;
+                }
+            }
+
+            currentY--;
+        }
+        return 0;
+    }
 }

@@ -246,11 +246,16 @@ public class ModelFireElemental extends BasicModelEntity {
 		//haha funny spin
 		//this.swing(lower_arm2, 0.1F, 10F, false, 3F, 0.1F,ageInTicks, MathHelper.cos(((4 * 2) + ageInTicks) * 0.05F));
 
-		//this.lower_arm.rotationPointY = 29F + MathHelper.cos(((4 * 2) + ageInTicks) * 0.05F);
-		//this.lower_arm2.rotationPointY = 29F + MathHelper.cos(((4 * 2) + ageInTicks) * 0.07F);
+		if(entityIn instanceof EntityFireElemental) {
+			if(!((EntityFireElemental)entityIn).isFightMode()) {
+				this.lower_arm.rotationPointY = 29F + MathHelper.cos(((4 * 2) + ageInTicks) * 0.05F);
+				this.lower_arm2.rotationPointY = 29F + MathHelper.cos(((4 * 2) + ageInTicks) * 0.07F);
 
-		//this.lower_arm.rotationPointX = -10.0F - MathHelper.cos((ageInTicks) * 0.2F);
-		//this.lower_arm2.rotationPointX = 10.0F + MathHelper.cos((ageInTicks) * 0.2F);
+				this.lower_arm.rotationPointX = -10.0F - MathHelper.cos((ageInTicks) * 0.2F);
+				this.lower_arm2.rotationPointX = 10.0F + MathHelper.cos((ageInTicks) * 0.2F);
+			}
+		}
+
 	}
 
 	//this is where you do set animations
@@ -334,6 +339,35 @@ public class ModelFireElemental extends BasicModelEntity {
 		animator.endKeyframe();
 		//
 		animator.resetKeyframe(10);
+		//End Animation
+		animator.setAnimation(EntityFireElemental.ANIMATION_SUMMONS);
+		//
+		animator.startKeyframe(10);
+		animator.rotate(arm2, 0, 0, (float) Math.toRadians(-50));
+		animator.rotate(arm1, 0, 0, (float) Math.toRadians(50));
+		animator.move(head, 0, -5, 0);
+		animator.move(body, 0, -5, 0);
+		animator.endKeyframe();
+		//
+		animator.setStaticKeyframe(5);
+		//
+		animator.startKeyframe(5);
+		animator.rotate(arm1, 0, 0, 0);
+		animator.rotate(arm2, 0, 0, 0);
+		animator.move(head, 0, 10, 0);
+		animator.move(body, 0, 10, 0);
+		animator.endKeyframe();
+		//
+		animator.startKeyframe(5);
+		animator.move(lower_arm2, 0, 20, 0);
+		animator.move(lower_arm, 0,20,0);
+		animator.rotate(arm1, 0, 0, 0);
+		animator.rotate(arm2, 0, 0, 0);
+		animator.endKeyframe();
+		//
+		animator.setStaticKeyframe(35);
+		//
+		animator.resetKeyframe(15);
 
 		//just make sure the duration of the animation doens't exceed ANIMATION_EXAMPLE time which is 20
 	}
