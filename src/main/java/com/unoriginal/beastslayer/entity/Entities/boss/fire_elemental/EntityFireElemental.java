@@ -7,6 +7,7 @@ import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.IAttack;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.fire_elemental.FireElementalAI;
 import com.unoriginal.beastslayer.entity.Entities.boss.EntityAbstractBoss;
+import com.unoriginal.beastslayer.entity.Entities.boss.util.BossUtil;
 import com.unoriginal.beastslayer.util.ModRand;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -17,11 +18,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Vector4f;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +33,7 @@ import java.util.function.Consumer;
 
 public class EntityFireElemental extends EntityAbstractBoss implements IAttack, IAnimatedEntity {
     public static final EZAnimation ANIMATION_PUNCH = EZAnimation.create(55);
-    public static final EZAnimation ANIMATION_SMASH_GROUND = EZAnimation.create(40);
+    public static final EZAnimation ANIMATION_SMASH_GROUND = EZAnimation.create(50);
     public static final EZAnimation ANIMATION_SUMMONS = EZAnimation.create(40);
 
     protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
@@ -74,6 +78,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
     }
 
+    public double temporaryDamageModifier = 8.0D;
+
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -104,12 +110,12 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         }
 
         //used for testing purposes of animations
-        if(testAnimationTick < 0) {
-            this.setAnimation(ANIMATION_PUNCH);
-            testAnimationTick = 500;
-        } else {
-            testAnimationTick--;
-        }
+       // if(testAnimationTick < 0) {
+        //    this.setAnimation(ANIMATION_SMASH_GROUND);
+      //      testAnimationTick = 500;
+      //  } else {
+       //     testAnimationTick--;
+     //   }
 
         //handles animations
         if(this.isFightMode() && this.getAnimation() == NO_ANIMATION) {
@@ -146,14 +152,16 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public int startAttack(EntityLivingBase target, float distanceSq, boolean strafingBackwards) {
         double distance = Math.sqrt(distanceSq);
         //This is where the brains of the AI takes places
-        if(!this.isFightMode() && this.getAnimation() != NO_ANIMATION) {
+        if(!this.isFightMode() && this.getAnimation() == NO_ANIMATION) {
             //Gathers all attacks in a list
-            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(punch, smash));
+            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(punch, smash, summonMinions));
             double[] weights = {
                     //this is where you add weights to the attacks and add a lot of parameters if you want
                     //these first two are just saying if the distance is less than 4 and the attack is not a repeat then do this attack
-                    (distance < 4 && previousAttack != punch) ? 1/distance : 0,
-                    (distance < 4 && previousAttack != smash) ? 1/distance : 0
+                    (distance < 4 && previousAttack != punch) ? 1/distance : 0, // Punch attack
+                    (distance <= 10 && previousAttack != smash) ? 1/distance : 1, // Smash Attack
+                    (distance <= 10 && previousAttack != summonMinions) ? 1/distance : 0 // Summon minions, probably have a paramater check to see if theres a current minion nearby before doing it again
+
             };
 
             previousAttack = ModRand.choice(attacks, rand, weights).next();
@@ -163,7 +171,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
 
 
         //the cooldown in between each attack, you can add certain parameters like if it does a certain attack it has a longer cooldown
-        return (previousAttack == smash) ? 80 : 40;
+        return (previousAttack == smash) ? 80 : 60;
     }
 
     private final Consumer<EntityLivingBase> punch = (target) -> {
@@ -175,13 +183,16 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
 
     //the timed event system, basically allow certain things to activate in ticks from now
     addEvent(()-> {
-
-        //Do action with whatever code you want
+        Vec3d offset = this.getPositionVector().add(BossUtil.getRelativeOffset(this, new Vec3d(2,1.5,0)));
+        DamageSource source = DamageSource.causeMobDamage(this);
+        float damage = (float) (temporaryDamageModifier + BeastSlayerConfig.GlobalDamageMultiplier);
+        BossUtil.handleAreaImpact(1.5F, (e)-> damage, this, offset, source, 0.5F, 1, false);
+        //Do Punch damage
     }, 23);
 
 
 
-        //at 4 seconds this attack will be over
+        //at 2.55 seconds this attack will be over
      addEvent(()-> {
          this.setFightMode(false);
          this.setPunchAttack(false);
@@ -193,17 +204,40 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     private final Consumer<EntityLivingBase> smash = (target) -> {
         this.setFightMode(true);
         this.setSmashGroundAttack(true);
+        addEvent(()-> {
+            this.lockLook = true;
+        }, 20);
 
+        addEvent(()-> {
+        //Do Smash Attack stuff
+            //Maybe some Vfx and an entity where the ground pops out in a circle
+            Vec3d offset = this.getPositionVector().add(BossUtil.getRelativeOffset(this, new Vec3d(0,0.3,0)));
+            DamageSource source = DamageSource.causeMobDamage(this);
+            float damage = (float) ((temporaryDamageModifier * 0.5) + BeastSlayerConfig.GlobalDamageMultiplier);
+            BossUtil.handleAreaImpact(4.5F, (e)-> damage, this, offset, source, 0.9F, 1, false);
+        }, 35);
 
 
         addEvent(()-> {
             this.setFightMode(false);
             this.setSmashGroundAttack(false);
+            this.lockLook = false;
             this.setAnimation(NO_ANIMATION);
-        }, 40);
+        }, 50);
     };
 
 
+    private final Consumer<EntityLivingBase> summonMinions = (target) -> {
+      this.setFightMode(true);
+      this.setSummonMinionsAttack(true);
+
+
+      addEvent(()-> {
+          this.setFightMode(false);
+          this.setSummonMinionsAttack(false);
+          this.setAnimation(NO_ANIMATION);
+      }, 40);
+    };
 
     @Override
     public int getAnimationTick() {

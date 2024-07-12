@@ -241,8 +241,10 @@ public class ModelFireElemental extends BasicModelEntity {
 		//this.head.rotateAngleX = headPitch * 0.017453292F;
 		//this.head.rotationPointY = -43F - MathHelper.cos((2 + ageInTicks) * 0.10F);
 		this.faceTarget(netHeadYaw, headPitch, 1, head);
-		//this.spin.rotationPointY = 8.0F + MathHelper.cos(((4 * 2) + ageInTicks) * 0.25F);
-		//this.spin.rotateAngleY = ageInTicks * (float)Math.PI * -0.1F;
+		this.spin.rotationPointY = 8.0F + MathHelper.cos(((4 * 2) + ageInTicks) * 0.25F);
+		this.spin.rotateAngleY = ageInTicks * (float)Math.PI * -0.1F;
+		//haha funny spin
+		//this.swing(lower_arm2, 0.1F, 10F, false, 3F, 0.1F,ageInTicks, MathHelper.cos(((4 * 2) + ageInTicks) * 0.05F));
 
 		//this.lower_arm.rotationPointY = 29F + MathHelper.cos(((4 * 2) + ageInTicks) * 0.05F);
 		//this.lower_arm2.rotationPointY = 29F + MathHelper.cos(((4 * 2) + ageInTicks) * 0.07F);
@@ -294,7 +296,44 @@ public class ModelFireElemental extends BasicModelEntity {
 		animator.setStaticKeyframe(5);
 		//
 		animator.resetKeyframe(15);
-
+		//End Animation
+		animator.setAnimation(EntityFireElemental.ANIMATION_SMASH_GROUND);
+		//
+		animator.startKeyframe(10);
+		animator.rotate(body, (float) Math.toRadians(-10), 0, 0);
+		animator.move(body, 0, -10, 0);
+		animator.move(head, 0, -10, 0);
+		animator.rotate(arm1, (float) Math.toRadians(-75), 0, (float) Math.toRadians(-10));
+		animator.rotate(arm2, (float) Math.toRadians(-75), 0, (float) Math.toRadians(10));
+		animator.endKeyframe();
+		//
+		animator.startKeyframe(10);
+		animator.rotate(body, (float) Math.toRadians(-20), 0, 0);
+		animator.move(body, 0, -10, 0);
+		animator.move(head, 0, -10, 0);
+		animator.rotate(arm1, (float) Math.toRadians(-150), 0, (float) Math.toRadians(-20));
+		animator.rotate(arm2, (float) Math.toRadians(-150), 0, (float) Math.toRadians(20));
+		animator.endKeyframe();
+		//
+		animator.setStaticKeyframe(10);
+		//
+		animator.startKeyframe(5);
+		animator.rotate(arm1, (float) Math.toRadians(-30), 0, 0);
+		animator.rotate(arm2, (float) Math.toRadians(-30), 0, 0);
+		animator.rotate(body, (float) Math.toRadians(30), 0, 0);
+		animator.move(body, 0, -28, 0);
+		animator.move(head, 0, -28, 0);
+		animator.endKeyframe();
+		//
+		animator.startKeyframe(5);
+		animator.move(body, 0, 8, 0);
+		animator.move(head, 0, 8, 0);
+		animator.rotate(body, (float) Math.toRadians(15), 0,0);
+		animator.rotate(arm2, (float) Math.toRadians(-15), 0, 0);
+		animator.rotate(arm1, (float) Math.toRadians(-15), 0, 0);
+		animator.endKeyframe();
+		//
+		animator.resetKeyframe(10);
 
 		//just make sure the duration of the animation doens't exceed ANIMATION_EXAMPLE time which is 20
 	}
