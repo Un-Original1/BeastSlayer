@@ -1,6 +1,5 @@
 package com.unoriginal.beastslayer.entity.Entities.boss;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -14,7 +13,7 @@ public abstract class EntityAbstractBoss extends EntityMob {
 
 
     //the basis of all DataParameter booleans usually ties in with a lot of things
-    protected static final DataParameter<Boolean> FIGHT_MODE = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FIGHT_MODE = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
 
     //This is just a boolean for locking the look of the boss, the Constructor as an example
     public boolean lockLook = false;
