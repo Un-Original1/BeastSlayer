@@ -38,16 +38,25 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public static final EZAnimation ANIMATION_PUNCH = EZAnimation.create(55);
     public static final EZAnimation ANIMATION_SMASH_GROUND = EZAnimation.create(50);
     public static final EZAnimation ANIMATION_SUMMONS = EZAnimation.create(70);
+    public static final EZAnimation ANIMATION_GET_OVER_HERE = EZAnimation.create(60);
+    public static final EZAnimation ANIMATION_PUSH = EZAnimation.create(60);
 
     protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> SUMMON_MINIONS_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> GET_OVER_HERE_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> PUSH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
     public boolean isPunchAttack() {return this.dataManager.get(PUNCH_ATTACK);}
     public void setPunchAttack(boolean value) {this.dataManager.set(PUNCH_ATTACK, Boolean.valueOf(value));}
     public boolean isSmashGroundAttack() {return this.dataManager.get(SMASH_GROUND_ATTACK);}
     public void setSmashGroundAttack(boolean value) {this.dataManager.set(SMASH_GROUND_ATTACK, Boolean.valueOf(value));}
     public boolean isSummonMinionsAttack() {return this.dataManager.get(SUMMON_MINIONS_ATTACK);}
     public void setSummonMinionsAttack(boolean value) {this.dataManager.set(SUMMON_MINIONS_ATTACK, Boolean.valueOf(value));}
+    public boolean isGetOverHereAttack() {return this.dataManager.get(GET_OVER_HERE_ATTACK);}
+    public void setGetOverHereAttack(boolean value) {this.dataManager.set(GET_OVER_HERE_ATTACK, Boolean.valueOf(value));}
+    public boolean isPushAttack() {return this.dataManager.get(PUSH_ATTACK);}
+    public void setPushAttack(boolean value) {this.dataManager.set(PUSH_ATTACK, Boolean.valueOf(value));}
+
     //Used in the attack brains
     private Consumer<EntityLivingBase> previousAttack;
 
@@ -70,6 +79,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         this.dataManager.register(PUNCH_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(SMASH_GROUND_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(SUMMON_MINIONS_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(GET_OVER_HERE_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(PUSH_ATTACK, Boolean.valueOf(false));
         super.entityInit();
     }
 
@@ -138,7 +149,14 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
             if(this.isSummonMinionsAttack()) {
                 this.setAnimation(ANIMATION_SUMMONS);
             }
-
+            //Push Attack
+            if(this.isPushAttack()) {
+                this.setAnimation(ANIMATION_PUSH);
+            }
+            //Get Over here attack
+            if(this.isGetOverHereAttack()) {
+                this.setAnimation(ANIMATION_GET_OVER_HERE);
+            }
         }
 
         //minion Sensing
@@ -170,13 +188,15 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         //This is where the brains of the AI takes places
         if(!this.isFightMode() && this.getAnimation() == NO_ANIMATION) {
             //Gathers all attacks in a list
-            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(punch, smash, summonMinions));
+            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(punch, smash, summonMinions, getOverHERE, pushAttack));
             double[] weights = {
                     //this is where you add weights to the attacks and add a lot of parameters if you want
                     //these first two are just saying if the distance is less than 4 and the attack is not a repeat then do this attack
                     (distance < 4 && previousAttack != punch) ? 1/distance : 0, // Punch attack
                     (distance <= 10) ? 1/distance : 1, // Smash Attack, will edit later, just now to prevent crashing
-                    (distance <= 10 && previousAttack != summonMinions && !hasMinionsNearby) ? 1/distance : 0 // Summon minions
+                    (distance <= 10 && previousAttack != summonMinions && !hasMinionsNearby) ? 1/distance : 0, // Summon minions
+                    (distance <= 16 && distance >= 12) ? 1/distance : 0, //Might have to have this operate outside of the system as well, GET OVER HERE
+                    (distance < 4 && previousAttack != pushAttack) ? 1/distance : 0 // Push Attack
 
             };
 
@@ -261,6 +281,29 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
           this.setImmovable(false);
           this.lockLook = false;
       }, 70);
+    };
+
+    private final Consumer<EntityLivingBase> getOverHERE = (target) -> {
+      this.setFightMode(true);
+      this.setGetOverHereAttack(true);
+
+
+      addEvent(()-> {
+          this.setGetOverHereAttack(false);
+          this.setFightMode(false);
+          this.setAnimation(NO_ANIMATION);
+      }, 60);
+    };
+
+    private final Consumer<EntityLivingBase> pushAttack = (target) -> {
+      this.setFightMode(true);
+      this.setPushAttack(true);
+
+      addEvent(()-> {
+          this.setPushAttack(false);
+          this.setFightMode(false);
+          this.setAnimation(NO_ANIMATION);
+      }, 60);
     };
 
     @Override
