@@ -17,7 +17,6 @@ public class BeastSlayerPacketHandler {
         WRAPPER.registerMessage(MessageAttackER.Handler.class, MessageAttackER.class, id++, Side.SERVER);
         WRAPPER.registerMessage(MessageSpawnParticle.Handler.class, MessageSpawnParticle.class, id++ ,Side.CLIENT);
         WRAPPER.registerMessage(MessageSpawnParticle.Handler.class, MessageSpawnParticle.class, id++ ,Side.SERVER);
-        WRAPPER.registerMessage(MessageItemWitchcraft.MessageHandler.class, MessageItemWitchcraft.class, id++, Side.CLIENT);
         WRAPPER.registerMessage(MessageGlowing.MessageHandler.class, MessageGlowing.class, id++, Side.CLIENT);
         WRAPPER.registerMessage(AnimationMessage.Handler.class, AnimationMessage.class, id++, Side.SERVER);
       //  WRAPPER.registerMessage(MessageDismountRidingEntity.MessageHandler.class, MessageDismountRidingEntity.class, id++, Side.SERVER);

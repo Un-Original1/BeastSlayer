@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": { "model": "ancientbeasts:hanging_leaves" },
+        "inventory": { "model": "ancientbeasts:item/hanging_leaves" }
+    }
+}

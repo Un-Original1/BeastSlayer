@@ -6,6 +6,7 @@ import com.unoriginal.beastslayer.init.ModEntities;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.init.ModParticles;
 import com.unoriginal.beastslayer.items.models.*;
+import com.unoriginal.beastslayer.particles.ParticleColoredDrip;
 import com.unoriginal.beastslayer.particles.ParticleRift;
 import com.unoriginal.beastslayer.particles.ParticleSandSpit;
 import com.unoriginal.beastslayer.particles.ParticleWispFire;
@@ -39,6 +40,7 @@ public class ClientProxy extends CommonProxy
         Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.SAND_SPIT.getParticleID(), new ParticleSandSpit.Factory());
         Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.RIFT.getParticleID(), new ParticleRift.Factory());
         Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.WISPFLAME.getParticleID(), new ParticleWispFire.Factory());
+        Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.DRIP.getParticleID(), new ParticleColoredDrip.Factory());
     }
     @Override
     public Object getArmorModel(Item item, EntityLivingBase entity) {

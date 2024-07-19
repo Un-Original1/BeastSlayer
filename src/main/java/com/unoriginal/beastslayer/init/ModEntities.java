@@ -1,7 +1,8 @@
 package com.unoriginal.beastslayer.init;
 
 
-import static net.minecraftforge.common.BiomeDictionary.Type;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
@@ -17,6 +18,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Set;
+
+import static net.minecraftforge.common.BiomeDictionary.Type;
 
 @Mod.EventBusSubscriber
 public class ModEntities
@@ -86,8 +91,32 @@ public class ModEntities
 
         EntityRegistry.addSpawn(EntityNekros.class, BeastSlayerConfig.nekrosSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
 
+        Multimap<Type, Biome> ExclusiveList = HashMultimap.create();
+
+        for (Biome b : Biome.REGISTRY)
+        {
+            Set<Type> types = BiomeDictionary.getTypes(b);
+            for (BiomeDictionary.Type t : types)
+            {
+                if(!BiomeDictionary.hasType(b, Type.NETHER) && !BiomeDictionary.hasType(b, Type.MUSHROOM) && !BiomeDictionary.hasType(b, Type.END)) {
+                    ExclusiveList.put(t, b);
+                }
+            }
+        }
 
         for(Type type : Type.getAll()) {
+            EntityRegistry.addSpawn(EntityDamcell.class, BeastSlayerConfig.damcellSpawnChance, 1, 1, EnumCreatureType.MONSTER, ExclusiveList.get(type).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityBoulderer.class, BeastSlayerConfig.boulderingSpawnChance, 1, 4, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityRiftedEnderman.class, BeastSlayerConfig.riftedEndermanSpawnChance, 1, 1, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
+
+            EntityRegistry.addSpawn(EntityBonepile.class, BeastSlayerConfig.bonepileSpawnChance, 1, 3, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
+
+            if (BeastSlayerConfig.zealotSpawnEverywhere) {
+                EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotEverywhereSpawnChance, 1, 1, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
+            }
+        }
+        //Left here in case above breaks
+     /*   for(Type type : Type.getAll()) {
             if (!type.equals(Type.NETHER) && !type.equals(Type.END) && !type.equals(Type.MUSHROOM)) {
                 EntityRegistry.addSpawn(EntityDamcell.class, BeastSlayerConfig.damcellSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
                 EntityRegistry.addSpawn(EntityBoulderer.class, BeastSlayerConfig.boulderingSpawnChance, 1, 4, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
@@ -95,13 +124,14 @@ public class ModEntities
 
                 EntityRegistry.addSpawn(EntityBonepile.class, BeastSlayerConfig.bonepileSpawnChance, 1, 3, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
 
-
                 if(BeastSlayerConfig.zealotSpawnEverywhere){
                     EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotEverywhereSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(type).toArray(new Biome[0]));
                 }
             }
-        }
+        }*/
+
     }
+
     @SideOnly(Side.CLIENT)
     public static void initModels() {
         RenderingRegistry.registerEntityRenderingHandler(EntitySandy.class, RenderSandy.FACTORY);

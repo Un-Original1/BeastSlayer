@@ -1,4 +1,5 @@
 {
+    "parent": "block/block",
   "textures": {
     "bottom": "ancientbeasts:blocks/skewer_bottom",
     "side": "ancientbeasts:blocks/skewer_side",

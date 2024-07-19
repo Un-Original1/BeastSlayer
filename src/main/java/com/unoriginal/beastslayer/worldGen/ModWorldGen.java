@@ -1,7 +1,9 @@
 package com.unoriginal.beastslayer.worldGen;
 
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.init.ModBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +21,7 @@ import java.util.Random;
 
 public class ModWorldGen implements IWorldGenerator {
     public static final JungleVillageWorldGen jungle_t = new JungleVillageWorldGen();
+    public static final WorldGenWeepingTrees weeping_trees = new WorldGenWeepingTrees(false);
     private static final List<Biome> JUNGLES = Arrays.asList(Biomes.JUNGLE, Biomes.JUNGLE_HILLS, Biomes.MUTATED_JUNGLE);
 
     @Override
@@ -46,9 +49,21 @@ public class ModWorldGen implements IWorldGenerator {
         BlockPos pos = new BlockPos(blockX, y, blockZ);
         if (canStructureSpawn((blockX >> 4) - 8, (blockZ >> 4) - 8, world, 1) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
             if (pos.getY() > 31 && JUNGLES.contains(world.getBiome(pos))) {
-                jungle_t.generate(world, rand, pos);
+              //  jungle_t.generate(world, rand, pos);
             }
         }
+        if (canStructureSpawn((blockX >> 4) - 8, (blockZ >> 4) - 8, world, 1) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
+            if (pos.getY() > 31 && JUNGLES.contains(world.getBiome(pos))) {
+                for (int i = 0; i < rand.nextInt(5) + 1; i++){
+                    int j = rand.nextInt(8) + 3;
+                    for (IBlockState state = world.getBlockState(pos); (state.getBlock().isReplaceable(world, pos) && pos.getY() > 0); state = world.getBlockState(pos) )
+                    { pos = pos.down(); }
+                    if(ModBlocks.CURSED_SAPLING.canPlaceBlockAt(world,  pos.add(j, 1, j))) {
+                        weeping_trees.generate(world, rand, pos.add(j, 1, j));
+
+                    }
+                }
+            }}
         if (canStructureSpawn(blockX / 16, blockZ /16, world, BeastSlayerConfig.CircusSpawnChance))
         {
             WorldGenerator structure = new CircusWorldGen();

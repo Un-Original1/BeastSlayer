@@ -27,6 +27,7 @@ public class ModelSandy extends ModelBase {
 	private final ModelRenderer hair_r;
 	private final ModelRenderer hair_l;
 	private final ModelRenderer awooga;
+	private final ModelRenderer tongue;
 	private State state = State.NORMAL;
 
 	public ModelSandy() {
@@ -92,6 +93,7 @@ public class ModelSandy extends ModelBase {
 		body1.addChild(head);
 		head.cubeList.add(new ModelBox(head, 92, 49, -4.0F, -7.0F, -3.0F, 8, 8, 8, 0.25F, false));
 		head.cubeList.add(new ModelBox(head, 16, 94, -4.0F, -8.0F, -3.0F, 8, 8, 8, 0.0F, false));
+		head.cubeList.add(new ModelBox(head, 96, 118, -4.0F, 0.0F, -3.0F, 8, 1, 8, 0.0F, false));
 
 		hair_l = new ModelRenderer(this);
 		hair_l.setRotationPoint(5.0F, -7.0F, 0.0F);
@@ -106,6 +108,12 @@ public class ModelSandy extends ModelBase {
 		hair_r.cubeList.add(new ModelBox(hair_r, 98, 24, -3.4F, 0.0F, -2.3F, 6, 8, 6, 0.0F, false));
 		hair_r.cubeList.add(new ModelBox(hair_r, 92, 65, -3.4F, 8.0F, -2.3F, 6, 1, 6, 0.0F, false));
 		setRotationAngle(hair_r, 0.0F, 0.479F, 0.0F);
+
+		tongue = new ModelRenderer(this);
+		tongue.setRotationPoint(0.0F, 1.0F, -3.0F);
+		head.addChild(tongue);
+		setRotationAngle(tongue, 0.3491F, 0.0F, 0.0F);
+		tongue.cubeList.add(new ModelBox(tongue, -5, 0, -1.5F, -0.5F, -5.0F, 3, 0, 5, 0.0F, false));
 
 		rightArm = new ModelRenderer(this);
 		rightArm.setRotationPoint(-4.0F, -10.0F, 1.0F);
@@ -136,7 +144,23 @@ public class ModelSandy extends ModelBase {
 	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
 		this.head.rotateAngleY = netHeadYaw * 0.003F;
 		this.head.rotateAngleX = headPitch * 0.002F;
-																		//speed 			//distance
+		if(entityIn instanceof EntitySandy){
+			EntitySandy sandy = (EntitySandy) entityIn;
+			if(sandy.isAngry()){
+				this.head.rotationPointY = -13F;
+				this.hair_r.rotationPointY = -6F;
+				this.hair_l.rotationPointY = -6F;
+
+				this.tongue.rotateAngleX = MathHelper.cos(ageInTicks * 1.5F) * 0.3F;
+				float f = MathHelper.sin(ageInTicks * 0.25F) * 0.5F +0.5F;
+				this.tongue.showModel = f > 0.5F;
+			} else {
+				this.head.rotationPointY = -12F;
+				this.hair_r.rotationPointY = -7F;
+				this.hair_l.rotationPointY = -7F;
+			}
+		}
+		//speed 			//distance
 		this.hair_l.rotateAngleX = MathHelper.cos(ageInTicks * 0.05F * (float) Math.PI) * 0.005F;
 		this.hair_l.rotateAngleZ = MathHelper.cos(ageInTicks * 0.05F * (float) Math.PI) * 0.025F;
 		this.hair_r.rotateAngleX = this.hair_l.rotateAngleX;

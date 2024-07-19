@@ -1,4 +1,5 @@
 {
+    "parent": "block/block",
   "textures": {
     "bottom": "ancientbeasts:blocks/pokey_bottom",
     "side": "ancientbeasts:blocks/pokey_side",

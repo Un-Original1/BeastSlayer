@@ -321,6 +321,7 @@ item.spiritweaver_mask.name=Spiritweaver Mask
 
 tile.witchcraft_table.name=Witchcraft Table
 tile.magic_cauldron.name=Magic Cauldron
+container.witchcraft=Witchcraft Table
 
 #Item Tooltips
 item.protection_talisman.tooltip=A magic talisman that grants resistance to their user

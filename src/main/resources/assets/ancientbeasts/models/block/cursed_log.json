@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "ancientbeasts:blocks/cursed_log_top",
+    "side": "ancientbeasts:blocks/cursed_log"
+  }
+}

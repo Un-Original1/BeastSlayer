@@ -1,0 +1,9 @@
+{
+  "parent": "block/upper_slab",
+  "textures":
+  {
+    "bottom": "ancientbeasts:blocks/cursed_plank",
+    "top": "ancientbeasts:blocks/cursed_plank",
+    "side": "ancientbeasts:blocks/cursed_plank"
+  }
+}

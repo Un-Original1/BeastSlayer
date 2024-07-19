@@ -46,6 +46,7 @@ public class BlockModCauldron extends Block{
         this.setRegistryName(name);
         this.setUnlocalizedName(name);
         this.setLightLevel(0.5F);
+        this.setHardness(2.0F);
         this.setCreativeTab(BeastSlayer.BEASTSTAB);
     }
 
@@ -108,9 +109,9 @@ public class BlockModCauldron extends Block{
                         if (!player.capabilities.isCreativeMode) {
                             itemStack.shrink(1);
                             if (itemStack.isEmpty()) {
-                                player.setHeldItem(hand, new ItemStack(ModItems.CURSED_WOOD));
-                            } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.CURSED_WOOD))) {
-                                player.dropItem(new ItemStack(ModItems.CURSED_WOOD), false);
+                                player.setHeldItem(hand, new ItemStack(ModItems.CURSED_WOOD, 2));
+                            } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.CURSED_WOOD, 2))) {
+                                player.dropItem(new ItemStack(ModItems.CURSED_WOOD , 2), false);
                             }
                         }
 
@@ -178,6 +179,20 @@ public class BlockModCauldron extends Block{
         } else {
             return p_193383_4_ == EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
         }
+    }
+    public void fillWithDrip(World worldIn, BlockPos pos)
+    {
+
+
+
+                IBlockState iblockstate = worldIn.getBlockState(pos);
+
+                if (iblockstate.getValue(LEVEL) < 3) {
+                    worldIn.setBlockState(pos, iblockstate.cycleProperty(LEVEL), 2);
+                }
+
+
+
     }
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {

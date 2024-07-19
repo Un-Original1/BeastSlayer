@@ -4,13 +4,12 @@ import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.items.*;
 import com.unoriginal.beastslayer.items.client.CustomModelLoader;
-import com.unoriginal.beastslayer.tab.ModTab;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -87,6 +86,8 @@ public class ModItems {
     public static Item KUNAI;
     public static Item DARK_GOOP;
 
+    //public static Item SLAB;
+
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",28, new int[]{1, 4, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
 
     public static void init() {
@@ -147,6 +148,8 @@ public class ModItems {
         MASK_H = new ItemMask("hunter_mask").setTier(1);
         MASK_S = new ItemMask("scorcher_mask").setTier(2);
         MASK_P = new ItemMask("spiritweaver_mask").setTier(3);
+
+        //SLAB = new ItemSlab(ModBlocks.CURSED_SLAB_HALF, ModBlocks.CURSED_SLAB_HALF, ModBlocks.CURSED_SLAB_DOUBLE).setRegistryName("cursed_slab").setCreativeTab(BeastSlayer.BEASTSTAB);
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             SCALE_ARMOR = new ScaleArmor("scale_armor", ModItems.DESERT_ROBES, 1, EntityEquipmentSlot.CHEST);
@@ -219,6 +222,7 @@ public class ModItems {
         event.getRegistry().registerAll(MASK_S);
         event.getRegistry().registerAll(MASK_P);
 
+     //   event.getRegistry().registerAll(SLAB);
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             event.getRegistry().registerAll(SCALE_ARMOR);

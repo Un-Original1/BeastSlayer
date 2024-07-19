@@ -157,7 +157,7 @@ public class AbstractTribesmen extends EntityMob {
             this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(item));
             entityIn.getHeldItemMainhand().shrink(1);
             this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModItems.CURSED_WOOD));
-            this.tradeTicks = 1; //TODO dont forget to put it to 100
+            this.tradeTicks = 100; //TODO dont forget to put it to 100
             this.player = entityIn;
             this.tradingPlayer = entityIn.getUniqueID();
             this.setTrading(true);

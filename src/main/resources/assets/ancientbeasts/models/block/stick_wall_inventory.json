@@ -1,7 +1,0 @@
-{
-  "parent": "block/cube_column",
-  "textures": {
-    "end": "ancientbeasts:blocks/stick_wall_top",
-    "side": "ancientbeasts:blocks/stick_wall_side"
-  }
-}

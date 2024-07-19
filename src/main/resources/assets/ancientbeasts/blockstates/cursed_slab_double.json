@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "variant=default": { "model": "ancientbeasts:cursed_slab_double" }
+    }
+}

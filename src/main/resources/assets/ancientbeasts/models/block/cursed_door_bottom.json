@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_bottom",
+    "textures": {
+        "bottom": "ancientbeasts:blocks/cursed_door_bottom",
+        "top": "ancientbeasts:blocks/cursed_door_top"
+    }
+}

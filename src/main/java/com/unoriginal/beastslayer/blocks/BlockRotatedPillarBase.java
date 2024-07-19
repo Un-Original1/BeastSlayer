@@ -1,9 +1,11 @@
 package com.unoriginal.beastslayer.blocks;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.init.ModBlocks;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -28,5 +30,9 @@ public class BlockRotatedPillarBase extends BlockRotatedPillar {
     public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return flamability;
+    }
+
+    public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos){
+        return this.getBlockState().getBlock() == ModBlocks.CURSED_LOG;
     }
 }
