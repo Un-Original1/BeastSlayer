@@ -8,6 +8,7 @@ import com.unoriginal.beastslayer.entity.Entities.*;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.IAttack;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.fire_elemental.FireElementalAI;
 import com.unoriginal.beastslayer.entity.Entities.boss.EntityAbstractBoss;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSmashAttackWave;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSummonMinions;
 import com.unoriginal.beastslayer.entity.Entities.boss.util.BossUtil;
 import com.unoriginal.beastslayer.util.ModRand;
@@ -248,6 +249,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         addEvent(()-> {
         //Do Smash Attack stuff
             //Maybe some Vfx and an entity where the ground pops out in a circle
+            new ActionSmashAttackWave(12).performAction(this, target);
             Vec3d offset = this.getPositionVector().add(BossUtil.getRelativeOffset(this, new Vec3d(0,0.3,0)));
             DamageSource source = DamageSource.causeMobDamage(this);
             float damage = (float) ((temporaryDamageModifier * 0.5) + BeastSlayerConfig.GlobalDamageMultiplier);
@@ -271,7 +273,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
       this.setImmovable(true);
       this.lockLook = true;
       addEvent(()-> {
-          new ActionSummonMinions().performAction(this, target);
+       //   new ActionSummonMinions().performAction(this, target);
         hasMinionsNearby = true;
       }, 20);
       addEvent(()-> {

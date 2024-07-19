@@ -40,7 +40,6 @@ public class ActionSummonMinions implements IActionBoss {
                 //function to find ground
                 int y = getSurfaceHeight(actor.world, new BlockPos(randomPosTooSpawn.x, 0, randomPosTooSpawn.z), (int) actor.posY - 8, (int) actor.posY + 10);
                 //basically saying if theres no ground that's acceptable within bound it will instead spawn them right on the boss pos
-                System.out.println("Variable height for minion is" + y);
                 if(y > 0) {
                     //Spawns minion at random loc within 10 blocks
                     minion.setPosition(randomPosTooSpawn.x, y + 1, randomPosTooSpawn.z);
