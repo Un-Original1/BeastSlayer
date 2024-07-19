@@ -7,6 +7,8 @@ import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.misc.EntityMoveTile;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.misc.render.RenderMoveTile;
 import com.unoriginal.beastslayer.entity.Render.*;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
@@ -66,6 +68,9 @@ public class ModEntities
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wisp"), EntityWisp.class, "Wisp", id++, BeastSlayer.instance, 64, 3, true);
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Fire_Elemental"), EntityFireElemental.class, "Fire_Elemental", id++, BeastSlayer.instance, 128, 3, true, 0, 0);
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Windforce_dart"), EntityWindforceDart.class, "Windforce_dart", id++, BeastSlayer.instance, 64, 1, true);
+
+            //Fire Boss Misc
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, ""), EntityMoveTile.class, "shock_wave_tile", id++, BeastSlayer.instance, 64, 1, true);
         }
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Bonepile"), EntityBonepile.class, "Bonepile", id++, BeastSlayer.instance, 64, 3, true, 14540253, 11315887);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Chained"), EntityChained.class, "Chained", id++, BeastSlayer.instance,64, 3, true);
@@ -171,6 +176,9 @@ public class ModEntities
 
             RenderingRegistry.registerEntityRenderingHandler(EntityHand.class, RenderHand.FACTORY);
             RenderingRegistry.registerEntityRenderingHandler(EntitySpiritWolf.class, RenderSpiritWolf.FACTORY);
+
+            //Fire Boss Misc
+            RenderingRegistry.registerEntityRenderingHandler(EntityMoveTile.class, RenderMoveTile::new);
         }
 
         RenderingRegistry.registerEntityRenderingHandler(EntityBonepile.class, RenderBonePile.FACTORY);
