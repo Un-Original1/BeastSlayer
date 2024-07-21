@@ -4,13 +4,14 @@ import com.unoriginal.beastslayer.animation.EZAnimation;
 import com.unoriginal.beastslayer.animation.EZAnimationHandler;
 import com.unoriginal.beastslayer.animation.IAnimatedEntity;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
-import com.unoriginal.beastslayer.entity.Entities.*;
+import com.unoriginal.beastslayer.entity.Entities.AbstractTribesmen;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.IAttack;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.fire_elemental.FireElementalAI;
 import com.unoriginal.beastslayer.entity.Entities.boss.EntityAbstractBoss;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSummonMinions;
 import com.unoriginal.beastslayer.entity.Entities.boss.util.BossUtil;
 import com.unoriginal.beastslayer.util.ModRand;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.vecmath.Vector4f;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -170,6 +171,21 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         //sends the Animation Handler constant updates on the animations
         EZAnimationHandler.INSTANCE.updateAnimations(this);
     }
+    @Override
+    public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {
+        if(this.getAttackTarget() != null){
+            EntityLivingBase target = this.getAttackTarget();
+            if(target instanceof AbstractTribesmen){
+                AbstractTribesmen tribesmen = (AbstractTribesmen) target;
+                if(tribesmen.isFiery()) {
+                    this.setAttackTarget(null);
+                }
+
+            }
+        }
+        super.setAttackTarget(entitylivingbaseIn);
+    }
+
 
     public float getBrightness()
     {
@@ -180,6 +196,11 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public int getBrightnessForRender()
     {
         return 15728880;
+    }
+
+    @Override
+    public boolean isOnSameTeam(Entity entityIn) {
+        return entityIn instanceof AbstractTribesmen && ((AbstractTribesmen) entityIn).isFiery();
     }
 
     @Override

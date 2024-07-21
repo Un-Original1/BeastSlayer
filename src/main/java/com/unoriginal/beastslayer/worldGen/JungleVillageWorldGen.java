@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.worldGen;
 
 import com.google.common.collect.Lists;
+import com.unoriginal.beastslayer.BeastSlayer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
@@ -32,10 +33,11 @@ public class JungleVillageWorldGen extends WorldGenerator {
     @Override
     public boolean generate(World world, Random rand, BlockPos position) {
         this.spacing = 40;
-        boolean canSpawn = canSpawnStructureAtCoords(world, position.getX() >> 4, position.getZ() >> 4);
+        boolean canSpawn = canSpawnStructureAtCoords(world, (position.getX() - 8)  >> 4, (position.getZ() - 8)  >> 4);
         if (new Random().nextInt(9) == 0) {
             int new_size = 96;
-             getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
+            BeastSlayer.logger.debug("generating village!" + position);
+             getStructureStart(world, position.getX(), position.getZ() , rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
         }
         return canSpawn;
     }
@@ -93,7 +95,7 @@ public class JungleVillageWorldGen extends WorldGenerator {
         public void create(World worldIn, Random rand, int x, int z, int size)
         {
             Rotation rotation = Rotation.values()[rand.nextInt(Rotation.values().length)];
-            BlockPos pos = new BlockPos((x << 4) + 8 - (96/2), getGroundFromAbove(worldIn, (x << 4) + 8 - (96/2),(z << 4) + 8 - (96/2)), (z << 4) + 8 - (96/2));
+            BlockPos pos = new BlockPos(x , getGroundFromAbove(worldIn, x,z), z );
             List<JungleVillagePieces.JungleVillageTemplate> houses = Lists.newLinkedList();
             JungleVillagePieces.generateVillage(worldIn.getSaveHandler().getStructureTemplateManager(), pos, rotation, rand, this.components);
 

@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer.worldGen;
 
+import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModBlocks;
 import net.minecraft.block.Block;
@@ -26,8 +27,8 @@ public class ModWorldGen implements IWorldGenerator {
 
     @Override
     public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-            int blockX = chunkX * 16;
-            int blockZ = chunkZ * 16;
+            int blockX = chunkX << 4;
+            int blockZ = chunkZ << 4;
             if(chunkProvider.isChunkGeneratedAt(chunkX, chunkZ)) {
                 switch (world.provider.getDimension()) {
                     case -1:
@@ -47,21 +48,21 @@ public class ModWorldGen implements IWorldGenerator {
     {
         int y = getGroundFromAbove(world, blockX, blockZ);
         BlockPos pos = new BlockPos(blockX, y, blockZ);
-        if (canStructureSpawn((blockX >> 4) - 8, (blockZ >> 4) - 8, world, 1) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
+        if (canStructureSpawn((blockX - 8)  >> 4, (blockZ  - 8)  >> 4, world, 1) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
             if (pos.getY() > 31 && JUNGLES.contains(world.getBiome(pos))) {
-              //  jungle_t.generate(world, rand, pos);
+                jungle_t.generate(world, rand, pos);
+              //  BeastSlayer.logger.debug("spawning village at" + pos);
             }
         }
-        if (canStructureSpawn((blockX >> 4) - 8, (blockZ >> 4) - 8, world, 1) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
+        if (canStructureSpawn((blockX  - 8)  >> 4, (blockZ - 8)  >> 4, world, 2) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
             if (pos.getY() > 31 && JUNGLES.contains(world.getBiome(pos))) {
                 for (int i = 0; i < rand.nextInt(5) + 1; i++){
                     int j = rand.nextInt(8) + 3;
                     for (IBlockState state = world.getBlockState(pos); (state.getBlock().isReplaceable(world, pos) && pos.getY() > 0); state = world.getBlockState(pos) )
                     { pos = pos.down(); }
-                    if(ModBlocks.CURSED_SAPLING.canPlaceBlockAt(world,  pos.add(j, 1, j))) {
-                        weeping_trees.generate(world, rand, pos.add(j, 1, j));
 
-                    }
+                    weeping_trees.generate(world, rand, pos.add(j, 1, j));
+
                 }
             }}
         if (canStructureSpawn(blockX / 16, blockZ /16, world, BeastSlayerConfig.CircusSpawnChance))

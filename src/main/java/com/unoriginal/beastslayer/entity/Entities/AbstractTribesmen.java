@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.items.ItemMask;
 import net.minecraft.entity.Entity;
@@ -188,6 +189,9 @@ public class AbstractTribesmen extends EntityMob {
             if(this.isFiery()){
                 entityIn.setFire(2);
             }
+        }
+        if(entityIn instanceof EntityFireElemental && this.isFiery()){
+            return false;
         }
         return flag;
     }
@@ -415,7 +419,7 @@ public class AbstractTribesmen extends EntityMob {
     @Override
     public boolean isOnSameTeam(Entity entityIn) {
         if(this.isFiery()){
-            return false;
+            return entityIn instanceof EntityFireElemental;
         } else {
             if(entityIn instanceof AbstractTribesmen){
                 if(!((AbstractTribesmen) entityIn).isFiery()){
@@ -427,6 +431,20 @@ public class AbstractTribesmen extends EntityMob {
                 return false;
             }
         }
+    }
+
+    @Override
+    public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {
+        if(this.getAttackTarget() != null){
+            EntityLivingBase target = this.getAttackTarget();
+            if(target instanceof EntityFireElemental){
+                if(this.isFiery()) {
+                    this.setAttackTarget(null);
+                }
+
+            }
+        }
+        super.setAttackTarget(entitylivingbaseIn);
     }
 
     public EntityPlayer getBuyer(){
