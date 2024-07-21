@@ -369,6 +369,23 @@ public class ModelFireElemental extends BasicModelEntity {
 		//
 		animator.resetKeyframe(15);
 
+		animator.setAnimation(EntityFireElemental.ANIMATION_PUSH);
+		//
+		animator.startKeyframe(10);
+		animator.rotate(body, 0, (float) Math.toRadians(30), 0);
+		animator.rotate(arm2, (float) Math.toRadians(-50), (float) Math.toRadians(50), 0);
+		animator.endKeyframe();
+		//
+		animator.setStaticKeyframe(5);
+		//
+		animator.startKeyframe(5);
+		animator.rotate(body, 0, (float) Math.toRadians(-10), 0);
+		animator.rotate(arm2, (float) Math.toRadians(-100), (float) Math.toRadians(-40), 0);
+		animator.move(arm2, 0, 10, 0);
+		animator.endKeyframe();
+		//
+		animator.resetKeyframe(10);
+
 		//just make sure the duration of the animation doens't exceed ANIMATION_EXAMPLE time which is 20
 	}
 }

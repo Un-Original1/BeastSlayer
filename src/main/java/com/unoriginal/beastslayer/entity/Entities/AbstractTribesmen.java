@@ -102,6 +102,13 @@ public class AbstractTribesmen extends EntityMob {
             --this.fieryTicks;
         }
         if(this.isFiery()){
+            EntityLivingBase base = this.getAttackTarget();
+            if(base instanceof EntityFireElemental){
+                if(this.isFiery()) {
+                    this.setAttackTarget(null);
+                }
+
+            }
             if(this.isWet()) {
                 this.attackEntityFrom(DamageSource.DROWN, 1.0F);
             }
@@ -394,13 +401,6 @@ public class AbstractTribesmen extends EntityMob {
                 }
             }
             if(this.isFiery()) {
-                EntityLivingBase base = this.getAttackTarget();
-                if(base instanceof EntityFireElemental){
-                    if(this.isFiery()) {
-                        this.setAttackTarget(null);
-                    }
-
-                }
                 List<AbstractTribesmen> tribesmen = this.world.getEntitiesWithinAABB(AbstractTribesmen.class, this.getEntityBoundingBox().grow(10D));
                 for(AbstractTribesmen t : tribesmen){
                     if(t.isFiery() && source.getTrueSource() instanceof EntityLivingBase){
