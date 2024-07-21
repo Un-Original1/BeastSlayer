@@ -11,6 +11,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -90,5 +91,22 @@ public class BossUtil {
         return new Vec3d(0, heightAboveGround, 0);
     }
 
+
+    /**
+     * Provides multiple points in a circle via a callback, useful for a multitude of things, AOE, Particles etc.
+     *
+     * @param radius          The radius of the circle
+     * @param points          The number of points around the circle
+     * @param particleSpawner
+     */
+
+    public static void circleCallback(float radius, int points, Consumer<Vec3d> particleSpawner) {
+        float degrees = 360f / points;
+        for (int i = 0; i < points; i++) {
+            double radians = Math.toRadians(i * degrees);
+            Vec3d offset = new Vec3d(Math.sin(radians), Math.cos(radians), 0).scale(radius);
+            particleSpawner.accept(offset);
+        }
+    }
 
 }

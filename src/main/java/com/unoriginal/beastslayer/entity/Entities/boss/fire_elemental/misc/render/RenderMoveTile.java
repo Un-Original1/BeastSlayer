@@ -1,7 +1,6 @@
 package com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.misc.render;
 
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.misc.EntityMoveTile;
-import com.unoriginal.beastslayer.entity.Render.RenderSpiritWolf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -16,7 +15,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 import javax.annotation.Nullable;
 
