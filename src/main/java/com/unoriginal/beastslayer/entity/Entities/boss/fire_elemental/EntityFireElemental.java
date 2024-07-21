@@ -8,7 +8,6 @@ import com.unoriginal.beastslayer.entity.Entities.AbstractTribesmen;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.IAttack;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.fire_elemental.FireElementalAI;
 import com.unoriginal.beastslayer.entity.Entities.boss.EntityAbstractBoss;
-import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSmashAttackWave;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSummonMinions;
 import com.unoriginal.beastslayer.entity.Entities.boss.util.BossUtil;
 import com.unoriginal.beastslayer.util.ModRand;
@@ -41,7 +40,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public static final EZAnimation ANIMATION_SMASH_GROUND = EZAnimation.create(50);
     public static final EZAnimation ANIMATION_SUMMONS = EZAnimation.create(70);
     public static final EZAnimation ANIMATION_GET_OVER_HERE = EZAnimation.create(60);
-    public static final EZAnimation ANIMATION_PUSH = EZAnimation.create(30);
+    public static final EZAnimation ANIMATION_PUSH = EZAnimation.create(60);
 
     protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
@@ -161,6 +160,15 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
             }
         }
 
+        EntityLivingBase target = this.getAttackTarget();
+        if(target instanceof AbstractTribesmen){
+            AbstractTribesmen tribesmen = (AbstractTribesmen) target;
+            if(tribesmen.isFiery()) {
+                this.setAttackTarget(null);
+            }
+
+        }
+
         //minion Sensing
         if(hasMinionsNearby) {
             List<AbstractTribesmen> nearbyMinions = this.world.getEntitiesWithinAABB(AbstractTribesmen.class, this.getEntityBoundingBox().grow(30D), e -> !e.getIsInvulnerable());
@@ -172,21 +180,6 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         //sends the Animation Handler constant updates on the animations
         EZAnimationHandler.INSTANCE.updateAnimations(this);
     }
-    @Override
-    public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {
-        if(this.getAttackTarget() != null){
-            EntityLivingBase target = this.getAttackTarget();
-            if(target instanceof AbstractTribesmen){
-                AbstractTribesmen tribesmen = (AbstractTribesmen) target;
-                if(tribesmen.isFiery()) {
-                    this.setAttackTarget(null);
-                }
-
-            }
-        }
-        super.setAttackTarget(entitylivingbaseIn);
-    }
-
 
     public float getBrightness()
     {
@@ -270,7 +263,6 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         addEvent(()-> {
         //Do Smash Attack stuff
             //Maybe some Vfx and an entity where the ground pops out in a circle
-            new ActionSmashAttackWave(12).performAction(this, target);
             Vec3d offset = this.getPositionVector().add(BossUtil.getRelativeOffset(this, new Vec3d(0,0.3,0)));
             DamageSource source = DamageSource.causeMobDamage(this);
             float damage = (float) ((temporaryDamageModifier * 0.5) + BeastSlayerConfig.GlobalDamageMultiplier);
@@ -294,10 +286,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
       this.setImmovable(true);
       this.lockLook = true;
       addEvent(()-> {
-          if(!hasMinionsNearby) {
-              new ActionSummonMinions().performAction(this, target);
-              hasMinionsNearby = true;
-          }
+          new ActionSummonMinions().performAction(this, target);
+        hasMinionsNearby = true;
       }, 20);
       addEvent(()-> {
           this.setFightMode(false);
@@ -325,17 +315,10 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
       this.setPushAttack(true);
 
       addEvent(()-> {
-          Vec3d offset = this.getPositionVector().add(BossUtil.getRelativeOffset(this, new Vec3d(2,1.5,0)));
-          DamageSource source = DamageSource.causeMobDamage(this);
-          float damage = (float) ((temporaryDamageModifier * 0.5) + BeastSlayerConfig.GlobalDamageMultiplier);
-          BossUtil.handleAreaImpact(2F, (e)-> damage, this, offset, source, 0.8F, 0, false);
-      }, 18);
-
-      addEvent(()-> {
           this.setPushAttack(false);
           this.setFightMode(false);
           this.setAnimation(NO_ANIMATION);
-      }, 30);
+      }, 60);
     };
 
     @Override

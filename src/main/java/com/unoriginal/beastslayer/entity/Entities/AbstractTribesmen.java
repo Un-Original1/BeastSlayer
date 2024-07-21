@@ -1,6 +1,5 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
-import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.items.ItemMask;
@@ -395,6 +394,13 @@ public class AbstractTribesmen extends EntityMob {
                 }
             }
             if(this.isFiery()) {
+                EntityLivingBase base = this.getAttackTarget();
+                if(base instanceof EntityFireElemental){
+                    if(this.isFiery()) {
+                        this.setAttackTarget(null);
+                    }
+
+                }
                 List<AbstractTribesmen> tribesmen = this.world.getEntitiesWithinAABB(AbstractTribesmen.class, this.getEntityBoundingBox().grow(10D));
                 for(AbstractTribesmen t : tribesmen){
                     if(t.isFiery() && source.getTrueSource() instanceof EntityLivingBase){
@@ -431,20 +437,6 @@ public class AbstractTribesmen extends EntityMob {
                 return false;
             }
         }
-    }
-
-    @Override
-    public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {
-        if(this.getAttackTarget() != null){
-            EntityLivingBase target = this.getAttackTarget();
-            if(target instanceof EntityFireElemental){
-                if(this.isFiery()) {
-                    this.setAttackTarget(null);
-                }
-
-            }
-        }
-        super.setAttackTarget(entitylivingbaseIn);
     }
 
     public EntityPlayer getBuyer(){
