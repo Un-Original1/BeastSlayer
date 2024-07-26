@@ -385,6 +385,10 @@ public class ModelFireElemental extends BasicModelEntity {
 		animator.endKeyframe();
 		//
 		animator.resetKeyframe(10);
+		// Get over here
+		animator.setAnimation(EntityFireElemental.ANIMATION_GET_OVER_HERE);
+		//
+		animator.startKeyframe(1);
 
 		//just make sure the duration of the animation doens't exceed ANIMATION_EXAMPLE time which is 20
 	}

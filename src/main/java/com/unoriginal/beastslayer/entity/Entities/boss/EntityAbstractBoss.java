@@ -2,6 +2,7 @@ package com.unoriginal.beastslayer.entity.Entities.boss;
 
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -26,7 +27,20 @@ public abstract class EntityAbstractBoss extends EntityMob {
         super(worldIn);
     }
 
+    @Override
+    public void writeEntityToNBT(NBTTagCompound nbt) {
+        super.writeEntityToNBT(nbt);
+        nbt.setBoolean("Fight_Mode", this.isFightMode());
+        nbt.setBoolean("Immovable", this.isImmovable());
+    }
 
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt) {
+        super.writeEntityToNBT(nbt);
+        this.setFightMode(nbt.getBoolean("Fight_Mode"));
+        this.setImmovable(nbt.getBoolean("Immovable"));
+
+    }
 
     @Override
     public void entityInit() {
