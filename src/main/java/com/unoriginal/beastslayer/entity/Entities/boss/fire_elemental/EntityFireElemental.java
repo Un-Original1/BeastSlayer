@@ -43,11 +43,11 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public static final EZAnimation ANIMATION_GET_OVER_HERE = EZAnimation.create(60);
     public static final EZAnimation ANIMATION_PUSH = EZAnimation.create(30);
 
-    protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> SUMMON_MINIONS_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> GET_OVER_HERE_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> PUSH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SUMMON_MINIONS_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> GET_OVER_HERE_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> PUSH_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
     public boolean isPunchAttack() {return this.dataManager.get(PUNCH_ATTACK);}
     public void setPunchAttack(boolean value) {this.dataManager.set(PUNCH_ATTACK, Boolean.valueOf(value));}
     public boolean isSmashGroundAttack() {return this.dataManager.get(SMASH_GROUND_ATTACK);}

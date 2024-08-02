@@ -85,7 +85,7 @@ public class ModItems {
 
     public static Item KUNAI;
     public static Item DARK_GOOP;
-
+    public static Item TEST;
     //public static Item SLAB;
 
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",28, new int[]{1, 4, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
@@ -155,6 +155,7 @@ public class ModItems {
             SCALE_ARMOR = new ScaleArmor("scale_armor", ModItems.DESERT_ROBES, 1, EntityEquipmentSlot.CHEST);
             SCALE_HOOD = new ScaleArmor("scale_hood", ModItems.DESERT_ROBES, 0, EntityEquipmentSlot.HEAD);
         }
+        TEST = new ItemTest().setRegistryName("test").setUnlocalizedName("test").setCreativeTab(BeastSlayer.BEASTSTAB);
     }
 
     public static Item quickItemRegistry(String name){
@@ -228,6 +229,7 @@ public class ModItems {
             event.getRegistry().registerAll(SCALE_ARMOR);
             event.getRegistry().registerAll(SCALE_HOOD);
         }
+        event.getRegistry().registerAll(TEST);
     }
     @SubscribeEvent
     public static void registerRenders(ModelRegistryEvent event)
@@ -288,6 +290,7 @@ public class ModItems {
         registerRender(MASK_H);
         registerRender(MASK_S);
         registerRender(MASK_P);
+        registerRender(TEST);
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             registerRender(SCALE_ARMOR);

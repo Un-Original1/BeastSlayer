@@ -34,7 +34,7 @@ public class EntitySandSpit extends EntityProjectileGeneric {
 
     public void onHit(RayTraceResult rayTraceResult)
     {
-        if (rayTraceResult.entityHit != null && this.owner != null && !(rayTraceResult.entityHit instanceof EntityProjectileGeneric) && !(rayTraceResult.entityHit == this.owner))
+        if (rayTraceResult.entityHit != null && this.owner != null && !(rayTraceResult.entityHit instanceof EntityProjectileGeneric) && !(rayTraceResult.entityHit instanceof EntitySandy))
         {
             rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile(), 6.0F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
         }

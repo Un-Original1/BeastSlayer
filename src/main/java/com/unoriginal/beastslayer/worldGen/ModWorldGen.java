@@ -35,7 +35,7 @@ public class ModWorldGen implements IWorldGenerator {
                         generateNether(world, rand, blockX + 8, blockZ + 8);
                         break;
                     case 0:
-                        generateOverworld(world, rand, blockX + 8, blockZ + 8);
+                        generateOverworld(world, rand, blockX + 8, blockZ + 8, chunkGenerator);
                         break;
                     case 1:
                         generateEnd(world, rand, blockX + 8, blockZ + 8);
@@ -44,13 +44,14 @@ public class ModWorldGen implements IWorldGenerator {
                 }
             }
     }
-    private void generateOverworld(World world, Random rand, int blockX, int blockZ)
+    private void generateOverworld(World world, Random rand, int blockX, int blockZ, IChunkGenerator generator)
     {
         int y = getGroundFromAbove(world, blockX, blockZ);
         BlockPos pos = new BlockPos(blockX, y, blockZ);
-        if (canStructureSpawn((blockX - 8)  >> 4, (blockZ  - 8)  >> 4, world, 1) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
+        if (BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
             if (pos.getY() > 31 && JUNGLES.contains(world.getBiome(pos))) {
                 jungle_t.generate(world, rand, pos);
+                jungle_t.addToBiome(generator, pos, world);
               //  BeastSlayer.logger.debug("spawning village at" + pos);
             }
         }

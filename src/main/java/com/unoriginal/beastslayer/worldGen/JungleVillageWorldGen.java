@@ -2,7 +2,13 @@ package com.unoriginal.beastslayer.worldGen;
 
 import com.google.common.collect.Lists;
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.entity.Entities.EntityHunter;
+import com.unoriginal.beastslayer.entity.Entities.EntityPriest;
+import com.unoriginal.beastslayer.entity.Entities.EntityTank;
+import com.unoriginal.beastslayer.entity.Entities.EntityTribeWarrior;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.*;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,6 +16,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureStart;
@@ -20,26 +27,49 @@ import java.util.Random;
 
 public class JungleVillageWorldGen extends WorldGenerator {
     public static List<Biome> VALID_BIOMES = Arrays.asList(Biomes.JUNGLE, Biomes.JUNGLE_HILLS, Biomes.MUTATED_JUNGLE);
-
+    private final List<Biome.SpawnListEntry> spawnList = Lists.newArrayList();
     private int separation;
     private int spacing;
 
     public JungleVillageWorldGen(){
         this.spacing = 40;
-        this.separation = 15;
+        this.separation = 22;
         //add spawns to biome
+
+        this.spawnList.add(new Biome.SpawnListEntry(EntityTribeWarrior.class, 20, 1, 3));
+        this.spawnList.add(new Biome.SpawnListEntry(EntityTank.class, 20, 1, 2));
+        this.spawnList.add(new Biome.SpawnListEntry(EntityHunter.class, 10, 1, 3));
+        this.spawnList.add(new Biome.SpawnListEntry(EntityPriest.class, 10, 1, 1));
     }
 
     @Override
     public boolean generate(World world, Random rand, BlockPos position) {
-        this.spacing = 40;
         boolean canSpawn = canSpawnStructureAtCoords(world, (position.getX() - 8)  >> 4, (position.getZ() - 8)  >> 4);
-        if (new Random().nextInt(9) == 0) {
+       // if (new Random().nextInt(9) == 0) {
+        if(canSpawn) {
             int new_size = 96;
-            BeastSlayer.logger.debug("generating village!" + position);
-             getStructureStart(world, position.getX(), position.getZ() , rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
+          //  BeastSlayer.logger.debug("generating village!" + position);
+            getStructureStart(world, position.getX(), position.getZ(), rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
+            //    }
         }
         return canSpawn;
+    }
+
+    public boolean generateBypass(World world, Random rand, BlockPos position){
+        int new_size = 96;
+        //  BeastSlayer.logger.debug("generating village!" + position);
+        getStructureStart(world, position.getX(), position.getZ(), rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
+        return true;
+    }
+
+    public void addToBiome(IChunkGenerator generator, BlockPos pos, World world){
+        boolean canSpawn = canSpawnStructureAtCoords(world, (pos.getX() - 8)  >> 4, (pos.getZ() - 8)  >> 4);
+        if (generator != null && canSpawn) {
+            for (int i =0; i < this.spawnList.size(); i++) {
+                generator.getPossibleCreatures(EnumCreatureType.CREATURE, pos).add(spawnList.get(i));
+            //    BeastSlayer.logger.debug(generator.getPossibleCreatures(EnumCreatureType.CREATURE, pos));
+            }
+        }
     }
 
     public String getStructureName() {
@@ -71,10 +101,11 @@ public class JungleVillageWorldGen extends WorldGenerator {
         if (i == k && j == l)
         {
 
-            return world.getBiomeProvider().areBiomesViable((i << 4) + 8, (j << 4) + 8, 0, VALID_BIOMES);
-        }
+            return world.getBiomeProvider().areBiomesViable((i << 4) + 8, (j << 4) + 8, 0, VALID_BIOMES) /*&& random.nextInt(20) == 0*/;
+        } else {
 
-        return false;
+            return false;
+        }
     }
 
     protected StructureStart getStructureStart(World world, int chunkX, int chunkZ, Random rand) {
@@ -96,8 +127,8 @@ public class JungleVillageWorldGen extends WorldGenerator {
         {
             Rotation rotation = Rotation.values()[rand.nextInt(Rotation.values().length)];
             BlockPos pos = new BlockPos(x , getGroundFromAbove(worldIn, x,z), z );
-            List<JungleVillagePieces.JungleVillageTemplate> houses = Lists.newLinkedList();
-            JungleVillagePieces.generateVillage(worldIn.getSaveHandler().getStructureTemplateManager(), pos, rotation, rand, this.components);
+            List<NewJungleVillagePieces.NewJungleVillageTemplate> houses = Lists.newLinkedList();
+            NewJungleVillagePieces.generateVillage(worldIn.getSaveHandler().getStructureTemplateManager(), pos, rotation, rand, this.components, worldIn);
 
             this.components.addAll(houses);
             this.updateBoundingBox();
@@ -111,13 +142,12 @@ public class JungleVillageWorldGen extends WorldGenerator {
         {
             int y = 255;
             boolean foundGround = false;
-            while(!foundGround && y-- >= 31)
-            {
+            while(!foundGround && y-- >=3){ //max 31
                 Block blockAt = world.getBlockState(new BlockPos(x,y,z)).getBlock();
                 foundGround =  blockAt == Blocks.GRASS || blockAt == Blocks.SAND || blockAt == Blocks.SNOW || blockAt == Blocks.SNOW_LAYER || blockAt == Blocks.MYCELIUM;
             }
 
-            return y;
+            return y + 1;
         }
         public boolean isSizeableStructure()
         {

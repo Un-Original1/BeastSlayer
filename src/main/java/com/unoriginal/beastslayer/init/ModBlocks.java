@@ -47,6 +47,7 @@ public class ModBlocks {
     public static Block CURSED_LEAVES;
     public static Block HANGING_LEAVES;
     public static Block CURSED_SAPLING;
+    public static Block GREEN_TORCH;
 
     public static void init(){
         POKEY = new BlockSpikeTrap("pokey");
@@ -60,6 +61,7 @@ public class ModBlocks {
             CAULDRON = new BlockModCauldron("magic_cauldron");
             WITCHCRAFT_TABLE = new BlockWitchcraftTable("witchcraft_table");
             FIRE_IDOL = new BlockFireIdol("fire_idol");
+        }
             CURSED_LOG = new BlockRotatedPillarBase("cursed_log", Material.WOOD, SoundType.WOOD, 1.0F, true, 60).setHardness(2.0F);
             CURSED_PLANK = new Block(Material.WOOD).setRegistryName("cursed_plank").setUnlocalizedName("cursed_plank").setCreativeTab(BeastSlayer.BEASTSTAB).setHardness(2.0F);
             CURSED_STAIR = new BlockStairsAB(ModBlocks.CURSED_PLANK.getDefaultState(), "cursed_stairs").setHardness(2.0F);
@@ -71,7 +73,8 @@ public class ModBlocks {
             CURSED_LEAVES = new BlockLeavesAB().setRegistryName("cursed_leaves").setUnlocalizedName("cursed_leaves").setCreativeTab(BeastSlayer.BEASTSTAB);
             HANGING_LEAVES = new HangingBlock(Material.PLANTS, "hanging_leaves");
             CURSED_SAPLING = new BlockModSapling("cursed_sapling");
-        }
+            GREEN_TORCH = new GreenTorch("green_torch");
+
     }
     @SubscribeEvent
     public static void registerBlock(RegistryEvent.Register<Block> event) {
@@ -86,6 +89,7 @@ public class ModBlocks {
             event.getRegistry().registerAll(CAULDRON);
             event.getRegistry().registerAll(WITCHCRAFT_TABLE);
             event.getRegistry().registerAll(FIRE_IDOL);
+        }
             event.getRegistry().registerAll(CURSED_LOG);
             event.getRegistry().registerAll(CURSED_PLANK);
             event.getRegistry().registerAll(CURSED_STAIR);
@@ -98,7 +102,8 @@ public class ModBlocks {
             event.getRegistry().registerAll(CURSED_LEAVES);
             event.getRegistry().registerAll(HANGING_LEAVES);
             event.getRegistry().registerAll(CURSED_SAPLING);
-        }
+            event.getRegistry().registerAll(GREEN_TORCH);
+
     }
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
@@ -112,6 +117,7 @@ public class ModBlocks {
             event.getRegistry().registerAll(new ItemBlock(CAULDRON).setRegistryName(CAULDRON.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(WITCHCRAFT_TABLE).setRegistryName(WITCHCRAFT_TABLE.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(FIRE_IDOL).setRegistryName(FIRE_IDOL.getRegistryName()));
+        }
             event.getRegistry().registerAll(new ItemBlock(CURSED_LOG).setRegistryName(CURSED_LOG.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(CURSED_PLANK).setRegistryName(CURSED_PLANK.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(CURSED_STAIR).setRegistryName(CURSED_STAIR.getRegistryName()));
@@ -124,7 +130,8 @@ public class ModBlocks {
             event.getRegistry().registerAll(new ItemBlock(CURSED_LEAVES).setRegistryName(CURSED_LEAVES.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(HANGING_LEAVES).setRegistryName(HANGING_LEAVES.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(CURSED_SAPLING).setRegistryName(CURSED_SAPLING.getRegistryName()));
-        }
+            event.getRegistry().registerAll(new ItemBlock(GREEN_TORCH).setRegistryName(GREEN_TORCH.getRegistryName()));
+
     }
 
     @SubscribeEvent
@@ -140,6 +147,7 @@ public class ModBlocks {
             registerRender(Item.getItemFromBlock(CAULDRON));
             registerRender(Item.getItemFromBlock(WITCHCRAFT_TABLE));
             registerRender(Item.getItemFromBlock(FIRE_IDOL));
+        }
             registerRender(Item.getItemFromBlock(CURSED_LOG));
             registerRender(Item.getItemFromBlock(CURSED_PLANK));
             registerRender(Item.getItemFromBlock(CURSED_STAIR));
@@ -152,7 +160,8 @@ public class ModBlocks {
             registerRender(Item.getItemFromBlock(CURSED_LEAVES));
             registerRenderInv(Item.getItemFromBlock(HANGING_LEAVES));
             registerRenderInv(Item.getItemFromBlock(CURSED_SAPLING));
-        }
+            registerRender(Item.getItemFromBlock(GREEN_TORCH));
+
     }
 
     public static void registerRender(Item item) {

@@ -33,8 +33,6 @@ public class ModEntities
 
 
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Sandy"), EntitySandy.class, "SandMonster", id++, BeastSlayer.instance, 140, 3, true, 10577723, 10038792);
-
- // I have no idea why I declare spawns first and then register entities, bad habit
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Ghost"), EntityGhost.class, "Ghost", id++, BeastSlayer.instance, 64, 3, true, 1936548, 10610664);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Zealot"), EntityZealot.class, "Zealot", id++, BeastSlayer.instance, 64, 3, true, 12698049, 6894452);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Ice_dart"), EntityIceDart.class, "Ice_dart", id++, BeastSlayer.instance, 64, 3, false);
@@ -60,25 +58,27 @@ public class ModEntities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Rifted_pearl"), EntityRiftedPearl.class, "Rifted_pearl", id++, BeastSlayer.instance, 64, 3, true);
 
         if(BeastSlayerConfig.EnableExperimentalFeatures) {
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "TribeWarrior"), EntityTribeWarrior.class, "Tribe_Warrior", id++, BeastSlayer.instance, 64, 3, true, 4679293, 4864586);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter"), EntityHunter.class, "Hunter", id++, BeastSlayer.instance, 64, 3, true, 9061427, 4864586);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Scorcher"), EntityTank.class, "Scorcher", id++, BeastSlayer.instance, 64, 3, true, 4679293, 6759439);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Priest"), EntityPriest.class, "Priest", id++, BeastSlayer.instance, 64, 3, true, 6759439, 4864586);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "TribeWarrior"), EntityTribeWarrior.class, "Tribe_Warrior", id++, BeastSlayer.instance, 64, 1, true, 4679293, 4864586);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter"), EntityHunter.class, "Hunter", id++, BeastSlayer.instance, 64, 1, true, 9061427, 4864586);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Scorcher"), EntityTank.class, "Scorcher", id++, BeastSlayer.instance, 64, 1, true, 4679293, 6759439);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Priest"), EntityPriest.class, "Priest", id++, BeastSlayer.instance, 64, 1, true, 6759439, 4864586);
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wispfire"), EntityWispfire.class, "Wispfire", id++, BeastSlayer.instance, 64, 1, true);
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wisp"), EntityWisp.class, "Wisp", id++, BeastSlayer.instance, 64, 3, true);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Fire_Elemental"), EntityFireElemental.class, "Fire_Elemental", id++, BeastSlayer.instance, 128, 3, true, 0, 0);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Fire_Elemental"), EntityFireElemental.class, "Fire_Elemental", id++, BeastSlayer.instance, 128, 1, true, 0, 0);
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Windforce_dart"), EntityWindforceDart.class, "Windforce_dart", id++, BeastSlayer.instance, 64, 1, true);
 
             //Fire Boss Misc
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, ""), EntityMoveTile.class, "shock_wave_tile", id++, BeastSlayer.instance, 64, 1, true);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "shock_wave_tile"), EntityMoveTile.class, "shock_wave_tile", id++, BeastSlayer.instance, 64, 1, true);
+
+            //artifact entities
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hand"), EntityHand.class, "Hand", id++, BeastSlayer.instance, 64, 3, true);
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter_Wolf"), EntitySpiritWolf.class, "Hunter_Wolf", id++,BeastSlayer.instance, 64, 3, true);
         }
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Bonepile"), EntityBonepile.class, "Bonepile", id++, BeastSlayer.instance, 64, 3, true, 14540253, 11315887);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Chained"), EntityChained.class, "Chained", id++, BeastSlayer.instance,64, 3, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Nekros"), EntityNekros.class, "Nekros", id++, BeastSlayer.instance, 64, 3, true, 5058665, 3416400);
 
-        //artifact entities
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hand"), EntityHand.class, "Hand", id++, BeastSlayer.instance, 64, 3, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter_Wolf"), EntitySpiritWolf.class, "Hunter_Wolf", id++,BeastSlayer.instance, 64, 3, true);
+
     }
     //it never worked cause it was run on pre init, it must be done on post init
     public static void registerSpawns(){
