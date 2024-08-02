@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -42,12 +43,45 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public static final EZAnimation ANIMATION_SUMMONS = EZAnimation.create(70);
     public static final EZAnimation ANIMATION_GET_OVER_HERE = EZAnimation.create(60);
     public static final EZAnimation ANIMATION_PUSH = EZAnimation.create(30);
+    public static final EZAnimation ANIMATION_LIFE_STEAL = EZAnimation.create(40);
+    public static final EZAnimation ANIMATION_METEOR_SHOWER = EZAnimation.create(50);
 
-    protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> SUMMON_MINIONS_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> GET_OVER_HERE_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> PUSH_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SUMMON_MINIONS_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> GET_OVER_HERE_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> PUSH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> LIFE_STEAL_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> METEOR_SHOWER_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+
+
+
+    // I HAVE LEARNED FROM MISTAKES
+    //TODAY WILL BE THE DAY I PROSPER
+    @Override
+    public void writeEntityToNBT(NBTTagCompound nbt) {
+        super.writeEntityToNBT(nbt);
+        nbt.setBoolean("Punch_Attack", this.isPunchAttack());
+        nbt.setBoolean("Smash_Ground_Attack", this.isSmashGroundAttack());
+        nbt.setBoolean("Summon_Minions_Attack", this.isSummonMinionsAttack());
+        nbt.setBoolean("Get_Over_Here", this.isGetOverHereAttack());
+        nbt.setBoolean("Push_Attack", this.isPushAttack());
+        nbt.setBoolean("Life_Steal_Attack", this.isLifeStealAttack());
+        nbt.setBoolean("Meteor_Shower_Attack", this.isMeteorShowerAttack());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound nbt) {
+        super.writeEntityToNBT(nbt);
+        this.setPunchAttack(nbt.getBoolean("Punch_Attack"));
+        this.setSmashGroundAttack(nbt.getBoolean("Smash_Ground_Attack"));
+        this.setSummonMinionsAttack(nbt.getBoolean("Summon_Minions_Attack"));
+        this.setGetOverHereAttack(nbt.getBoolean("Get_Over_Here"));
+        this.setPushAttack(nbt.getBoolean("Push_Attack"));
+        this.setLifeStealAttack(nbt.getBoolean("Life_Steal_Attack"));
+        this.setMeteorShowerAttack(nbt.getBoolean("Meteor_Shower_Attack"));
+    }
+
     public boolean isPunchAttack() {return this.dataManager.get(PUNCH_ATTACK);}
     public void setPunchAttack(boolean value) {this.dataManager.set(PUNCH_ATTACK, Boolean.valueOf(value));}
     public boolean isSmashGroundAttack() {return this.dataManager.get(SMASH_GROUND_ATTACK);}
@@ -58,6 +92,10 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public void setGetOverHereAttack(boolean value) {this.dataManager.set(GET_OVER_HERE_ATTACK, Boolean.valueOf(value));}
     public boolean isPushAttack() {return this.dataManager.get(PUSH_ATTACK);}
     public void setPushAttack(boolean value) {this.dataManager.set(PUSH_ATTACK, Boolean.valueOf(value));}
+    public boolean isLifeStealAttack() {return this.dataManager.get(LIFE_STEAL_ATTACK);}
+    public void setLifeStealAttack(boolean value) {this.dataManager.set(LIFE_STEAL_ATTACK, Boolean.valueOf(value));}
+    public boolean isMeteorShowerAttack() {return this.dataManager.get(METEOR_SHOWER_ATTACK);}
+    public void setMeteorShowerAttack(boolean value) {this.dataManager.set(METEOR_SHOWER_ATTACK, Boolean.valueOf(value));}
 
     //Used in the attack brains
     private Consumer<EntityLivingBase> previousAttack;
@@ -83,6 +121,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         this.dataManager.register(SUMMON_MINIONS_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(GET_OVER_HERE_ATTACK, Boolean.valueOf(false));
         this.dataManager.register(PUSH_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(METEOR_SHOWER_ATTACK, Boolean.valueOf(false));
+        this.dataManager.register(LIFE_STEAL_ATTACK, Boolean.valueOf(false));
         super.entityInit();
     }
 
@@ -158,6 +198,14 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
             //Get Over here attack
             if(this.isGetOverHereAttack()) {
                 this.setAnimation(ANIMATION_GET_OVER_HERE);
+            }
+            //Life Steal
+            if(this.isLifeStealAttack()) {
+                this.setAnimation(ANIMATION_LIFE_STEAL);
+            }
+            //Meteor Shower
+            if(this.isMeteorShowerAttack()) {
+                this.setAnimation(ANIMATION_METEOR_SHOWER);
             }
         }
 
@@ -265,6 +313,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         //Do Smash Attack stuff
             //Maybe some Vfx and an entity where the ground pops out in a circle
             new ActionSmashAttackWave(12).performAction(this, target);
+            //Damage done if the target is close
             Vec3d offset = this.getPositionVector().add(BossUtil.getRelativeOffset(this, new Vec3d(0,0.3,0)));
             DamageSource source = DamageSource.causeMobDamage(this);
             float damage = (float) ((temporaryDamageModifier * 0.5) + BeastSlayerConfig.GlobalDamageMultiplier);
@@ -316,6 +365,29 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
       }, 60);
     };
 
+    private final Consumer<EntityLivingBase> meteorShower = (target) -> {
+      this.setFightMode(true);
+      this.setMeteorShowerAttack(true);
+
+      addEvent(()-> {
+          this.setFightMode(false);
+          this.setMeteorShowerAttack(false);
+          this.setAnimation(NO_ANIMATION);
+      }, 40);
+    };
+
+    private final Consumer<EntityLivingBase> lifeSteal = (target) -> {
+      this.setLifeStealAttack(true);
+      this.setFightMode(true);
+
+
+      addEvent(()-> {
+          this.setLifeStealAttack(false);
+          this.setFightMode(false);
+          this.setAnimation(NO_ANIMATION);
+      }, 40);
+    };
+
     private final Consumer<EntityLivingBase> pushAttack = (target) -> {
       this.setFightMode(true);
       this.setPushAttack(true);
@@ -361,6 +433,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         return new EZAnimation[]{ANIMATION_PUNCH, ANIMATION_SMASH_GROUND, ANIMATION_SUMMONS};
     }
     //  punch, smash, push, get over here!, summons, flame shot, life steal, meteor rain
+
+    //completed Punch, Smash, Push, Summons
 
 
     public int getSurfaceHeight(World world, BlockPos pos, int min, int max)
