@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
+import com.unoriginal.beastslayer.init.ModBlocks;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.items.ItemMask;
 import net.minecraft.entity.Entity;
@@ -66,8 +67,11 @@ public class AbstractTribesmen extends EntityMob {
         this.tasks.addTask(0, new EntityAISwimming(this));
         aiTempt = new EntityAITempt(this, 0.6D, ModItems.CURSED_WOOD, true);
         this.tasks.addTask(3, this.aiTempt);
+
+        this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
+        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
+
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.7D));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, AbstractTribesmen.class, p_apply_1_ -> p_apply_1_.isFiery() && p_apply_1_ != this && !this.isFiery(),this.avoidDistance(20F), 1.0F, 1.5F));
@@ -80,6 +84,17 @@ public class AbstractTribesmen extends EntityMob {
 
     public void onUpdate() {
         super.onUpdate();
+        if(!this.isFiery() && !this.world.isRemote && this.ticksExisted % 10 == 0 ){
+            List<EntityPlayer> players = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(8D));
+            if(!players.isEmpty()){
+                for (EntityPlayer player : players){
+                    if(player.inventory != null && player.inventory.hasItemStack(new ItemStack(ModBlocks.FIRE_IDOL))){
+                        this.setAttackTarget(player);
+                        break;
+                    }
+                }
+            }
+        }
         if(this.isBurning() && !this.isFiery())
         {
             this.setFiery(true);
@@ -389,12 +404,13 @@ public class AbstractTribesmen extends EntityMob {
                     if(!t.isFiery() && !(source.getTrueSource() instanceof AbstractTribesmen)){
                         if (source.getTrueSource() instanceof EntityLivingBase) {
                             EntityLivingBase l = (EntityLivingBase) source.getTrueSource();
-                            t.setAttackTarget(l);
-                        }
-                        if (source.getTrueSource() instanceof EntityPlayer){
-                            EntityPlayer p = (EntityPlayer) source.getTrueSource();
-                            if (!p.isCreative()){
-                                t.setAttackTarget(p);
+                            if (l instanceof EntityPlayer){
+                                EntityPlayer p = (EntityPlayer)l;
+                                if (!p.isCreative()){
+                                    t.setAttackTarget(p);
+                                }
+                            } else {
+                                t.setAttackTarget(l);
                             }
                         }
                     }

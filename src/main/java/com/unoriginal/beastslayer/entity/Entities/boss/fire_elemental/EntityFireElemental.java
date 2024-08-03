@@ -46,13 +46,13 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public static final EZAnimation ANIMATION_LIFE_STEAL = EZAnimation.create(40);
     public static final EZAnimation ANIMATION_METEOR_SHOWER = EZAnimation.create(50);
 
-    protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> SUMMON_MINIONS_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> GET_OVER_HERE_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> PUSH_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> LIFE_STEAL_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> METEOR_SHOWER_ATTACK = EntityDataManager.createKey(EntityAbstractBoss.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> SUMMON_MINIONS_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> GET_OVER_HERE_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> PUSH_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> LIFE_STEAL_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> METEOR_SHOWER_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
 
 
 

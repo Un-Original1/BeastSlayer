@@ -24,6 +24,7 @@ public class BlockFireIdol extends Block {
     public BlockFireIdol(String name) {
         super(Material.ROCK);
         this.setSoundType(SoundType.WOOD);
+        this.setHardness(3.0F);
         this.setRegistryName(name);
         this.setUnlocalizedName(name);
         this.setLightLevel(0.8F);

@@ -89,7 +89,7 @@ public class HangingBlock extends Block implements IShearable {
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         this.checkAndDropBlock(worldIn, pos, state);
-        if (worldIn.rand.nextInt(40) == 1) {
+        if (worldIn.rand.nextInt(60) == 1) {
             for (int i = 0; i < 11; i++) {
                 IBlockState state1 = worldIn.getBlockState(pos.down(i + 1));
                 if(state1.getBlock() == ModBlocks.CAULDRON){

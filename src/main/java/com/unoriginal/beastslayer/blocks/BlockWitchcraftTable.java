@@ -29,6 +29,7 @@ public class BlockWitchcraftTable extends BlockContainer {
         this.setRegistryName(name);
         this.setUnlocalizedName(name);
         this.setLightLevel(0.5F);
+        this.setHardness(2.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.setCreativeTab(BeastSlayer.BEASTSTAB);
 
