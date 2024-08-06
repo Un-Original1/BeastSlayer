@@ -49,8 +49,7 @@ public class CircusWorldGen extends WorldGenerator {
             world.notifyBlockUpdate(position, iblockstate, iblockstate, 3);
 
             PlacementSettings placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE)
-                    .setRotation(Rotation.NONE).setIgnoreEntities(false).setChunk(null)
-                    .setReplacedBlock(Blocks.STRUCTURE_VOID).setIgnoreStructureBlock(false);
+                    .setRotation(Rotation.NONE).setIgnoreEntities(false).setReplacedBlock(Blocks.STRUCTURE_VOID).setIgnoreStructureBlock(false);
 
             template.getDataBlocks(position, placementsettings);
             template1.getDataBlocks(position, placementsettings);

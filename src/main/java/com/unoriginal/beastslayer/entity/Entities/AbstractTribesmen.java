@@ -4,6 +4,7 @@ import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFire
 import com.unoriginal.beastslayer.init.ModBlocks;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.items.ItemMask;
+import com.unoriginal.beastslayer.worldGen.JungleVillageWorldGen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
@@ -23,8 +24,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.fml.relauncher.Side;
@@ -464,5 +469,29 @@ public class AbstractTribesmen extends EntityMob {
         }
 
         return this.player;
+    }
+
+    @Override
+    protected boolean isValidLightLevel()
+    {
+       return true;
+    }
+
+    @Override
+    public float getBlockPathWeight(BlockPos pos)
+    {
+        return 0.0F;
+    }
+
+    @Override
+    public boolean getCanSpawnHere() {
+        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+        return super.getCanSpawnHere() && this.world.canSeeSky(blockpos);
+    }
+
+    @Override
+    public boolean isPreventingPlayerRest(EntityPlayer playerIn)
+    {
+        return false;
     }
 }
