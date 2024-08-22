@@ -9,12 +9,22 @@ import com.unoriginal.beastslayer.entity.Entities.*;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.misc.EntityMoveTile;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.misc.render.RenderMoveTile;
+import com.unoriginal.beastslayer.entity.Entities.boss.projectile.ProjectileMeteor;
 import com.unoriginal.beastslayer.entity.Render.*;
+import com.unoriginal.beastslayer.entity.Render.projectile.RenderProjectile;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -69,7 +79,7 @@ public class ModEntities
 
             //Fire Boss Misc
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "shock_wave_tile"), EntityMoveTile.class, "shock_wave_tile", id++, BeastSlayer.instance, 64, 1, true);
-
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "elemental_meteor"), ProjectileMeteor.class, "elemental_meteor", id++, BeastSlayer.instance, 64, 1, true);
             //artifact entities
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hand"), EntityHand.class, "Hand", id++, BeastSlayer.instance, 64, 3, true);
             EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter_Wolf"), EntitySpiritWolf.class, "Hunter_Wolf", id++,BeastSlayer.instance, 64, 3, true);
@@ -179,10 +189,30 @@ public class ModEntities
 
             //Fire Boss Misc
             RenderingRegistry.registerEntityRenderingHandler(EntityMoveTile.class, RenderMoveTile::new);
+            registerProjectileRenderer(ProjectileMeteor.class, Items.FIRE_CHARGE);
         }
 
         RenderingRegistry.registerEntityRenderingHandler(EntityBonepile.class, RenderBonePile.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityChained.class, RenderChained.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityNekros.class, RenderNekros.FACTORY);
+    }
+
+
+    private static <T extends Entity> void registerProjectileRenderer(Class<T> projectileClass) {
+        registerProjectileRenderer(projectileClass, null);
+    }
+
+    /**
+     * Makes a projectile render with the given item
+     *
+     * @param projectileClass
+     */
+    private static <T extends Entity> void registerProjectileRenderer(Class<T> projectileClass, Item item) {
+        RenderingRegistry.registerEntityRenderingHandler(projectileClass, new IRenderFactory<T>() {
+            @Override
+            public Render<? super T> createRenderFor(RenderManager manager) {
+                return new RenderProjectile<T>(manager, Minecraft.getMinecraft().getRenderItem(), item);
+            }
+        });
     }
 }

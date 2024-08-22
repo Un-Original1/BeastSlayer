@@ -8,6 +8,7 @@ import com.unoriginal.beastslayer.entity.Entities.AbstractTribesmen;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.IAttack;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.fire_elemental.FireElementalAI;
 import com.unoriginal.beastslayer.entity.Entities.boss.EntityAbstractBoss;
+import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionMeteorShower;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSmashAttackWave;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSummonMinions;
 import com.unoriginal.beastslayer.entity.Entities.boss.util.BossUtil;
@@ -252,7 +253,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         //This is where the brains of the AI takes places
         if(!this.isFightMode() && this.getAnimation() == NO_ANIMATION) {
             //Gathers all attacks in a list
-            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(punch, smash, summonMinions, getOverHERE, pushAttack));
+            List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(punch, smash, summonMinions, getOverHERE, pushAttack, meteorShower));
             double[] weights = {
                     //this is where you add weights to the attacks and add a lot of parameters if you want
                     //these first two are just saying if the distance is less than 4 and the attack is not a repeat then do this attack
@@ -260,7 +261,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
                     (distance <= 10) ? 1/distance : 1, // Smash Attack, will edit later, just now to prevent crashing
                     (distance <= 10 && previousAttack != summonMinions && !hasMinionsNearby) ? 1/distance : 0, // Summon minions
                     (distance <= 16 && distance >= 12) ? 1/distance : 0, //Might have to have this operate outside of the system as well, GET OVER HERE
-                    (distance < 4 && previousAttack != pushAttack) ? 1/distance : 0 // Push Attack
+                    (distance < 4 && previousAttack != pushAttack) ? 1/distance : 0, // Push Attack
+                    (distance < 16 && previousAttack != meteorShower) ? 1/distance : 0 //Meteor Shower
 
             };
 
@@ -368,6 +370,11 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     private final Consumer<EntityLivingBase> meteorShower = (target) -> {
       this.setFightMode(true);
       this.setMeteorShowerAttack(true);
+      //Spawns the meteor shower
+        //first variable is how long the shower last for in seconds, spawning a meteor every 5 ticks
+        //second variable is the distance that randomly spawn from the bosses position
+        //third variable is how many waves of the AOE spawns aka how far does the AOE go out when the meteor hits the ground
+      addEvent(()-> new ActionMeteorShower(5, 16, 3).performAction(this, target), 20);
 
       addEvent(()-> {
           this.setFightMode(false);
@@ -432,7 +439,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public EZAnimation[] getAnimations() {
         return new EZAnimation[]{ANIMATION_PUNCH, ANIMATION_SMASH_GROUND, ANIMATION_SUMMONS};
     }
-    //  punch, smash, push, get over here!, summons, flame shot, life steal, meteor rain
+    //   get over here!, flame shot, life steal, meteor rain
 
     //completed Punch, Smash, Push, Summons
 
