@@ -4,6 +4,10 @@ import com.unoriginal.beastslayer.gui.ABGuiHandler;
 import com.unoriginal.beastslayer.proxy.CommonProxy;
 import com.unoriginal.beastslayer.tab.ModTab;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -51,23 +55,5 @@ public class BeastSlayer
         commonProxy.postInit(e);
     }
 
-
-
-    /**
-     * Make sure Unseen finishes this before going public using this animation system!
-     * Reference this for examples
-     * https://github.com/Jboymercs/test-ai-3/tree/main/animation/example
-     * @param message
-     * @param <MSG>
-     */
-
-    /** Unoriginal here, please refer to network package, there are some useful tools there**/
-    public static <MSG extends IMessage> void sendMSGToAll(MSG message) {
-        //TODO Still searching for proper method
-        //  for(EntityPlayerMP playerMP : Minecraft.getMinecraft().) {
-        //  sendNonLocal(message, playerMP);
-        //  }
-        //network.sendToAll(message);
-    }
 
 }

@@ -78,9 +78,7 @@ public class EZModelAnimator {
     }
 
     private Transform getTransform(ModelRenderer box) {
-        return (Transform)this.transformMap.computeIfAbsent(box, (b) -> {
-            return new Transform();
-        });
+        return this.transformMap.computeIfAbsent(box, b -> new Transform());
     }
 
     public void endKeyframe() {
@@ -96,7 +94,7 @@ public class EZModelAnimator {
                 if (stationary) {
                     for(Iterator var3 = this.prevTransformMap.keySet().iterator(); var3.hasNext(); box.rotationPointZ += transform.getOffsetZ()) {
                         box = (ModelRenderer) var3.next();
-                        transform = (Transform)this.prevTransformMap.get(box);
+                        transform = this.prevTransformMap.get(box);
                         box.rotateAngleX += transform.getRotationX();
                         box.rotateAngleY += transform.getRotationY();
                         box.rotateAngleZ += transform.getRotationZ();

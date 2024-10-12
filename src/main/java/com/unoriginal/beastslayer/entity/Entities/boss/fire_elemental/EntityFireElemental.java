@@ -45,7 +45,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public static final EZAnimation ANIMATION_GET_OVER_HERE = EZAnimation.create(60);
     public static final EZAnimation ANIMATION_PUSH = EZAnimation.create(30);
     public static final EZAnimation ANIMATION_LIFE_STEAL = EZAnimation.create(40);
-    public static final EZAnimation ANIMATION_METEOR_SHOWER = EZAnimation.create(50);
+    public static final EZAnimation ANIMATION_METEOR_SHOWER = EZAnimation.create(65);
 
     protected static final DataParameter<Boolean> PUNCH_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> SMASH_GROUND_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
@@ -132,7 +132,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public void initEntityAI() {
         super.initEntityAI();
             // Expect changes to added Paramaters in the future, still working on some more complex stuff in Unseens Box of Curiosities
-        this.tasks.addTask(4, new FireElementalAI<>(this, 1.0, 40, 10F, 0.3f));
+        this.tasks.addTask(4, new FireElementalAI<>(this, 1.0, 40, 15F, 0.3f));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 1, true, false, null));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
@@ -157,7 +157,6 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     int testAnimationTick = 400;
 
     public void onUpdate() {
-        super.onUpdate();
 
         if(this.world.isRemote){
             for (int i = 0; i < 1; ++i)
@@ -170,43 +169,42 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
             }
         }
 
-        //used for testing purposes of animations
-       // if(testAnimationTick < 0) {
-        //    this.setAnimation(ANIMATION_SMASH_GROUND);
-      //      testAnimationTick = 500;
-      //  } else {
-       //     testAnimationTick--;
-     //   }
-
         //handles animations
         if(this.isFightMode() && this.getAnimation() == NO_ANIMATION) {
             //Punch Attack
             if(this.isPunchAttack()) {
                 this.setAnimation(ANIMATION_PUNCH);
+                EZAnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_PUNCH);
             }
             //Smash Ground Attack
             if(this.isSmashGroundAttack()) {
                 this.setAnimation(ANIMATION_SMASH_GROUND);
+                EZAnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_SMASH_GROUND);
             }
             //Summon Minions Attack
             if(this.isSummonMinionsAttack()) {
                 this.setAnimation(ANIMATION_SUMMONS);
+                EZAnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_SUMMONS);
             }
             //Push Attack
             if(this.isPushAttack()) {
                 this.setAnimation(ANIMATION_PUSH);
+                EZAnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_PUSH);
             }
             //Get Over here attack
             if(this.isGetOverHereAttack()) {
                 this.setAnimation(ANIMATION_GET_OVER_HERE);
+                EZAnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_GET_OVER_HERE);
             }
             //Life Steal
             if(this.isLifeStealAttack()) {
                 this.setAnimation(ANIMATION_LIFE_STEAL);
+                EZAnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_LIFE_STEAL);
             }
             //Meteor Shower
             if(this.isMeteorShowerAttack()) {
                 this.setAnimation(ANIMATION_METEOR_SHOWER);
+                EZAnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_METEOR_SHOWER);
             }
         }
 
@@ -228,7 +226,9 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
             }
         }
         //sends the Animation Handler constant updates on the animations
+
         EZAnimationHandler.INSTANCE.updateAnimations(this);
+        super.onUpdate();
     }
 
     public float getBrightness()
@@ -262,7 +262,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
                     (distance <= 10 && previousAttack != summonMinions && !hasMinionsNearby) ? 1/distance : 0, // Summon minions
                     (distance <= 16 && distance >= 12) ? 1/distance : 0, //Might have to have this operate outside of the system as well, GET OVER HERE
                     (distance < 4 && previousAttack != pushAttack) ? 1/distance : 0, // Push Attack
-                    (distance < 16 && previousAttack != meteorShower) ? 1/distance : 0 //Meteor Shower
+                    (distance <= 16 && previousAttack != meteorShower) ? distance * 0.02 : 0 //Meteor Shower
 
             };
 
@@ -370,6 +370,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     private final Consumer<EntityLivingBase> meteorShower = (target) -> {
       this.setFightMode(true);
       this.setMeteorShowerAttack(true);
+      System.out.println("Doing Meteor Shower Attack");
       //Spawns the meteor shower
         //first variable is how long the shower last for in seconds, spawning a meteor every 5 ticks
         //second variable is the distance that randomly spawn from the bosses position
@@ -380,7 +381,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
           this.setFightMode(false);
           this.setMeteorShowerAttack(false);
           this.setAnimation(NO_ANIMATION);
-      }, 40);
+      }, 65);
     };
 
     private final Consumer<EntityLivingBase> lifeSteal = (target) -> {
@@ -416,7 +417,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
 
     @Override
     public int getAnimationTick() {
-        return animationTick;
+        return this.animationTick;
     }
 
     @Override
@@ -439,8 +440,9 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     public EZAnimation[] getAnimations() {
         return new EZAnimation[]{ANIMATION_PUNCH, ANIMATION_SMASH_GROUND, ANIMATION_SUMMONS};
     }
-    //   get over here!, flame shot, life steal, meteor rain
 
+    //NOT DONE flame shot, get over here! and lifesteal (I think I'm going to combine life steal and flame shot)
+    //WIP meteor shower
     //completed Punch, Smash, Push, Summons
 
 

@@ -386,10 +386,25 @@ public class ModelFireElemental extends BasicModelEntity {
 		//
 		animator.resetKeyframe(10);
 		// Get over here
-		animator.setAnimation(EntityFireElemental.ANIMATION_GET_OVER_HERE);
+		animator.setAnimation(EntityFireElemental.ANIMATION_METEOR_SHOWER);
 		//
-		animator.startKeyframe(1);
-
+		animator.startKeyframe(10);
+		animator.rotate(arm2, (float) Math.toRadians(-30), (float) Math.toRadians(-15), 0);
+		animator.rotate(arm1, (float) Math.toRadians(-30), (float) Math.toRadians(15), 0);
+		animator.rotate(body, (float) Math.toRadians(-5), 0, 0);
+		animator.rotate(head, (float) Math.toRadians(-15), 0,0);
+		animator.endKeyframe();
+		//
+		animator.startKeyframe(10);
+		animator.rotate(arm2, (float) Math.toRadians(-30), (float) Math.toRadians(-15), 0);
+		animator.rotate(arm1, (float) Math.toRadians(-30), (float) Math.toRadians(15), 0);
+		animator.rotate(body, (float) Math.toRadians(-5), 0, 0);
+		animator.rotate(head, (float) Math.toRadians(-15), 0, 0);
+		animator.endKeyframe();
+		//
+		animator.setStaticKeyframe(25);
+		//
+		animator.resetKeyframe(20);
 		//just make sure the duration of the animation doens't exceed ANIMATION_EXAMPLE time which is 20
 	}
 }

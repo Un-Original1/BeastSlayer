@@ -27,7 +27,7 @@ public class ActionMeteorShower implements IActionBoss {
                 ProjectileMeteor proj = new ProjectileMeteor(actor.world, actor, 7.0f, waves);
                 Vec3d randPos = new Vec3d(actor.posX + ModRand.range(-distance, distance), actor.posY + 10, actor.posZ + ModRand.range(-distance, distance));
                 proj.setPosition(randPos.x, randPos.y, randPos.z);
-                proj.setVelocity(0, -0.5, 0);
+                proj.setVelocity(0, -0.25, 0);
                 actor.world.spawnEntity(proj);
             }, i);
         }

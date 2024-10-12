@@ -1,7 +1,11 @@
 package com.unoriginal.beastslayer.animation;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -13,8 +17,12 @@ public enum EZAnimationHandler {
         if(entity.world.isRemote) {
             return;
         }
+        //Updates to Handling via server side to make sure animations are all in the same tune
         entity.setAnimation(animation);
-        BeastSlayer.sendMSGToAll(new AnimationMessage(entity.getEntityId(), ArrayUtils.indexOf(entity.getAnimations(), animation)));
+        //BeastSlayer.sendMSGToAll(new AnimationMessage(entity.getEntityId(), ArrayUtils.indexOf(entity.getAnimations(), animation)), entity);
+        for (EntityPlayer trackingPlayer : ((WorldServer) entity.world).getEntityTracker().getTrackingPlayers(entity)) {
+            BeastSlayerPacketHandler.WRAPPER.sendTo(new AnimationMessage(entity.getEntityId(), ArrayUtils.indexOf(entity.getAnimations(), animation)), (EntityPlayerMP) trackingPlayer);
+        }
     }
 
     public<T extends Entity & IAnimatedEntity> void updateAnimations(T entity) {

@@ -4,6 +4,7 @@ import com.unoriginal.beastslayer.animation.IAnimatedEntity;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.MathHelper;
 
 public abstract class BasicModelEntity extends ModelBase {
     private float movementScale = 1.0F;
@@ -60,9 +61,6 @@ public abstract class BasicModelEntity extends ModelBase {
         box.bob(speed, degree, bounce, f, f1);
     }
 
-    public float moveBox(float speed, float degree, boolean bounce, float f, float f1) {
-        return bounce ?(float) -Math.abs(Math.sin(f * speed) * f1 * degree) :  (float) Math.sin(f * speed) * f1 * degree - f1 * degree;
-    }
 
     private float calculateChainRotation(float speed, float degree, float swing, float swingAmount, float offset, int boxIndex) {
         return (float) Math.cos(swing * speed * this.movementScale + offset * (float)boxIndex) * swingAmount * degree * this.movementScale;
@@ -126,6 +124,24 @@ public abstract class BasicModelEntity extends ModelBase {
             box.rotateAngleX += pitchAmount;
         }
 
+    }
+
+
+    /**
+     * Returns a float that can be used to move boxes.
+     *
+     * @param speed  is how fast the animation runs;
+     * @param degree is how far the box will move;
+     * @param bounce will make the box bounce;
+     * @param f      is the walked distance;
+     * @param f1     is the walk speed.
+     */
+    public float moveBox(float speed, float degree, boolean bounce, float f, float f1) {
+        if (bounce) {
+            return -MathHelper.abs((MathHelper.sin(f * speed) * f1 * degree));
+        } else {
+            return MathHelper.sin(f * speed) * f1 * degree - f1 * degree;
+        }
     }
 
 

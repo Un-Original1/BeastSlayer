@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 
 import java.util.PriorityQueue;
 
@@ -35,23 +36,24 @@ public class ProjectileMeteor extends Projectile {
     @Override
     protected void onHit(RayTraceResult result) {
         Vec3d savedPos = this.getPositionVector();
-        for(int t = 1; t < waves; t++ ) {
-            int finalT = t;
-            this.addEvent(()-> {
-                BossUtil.circleCallback(finalT, (4 * finalT), (pos) -> {
+        if(!world.isRemote) {
+            for (int t = 1; t < waves; t++) {
+                System.out.println("Callin Meteor SHower Waves");
+                int finalT = t;
+                this.addEvent(() -> BossUtil.circleCallback(finalT, (4 * finalT), (pos) -> {
                     pos = new Vec3d(pos.x, 0, pos.y).add(savedPos);
-                    EntityMoveTile tile = new EntityMoveTile(this.world, this);
+                    EntityMoveTile tile = new EntityMoveTile(shootingEntity.world, this);
                     tile.setPosition(pos.x, pos.y, pos.z);
-                    int y = getSurfaceHeight(this.world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 8, (int) this.posY + 2);
+                    int y = getSurfaceHeight(shootingEntity.world, new BlockPos(pos.x, 0, pos.z), (int) this.posY - 8, (int) this.posY + 2);
                     BlockPos posToo = new BlockPos(pos.x, y, pos.z);
                     tile.setOrigin(posToo, 5, posToo.getX() + 0.5D, posToo.getZ() + 0.5D);
                     tile.setLocationAndAngles(posToo.getX() + 0.5D, posToo.getY(), posToo.getZ() + 0.5D, 0.0f, 0.0F);
                     tile.setBlock(Blocks.MAGMA, 0);
-                    this.world.spawnEntity(tile);
-
-                });
-            }, 5 * t);
+                    shootingEntity.world.spawnEntity(tile);
+                }), 5 * t);
+            }
         }
+        super.onHit(result);
     }
 
 
