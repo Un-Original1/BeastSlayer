@@ -1,6 +1,5 @@
 package com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action;
 
-import com.sun.javafx.css.parser.LadderConverter;
 import com.unoriginal.beastslayer.entity.Entities.ai.attack_manager.IActionBoss;
 import com.unoriginal.beastslayer.entity.Entities.boss.EntityAbstractBoss;
 import com.unoriginal.beastslayer.entity.Entities.boss.projectile.ProjectileMeteor;

@@ -232,8 +232,13 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
         }
     }
 
-    @SideOnly(Side.CLIENT)
     public boolean isCamo()
+    {
+        return this.dataManager.get(CAMOUFLAGED);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean isCamoClient()
     {
         return this.dataManager.get(CAMOUFLAGED);
     }
@@ -242,6 +247,7 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
     {
         this.dataManager.set(CAMOUFLAGED, camo);
     }
+
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {

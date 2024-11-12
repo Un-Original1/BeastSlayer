@@ -38,7 +38,7 @@ public class RenderHunter extends RenderLiving<EntityHunter> {
         GlStateManager.enableNormalize();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        if(entity.isCamo()) {
+        if(entity.isCamoClient()) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, (MathHelper.sin(entity.getCamoTicks() / 10F) * 0.4F) + 0.4F);
         }
         else {
@@ -53,7 +53,7 @@ public class RenderHunter extends RenderLiving<EntityHunter> {
 
     protected ResourceLocation getEntityTexture(EntityHunter entity) {
         if(!entity.isFiery()){
-            return entity.isCamo() ? CAMO : TEXTURE;
+            return entity.isCamoClient() ? CAMO : TEXTURE;
         }
         else {
             return FIRE;
