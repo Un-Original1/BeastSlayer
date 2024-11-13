@@ -673,7 +673,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     }
 
     @Override
-    public boolean getCanSpawnHere() { return super.getCanSpawnHere() && this.world.isThundering() && rand.nextInt(BeastSlayerConfig.sandmonsterSpawnChance) == 0 && this.world.getDifficulty() != EnumDifficulty.PEACEFUL; }
+    public boolean getCanSpawnHere() { return super.getCanSpawnHere() && this.world.isThundering() && this.world.getDifficulty() != EnumDifficulty.PEACEFUL; }
 
     @Override
     @Nullable

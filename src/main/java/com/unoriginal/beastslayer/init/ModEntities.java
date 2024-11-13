@@ -93,11 +93,11 @@ public class ModEntities
     //it never worked cause it was run on pre init, it must be done on post init
     public static void registerSpawns(){
 
-        EntityRegistry.addSpawn(EntitySandy.class, BeastSlayerConfig.sandmonsterSpawnRate , 1, 1, EnumCreatureType.MONSTER, Biomes.DESERT, Biomes.DESERT_HILLS);
+        EntityRegistry.addSpawn(EntitySandy.class, BeastSlayerConfig.sandmonsterSpawnRate , 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SANDY).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
 
         EntityRegistry.addSpawn(EntityGhost.class, BeastSlayerConfig.ghostSpawnChance, 1, 3, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityGiant.class, BeastSlayerConfig.giantSpawnChance, 1, 1, EnumCreatureType.MONSTER, Biomes.PLAINS, Biomes.MUTATED_PLAINS);
+        EntityRegistry.addSpawn(EntityGiant.class, BeastSlayerConfig.giantSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.PLAINS).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityFrostashFox.class, BeastSlayerConfig.foxSpawnChance, 1, 6, EnumCreatureType.CREATURE,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityFrostWalker.class, BeastSlayerConfig.frostWalkerSpawnChance, 1, 2, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
 

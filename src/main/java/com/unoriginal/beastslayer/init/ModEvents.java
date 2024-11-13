@@ -12,10 +12,7 @@ import com.unoriginal.beastslayer.network.MessageAttackER;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAreaEffectCloud;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
@@ -49,11 +46,13 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 public class ModEvents {
+    List blacklist = Arrays.asList(BeastSlayerConfig.AI_blacklist);
     @SubscribeEvent
     public void onEntityJoin(EntityJoinWorldEvent event) {
         World world = event.getWorld();
@@ -74,7 +73,8 @@ public class ModEvents {
         }
         if (!world.isRemote && event.getEntity() instanceof EntityMob) {
             EntityMob mob = (EntityMob) event.getEntity();
-            if(mob.isNonBoss()){
+
+            if(mob.isNonBoss() && !blacklist.contains(EntityList.getKey(mob).toString())){
                 mob.tasks.addTask(0, new EntityAIMobAvoidOwlstack<>(mob, EntityOwlstack.class, 6F, 1.0D, 1.4D));
             }
         }
@@ -210,6 +210,13 @@ public class ModEvents {
             EntityLivingBase livingAttack = (EntityLivingBase)attacker;
 
             Item item = livingAttack.getHeldItemOffhand().getItem();
+            if(livingAttack.getHeldItemMainhand().getItem() == ModItems.TOUGH_GLOVE && !world.isRemote){
+                if(!(attacker instanceof EntityPlayer)) {
+                    double d0 = entity.posX - attacker.posX;
+                    double d1 = entity.posZ - attacker.posZ;
+                    entity.addVelocity(d0, 0.2, d1);
+                }
+            }
             if(item == ModItems.WATER_RUNE){
                 entity.extinguish();
                 if(entity instanceof EntityBlaze || entity instanceof EntityFireElemental || (entity instanceof AbstractTribesmen && ((AbstractTribesmen) entity).isFiery()) || entity.isBurning()){
@@ -217,6 +224,7 @@ public class ModEvents {
                     e.setAmount(amount * 1.75F);
                 }
             }
+
             if(item == ModItems.WHETSTONE){
                 entity.addPotionEffect(new PotionEffect(MobEffects.POISON, 60, 1));
             }
@@ -449,6 +457,9 @@ public class ModEvents {
                     player.getHeldItemMainhand().shrink(1);
                 }
             }
+        }
+        if(!world.isRemote && world.getBlockState(pos).isFullBlock() && BeastSlayerConfig.EnableExperimentalFeatures ){
+
         }
     }
     @SubscribeEvent

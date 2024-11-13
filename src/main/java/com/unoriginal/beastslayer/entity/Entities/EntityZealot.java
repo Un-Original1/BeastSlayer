@@ -227,6 +227,36 @@ public class EntityZealot extends EntitySpellcasterIllager {
         }
     }
     class AIWeakeningSpell extends AIUseSpell {
+        @Override
+        public boolean shouldExecute()
+        {
+            if (EntityZealot.this.getAttackTarget() == null)
+            {
+                return false;
+            }
+            else if (EntityZealot.this.isSpellcasting())
+            {
+                return false;
+            }
+            else if (EntityZealot.this.ticksExisted < this.spellCooldown)
+            {
+                return false;
+            }
+            else
+            {
+
+                if (!EntityZealot.this.canEntityBeSeen(EntityZealot.this.getAttackTarget()))
+                {
+                    return false;
+
+                }
+                else
+                {
+                    return EntityZealot.this.getDistanceSq(EntityZealot.this.getAttackTarget()) < 25F;
+
+                }
+            }
+        }
         private AIWeakeningSpell()
         {
         }
@@ -234,7 +264,7 @@ public class EntityZealot extends EntitySpellcasterIllager {
         protected void castSpell() {
             EntityLivingBase entity = EntityZealot.this.getAttackTarget();
             if(entity != null && !world.isRemote){
-                entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 2));
+                entity.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 100, 1));
                 entity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 0));
             }
         }
@@ -244,7 +274,7 @@ public class EntityZealot extends EntitySpellcasterIllager {
         }
         @Override
         protected int getCastingInterval() {
-            return 200;
+            return 300;
         }
         @Nullable
         @Override

@@ -29,7 +29,7 @@ public class EntityDamcellSpike extends EntityProjectileGeneric {
     {
         if (rayTraceResult.entityHit != null && this.owner != null &&  !(rayTraceResult.entityHit instanceof EntityProjectileGeneric) && !(rayTraceResult.entityHit == this.owner))
         {
-            rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile().setDamageBypassesArmor(), 6.0F  * (float) BeastSlayerConfig.GlobalDamageMultiplier);
+            rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile().setDamageBypassesArmor(), 6.0F  * (float) BeastSlayerConfig.GlobalDamageDamcellMultiplier);
         }
 
         if (!this.world.isRemote && !(rayTraceResult.entityHit instanceof EntityProjectileGeneric) && !(rayTraceResult.entityHit == this.owner))

@@ -1,17 +1,21 @@
 package com.unoriginal.beastslayer.items;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModItems;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ScaleArmor extends ItemArmor {
+
     public ScaleArmor(String name, ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot) {
         super(material, renderIndex, slot);
         setCreativeTab(BeastSlayer.BEASTSTAB);

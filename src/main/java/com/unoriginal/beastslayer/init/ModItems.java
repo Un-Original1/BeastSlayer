@@ -88,7 +88,7 @@ public class ModItems {
     public static Item TEST;
     //public static Item SLAB;
 
-    public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",28, new int[]{1, 4, 5, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
+    public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",BeastSlayerConfig.ScaleArmorDurability, BeastSlayerConfig.ScaleArmorValue, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
 
     public static void init() {
         SANDMONSTER_SCALE = quickItemRegistry("sandmonster_scale");

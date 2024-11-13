@@ -38,11 +38,6 @@ public class BeastSlayerConfig {
     @RequiresMcRestart
     public static int sandmonsterSpawnRate = 1;
 
-    @Name("Sandmonster Spawn")
-    @Comment("Sandmonster spawn chance 5 is uncommon, 1 is common")
-    @RequiresMcRestart
-    public static int sandmonsterSpawnChance = 3;
-
     @Name("Sandmonster tame stack size")
     @Comment("this is mostly due to compatibility")
     @RequiresMcRestart
@@ -219,7 +214,26 @@ public class BeastSlayerConfig {
     @RequiresMcRestart
     public static boolean EnableExperimentalFeatures = false;
 
+    @Name("ScaleArmorDurability")
+    @Comment("Change the durability of every scale armor piece, 15 is iron like")
+    @RequiresMcRestart
+    public static int ScaleArmorDurability = 28;
 
+    @Name("ScaleArmorValue")
+    @Comment("Change the amount of armor pieces each part gives")
+    @RequiresMcRestart
+    public static int[] ScaleArmorValue = new int[]{1,3,5,3} ;
 
+    @Name("GlobalDamageDamcellMultiplier")
+    @Comment("Damcell ignores armor so it might require a special damage multiplier just for itself")
+    @RequiresMcRestart
+    public static double GlobalDamageDamcellMultiplier = 1D ;
+
+    @Name("Mob AI Blacklist")
+    @Comment("A list of creatures whose AI will be left untouched by the mod (no owlstack effects, etc)")
+    @RequiresMcRestart
+    public static String[] AI_blacklist = {
+            "netherex:spinout"
+    };
 
 }

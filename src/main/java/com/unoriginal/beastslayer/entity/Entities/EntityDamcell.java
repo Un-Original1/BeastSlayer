@@ -144,7 +144,7 @@ public class EntityDamcell extends EntityMob implements IRangedAttackMob {
             {
                 if(e instanceof EntityLivingBase && !world.isRemote) {
                     EntityLivingBase l = (EntityLivingBase)e;
-                    l.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor(), 2.0F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
+                    l.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor(), 2.0F * (float) BeastSlayerConfig.GlobalDamageDamcellMultiplier);
                  //   AncientBeasts.logger.debug("damaging");//should always be server
                 }
             }
