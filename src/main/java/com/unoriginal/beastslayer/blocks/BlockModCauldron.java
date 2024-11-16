@@ -2,6 +2,7 @@ package com.unoriginal.beastslayer.blocks;
 
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.init.ModItems;
+import com.unoriginal.beastslayer.items.ItemArtifact;
 import com.unoriginal.beastslayer.items.ItemMask;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -133,9 +134,9 @@ public class BlockModCauldron extends Block{
                         if (!player.capabilities.isCreativeMode) {
                             itemStack.shrink(1);
                             if (itemStack.isEmpty()) {
-                                player.setHeldItem(hand, new ItemStack(ModItems.CURSED_WOOD, 2 * itemBlock.getTier()));
-                            } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.CURSED_WOOD, 2 * itemBlock.getTier()))) {
-                                player.dropItem(new ItemStack(ModItems.CURSED_WOOD, 2 * itemBlock.getTier()), false);
+                                player.setHeldItem(hand, new ItemStack(ModItems.CURSED_WOOD, 2 * (itemBlock.getTier()+1)));
+                            } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.CURSED_WOOD, 2 * (itemBlock.getTier()+1)))) {
+                                player.dropItem(new ItemStack(ModItems.CURSED_WOOD, 2 * (itemBlock.getTier()+1)), false);
                             }
                         }
 
@@ -144,6 +145,26 @@ public class BlockModCauldron extends Block{
                         world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     }
                     return true;
+
+            }
+            else if (itemStack.getItem() instanceof ItemArtifact) {
+                //ItemMask itemBlock = (ItemMask) item;
+
+                if (level > 0 && !world.isRemote && itemStack.getItemDamage() == 0) {
+                    if (!player.capabilities.isCreativeMode) {
+                        itemStack.shrink(1);
+                        if (itemStack.isEmpty()) {
+                            player.setHeldItem(hand, new ItemStack(ModItems.CURSED_WOOD, 2));
+                        } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.CURSED_WOOD, 2 ))) {
+                            player.dropItem(new ItemStack(ModItems.CURSED_WOOD, 2), false);
+                        }
+                    }
+
+                    player.addStat(StatList.CAULDRON_USED);
+                    this.setWaterLevel(world, pos, state, level - 1);
+                    world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                }
+                return true;
 
             }
             else {

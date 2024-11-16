@@ -31,6 +31,16 @@ public class ItemKunai extends Item {
         this.attackDamage = 3.0F;
 
     }
+
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
+    {
+        if(itemRand.nextInt(2)==0) {
+            stack.damageItem(1, attacker);
+
+        }
+        return true;
+    }
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {

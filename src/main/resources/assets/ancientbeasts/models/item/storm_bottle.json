@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ancientbeasts:items/artifacts/storm_bottle"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "variant": 1
+      },
+      "model": "ancientbeasts:item/storm_bottle_1"
+    },
+    {
+      "predicate": {
+        "variant": 2
+      },
+      "model": "ancientbeasts:item/storm_bottle_2"
+    }
+  ]
+}

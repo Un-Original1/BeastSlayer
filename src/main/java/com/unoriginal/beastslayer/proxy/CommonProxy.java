@@ -58,6 +58,16 @@ public class CommonProxy
         ABGuiHandler.registerGuiHandler();
         ConfigManager.sync(BeastSlayer.MODID, Config.Type.INSTANCE);
         OreDictionary.registerOre("ectoplasm", ModItems.ECTOPLASM);
+        OreDictionary.registerOre("plankWood", ModBlocks.CURSED_PLANK);
+        OreDictionary.registerOre("logWood", ModBlocks.CURSED_LOG);
+        OreDictionary.registerOre("slabWood", ModBlocks.CURSED_SLAB_HALF);
+        OreDictionary.registerOre("stairWood", ModBlocks.CURSED_STAIR);
+        OreDictionary.registerOre("doorWood", ModBlocks.CURSED_DOOR);
+        OreDictionary.registerOre("fenceWood", ModBlocks.CURSED_FENCE);
+        OreDictionary.registerOre("fenceGateWood", ModBlocks.CURSED_GATE);
+        OreDictionary.registerOre("treeSapling", ModBlocks.CURSED_SAPLING);
+        OreDictionary.registerOre("treeLeaves", ModBlocks.CURSED_LEAVES);
+
         NetworkRegistry.INSTANCE.registerGuiHandler(BeastSlayer.instance, new ABGuiHandler());
     }
    public void postInit(FMLPostInitializationEvent e) {

@@ -43,6 +43,9 @@ item.rifted_pearl.name=Rifted Ender Pearl
 item.paradox.name=§kParadox
 item.kunai.name=Kunai
 item.dark_goop.name=Dark Essence
+item.storm_bottle.0.name=Storm in a Bottle
+item.storm_bottle.1.name=Rain in a Bottle
+item.storm_bottle.2.name=Cloud in a Bottle
 #Tab
 itemGroup.beaststab=Beast Slayer
 #Advancements

@@ -87,6 +87,7 @@ public class ModEntities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Bonepile"), EntityBonepile.class, "Bonepile", id++, BeastSlayer.instance, 80, 3, true, 14540253, 11315887);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Chained"), EntityChained.class, "Chained", id++, BeastSlayer.instance,64, 3, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Nekros"), EntityNekros.class, "Nekros", id++, BeastSlayer.instance, 80, 3, true, 5058665, 3416400);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Storm_Mob"), EntityStormSetter.class, "Storm_Mob", id++, BeastSlayer.instance, 64, 1, true);
 
 
     }
@@ -101,7 +102,7 @@ public class ModEntities
         EntityRegistry.addSpawn(EntityFrostashFox.class, BeastSlayerConfig.foxSpawnChance, 1, 6, EnumCreatureType.CREATURE,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityFrostWalker.class, BeastSlayerConfig.frostWalkerSpawnChance, 1, 2, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
 
-        EntityRegistry.addSpawn(EntityNetherhound.class, BeastSlayerConfig.netherhoundSpawnChance, 4, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.NETHER).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityNetherhound.class, BeastSlayerConfig.netherhoundSpawnChance, 2, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.NETHER).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityOwlstack.class, BeastSlayerConfig.owlstackSpawnChance, 2, 4, EnumCreatureType.CREATURE, Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.MUTATED_BIRCH_FOREST, Biomes.MUTATED_BIRCH_FOREST_HILLS);
 
         EntityRegistry.addSpawn(EntityNekros.class, BeastSlayerConfig.nekrosSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
@@ -195,6 +196,8 @@ public class ModEntities
         RenderingRegistry.registerEntityRenderingHandler(EntityBonepile.class, RenderBonePile.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityChained.class, RenderChained.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityNekros.class, RenderNekros.FACTORY);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityStormSetter.class, RenderStormSetter.FACTORY);
     }
 
 

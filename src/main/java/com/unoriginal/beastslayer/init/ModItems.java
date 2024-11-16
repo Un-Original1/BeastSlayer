@@ -86,6 +86,7 @@ public class ModItems {
     public static Item KUNAI;
     public static Item DARK_GOOP;
     public static Item TEST;
+    public static Item STORM_BOTTLE;
     //public static Item SLAB;
 
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",BeastSlayerConfig.ScaleArmorDurability, BeastSlayerConfig.ScaleArmorValue, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
@@ -148,6 +149,8 @@ public class ModItems {
         MASK_H = new ItemMask("hunter_mask").setTier(1);
         MASK_S = new ItemMask("scorcher_mask").setTier(2);
         MASK_P = new ItemMask("spiritweaver_mask").setTier(3);
+
+        STORM_BOTTLE = new ItemWeather("storm_bottle");
 
         //SLAB = new ItemSlab(ModBlocks.CURSED_SLAB_HALF, ModBlocks.CURSED_SLAB_HALF, ModBlocks.CURSED_SLAB_DOUBLE).setRegistryName("cursed_slab").setCreativeTab(BeastSlayer.BEASTSTAB);
 
@@ -223,6 +226,8 @@ public class ModItems {
         event.getRegistry().registerAll(MASK_S);
         event.getRegistry().registerAll(MASK_P);
 
+        event.getRegistry().registerAll(STORM_BOTTLE);
+
      //   event.getRegistry().registerAll(SLAB);
 
         if(BeastSlayerConfig.isDesertRobesEnabled) {
@@ -291,7 +296,7 @@ public class ModItems {
         registerRender(MASK_S);
         registerRender(MASK_P);
         registerRender(TEST);
-
+        registerRender(STORM_BOTTLE);
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             registerRender(SCALE_ARMOR);
             registerRender(SCALE_HOOD);

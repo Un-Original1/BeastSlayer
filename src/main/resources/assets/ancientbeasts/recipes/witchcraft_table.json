@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xx",
+    "yy",
+    "yy"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "ancientbeasts:cursed_wood"
+    },
+    "y":
+    {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    }
+  },
+  "result":
+  {
+    "item": "ancientbeasts:witchcraft_table"
+  }
+}
