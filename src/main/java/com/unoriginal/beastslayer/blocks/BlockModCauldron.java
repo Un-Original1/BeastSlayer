@@ -29,12 +29,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
 public class BlockModCauldron extends Block{
+    public static final List<ItemStack> logWood = OreDictionary.getOres("logWood");
     public static final PropertyInteger LEVEL = PropertyInteger.create("level", 0, 3);
     protected static final AxisAlignedBB AABB_LEGS = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.3125D, 1.0D);
     protected static final AxisAlignedBB AABB_WALL_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
@@ -105,27 +107,30 @@ public class BlockModCauldron extends Block{
                 return true;
             } else if (item instanceof ItemBlock) {
                 ItemBlock itemBlock = (ItemBlock) item;
-                if (itemBlock.getBlock() == Blocks.LOG || itemBlock.getBlock() == Blocks.LOG2) {
+                for (ItemStack itemstack : logWood) {
+                    if (OreDictionary.itemMatches(itemstack, itemStack, false)) {
 
-                    if (level > 0 && !world.isRemote) {
-                        if (!player.capabilities.isCreativeMode) {
-                            itemStack.shrink(1);
+
+
+                        if (level > 0 && !world.isRemote) {
+                            if (!player.capabilities.isCreativeMode) {
+                                itemStack.shrink(1);
+                            }
                             if (itemStack.isEmpty()) {
                                 player.setHeldItem(hand, new ItemStack(ModItems.CURSED_WOOD, 2));
                             } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.CURSED_WOOD, 2))) {
-                                player.dropItem(new ItemStack(ModItems.CURSED_WOOD , 2), false);
+                                player.dropItem(new ItemStack(ModItems.CURSED_WOOD, 2), false);
                             }
-                        }
 
-                        player.addStat(StatList.CAULDRON_USED);
-                        this.setWaterLevel(world, pos, state, level - 1);
-                        world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+                            player.addStat(StatList.CAULDRON_USED);
+                            this.setWaterLevel(world, pos, state, level - 1);
+                            world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        }
+                        return true;
                     }
-                    return true;
                 }
-                else {
-                    return false;
-                }
+                return false;
             }
             else if (itemStack.getItem() instanceof ItemMask) {
                 ItemMask itemBlock = (ItemMask) item;
@@ -133,12 +138,13 @@ public class BlockModCauldron extends Block{
                     if (level > 0 && !world.isRemote && itemStack.getItemDamage() == 0) {
                         if (!player.capabilities.isCreativeMode) {
                             itemStack.shrink(1);
+                        }
                             if (itemStack.isEmpty()) {
                                 player.setHeldItem(hand, new ItemStack(ModItems.CURSED_WOOD, 2 * (itemBlock.getTier()+1)));
                             } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.CURSED_WOOD, 2 * (itemBlock.getTier()+1)))) {
                                 player.dropItem(new ItemStack(ModItems.CURSED_WOOD, 2 * (itemBlock.getTier()+1)), false);
                             }
-                        }
+
 
                         player.addStat(StatList.CAULDRON_USED);
                         this.setWaterLevel(world, pos, state, level - 1);
@@ -153,12 +159,13 @@ public class BlockModCauldron extends Block{
                 if (level > 0 && !world.isRemote && itemStack.getItemDamage() == 0) {
                     if (!player.capabilities.isCreativeMode) {
                         itemStack.shrink(1);
+                    }
                         if (itemStack.isEmpty()) {
                             player.setHeldItem(hand, new ItemStack(ModItems.CURSED_WOOD, 2));
                         } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModItems.CURSED_WOOD, 2 ))) {
                             player.dropItem(new ItemStack(ModItems.CURSED_WOOD, 2), false);
                         }
-                    }
+
 
                     player.addStat(StatList.CAULDRON_USED);
                     this.setWaterLevel(world, pos, state, level - 1);

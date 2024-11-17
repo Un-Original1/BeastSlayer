@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "ancientbeasts:cursed_plank"
+    }
+  },
+  "result": {
+    "item": "ancientbeasts:cursed_stairs",
+    "data": 0,
+    "count": 4
+  }
+}

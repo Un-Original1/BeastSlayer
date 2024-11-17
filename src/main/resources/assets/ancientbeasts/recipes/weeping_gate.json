@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "y#y",
+    "y#y"
+  ],
+  "key": {
+    "#": {
+      "item": "ancientbeasts:cursed_plank"
+    },
+    "y" :{
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "ancientbeasts:cursed_gate",
+    "count": 1
+  }
+}

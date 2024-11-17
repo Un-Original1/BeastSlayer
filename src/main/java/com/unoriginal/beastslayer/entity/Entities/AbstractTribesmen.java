@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -59,6 +60,7 @@ public class AbstractTribesmen extends EntityMob {
         this.isImmuneToFire = this.isFiery();
         this.player = null;
         this.tradingPlayer = null;
+        this.setPathPriority(PathNodeType.DAMAGE_FIRE, -1.0F);
     }
 
     protected void entityInit()

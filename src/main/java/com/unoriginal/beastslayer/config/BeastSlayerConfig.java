@@ -197,7 +197,7 @@ public class BeastSlayerConfig {
     @Name("Bonepile Spawn Chance")
     @Comment("Bonepile Spawn Chance")
     @RequiresMcRestart
-    public static int bonepileSpawnChance = 20;
+    public static int bonepileSpawnChance = 15;
 
     @Name("Nekros Spawn Chance")
     @Comment("Nekros Spawn Chance")

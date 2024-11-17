@@ -62,7 +62,7 @@ public class BlockLeavesAB extends BlockLeaves {
     protected void dropApple(World worldIn, BlockPos pos, IBlockState state, int chance) {return;}
 
     @Override
-    protected int getSaplingDropChance(IBlockState state) {return 2;}
+    protected int getSaplingDropChance(IBlockState state) {return 140;}
 
     @Override
     public List<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune)

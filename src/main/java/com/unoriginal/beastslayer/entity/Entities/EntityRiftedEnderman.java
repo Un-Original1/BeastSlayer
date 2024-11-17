@@ -221,7 +221,7 @@ public class EntityRiftedEnderman extends EntityMob {
                 List<EntityLiving> list = this.world.getEntitiesWithinAABB(EntityLiving.class, this.getEntityBoundingBox().grow(3D, 1D, 3D), selector);
                 if(!list.isEmpty()) {
                     this.shockwaveTicks = 20;
-                    this.playSound(ModSounds.SHOCKWAVE, 1.0F, 1.0F);
+                    this.playSound(ModSounds.SHOCKWAVE, 1.5F, 1.0F);
                     this.world.setEntityState(this, (byte) 10);
                     for (EntityLiving living : list){
                         if(!(living instanceof EntityRiftedEnderman)) {
