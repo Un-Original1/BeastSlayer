@@ -199,6 +199,7 @@ public class NewJungleVillagePieces {
                         EntityTank tank = new EntityTank(world);
                         tank.enablePersistence();
                         tank.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+                        tank.setHomePosAndDistance(pos, 10);
                         tank.onInitialSpawn(world.getDifficultyForLocation(pos),null);
                         world.spawnEntity(tank);
                         world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
@@ -207,6 +208,7 @@ public class NewJungleVillagePieces {
                         EntityHunter hunter = new EntityHunter(world);
                         hunter.enablePersistence();
                         hunter.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+                        hunter.setHomePosAndDistance(pos, 10);
                         hunter.onInitialSpawn(world.getDifficultyForLocation(pos),null);
                         world.spawnEntity(hunter);
                         world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
@@ -215,6 +217,7 @@ public class NewJungleVillagePieces {
                         EntityTribeWarrior warrior = new EntityTribeWarrior(world);
                         warrior.enablePersistence();
                         warrior.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+                        warrior.setHomePosAndDistance(pos, 10);
                         warrior.onInitialSpawn(world.getDifficultyForLocation(pos),null);
                         world.spawnEntity(warrior);
                         world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
@@ -224,6 +227,7 @@ public class NewJungleVillagePieces {
                     EntityPriest magicman = new EntityPriest(world);
                     magicman.enablePersistence();
                     magicman.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+                    magicman.setHomePosAndDistance(pos, 10);
                     magicman.onInitialSpawn(world.getDifficultyForLocation(pos),null);
                     world.spawnEntity(magicman);
                     world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);

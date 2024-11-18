@@ -2,6 +2,7 @@ package com.unoriginal.beastslayer.blocks;
 
 import com.google.common.collect.Lists;
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModBlocks;
 import com.unoriginal.beastslayer.init.ModParticles;
 import net.minecraft.block.Block;
@@ -89,7 +90,7 @@ public class HangingBlock extends Block implements IShearable {
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         this.checkAndDropBlock(worldIn, pos, state);
-        if (worldIn.rand.nextInt(60) == 1) {
+        if (worldIn.rand.nextInt(BeastSlayerConfig.CauldronFillChance) == 1) {
             for (int i = 0; i < 11; i++) {
                 IBlockState state1 = worldIn.getBlockState(pos.down(i + 1));
                 if(state1.getBlock() == ModBlocks.CAULDRON){

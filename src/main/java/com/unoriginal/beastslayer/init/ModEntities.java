@@ -21,7 +21,6 @@ import net.minecraft.init.Biomes;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
@@ -94,7 +93,7 @@ public class ModEntities
     //it never worked cause it was run on pre init, it must be done on post init
     public static void registerSpawns(){
 
-        EntityRegistry.addSpawn(EntitySandy.class, BeastSlayerConfig.sandmonsterSpawnRate , 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SANDY).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntitySandy.class, BeastSlayerConfig.sandmonsterSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SANDY).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
 
         EntityRegistry.addSpawn(EntityGhost.class, BeastSlayerConfig.ghostSpawnChance, 1, 3, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));

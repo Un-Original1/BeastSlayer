@@ -5,10 +5,6 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Config(modid = BeastSlayer.MODID)
 public class BeastSlayerConfig {
@@ -36,7 +32,7 @@ public class BeastSlayerConfig {
     @Name("Sandmonster Spawn Rate")
     @Comment("Sandmonster spawn rate, higher numbers make it more common")
     @RequiresMcRestart
-    public static int sandmonsterSpawnRate = 1;
+    public static int sandmonsterSpawnChance = 1;
 
     @Name("Sandmonster tame stack size")
     @Comment("this is mostly due to compatibility")
@@ -235,5 +231,10 @@ public class BeastSlayerConfig {
     public static String[] AI_blacklist = {
             "netherex:spinout"
     };
+
+    @Name("Cauldron fill chance")
+    @Comment("chances that vines from weeping trees fill a cauldron with goop, less numbers mean more likely")
+    @RequiresMcRestart
+    public static int CauldronFillChance = 40;
 
 }
