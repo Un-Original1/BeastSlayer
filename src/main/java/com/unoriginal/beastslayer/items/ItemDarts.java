@@ -11,6 +11,7 @@ import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,7 +34,7 @@ public class ItemDarts extends Item {
         });
     }
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = player.getHeldItem(hand);
         World world = player.getEntityWorld();
@@ -60,7 +61,7 @@ public class ItemDarts extends Item {
             stack.shrink(1);
             player.swingArm(hand);
         }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        return EnumActionResult.SUCCESS;
     }
 
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)

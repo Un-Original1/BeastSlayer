@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer;
 
+import com.unoriginal.beastslayer.command.CommandLocateAB;
 import com.unoriginal.beastslayer.gui.ABGuiHandler;
 import com.unoriginal.beastslayer.proxy.CommonProxy;
 import com.unoriginal.beastslayer.tab.ModTab;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -53,6 +55,14 @@ public class BeastSlayer
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         commonProxy.postInit(e);
+    }
+
+    @Mod.EventHandler
+    public void serverLoad(FMLServerStartingEvent event)
+    {
+        // register server commands
+
+        event.registerServerCommand(new CommandLocateAB());
     }
 
 

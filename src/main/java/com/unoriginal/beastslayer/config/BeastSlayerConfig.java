@@ -237,4 +237,11 @@ public class BeastSlayerConfig {
     @RequiresMcRestart
     public static int CauldronFillChance = 40;
 
+    @Name("Potion Blacklist")
+    @Comment("A list of potion effects that concoction will not be able to grant (usage: modid:potion_name)")
+    @RequiresMcRestart
+    public static String[] Potion_blacklist = {
+            "ancientbeasts:fire_frenzy"
+    };
+
 }

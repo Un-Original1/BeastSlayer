@@ -3,6 +3,7 @@ package com.unoriginal.beastslayer.proxy;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.blocks.tile.TileEntityMovingLight;
 import com.unoriginal.beastslayer.blocks.tile.TileEntityWitchcraftTable;
+import com.unoriginal.beastslayer.command.CommandLocateAB;
 import com.unoriginal.beastslayer.gui.ABGuiHandler;
 import com.unoriginal.beastslayer.init.*;
 import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
@@ -73,10 +74,7 @@ public class CommonProxy
    public void postInit(FMLPostInitializationEvent e) {
         ModEntities.registerSpawns();
    }
-   @Mod.EventHandler
-   public void ServerLoad(FMLServerStartingEvent e){
 
-   }
 
     public void handleAnimationPacket(int entityId, int index) {
 

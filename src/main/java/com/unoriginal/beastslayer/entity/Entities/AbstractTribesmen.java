@@ -1,16 +1,23 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.entity.Entities.ai.AIRestrictLeaves;
+import com.unoriginal.beastslayer.entity.Entities.ai.navigation.PathNavigateAvoidLeaves;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.init.ModBlocks;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.items.ItemMask;
-import com.unoriginal.beastslayer.worldGen.JungleVillageWorldGen;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -19,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -26,19 +34,19 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 public class AbstractTribesmen extends EntityMob {
@@ -49,6 +57,7 @@ public class AbstractTribesmen extends EntityMob {
     public int fieryTicks;
     protected static final DataParameter<Boolean> FIERY = EntityDataManager.createKey(AbstractTribesmen.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> TRADING = EntityDataManager.createKey(AbstractTribesmen.class, DataSerializers.BOOLEAN);
+    private static final Set<Block> SPAWNBLOCKS = Sets.newHashSet(ModBlocks.CURSED_PLANK, Blocks.GRASS, ModBlocks.CURSED_SLAB_HALF, ModBlocks.STICK, Blocks.STONE, Blocks.FARMLAND, Blocks.MELON_BLOCK, ModBlocks.CURSED_STAIR);
     private EntityAITempt aiTempt;
     public int tradeTicks;
     private EntityPlayer player;
@@ -77,8 +86,10 @@ public class AbstractTribesmen extends EntityMob {
 
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
+        this.tasks.addTask(0, new AIRestrictLeaves(this));
 
-        this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.7D));
+        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6D));
+        this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 0.7D));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, AbstractTribesmen.class, p_apply_1_ -> p_apply_1_.isFiery() && p_apply_1_ != this && !this.isFiery(),this.avoidDistance(20F), 1.0F, 1.5F));
@@ -399,7 +410,7 @@ public class AbstractTribesmen extends EntityMob {
 
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        if (this.isEntityInvulnerable(source))
+        if (this.isEntityInvulnerable(source) || source == DamageSource.FALL)
         {
             return false;
         }
@@ -482,13 +493,67 @@ public class AbstractTribesmen extends EntityMob {
     @Override
     public float getBlockPathWeight(BlockPos pos)
     {
-        return 0.0F;
+        return 0.5F - (this.world.getBlockState(pos).getBlock() instanceof BlockLeaves  ? 50F : 0F);
     }
 
     @Override
     public boolean getCanSpawnHere() {
+        boolean b = false;
+
+        for (int i = -3; i < 4; i++) {
+            for (int j = -3; j < 4; j++) {
+                Chunk chunk = world.getChunkFromBlockCoords(this.getPosition());
+                boolean validspawn = this.IsVillageAtPos(this.world, chunk.x + i, chunk.z + j);
+                if(validspawn){
+                    b = true;
+                    break;
+                }
+            }
+        }
+      //  boolean b = chunk.equals(  TribeSavedData.loadData(this.world).getLocation());
         BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        return super.getCanSpawnHere() && this.world.canSeeSky(blockpos);
+        BeastSlayer.logger.debug(this.world.getBlockState(blockpos).getBlock());
+
+        return blockpos.getY() >= 85 && b;
+    }
+
+    @Override
+    public int getMaxSpawnedInChunk() {
+        return 8;
+    }
+
+    protected boolean IsVillageAtPos(World world, int chunkX, int chunkZ) {
+        int spacing = 30;
+        int separation = 16;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0)
+        {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0)
+        {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random =  world.setRandomSeed(k, l, 10387312);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l)
+        {
+
+            return world.getBiomeProvider().areBiomesViable((i << 4) + 8, (j << 4) + 8, 0, Lists.newArrayList(BiomeDictionary.getBiomes(BiomeDictionary.Type.JUNGLE))); /*&& random.nextInt(20) == 0*/
+        } else {
+
+            return false;
+        }
     }
 
     @Override
@@ -496,4 +561,10 @@ public class AbstractTribesmen extends EntityMob {
     {
         return false;
     }
+
+    protected PathNavigate createNavigator(World worldIn)
+    {
+        return new PathNavigateAvoidLeaves(this, worldIn);
+    }
+
 }

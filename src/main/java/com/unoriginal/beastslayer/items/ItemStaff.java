@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 
@@ -23,7 +24,7 @@ public class ItemStaff extends ItemAbstractMultimodel{
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = player.getHeldItem(hand);
         World world = player.getEntityWorld();
@@ -36,8 +37,9 @@ public class ItemStaff extends ItemAbstractMultimodel{
             world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.EVOCATION_ILLAGER_PREPARE_ATTACK, SoundCategory.PLAYERS, 1.0F, 1.0F);
             stack.damageItem(1, player);
             player.swingArm(hand);
+            return EnumActionResult.SUCCESS;
         }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        return EnumActionResult.SUCCESS;
     }
     @Override
     public void registerModels() {

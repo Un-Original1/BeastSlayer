@@ -22,6 +22,14 @@ public class BlockSpike extends BlockDirectional {
     //public static final PropertyDirection FACING = BlockDirectional.FACING;
     private final DamageSource source = new DamageSource("ancientbeasts:spikes").setDamageBypassesArmor();
 
+    protected static final AxisAlignedBB WEST = new AxisAlignedBB(0.25D, 0.0625D, 0.0625D, 1D, 0.9375D, 0.9375D);
+    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0.0D, 0.0625D, 0.0625D, 0.75D, 0.9375D, 0.9375D);
+
+    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.0625D, 0.0625D, 0.25D, 0.9375D, 0.9375D, 1D);
+    protected static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.0625D, 0.0625D, 0.0D, 0.9375D, 0.9375D, 0.75D);
+    protected static final AxisAlignedBB BOTTOM = new AxisAlignedBB(0.0625D, 0.25D, 0.0625D, 0.9375D, 1D, 0.9375D);
+    protected static final AxisAlignedBB TOP = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.75D, 0.9375D);
+
     public BlockSpike(String name) {
         super(Material.IRON);
         this.setHardness(3.5F);
@@ -107,4 +115,25 @@ public class BlockSpike extends BlockDirectional {
             entity.attackEntityFrom(source, 2F + damageTodo);
         }
     }
+
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
+            case UP:
+            default:
+                return TOP;
+            case NORTH:
+                return NORTH;
+            case SOUTH:
+                return SOUTH;
+            case WEST:
+                return WEST;
+            case EAST:
+                return EAST;
+            case DOWN:
+                return BOTTOM;
+        }
+    }
+
 }

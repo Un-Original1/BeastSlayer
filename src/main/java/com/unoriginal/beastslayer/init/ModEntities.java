@@ -12,17 +12,21 @@ import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.misc.rende
 import com.unoriginal.beastslayer.entity.Entities.boss.projectile.ProjectileMeteor;
 import com.unoriginal.beastslayer.entity.Render.*;
 import com.unoriginal.beastslayer.entity.Render.projectile.RenderProjectile;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -87,9 +91,11 @@ public class ModEntities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Chained"), EntityChained.class, "Chained", id++, BeastSlayer.instance,64, 3, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Nekros"), EntityNekros.class, "Nekros", id++, BeastSlayer.instance, 80, 3, true, 5058665, 3416400);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Storm_Mob"), EntityStormSetter.class, "Storm_Mob", id++, BeastSlayer.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Tribe_Child"), EntityTribeChild.class, "Tribe_Child", id++, BeastSlayer.instance, 64, 1, true, 0, 0);
 
 
     }
+
     //it never worked cause it was run on pre init, it must be done on post init
     public static void registerSpawns(){
 
@@ -105,6 +111,13 @@ public class ModEntities
         EntityRegistry.addSpawn(EntityOwlstack.class, BeastSlayerConfig.owlstackSpawnChance, 2, 4, EnumCreatureType.CREATURE, Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.MUTATED_BIRCH_FOREST, Biomes.MUTATED_BIRCH_FOREST_HILLS);
 
         EntityRegistry.addSpawn(EntityNekros.class, BeastSlayerConfig.nekrosSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
+
+        EntityRegistry.addSpawn(EntityTribeWarrior.class, 100, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityHunter.class, 80, 1, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityTribeChild.class, 80, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityPriest.class, 50, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityTank.class, 25, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+
 
         Multimap<Type, Biome> ExclusiveList = HashMultimap.create();
 
@@ -190,6 +203,8 @@ public class ModEntities
             //Fire Boss Misc
             RenderingRegistry.registerEntityRenderingHandler(EntityMoveTile.class, RenderMoveTile::new);
             registerProjectileRenderer(ProjectileMeteor.class, Items.FIRE_CHARGE);
+
+            RenderingRegistry.registerEntityRenderingHandler(EntityTribeChild.class, RenderTribeChild.FACTORY);
         }
 
         RenderingRegistry.registerEntityRenderingHandler(EntityBonepile.class, RenderBonePile.FACTORY);

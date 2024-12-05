@@ -3,10 +3,7 @@ package com.unoriginal.beastslayer.worldGen;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.BeastSlayer;
-import com.unoriginal.beastslayer.entity.Entities.EntityHunter;
-import com.unoriginal.beastslayer.entity.Entities.EntityPriest;
-import com.unoriginal.beastslayer.entity.Entities.EntityTank;
-import com.unoriginal.beastslayer.entity.Entities.EntityTribeWarrior;
+import com.unoriginal.beastslayer.entity.Entities.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -203,6 +200,17 @@ public class NewJungleVillagePieces {
                         tank.onInitialSpawn(world.getDifficultyForLocation(pos),null);
                         world.spawnEntity(tank);
                         world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                        if (world.rand.nextInt(7) == 0)
+                        {
+                            for (int i = 0; i < 2; ++i)
+                            {
+                                EntityTribeChild child = new EntityTribeChild(world);
+                                child.setVariant(rand.nextInt(4));
+                                child.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+                                child.setGrowingAge(-24000);
+                                world.spawnEntity(child);
+                            }
+                        }
                         break;
                     } else if (rand.nextInt(10) < 4) {
                         EntityHunter hunter = new EntityHunter(world);
@@ -212,6 +220,17 @@ public class NewJungleVillagePieces {
                         hunter.onInitialSpawn(world.getDifficultyForLocation(pos),null);
                         world.spawnEntity(hunter);
                         world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                        if (world.rand.nextInt(7) == 0)
+                        {
+                            for (int i = 0; i < 2; ++i)
+                            {
+                                EntityTribeChild child = new EntityTribeChild(world);
+                                child.setVariant(rand.nextInt(4));
+                                child.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+                                child.setGrowingAge(-24000);
+                                world.spawnEntity(child);
+                            }
+                        }
                         break;
                     } else {
                         EntityTribeWarrior warrior = new EntityTribeWarrior(world);
@@ -221,6 +240,17 @@ public class NewJungleVillagePieces {
                         warrior.onInitialSpawn(world.getDifficultyForLocation(pos),null);
                         world.spawnEntity(warrior);
                         world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                        if (world.rand.nextInt(7) == 0)
+                        {
+                            for (int i = 0; i < 2; ++i)
+                            {
+                                EntityTribeChild child = new EntityTribeChild(world);
+                                child.setVariant(rand.nextInt(4));
+                                child.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+                                child.setGrowingAge(-24000);
+                                world.spawnEntity(child);
+                            }
+                        }
                         break;
                     }
                 case "priest":
@@ -231,6 +261,17 @@ public class NewJungleVillagePieces {
                     magicman.onInitialSpawn(world.getDifficultyForLocation(pos),null);
                     world.spawnEntity(magicman);
                     world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+                    if (world.rand.nextInt(7) == 0)
+                    {
+                        for (int i = 0; i < 2; ++i)
+                        {
+                            EntityTribeChild child = new EntityTribeChild(world);
+                            child.setVariant(rand.nextInt(4));
+                            child.moveToBlockPosAndAngles(pos, 0.0F, 0.0F);
+                            child.setGrowingAge(-24000);
+                            world.spawnEntity(child);
+                        }
+                    }
                     break;
             }
         }

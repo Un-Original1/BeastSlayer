@@ -39,6 +39,7 @@ public class ItemWindforce extends ItemBow {
     }
 
     public EntityLivingBase setRandTarget(World world, EntityPlayer player){
+        int i = 0;
         EntityLivingBase target = null;
         List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(player.getPosition()).grow(20D),  livingbase -> livingbase != player);
         if (!list.isEmpty()) {
@@ -48,6 +49,10 @@ public class ItemWindforce extends ItemBow {
             if (!list2.isEmpty()) {
                 list2.sort(Comparator.comparingDouble(t -> t.getDistanceSq(player.posX, player.posY, player.posZ)));
                 target = list2.get(0);
+                if(!player.canEntityBeSeen(target) && i < list.size() ){
+                    i++;
+                    target = list.get(i);
+                }
             } else if (!livingBase.isOnSameTeam(player)) {
                 target = livingBase;
             }

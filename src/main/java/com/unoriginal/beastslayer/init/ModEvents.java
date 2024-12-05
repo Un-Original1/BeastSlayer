@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.init;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.command.CommandLocateAB;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMobAvoidOwlstack;
@@ -43,6 +44,8 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -52,7 +55,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ModEvents {
-    List blacklist = Arrays.asList(BeastSlayerConfig.AI_blacklist);
+    List<String> blacklist = Arrays.asList(BeastSlayerConfig.AI_blacklist);
     @SubscribeEvent
     public void onEntityJoin(EntityJoinWorldEvent event) {
         World world = event.getWorld();
@@ -188,6 +191,17 @@ public class ModEvents {
                 }
             }
         }
+        if(entity.isPotionActive(ModPotions.FRENZY)){
+            if(attacker != null) {
+                attacker.setFire(5);
+            }
+        }
+        if(attacker != null && attacker instanceof EntityLivingBase){
+            EntityLivingBase base = (EntityLivingBase) attacker;
+            if(base.isPotionActive(ModPotions.FRENZY)){
+                entity.setFire(5);
+            }
+        }
         if(entity.isPotionActive(ModPotions.UNDEAD)){
             EntityLivingBase target = entity.getRevengeTarget();
             List<EntityMob> reinforcements = world.getEntitiesWithinAABB(EntityMob.class, entity.getEntityBoundingBox().grow(16D), entityMob -> entityMob.isEntityUndead());
@@ -222,6 +236,31 @@ public class ModEvents {
                 if(entity instanceof EntityBlaze || entity instanceof EntityFireElemental || (entity instanceof AbstractTribesmen && ((AbstractTribesmen) entity).isFiery()) || entity.isBurning()){
                     float amount = e.getAmount();
                     e.setAmount(amount * 1.75F);
+                }
+            }
+            if(item == ModItems.TRAITORS_BLADE){
+                if(entity instanceof EntityPlayer) {
+                    if (!entity.canEntityBeSeen(attacker)){
+                        float amount = e.getAmount();
+                        e.setAmount(amount * 2F);
+                        world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
+                }
+                if(entity instanceof EntityCreature){
+                    EntityCreature creature = (EntityCreature) entity;
+                    if(creature.getAttackTarget() != attacker || !entity.canEntityBeSeen(attacker)){
+                        float amount2 = e.getAmount();
+                        e.setAmount(amount2 * 2F);
+                        world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
+                }
+                else {
+                    if(entity.getRevengeTarget() != attacker || !entity.canEntityBeSeen(attacker)){
+                        float amount = e.getAmount();
+                        e.setAmount(amount * 2F);
+                        world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
+                    }
                 }
             }
 
@@ -490,10 +529,19 @@ public class ModEvents {
     public void LivingDeathEvents(LivingDeathEvent e){
         World world = e.getEntity().getEntityWorld();
         EntityLivingBase entityLivingBase = e.getEntityLiving();
+        if(entityLivingBase.isPotionActive(ModPotions.FRENZY) && !world.isRemote){
+            entityLivingBase.setHealth(1.0F);
+            e.setCanceled(true);
+        }
         if(!world.isRemote && e.getSource().getTrueSource() != null){
             Entity source = e.getSource().getTrueSource();
             if(source instanceof EntityPlayer){
                 EntityPlayer player = (EntityPlayer)source;
+                int duration = player.getActivePotionEffect(ModPotions.FRENZY).getDuration();
+                if(player.isPotionActive(ModPotions.FRENZY)){
+                    player.removePotionEffect(ModPotions.FRENZY);
+                    player.addPotionEffect(new PotionEffect(ModPotions.FRENZY,  duration + 40));
+                }
                 Item item = ((EntityPlayer)source).getHeldItemOffhand().getItem();
                 if(item instanceof ItemArtifact){
                     if(item == ModItems.SOUL_LOCKET){

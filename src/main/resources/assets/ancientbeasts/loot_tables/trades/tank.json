@@ -7,7 +7,7 @@
         {
           "type": "item",
           "name": "ancientbeasts:wisp_torch",
-          "weight": 1,
+          "weight": 10,
           "functions": [
             {
               "function": "set_count",
@@ -21,13 +21,13 @@
         {
                   "type": "item",
                   "name": "ancientbeasts:mysterious_dust",
-                  "weight": 1,
+                  "weight": 15,
                   "functions": [
                     {
                       "function": "set_count",
                       "count": {
                         "min": 1,
-                        "max": 3
+                        "max": 4
                       }
                     }
                   ]
@@ -49,7 +49,7 @@
         {
                   "type": "item",
                   "name": "minecraft:charcoal",
-                  "weight": 1,
+                  "weight": 8,
                   "functions": [
                     {
                       "function": "set_count",
@@ -63,7 +63,7 @@
         {
                           "type": "item",
                           "name": "minecraft:leather",
-                          "weight": 1,
+                          "weight": 12,
                           "functions": [
                             {
                               "function": "set_count",
@@ -73,6 +73,20 @@
                               }
                             }
                           ]
+        },
+        {
+          "type": "item",
+          "name": "ancientbeasts:cursed_sapling",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
         }
       ]
     },

@@ -6,6 +6,7 @@ import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIBurrow;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMeleeConditional;
+import com.unoriginal.beastslayer.entity.Entities.ai.EntityAISandyFollowOwner;
 import com.unoriginal.beastslayer.entity.Entities.magic.CastingMagic;
 import com.unoriginal.beastslayer.entity.Entities.magic.MagicType;
 import com.unoriginal.beastslayer.entity.Entities.magic.UseMagic;
@@ -110,7 +111,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, AbstractIllager.class, false));
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityVex.class, false));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntitySandy.class, false));
-        this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+        this.tasks.addTask(6, new EntityAISandyFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityLivingBase.class, false, (Predicate<Entity>) entity -> entity instanceof EntityVillager || entity instanceof EntityIronGolem));
@@ -314,7 +315,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
 
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        if (this.isEntityInvulnerable(source) || this.isBuried())
+        if (this.isEntityInvulnerable(source) || this.isBuried() || source == DamageSource.IN_WALL || source == DamageSource.CACTUS)
         {
             return false;
         }

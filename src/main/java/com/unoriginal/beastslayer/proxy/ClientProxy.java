@@ -29,6 +29,7 @@ public class ClientProxy extends CommonProxy
     private final ModelBiped MODEL_MASK_H = new MaskHunter(0.0F);
     private final ModelBiped MODEL_MASK_S = new MaskScorcher(0.0F);
     private final ModelBiped MODEL_MASK_P = new MaskSpiritweaver(0.0F);
+    private final ModelBiped MODEL_MASK_BOSS = new ModelFireMask(0.0F);
 
     @Override
     public void preInit(FMLPreInitializationEvent e) {
@@ -64,6 +65,9 @@ public class ClientProxy extends CommonProxy
         }
         if(item == ModItems.MASK_P){
             return MODEL_MASK_P;
+        }
+        if(item == ModItems.LOGO){
+            return MODEL_MASK_BOSS;
         }
         return null;
     }

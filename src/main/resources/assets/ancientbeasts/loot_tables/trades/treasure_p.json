@@ -45,6 +45,20 @@
                               }
                             }
                           ]
+        },
+        {
+          "type": "item",
+          "name": "ancientbeasts:ancient_tablet",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 3,
+                "max": 8
+              }
+            }
+          ]
         }
 
       ]

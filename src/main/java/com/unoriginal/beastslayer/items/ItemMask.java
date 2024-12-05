@@ -22,7 +22,7 @@ public class ItemMask extends ItemArmor {
     }
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
-        return repair.getItem() == ModItems.SANDMONSTER_SCALE;
+        return repair.getItem() == ModItems.CURSED_WOOD;
     }
     @Override
     @SideOnly(Side.CLIENT)

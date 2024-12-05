@@ -347,6 +347,7 @@ item.irongrass.name=Irongrass
 item.irongrass.tooltip=WIP
 item.magic_feather.name=Magical Feather
 item.magic_feather.tooltip=WIP
+item.traitors_blade.tooltip=Extra damage to mobs that are not targeting you
 
 tile.cursed_log.name=Weeping Log
 tile.cursed_plank.name=Weeping Planks
@@ -361,3 +362,7 @@ tile.cursed_sapling.name=Weeping Sapling
 tile.green_torch.name=Weeping Torch
 tile.fire_idol.name=Fire Idol
 item.test.name=Treehouse Village Generator
+item.logo.name=Fire Mask
+item.traitors_blade.name=Traitor's Blade
+
+potion.fire_frenzy=Fire Frenzy

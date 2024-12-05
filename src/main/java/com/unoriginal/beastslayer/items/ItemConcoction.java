@@ -2,6 +2,7 @@ package com.unoriginal.beastslayer.items;
 
 import com.google.common.collect.Iterables;
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +19,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class ItemConcoction extends Item {
+import java.util.Arrays;
+import java.util.List;
 
+public class ItemConcoction extends Item {
+    List<String> blacklist = Arrays.asList(BeastSlayerConfig.Potion_blacklist);
     public ItemConcoction(String name) {
         setRegistryName(name);
         setUnlocalizedName(name);
@@ -59,7 +63,11 @@ public class ItemConcoction extends Item {
                 if (!(entityLiving instanceof EntityPlayer) || !((EntityPlayer) entityLiving).getCooldownTracker().hasCooldown(this)) {
 
                      Potion potion = Iterables.get(ForgeRegistries.POTIONS, itemRand.nextInt(ForgeRegistries.POTIONS.getValuesCollection().size()));
-                     entityLiving.addPotionEffect(new PotionEffect(potion, 800));
+                     if(blacklist.contains(potion.getRegistryName().toString())) {
+                         potion = Iterables.get(ForgeRegistries.POTIONS, itemRand.nextInt(ForgeRegistries.POTIONS.getValuesCollection().size()));
+                     } else {
+                         entityLiving.addPotionEffect(new PotionEffect(potion, 800));
+                     }
 
                 }
                 ///   MobEffects randomEffect = effects.get(new Random().nextInt(effects.size()));

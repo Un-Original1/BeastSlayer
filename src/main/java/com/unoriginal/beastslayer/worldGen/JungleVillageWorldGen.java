@@ -2,15 +2,10 @@ package com.unoriginal.beastslayer.worldGen;
 
 import com.google.common.collect.Lists;
 import com.unoriginal.beastslayer.BeastSlayer;
-import com.unoriginal.beastslayer.entity.Entities.EntityHunter;
-import com.unoriginal.beastslayer.entity.Entities.EntityPriest;
-import com.unoriginal.beastslayer.entity.Entities.EntityTank;
-import com.unoriginal.beastslayer.entity.Entities.EntityTribeWarrior;
 import net.minecraft.block.Block;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,17 +13,18 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.BiomeDictionary;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class JungleVillageWorldGen extends WorldGenerator {
-   // public static List<Biome> VALID_BIOMES = Arrays.asList(Biomes.JUNGLE, Biomes.JUNGLE_HILLS, Biomes.MUTATED_JUNGLE);
+
     public static List<Biome> VALID_BIOMES =  Lists.newArrayList(BiomeDictionary.getBiomes(BiomeDictionary.Type.JUNGLE));
-    private final List<Biome.SpawnListEntry> spawnList = Lists.newArrayList();
+   // private final List<Biome.SpawnListEntry> spawnList = Lists.newArrayList();
     private int separation;
     private int spacing;
 
@@ -37,20 +33,25 @@ public class JungleVillageWorldGen extends WorldGenerator {
         this.separation = 16;
         //add spawns to biome
 
-        this.spawnList.add(new Biome.SpawnListEntry(EntityTribeWarrior.class, 30, 1, 3));
-        this.spawnList.add(new Biome.SpawnListEntry(EntityTank.class, 15, 1, 2));
-        this.spawnList.add(new Biome.SpawnListEntry(EntityHunter.class, 25, 1, 3));
-        this.spawnList.add(new Biome.SpawnListEntry(EntityPriest.class, 8, 1, 1));
+      //  this.spawnList.add(new Biome.SpawnListEntry(EntityTribeWarrior.class, 30, 1, 3));
+     //   this.spawnList.add(new Biome.SpawnListEntry(EntityTank.class, 15, 1, 2));
+    //    this.spawnList.add(new Biome.SpawnListEntry(EntityHunter.class, 25, 1, 3));
+     //   this.spawnList.add(new Biome.SpawnListEntry(EntityPriest.class, 8, 1, 1));
     }
 
     @Override
-    public boolean generate(World world, Random rand, BlockPos position) {
-        boolean canSpawn = canSpawnStructureAtCoords(world, (position.getX() - 8)  >> 4, (position.getZ() - 8)  >> 4);
+    public boolean generate(World world, Random rand, BlockPos pos) {
+        boolean canSpawn = canSpawnStructureAtCoords(world, (pos.getX() - 8)  >> 4, (pos.getZ() - 8)  >> 4);
        // if (new Random().nextInt(9) == 0) {
         if(canSpawn) {
             int new_size = 96;
-            BeastSlayer.logger.debug("generating village!" + position);
-            getStructureStart(world, position.getX(), position.getZ(), rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
+            BeastSlayer.logger.debug("generating village!" + pos);
+            JungleVillageWorldGen.Start start =  (Start) this.getStructureStart(world, pos.getX(), pos.getZ(), rand);
+
+            start.generateStructure(world, rand, new StructureBoundingBox(pos.getX() - new_size, pos.getZ() - new_size, pos.getX() + new_size, pos.getZ() + new_size));
+
+
+
             //    }
         }
         return canSpawn;
@@ -60,12 +61,16 @@ public class JungleVillageWorldGen extends WorldGenerator {
         boolean canSpawn = canSpawnStructureAtCoords(world, (pos.getX() - 8)  >> 4, (pos.getZ() - 8)  >> 4);
         if(canSpawn){
             int new_size = 96;
-            getStructureStart(world, pos.getX(), pos.getZ(), rand).generateStructure(world, rand, new StructureBoundingBox(pos.getX() - new_size, pos.getZ() - new_size, pos.getX() + new_size, pos.getZ() + new_size));
+            JungleVillageWorldGen.Start start = (Start) this.getStructureStart(world, pos.getX(), pos.getZ(), rand);
+
+            start.generateStructure(world, rand, new StructureBoundingBox(pos.getX() - new_size, pos.getZ() - new_size, pos.getX() + new_size, pos.getZ() + new_size));
+            BeastSlayer.logger.debug("generating village!" +  (((pos.getX() - 8)  >> 4)+ "chunkx") + (((pos.getZ() - 8)  >> 4) + "chunkz"));
+
             if (generator != null) {
-                for (Biome.SpawnListEntry spawnListEntry : this.spawnList) {
+             /*   for (Biome.SpawnListEntry spawnListEntry : this.spawnList) {
                     generator.getPossibleCreatures(EnumCreatureType.CREATURE, pos).add(spawnListEntry);
                     //    BeastSlayer.logger.debug(generator.getPossibleCreatures(EnumCreatureType.CREATURE, pos));
-                }
+                }*/
             }
         }
         return canSpawn;
@@ -81,13 +86,18 @@ public class JungleVillageWorldGen extends WorldGenerator {
     public void addToBiome(IChunkGenerator generator, BlockPos pos, World world){
         boolean canSpawn = canSpawnStructureAtCoords(world, (pos.getX() - 8)  >> 4, (pos.getZ() - 8)  >> 4);
         if (generator != null && canSpawn) {
-            for (Biome.SpawnListEntry spawnListEntry : this.spawnList) {
+       /*     for (Biome.SpawnListEntry spawnListEntry : this.spawnList) {
               //  BeastSlayer.logger.debug("adding mob spawns to chunk");
                 generator.getPossibleCreatures(EnumCreatureType.CREATURE, pos).add(spawnListEntry);
                 //    BeastSlayer.logger.debug(generator.getPossibleCreatures(EnumCreatureType.CREATURE, pos));
-            }
+            }*/
         }
     }
+
+
+
+
+
 
     public String getStructureName() {
         return "Jungle_village";
@@ -125,7 +135,9 @@ public class JungleVillageWorldGen extends WorldGenerator {
         }
     }
 
+
     protected StructureStart getStructureStart(World world, int chunkX, int chunkZ, Random rand) {
+
         return new JungleVillageWorldGen.Start(world, rand , chunkX, chunkZ, 1);
     }
 
@@ -155,6 +167,24 @@ public class JungleVillageWorldGen extends WorldGenerator {
         public void generateStructure(World worldIn, Random rand, StructureBoundingBox structurebb)
         {
             super.generateStructure(worldIn, rand, structurebb);
+        }
+        public NBTTagCompound writeDataToNBT(int chunkX, int chunkZ){
+            NBTTagCompound nbttagcompound = new NBTTagCompound();
+            nbttagcompound.setString("id", "TribeVillage");
+            nbttagcompound.setInteger("ChunkX", chunkX);
+            nbttagcompound.setInteger("ChunkZ", chunkZ);
+            nbttagcompound.setTag("BB", this.boundingBox.toNBTTagIntArray());
+            nbttagcompound.setString("Location", "[" + chunkX + "," + chunkZ + "]");
+      /*      NBTTagList nbttaglist = new NBTTagList();
+
+          /*  for (StructureComponent structurecomponent : this.components)
+            {
+                nbttaglist.appendTag(structurecomponent.createStructureBaseNBT());
+            }
+
+            nbttagcompound.setTag("Children", nbttaglist);*/
+            this.writeToNBT(nbttagcompound);
+            return nbttagcompound;
         }
         public static int getGroundFromAbove(World world, int x, int z)
         {

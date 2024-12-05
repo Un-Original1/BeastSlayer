@@ -126,7 +126,7 @@ public class EntityWindforceDart extends EntityProjectileGeneric {
                 if(this.getTarget() == null && this.targetUUID == null){
                     this.motionY *= 1.5F;
                 }
-                if(this.getTarget() != null && this.getTarget().isDead){
+                if(this.getTarget() != null && this.getTarget().isDead || this.getTarget().getHealth() <= 0.0D){
                     this.setRandTarget(false);
                 }
 
@@ -143,6 +143,7 @@ public class EntityWindforceDart extends EntityProjectileGeneric {
         if(this.world.isRemote) {
             this.world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 0D, 0D, 0D);
         }
+
         if (rayTraceResult.entityHit != null && this.owner != null && this.owner != rayTraceResult.entityHit)
         {
             rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile(), 4.0F);
@@ -191,6 +192,11 @@ public class EntityWindforceDart extends EntityProjectileGeneric {
         }
 
         return this.target;
+    }
+
+    public boolean canEntityBeSeen(Entity entityIn)
+    {
+        return this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), new Vec3d(entityIn.posX, entityIn.posY + (double)entityIn.getEyeHeight(), entityIn.posZ), false, true, false) == null;
     }
 
     public EntityLivingBase setRandTarget(boolean sort){

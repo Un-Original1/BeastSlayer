@@ -75,6 +75,7 @@ public class ModItems {
     public static Item PAW;
     public static Item HORN;
     public static Item FIRERAIN;
+    public static Item TRAITORS_BLADE;
 
     public static Item MASK_W;
     public static Item MASK_H;
@@ -94,7 +95,7 @@ public class ModItems {
     public static void init() {
         SANDMONSTER_SCALE = quickItemRegistry("sandmonster_scale");
         CACTUS_BROTH = new ItemCactusBroth("cactus_broth", 12, 0.8F, false);
-        LOGO = new HiddenItem("logo");
+        LOGO = new ItemBossMask("logo");
         SANDY_LOVE = new HiddenItem("sandy_love");
         SHIELD_BOOK = new ItemShieldBook("shield_book");
         ECTOPLASM = quickItemRegistry("ectoplasm");
@@ -144,6 +145,7 @@ public class ModItems {
         PAW = new ItemArtifact("ocelot_paw");
         HORN = new ItemArtifact("fire_horn");
         FIRERAIN = new ItemFireRain("fire_rain");
+        TRAITORS_BLADE = new ItemArtifact("traitors_blade");
 
         MASK_W = new ItemMask("marauder_mask").setTier(0);
         MASK_H = new ItemMask("hunter_mask").setTier(1);
@@ -220,6 +222,7 @@ public class ModItems {
         event.getRegistry().registerAll(PAW);
         event.getRegistry().registerAll(HORN);
         event.getRegistry().registerAll(FIRERAIN);
+        event.getRegistry().registerAll(TRAITORS_BLADE);
 
         event.getRegistry().registerAll(MASK_W);
         event.getRegistry().registerAll(MASK_H);
@@ -290,6 +293,7 @@ public class ModItems {
         registerRender(PAW);
         registerRender(HORN);
         registerRender(FIRERAIN);
+        registerRender(TRAITORS_BLADE);
 
         registerRender(MASK_W);
         registerRender(MASK_H);
