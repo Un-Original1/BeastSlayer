@@ -1,7 +1,6 @@
 package com.unoriginal.beastslayer.init;
 
 import com.unoriginal.beastslayer.BeastSlayer;
-import com.unoriginal.beastslayer.command.CommandLocateAB;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMobAvoidOwlstack;
@@ -44,8 +43,6 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -460,9 +457,9 @@ public class ModEvents {
             for(int i = 1; i < 7;i++){
 
                 AxisAlignedBB aabb = new AxisAlignedBB(player.posX + v.x * i, player.posY + v.y * i, player.posZ + v.z * i, player.posX + v.x * i, player.posY + v.y * i, player.posZ + v.z * i).grow(1.1D);
-                List list = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb);
+                List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb);
                 if(list.iterator().hasNext()){
-                    EntityLivingBase entity = (EntityLivingBase)list.get(0);
+                    EntityLivingBase entity = list.get(0);
                     if(entity != null && entity != player){
                         BeastSlayerPacketHandler.sendToServer(new MessageAttackER(player, entity));
 
@@ -496,9 +493,6 @@ public class ModEvents {
                     player.getHeldItemMainhand().shrink(1);
                 }
             }
-        }
-        if(!world.isRemote && world.getBlockState(pos).isFullBlock() && BeastSlayerConfig.EnableExperimentalFeatures ){
-
         }
     }
     @SubscribeEvent
@@ -537,8 +531,9 @@ public class ModEvents {
             Entity source = e.getSource().getTrueSource();
             if(source instanceof EntityPlayer){
                 EntityPlayer player = (EntityPlayer)source;
-                int duration = player.getActivePotionEffect(ModPotions.FRENZY).getDuration();
-                if(player.isPotionActive(ModPotions.FRENZY)){
+
+                if(player.isPotionActive(ModPotions.FRENZY) && player.getActivePotionEffect(ModPotions.FRENZY).getDuration() > 0){
+                    int duration = player.getActivePotionEffect(ModPotions.FRENZY).getDuration();
                     player.removePotionEffect(ModPotions.FRENZY);
                     player.addPotionEffect(new PotionEffect(ModPotions.FRENZY,  duration + 40));
                 }
