@@ -65,9 +65,9 @@ public class ItemConcoction extends Item {
                      Potion potion = Iterables.get(ForgeRegistries.POTIONS, itemRand.nextInt(ForgeRegistries.POTIONS.getValuesCollection().size()));
                      if(blacklist.contains(potion.getRegistryName().toString())) {
                          potion = Iterables.get(ForgeRegistries.POTIONS, itemRand.nextInt(ForgeRegistries.POTIONS.getValuesCollection().size()));
-                     } else {
-                         entityLiving.addPotionEffect(new PotionEffect(potion, 800));
                      }
+                     entityLiving.addPotionEffect(new PotionEffect(potion, 800));
+
 
                 }
                 ///   MobEffects randomEffect = effects.get(new Random().nextInt(effects.size()));

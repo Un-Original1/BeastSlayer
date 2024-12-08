@@ -22,7 +22,7 @@ public class GreenTorch extends BlockTorch {
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
         this.setTickRandomly(true);
         this.setCreativeTab(BeastSlayer.BEASTSTAB);
-        this.setLightLevel(8F);
+        this.setLightLevel(0.8F);
         this.setUnlocalizedName(name);
         this.setRegistryName(name);
     }

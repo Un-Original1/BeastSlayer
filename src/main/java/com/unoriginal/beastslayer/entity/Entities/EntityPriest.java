@@ -241,7 +241,7 @@ public class EntityPriest extends AbstractTribesmen implements IMagicUser {
         public boolean shouldExecute() {
             List<EntityMob> list = EntityPriest.this.world.getEntitiesWithinAABB(EntityMob.class, EntityPriest.this.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
 
-            return list.size() > 0 && EntityPriest.this.getAttackTarget() != null && !EntityPriest.this.getAttackTarget().isPotionActive(ModPotions.TARGETED) && !EntityPriest.this.isTrading()  && super.shouldExecute();
+            return !list.isEmpty() && EntityPriest.this.getAttackTarget() != null && !EntityPriest.this.getAttackTarget().isPotionActive(ModPotions.TARGETED) && !EntityPriest.this.isTrading()  && super.shouldExecute();
         }
 
         @Override

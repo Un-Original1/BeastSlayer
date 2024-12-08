@@ -12,6 +12,7 @@ import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.Act
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSmashAttackWave;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.action.ActionSummonMinions;
 import com.unoriginal.beastslayer.entity.Entities.boss.util.BossUtil;
+import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.util.ModRand;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +20,10 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -28,6 +32,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -55,6 +61,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     protected static final DataParameter<Boolean> LIFE_STEAL_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> METEOR_SHOWER_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
 
+    private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS));
+
 
 
     // I HAVE LEARNED FROM MISTAKES
@@ -81,6 +89,16 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         this.setPushAttack(nbt.getBoolean("Push_Attack"));
         this.setLifeStealAttack(nbt.getBoolean("Life_Steal_Attack"));
         this.setMeteorShowerAttack(nbt.getBoolean("Meteor_Shower_Attack"));
+        if (this.hasCustomName())
+        {
+            this.bossInfo.setName(this.getDisplayName());
+        }
+    }
+
+    public void setCustomNameTag(String name)
+    {
+        super.setCustomNameTag(name);
+        this.bossInfo.setName(this.getDisplayName());
     }
 
     public boolean isPunchAttack() {return this.dataManager.get(PUNCH_ATTACK);}
@@ -155,7 +173,11 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     }
 
     int testAnimationTick = 400;
-
+    protected void updateAITasks()
+    {
+        super.updateAITasks();
+        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+    }
     public void onUpdate() {
 
         if(this.world.isRemote){
@@ -206,6 +228,8 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
                 this.setAnimation(ANIMATION_METEOR_SHOWER);
                 EZAnimationHandler.INSTANCE.sendAnimationMessage(this, ANIMATION_METEOR_SHOWER);
             }
+
+
         }
 
         EntityLivingBase target = this.getAttackTarget();
@@ -465,4 +489,27 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         }
         return 0;
     }
+
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+    {
+        EntityItem entityitem = this.dropItem(ModItems.LOGO, 1);
+
+        if (entityitem != null)
+        {
+            entityitem.setNoDespawn();
+        }
+    }
+
+    public void addTrackingPlayer(EntityPlayerMP player)
+    {
+        super.addTrackingPlayer(player);
+        this.bossInfo.addPlayer(player);
+    }
+
+    public void removeTrackingPlayer(EntityPlayerMP player)
+    {
+        super.removeTrackingPlayer(player);
+        this.bossInfo.removePlayer(player);
+    }
+
 }

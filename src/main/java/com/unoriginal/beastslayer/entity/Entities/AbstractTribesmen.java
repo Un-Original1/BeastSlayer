@@ -2,7 +2,6 @@ package com.unoriginal.beastslayer.entity.Entities;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.ai.AIRestrictLeaves;
 import com.unoriginal.beastslayer.entity.Entities.ai.navigation.PathNavigateAvoidLeaves;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
@@ -294,13 +293,13 @@ public class AbstractTribesmen extends EntityMob {
 
             List<ItemStack> treasure = loottable2.generateLootForPools(this.treasureTableSeed == 0L ? this.rand : new Random(this.treasureTableSeed), lootcontext$builder.build());
             if(rand.nextInt(i) == 0 && b) {
-                if (treasure.size() > 0) {
+                if (!treasure.isEmpty()) {
                     ItemStack itemstack = treasure.get(0);
                     this.entityDropItem(itemstack, 0.0F);
                 }
             } else {
 
-                if (itemlist.size() > 0) {
+                if (!itemlist.isEmpty()) {
                     ItemStack itemstack = itemlist.get(0);
                     this.entityDropItem(itemstack, 0.0F);
                 }
@@ -512,14 +511,14 @@ public class AbstractTribesmen extends EntityMob {
         }
       //  boolean b = chunk.equals(  TribeSavedData.loadData(this.world).getLocation());
         BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        BeastSlayer.logger.debug(this.world.getBlockState(blockpos).getBlock());
+        //BeastSlayer.logger.debug(this.world.getBlockState(blockpos).getBlock());
 
         return blockpos.getY() >= 85 && b;
     }
 
     @Override
     public int getMaxSpawnedInChunk() {
-        return 8;
+        return 5;
     }
 
     protected boolean IsVillageAtPos(World world, int chunkX, int chunkZ) {

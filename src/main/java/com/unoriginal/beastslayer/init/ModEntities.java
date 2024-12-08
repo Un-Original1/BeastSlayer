@@ -112,11 +112,11 @@ public class ModEntities
 
         EntityRegistry.addSpawn(EntityNekros.class, BeastSlayerConfig.nekrosSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
 
-        EntityRegistry.addSpawn(EntityTribeWarrior.class, 100, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityHunter.class, 80, 1, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityTribeChild.class, 80, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityPriest.class, 50, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityTank.class, 25, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityTribeWarrior.class, 70, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityHunter.class, 60, 1, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityTribeChild.class, 60, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityPriest.class, 20, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityTank.class, 40, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
 
 
         Multimap<Type, Biome> ExclusiveList = HashMultimap.create();

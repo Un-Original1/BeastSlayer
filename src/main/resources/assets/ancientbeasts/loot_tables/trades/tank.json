@@ -48,7 +48,7 @@
         },
         {
                   "type": "item",
-                  "name": "minecraft:charcoal",
+                  "name": "minecraft:coal",
                   "weight": 8,
                   "functions": [
                     {
@@ -57,6 +57,11 @@
                         "min": 3,
                         "max": 6
                       }
+                    },
+                    {
+                      "function": "minecraft:set_data",
+                      "data": "1"
+
                     }
                   ]
         },

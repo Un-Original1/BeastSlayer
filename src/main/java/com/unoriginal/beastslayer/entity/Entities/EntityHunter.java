@@ -289,6 +289,7 @@ public class EntityHunter extends AbstractTribesmen implements IRangedAttackMob 
     {
         return TRADE;
     }
+
     public boolean shouldTradeWithplayer(EntityPlayer player){
         Item stack = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem();
         boolean b = stack instanceof ItemMask && ((ItemMask) stack).getTier() >=0;

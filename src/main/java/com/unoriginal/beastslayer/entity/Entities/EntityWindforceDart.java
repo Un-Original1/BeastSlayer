@@ -126,7 +126,7 @@ public class EntityWindforceDart extends EntityProjectileGeneric {
                 if(this.getTarget() == null && this.targetUUID == null){
                     this.motionY *= 1.5F;
                 }
-                if(this.getTarget() != null && this.getTarget().isDead || this.getTarget().getHealth() <= 0.0D){
+                if(this.getTarget() != null && (this.getTarget().isDead || this.getTarget().getHealth() <= 0.0D)){
                     this.setRandTarget(false);
                 }
 
