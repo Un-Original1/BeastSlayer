@@ -6,6 +6,7 @@ import com.unoriginal.beastslayer.blocks.tile.TileEntityWitchcraftTable;
 import com.unoriginal.beastslayer.command.CommandLocateAB;
 import com.unoriginal.beastslayer.gui.ABGuiHandler;
 import com.unoriginal.beastslayer.init.*;
+import com.unoriginal.beastslayer.integration.IntegrationBaubles;
 import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
 import com.unoriginal.beastslayer.worldGen.ModWorldGen;
 import net.minecraft.entity.EntityLivingBase;
@@ -41,6 +42,7 @@ public class CommonProxy
         GameRegistry.registerTileEntity(TileEntityWitchcraftTable.class, WITCHCRAFT);
         ModTriggers.init();
         BeastSlayerPacketHandler.initMessages();
+        IntegrationBaubles.init();
     }
     public void registerParticles() {
 

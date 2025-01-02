@@ -210,10 +210,11 @@ public class EntityRiftedEnderman extends EntityMob {
                 this.setArmored(0);
                 this.armoredCooldown = 3000 + rand.nextInt(3000);
             }
-            if(this.ticksExisted % (300 + rand.nextInt(300)) == 0 && !this.isVulnerable()){
-                this.armorWeakTicks = 50;
+            if(this.ticksExisted % (300 + rand.nextInt(100)) == 0 && !this.isVulnerable()){
+                this.armorWeakTicks = 60;
+                this.world.setEntityState(this, (byte)11);
                 if(this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget()) && this.getAttackTarget().canEntityBeSeen(this)) {
-                    this.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 50, 0, false, false));
+                    this.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 60, 0, false, false));
                 }
             }
             if(this.shockwaveCD < 0){
@@ -502,11 +503,15 @@ public class EntityRiftedEnderman extends EntityMob {
     {
         if (id == 6)
         {
+            this.armorWeakTicks = 0;
             this.world.spawnParticle(EnumParticleTypes.END_ROD, this.posX + 0.55D - (double)(rand.nextFloat() * 0.1F), this.posY + height / 2 + 0.55D - (double)(rand.nextFloat() * 0.1F) , this.posZ + 0.55D - (double)(rand.nextFloat() * 0.1F) , rand.nextGaussian() * 0.05D, rand.nextGaussian() * 0.05D, rand.nextGaussian() * 0.05D);
             this.world.playSound(null, this.getPosition(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.NEUTRAL, 1.0F, 1.0F);
         }
         if(id == 10){
             this.shockwaveTicks = 20;
+        }
+        if(id == 11){
+            this.armorWeakTicks = 60;
         }
         else
         {

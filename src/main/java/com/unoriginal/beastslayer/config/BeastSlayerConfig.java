@@ -78,7 +78,7 @@ public class BeastSlayerConfig {
     @Name("Ice Spikes cooldown")
     @Comment("20 = + 1 sec")
     @RequiresMcRestart
-    public static int iceSpikesCooldown = 60;
+    public static int iceSpikesCooldown = 20;
 
     @Name("Frost walker spawn chance")
     @Comment("Frost walker spawn chance")

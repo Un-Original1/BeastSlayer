@@ -24,12 +24,11 @@ public class ItemStaff extends ItemAbstractMultimodel{
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        World world = player.getEntityWorld();
         if (!world.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
-            EntityWisp wisp = new EntityWisp(worldIn, true, player);
+            EntityWisp wisp = new EntityWisp(world, true, player);
             wisp.setPosition(player.posX, player.posY + player.getEyeHeight(), player.posZ);
             wisp.setVariant(itemRand.nextInt(3));
             world.spawnEntity(wisp);
@@ -37,9 +36,9 @@ public class ItemStaff extends ItemAbstractMultimodel{
             world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.EVOCATION_ILLAGER_PREPARE_ATTACK, SoundCategory.PLAYERS, 1.0F, 1.0F);
             stack.damageItem(1, player);
             player.swingArm(hand);
-            return EnumActionResult.SUCCESS;
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
-        return EnumActionResult.SUCCESS;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
     @Override
     public void registerModels() {

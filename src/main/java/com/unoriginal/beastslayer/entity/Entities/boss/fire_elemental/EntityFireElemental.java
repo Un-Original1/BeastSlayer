@@ -61,7 +61,7 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
     protected static final DataParameter<Boolean> LIFE_STEAL_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> METEOR_SHOWER_ATTACK = EntityDataManager.createKey(EntityFireElemental.class, DataSerializers.BOOLEAN);
 
-    private final BossInfoServer bossInfo = (new BossInfoServer(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS));
+    private final BossInfoServer bossInfo = (BossInfoServer) (new BossInfoServer(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS).setCreateFog(true));
 
 
 

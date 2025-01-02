@@ -46,10 +46,9 @@ public class ItemShieldBook extends Item {
         return super.itemInteractionForEntity(stack, player, target, hand);
     }
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        World world = player.getEntityWorld();
         if (!world.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             EntityBeam beam = new EntityBeam(world, player, player, 120 + BeastSlayerConfig.sBTimerBonus);
             player.addPotionEffect(new PotionEffect(ModPotions.SHIELDED, 120 + BeastSlayerConfig.sBTimerBonus, 0));
@@ -59,6 +58,6 @@ public class ItemShieldBook extends Item {
             stack.damageItem(1, player);
             player.swingArm(hand);
         }
-        return EnumActionResult.SUCCESS;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 }

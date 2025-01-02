@@ -560,7 +560,7 @@ public class AbstractTribesmen extends EntityMob {
     {
         return false;
     }
-
+    @Override
     protected PathNavigate createNavigator(World worldIn)
     {
         return new PathNavigateAvoidLeaves(this, worldIn);

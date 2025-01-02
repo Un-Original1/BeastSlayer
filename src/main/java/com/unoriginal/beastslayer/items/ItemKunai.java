@@ -39,10 +39,9 @@ public class ItemKunai extends Item {
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        World world = player.getEntityWorld();
       //  double d1 =  -MathHelper.sin(player.rotationYaw * 0.017453292F) * MathHelper.cos(player.rotationPitch * 0.017453292F);
       //  double d2 =  -MathHelper.sin(player.rotationPitch * 0.017453292F);
       //  double d3 =  MathHelper.cos(player.rotationYaw * 0.017453292F) * MathHelper.cos(player.rotationPitch * 0.017453292F);
@@ -61,7 +60,7 @@ public class ItemKunai extends Item {
             player.swingArm(hand);
             player.setActiveHand(hand);
         }
-        return EnumActionResult.SUCCESS;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)

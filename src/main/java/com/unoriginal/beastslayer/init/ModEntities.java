@@ -103,7 +103,7 @@ public class ModEntities
         EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
 
         EntityRegistry.addSpawn(EntityGhost.class, BeastSlayerConfig.ghostSpawnChance, 1, 3, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityGiant.class, BeastSlayerConfig.giantSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.PLAINS).toArray(new Biome[0]));
+
         EntityRegistry.addSpawn(EntityFrostashFox.class, BeastSlayerConfig.foxSpawnChance, 1, 6, EnumCreatureType.CREATURE,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityFrostWalker.class, BeastSlayerConfig.frostWalkerSpawnChance, 1, 2, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
 
@@ -138,6 +138,8 @@ public class ModEntities
             EntityRegistry.addSpawn(EntityRiftedEnderman.class, BeastSlayerConfig.riftedEndermanSpawnChance, 1, 1, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
 
             EntityRegistry.addSpawn(EntityBonepile.class, BeastSlayerConfig.bonepileSpawnChance, 1, 3, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
+
+            EntityRegistry.addSpawn(EntityGiant.class, BeastSlayerConfig.giantSpawnChance, 1, 1, EnumCreatureType.MONSTER, ExclusiveList.get(Type.PLAINS).toArray(new Biome[0]));
 
             if (BeastSlayerConfig.zealotSpawnEverywhere) {
                 EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotEverywhereSpawnChance, 1, 1, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));

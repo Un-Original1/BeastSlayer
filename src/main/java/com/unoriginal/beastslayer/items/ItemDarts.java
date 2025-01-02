@@ -34,10 +34,9 @@ public class ItemDarts extends Item {
         });
     }
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        World world = player.getEntityWorld();
         Vec3d vec3d = player.getLookVec();
         if(!world.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
             world.playSound(null, player.posX, player.posY, player.posZ, ModSounds.ICE, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -61,7 +60,7 @@ public class ItemDarts extends Item {
             stack.shrink(1);
             player.swingArm(hand);
         }
-        return EnumActionResult.SUCCESS;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)

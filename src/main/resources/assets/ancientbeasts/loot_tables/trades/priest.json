@@ -7,7 +7,7 @@
         {
           "type": "item",
           "name": "ancientbeasts:tribe_staff",
-          "weight": 1,
+          "weight": 80,
           "functions": [
             {
               "function": "set_count",
@@ -21,7 +21,7 @@
         {
                   "type": "item",
                   "name": "ancientbeasts:ancient_tablet",
-                  "weight": 2,
+                  "weight": 240,
                   "functions": [
                     {
                       "function": "set_count",
@@ -35,7 +35,7 @@
         {
                           "type": "item",
                           "name": "ancientbeasts:wisp_bottle",
-                          "weight": 2,
+                          "weight": 160,
                           "functions": [
                             {
                               "function": "set_count",
@@ -56,7 +56,7 @@
         {
           "type": "item",
           "name": "ancientbeasts:cursed_sapling",
-          "weight": 1,
+          "weight": 80,
           "functions": [
             {
               "function": "set_count",
@@ -66,28 +66,15 @@
               }
             }
           ]
+        },
+        {
+          "type": "item",
+          "name": "ancientbeasts:spiritweaver_mask",
+          "weight": 1
         }
       ]
-    },
-        {
+    }
 
-             "name": "ancientbeasts:Priest_trade",
-             "conditions": [
-                             {
-                                 "condition": "random_chance",
-                                 "chance": 0.025
 
-                             }
-             ],
-                  "rolls": 1,
-             "entries": [
-                    {
-                      "type": "item",
-                      "name": "ancientbeasts:spiritweaver_mask",
-                      "weight": 1
-                    }
-             ]
-
-        }
   ]
 }
