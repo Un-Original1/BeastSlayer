@@ -88,6 +88,7 @@ public class ModItems {
     public static Item DARK_GOOP;
     public static Item TEST;
     public static Item STORM_BOTTLE;
+    //public static Item BROKEN_ARTIFACT;
     //public static Item SLAB;
 
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",BeastSlayerConfig.ScaleArmorDurability, BeastSlayerConfig.ScaleArmorValue, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
@@ -126,26 +127,26 @@ public class ModItems {
         CLOTH = quickItemRegistry("cloth");
 
         CONCOCTION = new ItemConcoction("concoction");
-        IRONGRASS = new ItemArtifact("irongrass", ItemArtifact.baubleSlot.CHARM);
-        SOUL_LOCKET = new ItemArtifact("wisp_locket", ItemArtifact.baubleSlot.CHARM);
-        PROTECTION_TALISMAN = new ItemArtifact("protection_talisman", ItemArtifact.baubleSlot.CHARM);
-        BLAST_SKULL = new ItemArtifact("blast_skull", ItemArtifact.baubleSlot.CHARM);
-        TAMERS_CHARM = new ItemArtifact("tamers_charm", ItemArtifact.baubleSlot.CHARM);
-        WARRIORS_LOCK = new ItemArtifact("warriors_lock", ItemArtifact.baubleSlot.CHARM);
-        DREAM_CATCHER = new ItemArtifact("dream_catcher", ItemArtifact.baubleSlot.CHARM);
-        MAGIC_FEATHER = new ItemArtifact("magic_feather", ItemArtifact.baubleSlot.CHARM);
-        HUNTERS_EYE = new ItemArtifact("hunters_eye", ItemArtifact.baubleSlot.CHARM);
-        BOUNTIFUL_SACK = new ItemArtifact("bountiful_sack", ItemArtifact.baubleSlot.CHARM);
-        WOLF_AMULET = new ItemArtifact("wolf_amulet", ItemArtifact.baubleSlot.CHARM);
-        FIRE_KEY = new ItemArtifact("fire_key", ItemArtifact.baubleSlot.CHARM);
-        AGILITY_TALON = new ItemArtifact("agility_talon", ItemArtifact.baubleSlot.CHARM);
-        TELEKINESIS = new ItemArtifact("telekinesis", ItemArtifact.baubleSlot.CHARM);
-        WATER_RUNE = new ItemArtifact("water_rune", ItemArtifact.baubleSlot.CHARM);
-        WHETSTONE = new ItemArtifact("mossy_whetstone", ItemArtifact.baubleSlot.CHARM);
-        PAW = new ItemArtifact("ocelot_paw", ItemArtifact.baubleSlot.CHARM);
-        HORN = new ItemArtifact("fire_horn", ItemArtifact.baubleSlot.CHARM);
+        IRONGRASS = new ItemArtifact("irongrass", ItemArtifact.baubleSlot.CHARM).setRarity(3);
+        SOUL_LOCKET = new ItemArtifact("wisp_locket", ItemArtifact.baubleSlot.CHARM).setRarity(1);
+        PROTECTION_TALISMAN = new ItemArtifact("protection_talisman", ItemArtifact.baubleSlot.CHARM).setRarity(2);
+        BLAST_SKULL = new ItemArtifact("blast_skull", ItemArtifact.baubleSlot.CHARM).setRarity(3);
+        TAMERS_CHARM = new ItemArtifact("tamers_charm", ItemArtifact.baubleSlot.CHARM).setRarity(2);
+        WARRIORS_LOCK = new ItemArtifact("warriors_lock", ItemArtifact.baubleSlot.CHARM).setRarity(2);
+        DREAM_CATCHER = new ItemArtifact("dream_catcher", ItemArtifact.baubleSlot.CHARM).setRarity(0);
+        MAGIC_FEATHER = new ItemArtifact("magic_feather", ItemArtifact.baubleSlot.CHARM).setRarity(3);
+        HUNTERS_EYE = new ItemArtifact("hunters_eye", ItemArtifact.baubleSlot.CHARM).setRarity(2);
+        BOUNTIFUL_SACK = new ItemArtifact("bountiful_sack", ItemArtifact.baubleSlot.CHARM).setRarity(3);
+        WOLF_AMULET = new ItemArtifact("wolf_amulet", ItemArtifact.baubleSlot.CHARM).setRarity(3);
+        FIRE_KEY = new ItemArtifact("fire_key", ItemArtifact.baubleSlot.CHARM).setRarity(3);
+        AGILITY_TALON = new ItemArtifact("agility_talon", ItemArtifact.baubleSlot.CHARM).setRarity(1);
+        TELEKINESIS = new ItemArtifact("telekinesis", ItemArtifact.baubleSlot.CHARM).setRarity(1);
+        WATER_RUNE = new ItemArtifact("water_rune", ItemArtifact.baubleSlot.CHARM).setRarity(2);
+        WHETSTONE = new ItemArtifact("mossy_whetstone", ItemArtifact.baubleSlot.CHARM).setRarity(0);
+        PAW = new ItemArtifact("ocelot_paw", ItemArtifact.baubleSlot.CHARM).setRarity(1);
+        HORN = new ItemArtifact("fire_horn", ItemArtifact.baubleSlot.CHARM).setRarity(1);
         FIRERAIN = new ItemFireRain("fire_rain");
-        TRAITORS_BLADE = new ItemArtifact("traitors_blade", ItemArtifact.baubleSlot.CHARM);
+        TRAITORS_BLADE = new ItemArtifact("traitors_blade", ItemArtifact.baubleSlot.CHARM).setRarity(1);
 
         MASK_W = new ItemMask("marauder_mask").setTier(0);
         MASK_H = new ItemMask("hunter_mask").setTier(1);
@@ -153,6 +154,8 @@ public class ModItems {
         MASK_P = new ItemMask("spiritweaver_mask").setTier(3);
 
         STORM_BOTTLE = new ItemWeather("storm_bottle");
+
+      //  BROKEN_ARTIFACT = quickItemRegistry("broken_artifact");
 
         //SLAB = new ItemSlab(ModBlocks.CURSED_SLAB_HALF, ModBlocks.CURSED_SLAB_HALF, ModBlocks.CURSED_SLAB_DOUBLE).setRegistryName("cursed_slab").setCreativeTab(BeastSlayer.BEASTSTAB);
 
@@ -223,6 +226,7 @@ public class ModItems {
         event.getRegistry().registerAll(HORN);
         event.getRegistry().registerAll(FIRERAIN);
         event.getRegistry().registerAll(TRAITORS_BLADE);
+       // event.getRegistry().registerAll(BROKEN_ARTIFACT);
 
         event.getRegistry().registerAll(MASK_W);
         event.getRegistry().registerAll(MASK_H);
@@ -294,6 +298,7 @@ public class ModItems {
         registerRender(HORN);
         registerRender(FIRERAIN);
         registerRender(TRAITORS_BLADE);
+       // registerRender(BROKEN_ARTIFACT);
 
         registerRender(MASK_W);
         registerRender(MASK_H);

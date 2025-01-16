@@ -52,6 +52,19 @@ public class IntegrationBaubles
         return artefacts;
     }
 
+    public static ItemStack getArtifactItemstack(EntityPlayer player, ItemArtifact.baubleSlot... types){
+
+        for(ItemArtifact.baubleSlot type : types) {
+            for (int slot : ARTEFACT_TYPE_MAP.get(type).getValidSlots()) {
+                ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
+                if (stack.getItem() instanceof ItemArtifact) return stack;
+            }
+        }
+
+
+        return null;
+    }
+
     public static boolean isEnabled(){
         return isBaublesLoaded;
     }

@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModItems;
+import com.unoriginal.beastslayer.items.ItemArtifact;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -87,12 +88,65 @@ public class WitchcraftRecipeHandler {
 
 
         if(quality <= 0.5 || count != 5){
-            return ItemStack.EMPTY;
+            return fixStack(parItemStack);  //if this fails try next operation
+
         }
         else {
             return pickLootTable((int)quality, seed, null);
         }
 
+    }
+
+    public ItemStack fixStack(List<ItemStack> parItemStack){
+        if(parItemStack.size() != 5){
+            return ItemStack.EMPTY;
+        }
+        int artifactsIn = 0;
+        int fixIn = 0;
+        Item item = null;
+        for(ItemStack stack : parItemStack){
+            if(stack.getItem() instanceof ItemArtifact && stack.isItemDamaged()){
+                artifactsIn = artifactsIn + 1;
+
+                    item = stack.getItem();
+                    //BeastSlayer.logger.debug("artifact found");
+               //     BeastSlayer.logger.debug(artifactsIn + "artifact");
+            }
+        }
+        if(item != null && item instanceof ItemArtifact && artifactsIn == 1){
+            for(ItemStack stack : parItemStack){
+                ItemArtifact artifact = (ItemArtifact) item;
+                if(getSetforRarity(artifact).contains(stack.getItem())){
+                    fixIn = fixIn + 1;
+                }
+            }
+           // BeastSlayer.logger.debug(fixIn);
+        }
+        if (fixIn == 4 && artifactsIn == 1 && item instanceof ItemArtifact){
+            return new ItemStack(item, 1);
+        } else {
+            return ItemStack.EMPTY;
+        }
+    }
+
+    public Set<Item> getSetforRarity (ItemArtifact artifact)
+    {
+        Set<Item> artifacts = null;
+        switch (artifact.getRarity()){
+            case 0:
+                artifacts = Q1;
+                break;
+            case 1:
+                artifacts = Q2;
+                break;
+            case 2:
+                artifacts = Q3;
+                break;
+            case 3:
+                artifacts = Q4;
+                break;
+        }
+        return artifacts;
     }
 
     public ItemStack pickLootTable(int quality, long seed, @Nullable String tag)

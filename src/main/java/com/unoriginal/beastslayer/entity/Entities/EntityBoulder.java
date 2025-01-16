@@ -1,12 +1,15 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class EntityBoulder extends EntityProjectileGeneric {
 
@@ -27,10 +30,15 @@ public class EntityBoulder extends EntityProjectileGeneric {
     {
         if (rayTraceResult.entityHit != null &&  !(rayTraceResult.entityHit instanceof EntityProjectileGeneric))
         {
-            rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile(), 18.0F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
+                rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile(), 18.0F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
 
         }
-
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D));
+        if(!list.isEmpty()){
+            for (Entity entity : list){
+                entity.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile(), 10.0F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
+            }
+        }
         if (!this.world.isRemote && !(rayTraceResult.entityHit instanceof EntityBoulder))
         {
             this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.0F, 1.0F);

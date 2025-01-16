@@ -2,6 +2,7 @@ package com.unoriginal.beastslayer.gui;
 
 import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.init.ModItems;
+import com.unoriginal.beastslayer.items.ItemArtifact;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -25,6 +26,6 @@ public class SlotWitchCraft extends Slot {
     //basically just for item classification
     @Override
     public boolean isItemValid(@Nullable ItemStack stack) {
-        return stack == null || CRAFT_ITEMS.contains(stack.getItem());
+        return stack == null || CRAFT_ITEMS.contains(stack.getItem()) || stack.getItem() instanceof ItemArtifact;
     }
 }
