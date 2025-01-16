@@ -257,7 +257,7 @@ public class ModEvents {
         if(attacker instanceof EntityLivingBase){
             EntityLivingBase livingAttack = (EntityLivingBase)attacker;
 
-            Item item = getActiveItem(entity);
+            Item item = getActiveItem(livingAttack);
 
             if(livingAttack.getHeldItemMainhand().getItem() == ModItems.TOUGH_GLOVE && !world.isRemote){
                 if(!(attacker instanceof EntityPlayer)) {
@@ -278,6 +278,7 @@ public class ModEvents {
                     if (!entity.canEntityBeSeen(attacker)){
                         float amount = e.getAmount();
                         e.setAmount(amount * 2F);
+
                         world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1.0F, 1.0F);
                     }
                 }
