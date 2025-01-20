@@ -196,12 +196,14 @@ public class ModEvents {
                 ItemStack stack = getActiveStack(entity);
                 if (stack.getItem() == getActiveItem(entity) && getActiveItem(entity) != null && getActiveItem(entity) instanceof ItemArtifact) {
 
+                    if(stack.getItem() != ModItems.WATER_RUNE) {
 
-                    //   ItemStack me = new ItemStack(ModItems.BROKEN_ARTIFACT, 1);
-                    // BeastSlayer.logger.debug(stack.getItem().toString());
-                    //  entity.dropItem(ModItems.BROKEN_ARTIFACT, 1);
-                    stack.damageItem(1, entity);
-                    world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                        //   ItemStack me = new ItemStack(ModItems.BROKEN_ARTIFACT, 1);
+                        // BeastSlayer.logger.debug(stack.getItem().toString());
+                        //  entity.dropItem(ModItems.BROKEN_ARTIFACT, 1);
+                        stack.damageItem(1, entity);
+                        world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
                 }
             }
         }

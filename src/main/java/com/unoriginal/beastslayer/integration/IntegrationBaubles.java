@@ -41,10 +41,13 @@ public class IntegrationBaubles
 
         List<ItemArtifact> artefacts = new ArrayList<>();
 
-        for(ItemArtifact.baubleSlot type : types) {
-            for (int slot : ARTEFACT_TYPE_MAP.get(type).getValidSlots()) {
-                ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
-                if (stack.getItem() instanceof ItemArtifact) artefacts.add((ItemArtifact) stack.getItem());
+        if(isEnabled())
+        {
+            for (ItemArtifact.baubleSlot type : types) {
+                for (int slot : ARTEFACT_TYPE_MAP.get(type).getValidSlots()) {
+                    ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
+                    if (stack.getItem() instanceof ItemArtifact) artefacts.add((ItemArtifact) stack.getItem());
+                }
             }
         }
 
@@ -53,11 +56,12 @@ public class IntegrationBaubles
     }
 
     public static ItemStack getArtifactItemstack(EntityPlayer player, ItemArtifact.baubleSlot... types){
-
-        for(ItemArtifact.baubleSlot type : types) {
-            for (int slot : ARTEFACT_TYPE_MAP.get(type).getValidSlots()) {
-                ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
-                if (stack.getItem() instanceof ItemArtifact) return stack;
+        if(isEnabled()) {
+            for (ItemArtifact.baubleSlot type : types) {
+                for (int slot : ARTEFACT_TYPE_MAP.get(type).getValidSlots()) {
+                    ItemStack stack = BaublesApi.getBaublesHandler(player).getStackInSlot(slot);
+                    if (stack.getItem() instanceof ItemArtifact) return stack;
+                }
             }
         }
 
