@@ -27,11 +27,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 
 public class EntityGiant extends EntityMob {
     protected static final IAttribute SPAWN_REINFORCEMENTS_CHANCE = (new RangedAttribute(null, "zombie.spawnReinforcements", 0.0D, 0.0D, 1.0D)).setDescription("Spawn Reinforcements Chance");
     public static final ResourceLocation LOOT = new ResourceLocation(BeastSlayer.MODID, "entities/Giant");
+  //  List<Integer> DimWhitelist = Arrays.asList(BeastSlayerConfig.GiantDimensionWhitelist);
     private int attackTimer;
     private int grabTicks;
     private int actionCooldown;
@@ -387,4 +389,14 @@ public class EntityGiant extends EntityMob {
     @Override
     @Nullable
     protected ResourceLocation getLootTable() { return LOOT; }
+
+    @Override
+    public boolean getCanSpawnHere()
+    {
+        return super.getCanSpawnHere() && contains(BeastSlayerConfig.GiantDimensionWhitelist, this.dimension);
+    }
+
+    public static boolean contains(final int[] arr, final int key) {
+        return Arrays.stream(arr).anyMatch(i -> i == key);
+    }
 }

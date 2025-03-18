@@ -31,6 +31,20 @@
               }
             }
           ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:gunpowder",
+          "weight": 15,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 10,
+                "max": 20
+              }
+            }
+          ]
         }
 
       ]

@@ -5,6 +5,7 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
+import scala.Int;
 
 @Config(modid = BeastSlayer.MODID)
 public class BeastSlayerConfig {
@@ -242,6 +243,13 @@ public class BeastSlayerConfig {
     @RequiresMcRestart
     public static String[] Potion_blacklist = {
             "ancientbeasts:fire_frenzy"
+    };
+
+    @Name("Potion Blacklist")
+    @Comment("A list of potion effects that concoction will not be able to grant (usage: modid:potion_name)")
+    @RequiresMcRestart
+    public static int[] GiantDimensionWhitelist = {
+            0
     };
 
 }

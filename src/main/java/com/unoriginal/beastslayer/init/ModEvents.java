@@ -50,8 +50,10 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.ForgeRegistry;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -86,6 +88,7 @@ public class ModEvents {
                 mob.tasks.addTask(0, new EntityAIMobAvoidOwlstack<>(mob, EntityOwlstack.class, 6F, 1.0D, 1.4D));
             }
         }
+
     }
 
 
@@ -196,7 +199,7 @@ public class ModEvents {
                 ItemStack stack = getActiveStack(entity);
                 if (stack.getItem() == getActiveItem(entity) && getActiveItem(entity) != null && getActiveItem(entity) instanceof ItemArtifact) {
 
-                    if(stack.getItem() != ModItems.WATER_RUNE) {
+                    if(stack.getItem() != ModItems.WATER_RUNE && !e.isCanceled()) {
 
                         //   ItemStack me = new ItemStack(ModItems.BROKEN_ARTIFACT, 1);
                         // BeastSlayer.logger.debug(stack.getItem().toString());
@@ -388,18 +391,7 @@ public class ModEvents {
         World world = e.getEntityLiving().getEntityWorld();
         EntityLivingBase l = e.getEntityLiving();
         if (!world.isRemote) {
-            if(l instanceof EntityAnimal){
-                EntityAnimal a = (EntityAnimal) l;
-                EntityLivingBase p = a.getAttackTarget();
-                if((a.getRevengeTarget() != null && a.getRevengeTarget() != p) || a.getRevengeTarget() == null) {
-                    if(a.getAttackTarget() != null && a.getMaxHealth() == a.getHealth()){
-                        if(p.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.CHARRED_CLOAK){
-                            a.getNavigator().clearPath();
-                            a.setAttackTarget(null);
-                        }
-                    }
-                }
-            } else if (l instanceof EntityMob){
+            if (l instanceof EntityMob){
                 EntityMob m = (EntityMob) l;
                 EntityLivingBase p = m.getAttackTarget();
                 if(m.isEntityUndead() && p != null && p.isPotionActive(ModPotions.UNDEAD) && p.getActivePotionEffect(ModPotions.UNDEAD).getDuration() > 0 && m.isNonBoss()){
@@ -433,6 +425,7 @@ public class ModEvents {
         World world = event.getEntity().getEntityWorld();
         EntityLivingBase entityLiving = event.getEntityLiving();
         Random rand = new Random();
+
         if (!entityLiving.world.isRemote && BeastSlayerConfig.MinerHelmetLight)
         {
             if(!BeastSlayerConfig.MinerHelmetFlickers || entityLiving.ticksExisted % 150 > (40 + rand.nextInt(20))) {
@@ -449,6 +442,18 @@ public class ModEvents {
             }
         }
         if(!world.isRemote){
+            if(entityLiving instanceof EntityAnimal){
+                EntityAnimal a = (EntityAnimal) entityLiving;
+                EntityLivingBase p = a.getAttackTarget();
+                if(a.getAttackTarget() != null && a.getAttackTarget() == p) {
+                    if((a.getRevengeTarget() != null && a.getRevengeTarget() == p) || a.getRevengeTarget() == null){
+                    if(p.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == ModItems.CHARRED_CLOAK){
+                        a.getNavigator().clearPath();
+                        a.setAttackTarget(null);
+                         }
+                    }
+                }
+            }
             Item item = getActiveItem(entityLiving);
             if(item == ModItems.AGILITY_TALON){
                 entityLiving.addPotionEffect(new PotionEffect(MobEffects.SPEED, 40, 0, true, false));

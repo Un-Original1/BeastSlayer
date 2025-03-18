@@ -1,10 +1,12 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIRamAtTarget;
 import com.unoriginal.beastslayer.init.ModSounds;
+import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -12,6 +14,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemFood;
@@ -19,14 +22,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class EntityNetherhound extends EntityTameable {
@@ -36,6 +42,7 @@ public class EntityNetherhound extends EntityTameable {
     private boolean isShaking;
     private float timeIsShaking;
     private float prevTimeIsShaking;
+    private Set<Block> VALID_BLOCKS = Sets.newHashSet(Blocks.NETHERRACK, Blocks.SOUL_SAND, Blocks.MAGMA, Blocks.GRAVEL);
 
     public EntityNetherhound(World worldIn) {
         super(worldIn);
@@ -434,7 +441,17 @@ public class EntityNetherhound extends EntityTameable {
     @Override
     public boolean getCanSpawnHere()
     {
-        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL;
+        return this.world.getDifficulty() != EnumDifficulty.PEACEFUL &&  isValidBiome(this.posX, this.posY, this.posZ) && isValidBlock(this.posX, this.posY, this.posZ);
+    }
+
+    public boolean isValidBiome(double x, double y, double z){
+        return world.getBiome(new BlockPos(x, y, z)) != ForgeRegistries.BIOMES.getValue(new ResourceLocation("nb:warped_forest"));
+
+    }
+
+    public boolean isValidBlock(double x, double y, double z){
+        return VALID_BLOCKS.contains(this.world.getBlockState(new BlockPos(x, y-1, z)).getBlock()) || rand.nextInt(2) == 0;
+
     }
 
     @Override
