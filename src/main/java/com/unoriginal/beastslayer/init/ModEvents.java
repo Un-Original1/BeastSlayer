@@ -32,7 +32,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -50,12 +49,9 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.registries.ForgeRegistry;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -83,9 +79,10 @@ public class ModEvents {
         }
         if (!world.isRemote && event.getEntity() instanceof EntityMob) {
             EntityMob mob = (EntityMob) event.getEntity();
-
-            if(mob.isNonBoss() && !blacklist.contains(EntityList.getKey(mob).toString())){
-                mob.tasks.addTask(0, new EntityAIMobAvoidOwlstack<>(mob, EntityOwlstack.class, 6F, 1.0D, 1.4D));
+            if(EntityList.getEntityString(mob) != null) {
+                if (mob.isNonBoss() && !blacklist.contains(EntityList.getEntityString(mob))) {
+                    mob.tasks.addTask(0, new EntityAIMobAvoidOwlstack<>(mob, EntityOwlstack.class, 6F, 1.0D, 1.4D));
+                }
             }
         }
 
@@ -198,8 +195,8 @@ public class ModEvents {
             if((e.getSource().isFireDamage() && e.getEntityLiving().getRNG().nextInt(3) == 0) || (e.getSource() != DamageSource.FALL && e.getEntityLiving().getRNG().nextInt(15) == 0)) {
                 ItemStack stack = getActiveStack(entity);
                 if (stack.getItem() == getActiveItem(entity) && getActiveItem(entity) != null && getActiveItem(entity) instanceof ItemArtifact) {
-
-                    if(stack.getItem() != ModItems.WATER_RUNE && !e.isCanceled()) {
+                    //ItemArtifact artifact = (ItemArtifact) getActiveItem(entity);
+                    if(stack.getItem() instanceof ItemArtifact  && ((ItemArtifact)stack.getItem()).canBreakOnDamage() && !e.isCanceled()) {
 
                         //   ItemStack me = new ItemStack(ModItems.BROKEN_ARTIFACT, 1);
                         // BeastSlayer.logger.debug(stack.getItem().toString());
@@ -257,6 +254,9 @@ public class ModEvents {
                     float f = e.getAmount();
                     e.setAmount(f * 0.5F);
                 }
+            }
+            if(item == ModItems.AGILITY_TALON || item2 == ModItems.AGILITY_TALON){
+                entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, 40, 2, true, false));
             }
         }
         if(attacker instanceof EntityLivingBase){
@@ -455,9 +455,9 @@ public class ModEvents {
                 }
             }
             Item item = getActiveItem(entityLiving);
-            if(item == ModItems.AGILITY_TALON){
+            /*if(item == ModItems.AGILITY_TALON){
                 entityLiving.addPotionEffect(new PotionEffect(MobEffects.SPEED, 40, 0, true, false));
-            }
+            }*/
             if(item == ModItems.WARRIORS_LOCK ){
                 if(entityLiving.getHealth() < entityLiving.getMaxHealth() / 2F) {
                     entityLiving.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40, 1, true, false));
@@ -577,6 +577,22 @@ public class ModEvents {
         if(entityLivingBase.isPotionActive(ModPotions.FRENZY) && !world.isRemote){
             entityLivingBase.setHealth(1.0F);
             e.setCanceled(true);
+        }
+        if(getActiveItem(entityLivingBase)!= null ){
+
+                ItemStack stack = getActiveStack(entityLivingBase);
+                if (stack.getItem() == getActiveItem(entityLivingBase) && getActiveItem(entityLivingBase) != null && getActiveItem(entityLivingBase) instanceof ItemArtifact) {
+                    //ItemArtifact artifact = (ItemArtifact) getActiveItem(entity);
+                    if(stack.getItem() instanceof ItemArtifact  && ((ItemArtifact)stack.getItem()).canBreakOnDeath() && !e.isCanceled()) {
+
+                        //   ItemStack me = new ItemStack(ModItems.BROKEN_ARTIFACT, 1);
+                        // BeastSlayer.logger.debug(stack.getItem().toString());
+                        //  entity.dropItem(ModItems.BROKEN_ARTIFACT, 1);
+                        stack.damageItem(1, entityLivingBase);
+                        world.playSound(null, entityLivingBase.posX, entityLivingBase.posY, entityLivingBase.posZ, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
+                }
+
         }
         if(!world.isRemote && e.getSource().getTrueSource() != null){
             Entity source = e.getSource().getTrueSource();

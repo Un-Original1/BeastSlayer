@@ -19,6 +19,8 @@ import java.util.List;
 public class ItemArtifact extends Item {
     private final baubleSlot baubleSlot;
     protected int tier;
+    protected boolean breaksOnDeath;
+    protected boolean breaksOnDamage;
     public enum baubleSlot {
         CHARM(1);
         baubleSlot(int max){
@@ -26,13 +28,15 @@ public class ItemArtifact extends Item {
         }
     }
 
-    public ItemArtifact(String name, baubleSlot slot) {
+    public ItemArtifact(String name, baubleSlot slot, boolean BORIP, boolean BOD) {
         setRegistryName(name);
         setUnlocalizedName(name);
         setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxStackSize(1);
         this.setMaxDamage(3);
         baubleSlot = slot;
+        breaksOnDamage = BOD;
+        breaksOnDeath = BORIP;
         //I cannot define much about artifacts because most work very differently, I'll build onto it later, hopefully not a lot of (if x == y)
 
         //2025: I failed to prevent what is stated above lol
@@ -51,6 +55,13 @@ public class ItemArtifact extends Item {
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt){
         return IntegrationBaubles.isEnabled() ? new IntegrationBaubles.BaubleProvider(baubleSlot) : null;
+    }
+
+    public boolean canBreakOnDeath(){
+        return this.breaksOnDeath;
+    }
+    public boolean canBreakOnDamage(){
+        return this.breaksOnDamage;
     }
 
     public ItemArtifact setRarity(int tier){

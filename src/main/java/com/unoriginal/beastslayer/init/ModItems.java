@@ -127,26 +127,27 @@ public class ModItems {
         CLOTH = quickItemRegistry("cloth");
 
         CONCOCTION = new ItemConcoction("concoction");
-        IRONGRASS = new ItemArtifact("irongrass", ItemArtifact.baubleSlot.CHARM).setRarity(3);
-        SOUL_LOCKET = new ItemArtifact("wisp_locket", ItemArtifact.baubleSlot.CHARM).setRarity(1);
-        PROTECTION_TALISMAN = new ItemArtifact("protection_talisman", ItemArtifact.baubleSlot.CHARM).setRarity(2);
-        BLAST_SKULL = new ItemArtifact("blast_skull", ItemArtifact.baubleSlot.CHARM).setRarity(3);
-        TAMERS_CHARM = new ItemArtifact("tamers_charm", ItemArtifact.baubleSlot.CHARM).setRarity(2);
-        WARRIORS_LOCK = new ItemArtifact("warriors_lock", ItemArtifact.baubleSlot.CHARM).setRarity(2);
-        DREAM_CATCHER = new ItemArtifact("dream_catcher", ItemArtifact.baubleSlot.CHARM).setRarity(0);
-        MAGIC_FEATHER = new ItemArtifact("magic_feather", ItemArtifact.baubleSlot.CHARM).setRarity(3);
-        HUNTERS_EYE = new ItemArtifact("hunters_eye", ItemArtifact.baubleSlot.CHARM).setRarity(2);
-        BOUNTIFUL_SACK = new ItemArtifact("bountiful_sack", ItemArtifact.baubleSlot.CHARM).setRarity(3);
-        WOLF_AMULET = new ItemArtifact("wolf_amulet", ItemArtifact.baubleSlot.CHARM).setRarity(3);
-        FIRE_KEY = new ItemArtifact("fire_key", ItemArtifact.baubleSlot.CHARM).setRarity(3);
-        AGILITY_TALON = new ItemArtifact("agility_talon", ItemArtifact.baubleSlot.CHARM).setRarity(1);
-        TELEKINESIS = new ItemArtifact("telekinesis", ItemArtifact.baubleSlot.CHARM).setRarity(1);
-        WATER_RUNE = new ItemArtifact("water_rune", ItemArtifact.baubleSlot.CHARM).setRarity(2);
-        WHETSTONE = new ItemArtifact("mossy_whetstone", ItemArtifact.baubleSlot.CHARM).setRarity(0);
-        PAW = new ItemArtifact("ocelot_paw", ItemArtifact.baubleSlot.CHARM).setRarity(1);
-        HORN = new ItemArtifact("fire_horn", ItemArtifact.baubleSlot.CHARM).setRarity(1);
+        //BORIP BOD
+        IRONGRASS = new ItemArtifact("irongrass", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(3);
+        SOUL_LOCKET = new ItemArtifact("wisp_locket", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
+        PROTECTION_TALISMAN = new ItemArtifact("protection_talisman", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(2);
+        BLAST_SKULL = new ItemArtifact("blast_skull", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
+        TAMERS_CHARM = new ItemArtifact("tamers_charm", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
+        WARRIORS_LOCK = new ItemArtifact("warriors_lock", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(2);
+        DREAM_CATCHER = new ItemArtifact("dream_catcher", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
+        MAGIC_FEATHER = new ItemArtifact("magic_feather", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
+        HUNTERS_EYE = new ItemArtifact("hunters_eye", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
+        BOUNTIFUL_SACK = new ItemArtifact("bountiful_sack", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
+        WOLF_AMULET = new ItemArtifact("wolf_amulet", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(3);
+        FIRE_KEY = new ItemArtifact("fire_key", ItemArtifact.baubleSlot.CHARM, false, false).setRarity(3);
+        AGILITY_TALON = new ItemArtifact("agility_talon", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(1);
+        TELEKINESIS = new ItemArtifact("telekinesis", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
+        WATER_RUNE = new ItemArtifact("water_rune", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(2);
+        WHETSTONE = new ItemArtifact("mossy_whetstone", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
+        PAW = new ItemArtifact("ocelot_paw", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
+        HORN = new ItemArtifact("fire_horn", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
         FIRERAIN = new ItemFireRain("fire_rain");
-        TRAITORS_BLADE = new ItemArtifact("traitors_blade", ItemArtifact.baubleSlot.CHARM).setRarity(1);
+        TRAITORS_BLADE = new ItemArtifact("traitors_blade", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
 
         MASK_W = new ItemMask("marauder_mask").setTier(0);
         MASK_H = new ItemMask("hunter_mask").setTier(1);
