@@ -54,12 +54,16 @@ public class BlockModSapling extends BlockBush implements IGrowable, IPlantable 
 
     public void generateTree(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if (!TerrainGen.saplingGrowTree(worldIn, rand, pos)) return;
+        if (!TerrainGen.saplingGrowTree(worldIn, rand, pos)){
+            return;
+        }
         WorldGenerator worldgenerator = new WorldGenWeepingTrees(true);
-
-        worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
-
-        worldgenerator.generate(worldIn, rand, pos);
+        //if(worldgenerator.generate(worldIn, rand, pos)) {
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
+       // }
+        if(!worldgenerator.generate(worldIn, rand, pos)){
+            worldIn.setBlockState(pos, state, 4);
+        }
     }
 
 

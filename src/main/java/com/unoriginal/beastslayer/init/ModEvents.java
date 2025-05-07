@@ -469,6 +469,7 @@ public class ModEvents {
             }
             if(item == ModItems.PROTECTION_TALISMAN){
                 entityLiving.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 40, 0, true, false));
+                entityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 40, 1, true, false));
             }
             if(item == ModItems.PAW ){
                 entityLiving.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 40, 3, true, false));
