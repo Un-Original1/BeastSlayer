@@ -783,7 +783,6 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
             }
         }
     }
-
     @SideOnly(Side.CLIENT)
     public int getDodgeTicks(){
         return this.dodgeTicks;

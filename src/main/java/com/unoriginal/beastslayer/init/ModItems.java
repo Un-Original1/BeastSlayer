@@ -76,6 +76,9 @@ public class ModItems {
     public static Item HORN;
     public static Item FIRERAIN;
     public static Item TRAITORS_BLADE;
+    public static Item HUNGRY_TOOTH;
+    public static Item GLASS_SHARD;
+    public static Item HEART;
 
     public static Item MASK_W;
     public static Item MASK_H;
@@ -96,7 +99,7 @@ public class ModItems {
     public static void init() {
         SANDMONSTER_SCALE = quickItemRegistry("sandmonster_scale");
         CACTUS_BROTH = new ItemCactusBroth("cactus_broth", 12, 0.8F, false);
-        LOGO = new ItemBossMask("logo");
+        LOGO = new ItemBossMask("logo_beast");
         SANDY_LOVE = new HiddenItem("sandy_love");
         SHIELD_BOOK = new ItemShieldBook("shield_book");
         ECTOPLASM = quickItemRegistry("ectoplasm");
@@ -148,6 +151,9 @@ public class ModItems {
         HORN = new ItemArtifact("fire_horn", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
         FIRERAIN = new ItemFireRain("fire_rain");
         TRAITORS_BLADE = new ItemArtifact("traitors_blade", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
+        HUNGRY_TOOTH = new ItemArtifact("hungry_tooth", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
+        GLASS_SHARD = new ItemArtifact("glass_shard", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
+        HEART = new ItemArtifact("heart_amulet", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
 
         MASK_W = new ItemMask("marauder_mask").setTier(0);
         MASK_H = new ItemMask("hunter_mask").setTier(1);
@@ -227,6 +233,9 @@ public class ModItems {
         event.getRegistry().registerAll(HORN);
         event.getRegistry().registerAll(FIRERAIN);
         event.getRegistry().registerAll(TRAITORS_BLADE);
+        event.getRegistry().registerAll(HUNGRY_TOOTH);
+        event.getRegistry().registerAll(GLASS_SHARD);
+        event.getRegistry().registerAll(HEART);
        // event.getRegistry().registerAll(BROKEN_ARTIFACT);
 
         event.getRegistry().registerAll(MASK_W);
@@ -299,6 +308,9 @@ public class ModItems {
         registerRender(HORN);
         registerRender(FIRERAIN);
         registerRender(TRAITORS_BLADE);
+        registerRender(HUNGRY_TOOTH);
+        registerRender(GLASS_SHARD);
+        registerRender(HEART);
        // registerRender(BROKEN_ARTIFACT);
 
         registerRender(MASK_W);

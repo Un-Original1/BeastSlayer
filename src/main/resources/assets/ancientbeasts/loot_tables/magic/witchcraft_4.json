@@ -32,6 +32,39 @@
                                     "weight": 1
                                 }
                             ]
-                }
+                },
+      {
+        "name": "ancientbeasts:Witchcraft_4",
+        "rolls": 1,
+        "entries": [
+          {
+            "type": "item",
+            "name": "ancientbeasts:heart_amulet",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "ancientbeasts:Witchcraft_4",
+        "rolls": 1,
+        "entries": [
+          {
+            "type": "item",
+            "name": "ancientbeasts:glass_shard",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "ancientbeasts:Witchcraft_4",
+        "rolls": 1,
+        "entries": [
+          {
+            "type": "item",
+            "name": "ancientbeasts:irongrass",
+            "weight": 1
+          }
+        ]
+      }
     ]
 }

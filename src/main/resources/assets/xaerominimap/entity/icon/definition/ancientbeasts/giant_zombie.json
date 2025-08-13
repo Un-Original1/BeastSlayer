@@ -1,0 +1,15 @@
+{
+	"variants": {
+		"default": "model:0"
+	},
+	"modelConfigs": [
+		{
+			"modelPartsFields" : [
+				"com.unoriginal.beastslayer.entity.Model.ModelGiant;head"
+			],	
+			"modelMainPartFieldAliases" : [
+				"com.unoriginal.beastslayer.entity.Model.ModelGiant;head"			
+			]
+		}
+	]
+}

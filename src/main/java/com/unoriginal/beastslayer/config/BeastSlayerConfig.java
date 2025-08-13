@@ -245,8 +245,8 @@ public class BeastSlayerConfig {
             "ancientbeasts:fire_frenzy"
     };
 
-    @Name("Potion Blacklist")
-    @Comment("A list of potion effects that concoction will not be able to grant (usage: modid:potion_name)")
+    @Name("Giant Dimension Whitelist")
+    @Comment("A list of dimension ids in which giants can spawn (0 = overworld)")
     @RequiresMcRestart
     public static int[] GiantDimensionWhitelist = {
             0

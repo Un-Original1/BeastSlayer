@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"default": "model:0"
+	},
+	"modelConfigs": [
+		{
+			"baseScale" : 0.8,
+			"modelPartsFields" : [
+				"com.unoriginal.beastslayer.entity.Model.ModelTribeChild;head"
+			],	
+			"modelMainPartFieldAliases" : [
+				"com.unoriginal.beastslayer.entity.Model.ModelTribeChild;head"			
+			]
+		}
+	]
+}

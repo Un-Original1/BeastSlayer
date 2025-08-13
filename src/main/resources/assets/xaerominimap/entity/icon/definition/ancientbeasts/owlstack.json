@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"default": "model:0"
+	},
+	"modelConfigs": [
+		{
+			"baseScale" : 0.7,
+			"modelPartsFields" : [
+				"com.unoriginal.beastslayer.entity.Model.ModelOwlstack;trunk",
+				"com.unoriginal.beastslayer.entity.Model.ModelOwlstack;leg1",
+				"com.unoriginal.beastslayer.entity.Model.ModelOwlstack;leg0"
+			],	
+			"modelMainPartFieldAliases" : [
+				"com.unoriginal.beastslayer.entity.Model.ModelOwlstack;trunk"			
+			],
+			"modelPartsRotationReset": false
+		}
+	]
+}

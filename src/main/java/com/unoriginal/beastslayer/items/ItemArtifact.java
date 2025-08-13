@@ -33,7 +33,7 @@ public class ItemArtifact extends Item {
         setUnlocalizedName(name);
         setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxStackSize(1);
-        this.setMaxDamage(3);
+        this.setMaxDamage(3 + this.getRarity());
         baubleSlot = slot;
         breaksOnDamage = BOD;
         breaksOnDeath = BORIP;

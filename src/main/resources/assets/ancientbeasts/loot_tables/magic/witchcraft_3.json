@@ -58,6 +58,18 @@
                                        "weight": 1
                                    }
                                ]
+          },
+      {
+        "name": "ancientbeasts:Witchcraft_3",
+        "rolls": 1,
+        "entries": [
+
+          {
+            "type": "item",
+            "name": "ancientbeasts:hungry_tooth",
+            "weight": 1
           }
+        ]
+      }
     ]
 }

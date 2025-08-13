@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"ancientbeasts:textures/entity/sandmonster.png" : "outlined_sprite:ancientbeasts/sandy.png",
+		"ancientbeasts:textures/entity/sandmonster_angry.png" : "outlined_sprite:ancientbeasts/sandy_angry.png",
+		"default" : "outlined_sprite:ancientbeasts/sandy.png"
+	}
+}

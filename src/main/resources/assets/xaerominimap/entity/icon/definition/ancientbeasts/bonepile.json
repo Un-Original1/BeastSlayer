@@ -1,0 +1,21 @@
+{
+	"variants": {
+		"default": "model:0"
+	},
+	"modelConfigs": [
+		{
+			"baseScale" : 0.8,
+			"offsetX" : -10,
+			"rotationX": 20,
+			"modelPartsFields" : [
+				"com.unoriginal.beastslayer.entity.Model.ModelBonepile;head",
+				"com.unoriginal.beastslayer.entity.Model.ModelBonepile;head2",
+				"com.unoriginal.beastslayer.entity.Model.ModelBonepile;thingy"
+			],	
+			"modelMainPartFieldAliases" : [
+				"com.unoriginal.beastslayer.entity.Model.ModelBonepile;head"			
+			],
+			"modelPartsRotationReset": false
+		}
+	]
+}

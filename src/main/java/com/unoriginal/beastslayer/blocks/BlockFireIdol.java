@@ -82,7 +82,7 @@ public class BlockFireIdol extends Block {
             EntityFireElemental fireElemental = new EntityFireElemental(worldIn);
             fireElemental.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
             worldIn.spawnEntity(fireElemental);
-
+            worldIn.setBlockToAir(pos);
         }
         return true;
     }

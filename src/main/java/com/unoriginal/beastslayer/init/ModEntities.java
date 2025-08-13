@@ -98,7 +98,6 @@ public class ModEntities
 
     //it never worked cause it was run on pre init, it must be done on post init
     public static void registerSpawns(){
-
         EntityRegistry.addSpawn(EntitySandy.class, BeastSlayerConfig.sandmonsterSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SANDY).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityZealot.class, BeastSlayerConfig.zealotSpawnChance, 1, 1, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
 

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "ancientbeasts:logo"
+      "item": "ancientbeasts:logo_beast"
     },
     "title": {
       "translate": "advancements.ancientbeasts.root.title"

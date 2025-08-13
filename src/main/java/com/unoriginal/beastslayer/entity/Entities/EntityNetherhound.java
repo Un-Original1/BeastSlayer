@@ -7,6 +7,8 @@ import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIRamAtTarget;
 import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -61,7 +63,7 @@ public class EntityNetherhound extends EntityTameable {
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, true));
         this.tasks.addTask(4, new EntityAIRamAtTarget(this));
-        this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+        this.tasks.addTask(6, new AINetherhoundFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -464,6 +466,24 @@ public class EntityNetherhound extends EntityTameable {
     public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.UNDEAD;
+    }
+
+    class AINetherhoundFollowOwner extends EntityAIFollowOwner{
+        World world;
+        private final EntityTameable tameable;
+        public AINetherhoundFollowOwner(EntityTameable tameableIn, double followSpeedIn, float minDistIn, float maxDistIn) {
+            super(tameableIn, followSpeedIn, minDistIn, maxDistIn);
+            this.world = tameableIn.world;
+            this.tameable = tameableIn;
+        }
+        @Override
+        protected boolean isTeleportFriendlyBlock(int x, int p_192381_2_, int y, int p_192381_4_, int p_192381_5_)
+        {
+            BlockPos blockpos = new BlockPos(x + p_192381_4_, y - 1, p_192381_2_ + p_192381_5_);
+            IBlockState iblockstate = this.world.getBlockState(blockpos);
+            boolean canSeeSkyRain = this.world.canSeeSky(blockpos) && this.world.isRaining();
+            return iblockstate.getBlockFaceShape(this.world, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID && iblockstate.canEntitySpawn(this.tameable) && this.world.isAirBlock(blockpos.up()) && this.world.isAirBlock(blockpos.up(2)) && !canSeeSkyRain;
+        }
     }
 
 }
