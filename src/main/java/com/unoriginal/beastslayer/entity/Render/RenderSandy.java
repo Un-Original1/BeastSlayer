@@ -3,6 +3,7 @@ package com.unoriginal.beastslayer.entity.Render;
 import com.unoriginal.beastslayer.entity.Entities.EntitySandy;
 import com.unoriginal.beastslayer.entity.Model.ModelSandy;
 import com.unoriginal.beastslayer.entity.Render.Layer.LayerGlowGeneric;
+import com.unoriginal.beastslayer.entity.Render.Layer.LayerSandyColor;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +22,7 @@ public class RenderSandy extends RenderLiving<EntitySandy>{
     {
         super(manager, new ModelSandy(), 1.0F);
         this.addLayer(new LayerGlowGeneric(this, EYES));
+        this.addLayer(new LayerSandyColor(this));
     }
     protected ResourceLocation getEntityTexture(EntitySandy entity)
     {

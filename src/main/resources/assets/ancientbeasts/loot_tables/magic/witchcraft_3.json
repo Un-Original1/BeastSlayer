@@ -70,6 +70,30 @@
             "weight": 1
           }
         ]
+      },
+      {
+        "name": "ancientbeasts:Witchcraft_3",
+        "rolls": 1,
+        "entries": [
+
+          {
+            "type": "item",
+            "name": "ancientbeasts:miners_charm",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "name": "ancientbeasts:Witchcraft_3",
+        "rolls": 1,
+        "entries": [
+
+          {
+            "type": "item",
+            "name": "ancientbeasts:leech",
+            "weight": 1
+          }
+        ]
       }
     ]
 }

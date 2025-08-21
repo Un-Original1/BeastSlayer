@@ -15,7 +15,6 @@ import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -27,12 +26,14 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -207,6 +208,20 @@ public class ModEvents {
                     }
                 }
             }
+            if(e.getSource() == DamageSource.LAVA) {
+                ItemStack stack = getActiveStack(entity);
+                if (stack.getItem() == getActiveItem(entity) && getActiveItem(entity) != null && getActiveItem(entity) == ModItems.SPRING) {
+                    //ItemArtifact artifact = (ItemArtifact) getActiveItem(entity);
+                    if(stack.getItem() instanceof ItemArtifact && !e.isCanceled()) {
+
+                        //   ItemStack me = new ItemStack(ModItems.BROKEN_ARTIFACT, 1);
+                        // BeastSlayer.logger.debug(stack.getItem().toString());
+                        //  entity.dropItem(ModItems.BROKEN_ARTIFACT, 1);
+                        stack.damageItem(1, entity);
+                        world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
+                }
+            }
         }
         if(entity.isPotionActive(ModPotions.RIFTED)){
             double x = entity.posX + (entity.getRNG().nextDouble() - 0.5D) * 64.0D;
@@ -256,6 +271,22 @@ public class ModEvents {
                     e.setAmount(f * 0.5F);
                 }
             }
+            if(item == ModItems.GLASS_SHARD || item2 == ModItems.GLASS_SHARD){
+                float f = e.getAmount();
+                e.setAmount(f * 2F);
+            }
+            if(item == ModItems.SPRING || item2 == ModItems.SPRING){
+                if(e.getSource() == DamageSource.LAVA || entity.isInLava()){
+
+                    entity.addVelocity(0D, 15D,0D );
+                    if(entity instanceof EntityPlayerMP){
+                        ((EntityPlayerMP)entity).connection.sendPacket(new SPacketEntityVelocity(entity));
+                    }
+                    entity.extinguish();
+                    entity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 40, 0, true, false));
+                    entity.velocityChanged = true;
+                }
+            }
             if(item == ModItems.IRONGRASS || item2 == ModItems.IRONGRASS){
                 if(entity instanceof EntityPlayer){ //TODO{
                     EntityPlayer p = (EntityPlayer) entity;
@@ -301,11 +332,18 @@ public class ModEvents {
                     p.getFoodStats().addStats(1, 0);
                 }
             }
+            if(item == ModItems.LEECH){
+                if(!entity.getActivePotionEffects().isEmpty()){
+                    for (PotionEffect potionEffect1: entity.getActivePotionEffects()) {
+                        livingAttack.addPotionEffect(potionEffect1);
+                    }
+                }
+            }
             if(item == ModItems.TRAITORS_BLADE){
                 if(entity instanceof EntityPlayer) {
                     if (!entity.canEntityBeSeen(attacker)){
                         float amount = e.getAmount();
-                        e.setAmount(amount * 2F);
+                        e.setAmount(amount * 1.5F);
 
                         world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1.0F, 1.0F);
                     }
@@ -314,23 +352,23 @@ public class ModEvents {
                     EntityCreature creature = (EntityCreature) entity;
                     if(creature.getAttackTarget() != attacker || !entity.canEntityBeSeen(attacker)){
                         float amount2 = e.getAmount();
-                        e.setAmount(amount2 * 2F);
+                        e.setAmount(amount2 * 1.5F);
                         world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1.0F, 1.0F);
                     }
                 }
                 else {
                     if(entity.getRevengeTarget() != attacker || !entity.canEntityBeSeen(attacker)){
                         float amount = e.getAmount();
-                        e.setAmount(amount * 2F);
+                        e.setAmount(amount * 1.5F);
                         world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
                     }
                 }
             }
             if(item == ModItems.GLASS_SHARD){
-                if(livingAttack.getHealth() >= livingAttack.getMaxHealth()) {
+                if(livingAttack.getHealth() >= (livingAttack.getMaxHealth() / 2)) {
                     float amount = e.getAmount();
-                    e.setAmount(amount * 4F);
+                    e.setAmount(amount * 2F);
                     world.playSound(null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
 
@@ -390,6 +428,7 @@ public class ModEvents {
     public void oooSpuki(LivingEvent.LivingUpdateEvent event){
         EntityLivingBase e = event.getEntityLiving();
         World world = event.getEntityLiving().world;
+
         if(e.isPotionActive(ModPotions.POSSESSED)){
             Random rand = new Random();
             if(rand.nextInt(4) == 0){
@@ -472,6 +511,25 @@ public class ModEvents {
                 }
             }
         }
+        Item item = getActiveItem(entityLiving);
+        if(entityLiving.isInWater() && item == ModItems.FISH_TAIL){
+            if(entityLiving.motionX < 0.4D){
+                entityLiving.motionX *= 1.25D;
+            }
+            if(entityLiving.motionY < 0.4D){
+                entityLiving.motionY *= 1.25D;
+            }
+            if(entityLiving.motionZ < 0.4D){
+                entityLiving.motionZ *= 1.25D;
+            }
+        }
+
+            if(item == ModItems.FALL_FEATHER){
+                if(entityLiving.fallDistance < 5F && entityLiving.fallDistance > 0F) {
+                    entityLiving.motionY *= 0.6D;
+                }
+            }
+
         if(!world.isRemote){
             if(entityLiving instanceof EntityAnimal){
                 EntityAnimal a = (EntityAnimal) entityLiving;
@@ -485,10 +543,11 @@ public class ModEvents {
                     }
                 }
             }
-            Item item = getActiveItem(entityLiving);
+
             /*if(item == ModItems.AGILITY_TALON){
                 entityLiving.addPotionEffect(new PotionEffect(MobEffects.SPEED, 40, 0, true, false));
             }*/
+
             if(item == ModItems.WARRIORS_LOCK ){
                 if(entityLiving.getHealth() < entityLiving.getMaxHealth() / 2F) {
                     entityLiving.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40, 1, true, false));
@@ -496,6 +555,11 @@ public class ModEvents {
                     entityLiving.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40, 2, true, false));
                 } else {
                     entityLiving.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 40, 0, true, false));
+                }
+            }
+            if(item == ModItems.PICKAXE_AMULET){
+                if(world.canSeeSky(entityLiving.getPosition()) && world.isDaytime()) {
+                    entityLiving.addPotionEffect(new PotionEffect(MobEffects.HASTE, 40, 0, true, false));
                 }
             }
             if(item == ModItems.HEART){
@@ -545,6 +609,16 @@ public class ModEvents {
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void Knockback(LivingKnockBackEvent e){
+        EntityLivingBase livingBase = e.getEntityLiving();
+        Item item = getActiveItem(livingBase);
+        if(item == ModItems.ROCK){
+            float strenght = e.getStrength();
+            e.setStrength(strenght * 0.25F);
         }
     }
 

@@ -3,6 +3,7 @@ package com.unoriginal.beastslayer.entity.Render;
 import com.unoriginal.beastslayer.entity.Entities.EntityNetherhound;
 import com.unoriginal.beastslayer.entity.Model.ModelNetherhound;
 import com.unoriginal.beastslayer.entity.Render.Layer.LayerGlowGeneric;
+import com.unoriginal.beastslayer.entity.Render.Layer.LayerNetherhoundCollar;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +21,7 @@ public class RenderNetherhound extends RenderLiving<EntityNetherhound> {
     {
         super(manager, new ModelNetherhound(), 0.6F);
         this.addLayer(new LayerGlowGeneric(this, EYES));
+        this.addLayer(new LayerNetherhoundCollar(this));
     }
     protected ResourceLocation getEntityTexture(EntityNetherhound entity)
     {

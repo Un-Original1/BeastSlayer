@@ -4,24 +4,29 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIFleeRain;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIRamAtTarget;
+import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIRestrictRain;
 import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -45,6 +50,7 @@ public class EntityNetherhound extends EntityTameable {
     private float timeIsShaking;
     private float prevTimeIsShaking;
     private Set<Block> VALID_BLOCKS = Sets.newHashSet(Blocks.NETHERRACK, Blocks.SOUL_SAND, Blocks.MAGMA, Blocks.GRAVEL);
+    private static final DataParameter<Integer> COLLAR_COLOR = EntityDataManager.<Integer>createKey(EntityNetherhound.class, DataSerializers.VARINT);
 
     public EntityNetherhound(World worldIn) {
         super(worldIn);
@@ -58,6 +64,8 @@ public class EntityNetherhound extends EntityTameable {
     protected void initEntityAI()
     {
         this.aiSit = new EntityAISit(this);
+        this.tasks.addTask(0, new EntityAIRestrictRain(this));
+        this.tasks.addTask(1, new EntityAIFleeRain(this, 1.0D));
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
@@ -85,7 +93,11 @@ public class EntityNetherhound extends EntityTameable {
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D * BeastSlayerConfig.GlobalDamageMultiplier);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D + BeastSlayerConfig.GlobalArmor);
     }
-
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(COLLAR_COLOR, Integer.valueOf(EnumDyeColor.RED.getDyeDamage()));
+    }
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
         if (this.isEntityInvulnerable(source))
@@ -314,6 +326,23 @@ public class EntityNetherhound extends EntityTameable {
                 this.isJumping = false;
                 this.navigator.clearPath();
                 this.setAttackTarget(null);
+                this.setRevengeTarget(null);
+            }
+            else if (itemstack.getItem() == Items.DYE)
+            {
+                EnumDyeColor enumdyecolor = EnumDyeColor.byDyeDamage(itemstack.getMetadata());
+
+                if (enumdyecolor != this.getCollarColor())
+                {
+                    this.setCollarColor(enumdyecolor);
+
+                    if (!player.capabilities.isCreativeMode)
+                    {
+                        itemstack.shrink(1);
+                    }
+
+                    return true;
+                }
             }
         }
         else if (itemstack.getItem() == Items.ROTTEN_FLESH && this.getHealth() < this.getMaxHealth() / 2)
@@ -330,6 +359,7 @@ public class EntityNetherhound extends EntityTameable {
                     this.setTamedBy(player);
                     this.navigator.clearPath();
                     this.setAttackTarget(null);
+                    this.setRevengeTarget(null);
                     this.aiSit.setSitting(true);
                     this.setHealth(this.getMaxHealth());
                     this.playTameEffect(true);
@@ -468,21 +498,31 @@ public class EntityNetherhound extends EntityTameable {
         return EnumCreatureAttribute.UNDEAD;
     }
 
-    class AINetherhoundFollowOwner extends EntityAIFollowOwner{
+    public EnumDyeColor getCollarColor()
+    {
+        return EnumDyeColor.byDyeDamage((this.dataManager.get(COLLAR_COLOR)).intValue() & 15);
+    }
+
+    public void setCollarColor(EnumDyeColor collarcolor)
+    {
+        this.dataManager.set(COLLAR_COLOR, Integer.valueOf(collarcolor.getDyeDamage()));
+    }
+
+    static class AINetherhoundFollowOwner extends EntityAIFollowOwner{
         World world;
-        private final EntityTameable tameable;
         public AINetherhoundFollowOwner(EntityTameable tameableIn, double followSpeedIn, float minDistIn, float maxDistIn) {
             super(tameableIn, followSpeedIn, minDistIn, maxDistIn);
             this.world = tameableIn.world;
-            this.tameable = tameableIn;
         }
         @Override
-        protected boolean isTeleportFriendlyBlock(int x, int p_192381_2_, int y, int p_192381_4_, int p_192381_5_)
-        {
+        protected boolean isTeleportFriendlyBlock(int x, int p_192381_2_, int y, int p_192381_4_, int p_192381_5_) {
             BlockPos blockpos = new BlockPos(x + p_192381_4_, y - 1, p_192381_2_ + p_192381_5_);
-            IBlockState iblockstate = this.world.getBlockState(blockpos);
-            boolean canSeeSkyRain = this.world.canSeeSky(blockpos) && this.world.isRaining();
-            return iblockstate.getBlockFaceShape(this.world, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID && iblockstate.canEntitySpawn(this.tameable) && this.world.isAirBlock(blockpos.up()) && this.world.isAirBlock(blockpos.up(2)) && !canSeeSkyRain;
+            boolean canSeeSkyRain = this.world.canSeeSky(blockpos.up()) && this.world.isRaining();
+            if (canSeeSkyRain) {
+                return false;
+            } else {
+                return super.isTeleportFriendlyBlock(x, p_192381_2_, y, p_192381_4_, p_192381_5_);
+            }
         }
     }
 

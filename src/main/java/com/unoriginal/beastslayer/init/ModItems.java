@@ -79,6 +79,12 @@ public class ModItems {
     public static Item HUNGRY_TOOTH;
     public static Item GLASS_SHARD;
     public static Item HEART;
+    public static Item PICKAXE_AMULET;
+    public static Item LEECH;
+    public static Item FISH_TAIL;
+    public static Item ROCK;
+    public static Item SPRING;
+    public static Item FALL_FEATHER;
 
     public static Item MASK_W;
     public static Item MASK_H;
@@ -154,6 +160,12 @@ public class ModItems {
         HUNGRY_TOOTH = new ItemArtifact("hungry_tooth", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
         GLASS_SHARD = new ItemArtifact("glass_shard", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
         HEART = new ItemArtifact("heart_amulet", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
+        PICKAXE_AMULET = new ItemArtifact("miners_charm", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
+        LEECH = new ItemArtifact("leech", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
+        FISH_TAIL = new ItemArtifact("fish_tail", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
+        ROCK = new ItemArtifact("heavy_rock", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
+        SPRING = new ItemArtifact("blazing_spring", ItemArtifact.baubleSlot.CHARM, false, false).setRarity(0);
+        FALL_FEATHER = new ItemArtifact("light_feather", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
 
         MASK_W = new ItemMask("marauder_mask").setTier(0);
         MASK_H = new ItemMask("hunter_mask").setTier(1);
@@ -236,6 +248,12 @@ public class ModItems {
         event.getRegistry().registerAll(HUNGRY_TOOTH);
         event.getRegistry().registerAll(GLASS_SHARD);
         event.getRegistry().registerAll(HEART);
+        event.getRegistry().registerAll(PICKAXE_AMULET);
+        event.getRegistry().registerAll(LEECH);
+        event.getRegistry().registerAll(FISH_TAIL);
+        event.getRegistry().registerAll(ROCK);
+        event.getRegistry().registerAll(SPRING);
+        event.getRegistry().registerAll(FALL_FEATHER);
        // event.getRegistry().registerAll(BROKEN_ARTIFACT);
 
         event.getRegistry().registerAll(MASK_W);
@@ -311,6 +329,12 @@ public class ModItems {
         registerRender(HUNGRY_TOOTH);
         registerRender(GLASS_SHARD);
         registerRender(HEART);
+        registerRender(PICKAXE_AMULET);
+        registerRender(LEECH);
+        registerRender(FISH_TAIL);
+        registerRender(ROCK);
+        registerRender(SPRING);
+        registerRender(FALL_FEATHER);
        // registerRender(BROKEN_ARTIFACT);
 
         registerRender(MASK_W);

@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -61,6 +62,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     public MultiPartEntityPart sandyPartBody3 = new MultiPartEntityPart(this, "body3", 0.8F, 0.8F);
     public MultiPartEntityPart sandyPartTail1 = new MultiPartEntityPart(this, "tail1", 0.6F, 0.6F);
     public MultiPartEntityPart sandyPartTail2 = new MultiPartEntityPart(this, "tail2", 0.4F, 0.4F);
+    private static final DataParameter<Integer> COLOR = EntityDataManager.<Integer>createKey(EntitySandy.class, DataSerializers.VARINT);
 
     private int dodgeTicks;
     private int avoidTicks;
@@ -139,6 +141,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     {
         super.entityInit();
         this.dataManager.register(MAGIC, (byte)0);
+        this.dataManager.register(COLOR, -1);
     }
 
     protected void updateAITasks()
@@ -384,8 +387,38 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
                     }
                 }
             }
+            if (itemstack.getItem() == Item.getItemFromBlock(Blocks.CARPET) && this.isTamed() && this.isOwner(player))
+            {
+                EnumDyeColor enumdyecolor = EnumDyeColor.byDyeDamage(15 - itemstack.getMetadata());
 
-            if (this.isTamed() && this.isOwner(player) && !this.world.isRemote)
+                if (enumdyecolor != this.getColor())
+                {
+                    if(this.getColor() != null && !this.world.isRemote) {
+                        ItemStack stack = new ItemStack(Item.getItemFromBlock(Blocks.CARPET), 1, this.getColor().getMetadata());
+                        this.entityDropItem(stack, 0f);
+                    }
+                    this.setColor(enumdyecolor);
+
+                    if (!player.capabilities.isCreativeMode)
+                    {
+                        itemstack.shrink(1);
+                    }
+                    this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
+                    return true;
+                }
+            }
+            else if (itemstack.getItem() == Items.SHEARS && this.getColor() != null && this.isTamed() && this.isOwner(player)){
+                if(!this.world.isRemote) {
+                    ItemStack stack = new ItemStack(Item.getItemFromBlock(Blocks.CARPET), 1, this.getColor().getMetadata());
+                    this.entityDropItem(stack, 0f);
+                }
+
+                this.setColor(null);
+                this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.0F, 1.0F);
+                return true;
+            }
+
+            else if (this.isTamed() && this.isOwner(player) && !this.world.isRemote)
             {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
@@ -787,4 +820,16 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     public int getDodgeTicks(){
         return this.dodgeTicks;
     }
+
+    private void setColor(@Nullable EnumDyeColor color)
+    {
+        this.dataManager.set(COLOR, color == null ? -1 : color.getMetadata());
+    }
+    @Nullable
+    public EnumDyeColor getColor()
+    {
+        int i = (this.dataManager.get(COLOR));
+        return i == -1 ? null :  EnumDyeColor.byMetadata(i);
+    }
+
 }
