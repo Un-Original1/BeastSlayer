@@ -10,8 +10,9 @@ public class EntityAIRestrictRain extends EntityAIRestrictSun {
         super(creature);
         this.entity = creature;
     }
+    @Override
     public boolean shouldExecute()
     {
-        return this.entity.world.isRaining() && this.entity.world.getBiome(entity.getPosition()).canRain();
+        return this.entity.world.isRaining() && this.entity.world.getBiome(this.entity.getPosition()).canRain();
     }
 }

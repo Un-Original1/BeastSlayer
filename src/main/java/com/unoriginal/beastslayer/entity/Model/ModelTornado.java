@@ -44,10 +44,10 @@ public class ModelTornado extends ModelBase {
 		bottom.render(f5);
 		middle.render(f5);
 		top.render(f5);
-		bottom.rotateAngleY-=this.bottom.rotationPointY * 0.4;
-		middlelow.rotateAngleY+=this.middlelow.rotationPointY * 0.4;
-		middle.rotateAngleY+=this.middle.rotationPointY * 0.8;
-		top.rotateAngleY+=this.top.rotationPointY * 1.2;
+		bottom.rotateAngleY -=this.bottom.rotationPointY * 0.4;
+		middlelow.rotateAngleY +=this.middlelow.rotationPointY * 0.4;
+		middle.rotateAngleY +=this.middle.rotationPointY * 0.8;
+		top.rotateAngleY +=this.top.rotationPointY * 1.2;
 
 		bottom.rotationPointZ =  - MathHelper.sin(ageInTicks * 0.2F * 0.15F * (float)Math.PI) * (float)Math.PI * 0.05F* (float)Math.abs(-20);
 		middlelow.rotationPointZ =  MathHelper.sin(ageInTicks * 0.4F * 0.15F * (float)Math.PI) * (float)Math.PI * 0.05F* (float)Math.abs(-20);

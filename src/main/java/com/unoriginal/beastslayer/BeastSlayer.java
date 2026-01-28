@@ -30,7 +30,7 @@ public class BeastSlayer
     public static final CreativeTabs BEASTSTAB = new ModTab("beaststab");
     @SidedProxy(serverSide = "com.unoriginal.beastslayer.proxy.CommonProxy", clientSide = "com.unoriginal.beastslayer.proxy.ClientProxy")
     public static CommonProxy commonProxy;
-
+    
     @Mod.Instance
     public static BeastSlayer instance;
 

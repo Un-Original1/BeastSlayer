@@ -26,6 +26,7 @@ public class ModPotions {
     public static final PotionUndead UNDEAD = (PotionUndead) new PotionUndead(false, 989477).setRegistryName(BeastSlayer.MODID,"undead");
     public static final PotionTarget TARGETED = (PotionTarget) new PotionTarget(true, 12650761).setRegistryName(BeastSlayer.MODID,"target");
     public static final PotionFrenzy FRENZY = (PotionFrenzy) new PotionFrenzy(false, 16545539).setRegistryName(BeastSlayer.MODID, "fire_frenzy");
+    public static final PotionCharmed CHARMED = (PotionCharmed) new PotionCharmed(true, 16711927).setRegistryName(BeastSlayer.MODID, "charmed");
 
     public static PotionType ghostly =  new PotionType("potionGhostly", new PotionEffect[]{new PotionEffect(ModPotions.GHOSTLY, 100)}).setRegistryName("poison_ghostly");
     public static PotionType longGhostly = new PotionType("potionGhostly", new PotionEffect[]{new PotionEffect(ModPotions.GHOSTLY, 200)}).setRegistryName("long_potion_ghostly");
@@ -45,7 +46,8 @@ public class ModPotions {
                 RIFTED,
                 UNDEAD,
                 TARGETED,
-                FRENZY
+                FRENZY,
+                CHARMED
         );
     }
     @SubscribeEvent

@@ -386,5 +386,28 @@
         "ancientbeasts:shockwave_2",
         "ancientbeasts:shockwave_3"
     ]
+  },
+  "succ_hurt":{
+    "subtitle":"subtitles.succ_hurt",
+    "sounds":[
+      "ancientbeasts:succ_hurt_1",
+      "ancientbeasts:succ_hurt_2",
+      "ancientbeasts:succ_hurt_3"
+    ]
+  },
+  "succ_ambient":{
+    "subtitle":"subtitles.succ_ambient",
+    "sounds":[
+      "ancientbeasts:succ_ambient_1",
+      "ancientbeasts:succ_ambient_2",
+      "ancientbeasts:succ_ambient_3",
+      "ancientbeasts:succ_ambient_4"
+    ]
+  },
+  "succ_suck":{
+    "subtitle":"subtitles.succ_blood",
+    "sounds":[
+      "ancientbeasts:succ_suck"
+    ]
   }
 }

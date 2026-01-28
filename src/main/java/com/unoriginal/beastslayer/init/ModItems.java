@@ -97,6 +97,7 @@ public class ModItems {
     public static Item DARK_GOOP;
     public static Item TEST;
     public static Item STORM_BOTTLE;
+    public static Item WEIRD_BOTTLE;
     //public static Item BROKEN_ARTIFACT;
     //public static Item SLAB;
 
@@ -182,6 +183,7 @@ public class ModItems {
             SCALE_ARMOR = new ScaleArmor("scale_armor", ModItems.DESERT_ROBES, 1, EntityEquipmentSlot.CHEST);
             SCALE_HOOD = new ScaleArmor("scale_hood", ModItems.DESERT_ROBES, 0, EntityEquipmentSlot.HEAD);
         }
+        WEIRD_BOTTLE = new ItemStrangePotion("strange_potion");
         TEST = new ItemTest().setRegistryName("test").setUnlocalizedName("test").setCreativeTab(BeastSlayer.BEASTSTAB);
     }
 
@@ -269,6 +271,7 @@ public class ModItems {
             event.getRegistry().registerAll(SCALE_ARMOR);
             event.getRegistry().registerAll(SCALE_HOOD);
         }
+        event.getRegistry().registerAll(WEIRD_BOTTLE);
         event.getRegistry().registerAll(TEST);
     }
     @SubscribeEvent
@@ -343,6 +346,7 @@ public class ModItems {
         registerRender(MASK_P);
         registerRender(TEST);
         registerRender(STORM_BOTTLE);
+        registerRender(WEIRD_BOTTLE);
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             registerRender(SCALE_ARMOR);
             registerRender(SCALE_HOOD);

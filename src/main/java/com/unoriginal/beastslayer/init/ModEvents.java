@@ -13,8 +13,6 @@ import com.unoriginal.beastslayer.network.MessageAttackER;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -41,7 +39,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -51,8 +48,6 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,6 +55,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ModEvents {
+
     List<String> blacklist = Arrays.asList(BeastSlayerConfig.AI_blacklist);
     @SubscribeEvent
     public void onEntityJoin(EntityJoinWorldEvent event) {
@@ -489,6 +485,7 @@ public class ModEvents {
         }
     }
 
+
     @SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
     public void onEvent(LivingEvent.LivingUpdateEvent event)
     {
@@ -529,7 +526,16 @@ public class ModEvents {
                     entityLiving.motionY *= 0.6D;
                 }
             }
-
+        if(entityLiving.isPotionActive(ModPotions.CHARMED)){
+            if(entityLiving.collidedHorizontally){
+                if(entityLiving instanceof EntityLiving)
+                {
+                   ((EntityLiving) entityLiving).getJumpHelper().setJumping();
+                } else if(entityLiving.onGround){
+                    entityLiving.motionY = 0.5F;
+                }
+            }
+        }
         if(!world.isRemote){
             if(entityLiving instanceof EntityAnimal){
                 EntityAnimal a = (EntityAnimal) entityLiving;
@@ -610,6 +616,36 @@ public class ModEvents {
                 }
             }
         }
+        if (entityLiving.isPotionActive(ModPotions.CHARMED)) {
+            List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, entityLiving.getEntityBoundingBox().grow(16.0D));
+            for (EntityLivingBase targets : list) {
+                if(targets instanceof EntitySucc){
+                    EntitySucc succ = (EntitySucc) targets;
+                    if(entityLiving.canEntityBeSeen(succ)) {
+                        double d0 = succ.posX - entityLiving.posX;
+                        double d2 = succ.posZ - entityLiving.posZ;
+                        double d1 = succ.posY - entityLiving.posY;
+                        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+                        float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
+                        float f1 = (float) (-(MathHelper.atan2(d1, d3) * (180D / Math.PI)));
+
+                        entityLiving.rotationPitch = updateRotation(entityLiving.rotationPitch, f1, 3F);
+                        entityLiving.rotationYaw = updateRotation(entityLiving.rotationYaw, f, 3F);
+                    }
+                }
+            }
+        }
+    }
+
+    public static float updateRotation(float angle, float targetAngle, float maxIncrease) {
+        float f = MathHelper.wrapDegrees(targetAngle - angle); // prevents getting negative angles and going beyond 360°
+        if (f > maxIncrease) {
+            f = maxIncrease;
+        }
+        if (f < -maxIncrease) {
+            f = -maxIncrease;
+        }
+        return angle + f;
     }
 
     @SubscribeEvent
@@ -802,95 +838,62 @@ public class ModEvents {
             }
         }
     }
+
+
     @SubscribeEvent
     public void XPEvents(LivingExperienceDropEvent e){
         World world = e.getEntity().getEntityWorld();
         if(!world.isRemote && e.getAttackingPlayer() != null) {
                 EntityPlayer player = e.getAttackingPlayer();
-          /*      Item item = player.getHeldItemOffhand().getItem();
-                Item item2 = null;
-            if(!IntegrationBaubles.getEquippedArtifacts(player, ItemArtifact.baubleSlot.CHARM).isEmpty()) {
-                item2 = IntegrationBaubles.getEquippedArtifacts(player, ItemArtifact.baubleSlot.CHARM).get(0);
-            }*/
-                int xp = e.getOriginalExperience();
-               // if (item instanceof ItemArtifact || item2 != null) {
-                    if (getActiveItem(player) == ModItems.BOUNTIFUL_SACK) {
+             int xp = e.getOriginalExperience();
+
+
+                List<EntitySucc> list = player.world.getEntitiesWithinAABB(EntitySucc.class, player.getEntityBoundingBox().grow(40D));
+                if(!list.isEmpty())
+                {
+                    for (EntitySucc entitySucc : list) {
+
+                        e.setDroppedExperience(xp / 2);
+
+                        EntitySuccXp xp1 = new EntitySuccXp(world, e.getEntity().getPosition().getX(), e.getEntity().getPosition().getY() + e.getEntity().height, e.getEntity().getPosition().getZ(), e.getDroppedExperience(), entitySucc);
+                        BeastSlayer.logger.info("XP XP XP XP XP XP");
+                        world.spawnEntity(xp1);
+                    }
+                }
+
+
+                if (getActiveItem(player) == ModItems.BOUNTIFUL_SACK) {
                         e.setDroppedExperience(xp * 2);
-                //    }
                 }
         }
 
     }
+
    /* @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public static void onFogDensityEvent(EntityViewRenderEvent.FogDensity event) {
-        Minecraft mc = Minecraft.getMinecraft();
-        WorldClient world = mc.world;
-        boolean b = false;
-        List<Entity> entities = world.getLoadedEntityList();
-        if(!entities.isEmpty()) {
-            for (Entity entity : entities){
-                if(entity instanceof EntityFireElemental){
-                    b = true;
-                    break;
-                }
-            }
+    public static void onFogDensityEvent(EntityViewRenderEvent.RenderFogEvent event) {
+        Entity entity = event.getEntity();
+        if (!(entity instanceof EntityPlayer)) {
+            return;
         }
-        if (b) {
-            System.out.println("Event succesfully fired");
-            event.setDensity(50F);
-
+        EntityPlayer player = (EntityPlayer)entity;
+        if (/*enableCreativeImmunity && player.isCreative()) {
+            return;
         }
-        event.setCanceled(true);
+       // float prev = JTPGCapabilityUtils.getPrevPlayerFogProgress(player);
+        //float current = JTPGCapabilityUtils.getPlayerFogProgress(player);
+        //float progress = (float)(prev + (current - prev) * ((player.field_70173_aa % 20) + event.getRenderPartialTicks()) / 20.0D);
+        /*if (progress <= 0.0F)
+            return;
+        float vanillaFogEnd = event.getFarPlaneDistance();
+        float targetFogStart = 0.0F;
+        float fogMaxDistance = vanillaFogEnd + (/*configFogFarDistance 40f - vanillaFogEnd);/* * progress;
+        float fogMinDistance = vanillaFogEnd * 0.75F + (targetFogStart - vanillaFogEnd * 0.75F); /* progress;
+        GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
+        GlStateManager.setFogStart(fogMinDistance);
+        GlStateManager.setFogEnd(fogMaxDistance);
     }*/
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void fogColour(EntityViewRenderEvent.FogColors event) {
-        //todo add config to tint
-        Minecraft mc = Minecraft.getMinecraft();
-        WorldClient world = mc.world;
-        boolean b = false;
-        List<Entity> entities = world.getLoadedEntityList();
-        if(!entities.isEmpty()) {
-            for (Entity entity : entities){
-                if(entity instanceof EntityFireElemental){
-                    b = true;
-                    break;
-                }
-            }
-        }
-        if (b) {
-            float d = getSunBrightness((float) event.getRenderPartialTicks()) * 1.4f;
 
-                event.setRed((1f - d) * 180F / 255f + (d * event.getRed()));
-                event.setGreen((1f - d) * 60F / 255f + d * event.getGreen());
-                event.setBlue((1f - d) * 0 / 255f + d * event.getBlue());
-
-        }
-    }
-    @SideOnly(Side.CLIENT)
-    public float getSunBrightness(float partialTicks)
-    {
-        int i = (int)(20000 % 24000L);
-        float f = ((float)i + partialTicks) / 24000.0F - 0.25F;
-
-        if (f < 0.0F)
-        {
-            ++f;
-        }
-
-        if (f > 1.0F)
-        {
-            --f;
-        }
-
-        float f3 = 1.0F - (float)((Math.cos((double)f * Math.PI) + 1.0D) / 2.0D);
-        f = f + (f3 - f) / 3.0F;;
-        float f1 = 1.0F - (MathHelper.cos(f * ((float)Math.PI * 2F)) * 2.0F + 0.2F);
-        f1 = MathHelper.clamp(f1, 0.0F, 1.0F);
-        f1 = 1.0F - f1;
-        return f1 * 0.8F + 0.2F;
-    }
     public Item getActiveItem(EntityLivingBase player){
         Item item = player.getHeldItemOffhand().getItem();
         Item item2 = null;

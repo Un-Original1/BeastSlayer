@@ -63,6 +63,10 @@ public class ModSounds {
 
     public static final SoundEvent SMOKE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "smoke")).setRegistryName("smoke");
     public static final SoundEvent SHOCKWAVE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID,"shockwave")).setRegistryName("shockwave");
+
+    public static final SoundEvent SUCC_HURT = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_hurt")).setRegistryName("succ_hurt");
+    public static final SoundEvent SUCC_AMB = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_ambient")).setRegistryName("succ_ambient");
+    public static final SoundEvent SUCC_SUCK = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_suck")).setRegistryName("succ_suck");
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
         @SubscribeEvent
@@ -118,6 +122,9 @@ public class ModSounds {
             event.getRegistry().registerAll(KUNAI_HIT);
             event.getRegistry().registerAll(SMOKE);
             event.getRegistry().registerAll(SHOCKWAVE);
+            event.getRegistry().registerAll(SUCC_HURT);
+            event.getRegistry().registerAll(SUCC_AMB);
+            event.getRegistry().registerAll(SUCC_HURT);
         }
 
     }

@@ -14,7 +14,6 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
@@ -50,7 +49,7 @@ public class EntityNetherhound extends EntityTameable {
     private float timeIsShaking;
     private float prevTimeIsShaking;
     private Set<Block> VALID_BLOCKS = Sets.newHashSet(Blocks.NETHERRACK, Blocks.SOUL_SAND, Blocks.MAGMA, Blocks.GRAVEL);
-    private static final DataParameter<Integer> COLLAR_COLOR = EntityDataManager.<Integer>createKey(EntityNetherhound.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> COLLAR_COLOR = EntityDataManager.createKey(EntityNetherhound.class, DataSerializers.VARINT);
 
     public EntityNetherhound(World worldIn) {
         super(worldIn);
@@ -96,7 +95,7 @@ public class EntityNetherhound extends EntityTameable {
     protected void entityInit()
     {
         super.entityInit();
-        this.dataManager.register(COLLAR_COLOR, Integer.valueOf(EnumDyeColor.RED.getDyeDamage()));
+        this.dataManager.register(COLLAR_COLOR, EnumDyeColor.RED.getDyeDamage());
     }
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
@@ -332,7 +331,7 @@ public class EntityNetherhound extends EntityTameable {
             {
                 EnumDyeColor enumdyecolor = EnumDyeColor.byDyeDamage(itemstack.getMetadata());
 
-                if (enumdyecolor != this.getCollarColor())
+                if (enumdyecolor != this.getCollarColor() && this.isOwner(player))
                 {
                     this.setCollarColor(enumdyecolor);
 
@@ -455,12 +454,18 @@ public class EntityNetherhound extends EntityTameable {
         super.readEntityFromNBT(compound);
         if(compound.hasKey("flameTime")){
             this.flameTicks = compound.getInteger("flameTime");
+
+        }
+        if (compound.hasKey("CollarColor", 99))
+        {
+            this.setCollarColor(EnumDyeColor.byDyeDamage(compound.getByte("CollarColor")));
         }
     }
 
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("flameTime", this.flameTicks);
+        compound.setByte("CollarColor", (byte)this.getCollarColor().getDyeDamage());
     }
 
     @Override
@@ -500,12 +505,12 @@ public class EntityNetherhound extends EntityTameable {
 
     public EnumDyeColor getCollarColor()
     {
-        return EnumDyeColor.byDyeDamage((this.dataManager.get(COLLAR_COLOR)).intValue() & 15);
+        return EnumDyeColor.byDyeDamage(this.dataManager.get(COLLAR_COLOR) & 15);
     }
 
     public void setCollarColor(EnumDyeColor collarcolor)
     {
-        this.dataManager.set(COLLAR_COLOR, Integer.valueOf(collarcolor.getDyeDamage()));
+        this.dataManager.set(COLLAR_COLOR, collarcolor.getDyeDamage());
     }
 
     static class AINetherhoundFollowOwner extends EntityAIFollowOwner{

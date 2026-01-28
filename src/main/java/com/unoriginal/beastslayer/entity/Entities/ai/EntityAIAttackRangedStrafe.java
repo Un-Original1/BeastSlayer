@@ -1,5 +1,7 @@
 package com.unoriginal.beastslayer.entity.Entities.ai;
 
+import com.unoriginal.beastslayer.entity.Entities.EntitySucc;
+import com.unoriginal.beastslayer.init.ModPotions;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -43,7 +45,21 @@ EntityAIAttackRangedStrafe<T extends EntityMob & IRangedAttackMob> extends Entit
 
         public boolean shouldExecute()
         {
-            return this.entity.getAttackTarget() != null;
+            if(this.entity instanceof EntitySucc){
+                EntitySucc entitySucc = (EntitySucc)this.entity;
+                if(entitySucc.getAttackTarget() != null && !entitySucc.isFriendly() && !entitySucc.isStalking()){
+                    if(entitySucc.getAttackTarget().isPotionActive(ModPotions.CHARMED)){
+                        int amplifier = entitySucc.getAttackTarget().getActivePotionEffect(ModPotions.CHARMED).getAmplifier();
+                        return amplifier < 1;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return this.entity.getAttackTarget() != null;
+            }
         }
 
         public boolean shouldContinueExecuting()

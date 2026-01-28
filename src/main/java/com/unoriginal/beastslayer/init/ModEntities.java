@@ -15,9 +15,13 @@ import com.unoriginal.beastslayer.entity.Render.projectile.RenderProjectile;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderCreeper;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderSilverfish;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Biomes;
@@ -91,7 +95,13 @@ public class ModEntities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Chained"), EntityChained.class, "Chained", id++, BeastSlayer.instance,64, 3, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Nekros"), EntityNekros.class, "Nekros", id++, BeastSlayer.instance, 80, 3, true, 5058665, 3416400);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Storm_Mob"), EntityStormSetter.class, "Storm_Mob", id++, BeastSlayer.instance, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Tribe_Child"), EntityTribeChild.class, "Tribe_Child", id++, BeastSlayer.instance, 64, 1, true, 0, 0);
+        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Tribe_Child"), EntityTribeChild.class, "Tribe_Child", id++, BeastSlayer.instance, 64, 1, true, 0, 0);
+        }
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "succubus"), EntitySucc.class, "succubus", id++, BeastSlayer.instance, 64, 1, true, 0, 0);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "charm_chain"), EntityCharmChain.class, "charm_chain", id++, BeastSlayer.instance, 64, 3, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "xp_mosquito"), EntityMosquito.class, "xp_mosquito", id++, BeastSlayer.instance, 64, 3, true, 64, 0);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "fake_xp"), EntitySuccXp.class, "fake_xp", id++, BeastSlayer.instance, 64, 3, true);
 
 
     }
@@ -213,6 +223,10 @@ public class ModEntities
         RenderingRegistry.registerEntityRenderingHandler(EntityNekros.class, RenderNekros.FACTORY);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityStormSetter.class, RenderStormSetter.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySucc.class, RenderSuccubus.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityCharmChain.class, RenderCharmChain.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityMosquito.class, RenderMoskito.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySuccXp.class, RenderSuccXp.FACTORY);
     }
 
 

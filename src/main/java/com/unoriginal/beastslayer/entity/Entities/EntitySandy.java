@@ -508,6 +508,9 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
         compound.setInteger("MagicUseTicks", this.magicUseTicks);
         compound.setInteger("Dodge", this.dodgeTicks);
         compound.setInteger("Avoid", this.avoidTicks);
+        if(this.getColor() != null) {
+            compound.setByte("CollarColor", (byte) this.getColor().getDyeDamage());
+        }
     }
 
     public void readEntityFromNBT(NBTTagCompound compound)
@@ -517,6 +520,11 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
         this.magicUseTicks = compound.getInteger("MagicUseTicks");
         this.dodgeTicks = compound.getInteger("Dodge");
         this.avoidTicks = compound.getInteger("Avoid");
+
+        if (compound.hasKey("CollarColor", 99))
+        {
+            this.setColor(EnumDyeColor.byDyeDamage(compound.getByte("CollarColor")));
+        }
     }
 
     public boolean isAngry()
