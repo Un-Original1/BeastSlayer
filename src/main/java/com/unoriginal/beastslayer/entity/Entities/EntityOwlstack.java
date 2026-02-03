@@ -177,7 +177,6 @@ public class EntityOwlstack extends EntityAnimal {
             this.happyTime++;
         }
     }
-    //TODO: Code scream animation
     public void setFriend(@Nullable EntityLivingBase friend) {
         this.friend = friend;
         this.friendUUID = friend == null ? null : friend.getUniqueID();
@@ -279,7 +278,9 @@ public class EntityOwlstack extends EntityAnimal {
                    this.removePassengers();
             }
             this.startRidingTopEntity(player);
-            ModTriggers.OWLSTACK_INTERACT.trigger((EntityPlayerMP)player);
+            if(player instanceof EntityPlayerMP) {
+                ModTriggers.OWLSTACK_INTERACT.trigger((EntityPlayerMP)player);
+            }
             player.swingArm(hand);
             return true;
         }

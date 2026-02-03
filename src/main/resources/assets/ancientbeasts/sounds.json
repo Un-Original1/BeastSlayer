@@ -409,5 +409,41 @@
     "sounds":[
       "ancientbeasts:succ_suck"
     ]
+  },
+  "succ_sigh": {
+    "subtitle":"subtitles.succ_sigh",
+    "sounds":[
+      "ancientbeasts:succ_sigh_1",
+      "ancientbeasts:succ_sigh_2",
+      "ancientbeasts:succ_sigh_3"
+    ]
+  },
+  "succ_spell": {
+    "subtitle":"subtitles.succ_spell",
+    "sounds":[
+      "ancientbeasts:succ_spell"
+    ]
+  },
+  "succ_death": {
+    "subtitle":"subtitles.succ_death",
+    "sounds":[
+      "ancientbeasts:succ_death_1",
+      "ancientbeasts:succ_death_2"
+    ]
+  },
+  "mosq_loop": {
+    "subtitle":"subtitles.mosq_loop",
+    "sounds":[
+      "ancientbeasts:mosq_loop1",
+      "ancientbeasts:mosq_loop2",
+      "ancientbeasts:mosq_loop3",
+      "ancientbeasts:mosq_loop4"
+    ]
+  },
+  "mosq_gulp": {
+    "subtitle":"subtitles.mosq_gulp",
+    "sounds":[
+      "ancientbeasts:mosq_gulp"
+    ]
   }
 }

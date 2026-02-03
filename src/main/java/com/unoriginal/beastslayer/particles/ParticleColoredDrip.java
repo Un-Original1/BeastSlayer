@@ -3,11 +3,8 @@ package com.unoriginal.beastslayer.particles;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -18,8 +15,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ParticleColoredDrip extends Particle {
     private int bobTimer;
     private final boolean isbright;
+    private final int timerId;
 
-    protected ParticleColoredDrip(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float red, float green, float blue, boolean isbright)
+    protected ParticleColoredDrip(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, float red, float green, float blue, int isbright)
     {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, 0.0D, 0.0D, 0.0D);
         this.motionX = 0.0D;
@@ -34,7 +32,8 @@ public class ParticleColoredDrip extends Particle {
         this.setParticleTextureIndex(113);
         this.setSize(0.01F, 0.01F);
         this.particleGravity = 0.06F;
-        this.isbright= isbright;
+        this.isbright= isbright != 0;
+        this.timerId = isbright;
         this.bobTimer = 40;
         this.particleMaxAge = (int)(64.0D / (Math.random() * 0.8D + 0.2D));
         this.motionX = 0.0D;
@@ -69,10 +68,9 @@ public class ParticleColoredDrip extends Particle {
             this.particleBlue = 1.0F;*/
 
 
-
         this.motionY -= this.particleGravity;
 
-        if (this.bobTimer-- > 0)
+        if (this.bobTimer-- > 0 && this.timerId != 2)
         {
             this.motionX *= 0.02D;
             this.motionY *= 0.02D;
@@ -109,6 +107,8 @@ public class ParticleColoredDrip extends Particle {
         IBlockState iblockstate = this.world.getBlockState(blockpos);
         Material material = iblockstate.getMaterial();
 
+
+
         if (material.isLiquid() || material.isSolid())
         {
             double d0 = 0.0D;
@@ -132,7 +132,7 @@ public class ParticleColoredDrip extends Particle {
     {
         public Particle createParticle(int particleID, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... p_178902_15_)
         {
-            return new ParticleColoredDrip(worldIn, xCoordIn, yCoordIn, zCoordIn, (float) xSpeedIn, (float) ySpeedIn, (float)zSpeedIn, p_178902_15_.length != 0);
+            return new ParticleColoredDrip(worldIn, xCoordIn, yCoordIn, zCoordIn, (float) xSpeedIn, (float) ySpeedIn, (float)zSpeedIn, p_178902_15_.length);
         }
     }
 

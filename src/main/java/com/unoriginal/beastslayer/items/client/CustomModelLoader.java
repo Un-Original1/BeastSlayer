@@ -1,6 +1,5 @@
 package com.unoriginal.beastslayer.items.client;
 
-import com.unoriginal.beastslayer.BeastSlayer;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;

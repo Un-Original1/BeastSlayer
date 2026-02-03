@@ -3,12 +3,14 @@ package com.unoriginal.beastslayer.proxy;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.blocks.tile.TileEntityMovingLight;
 import com.unoriginal.beastslayer.blocks.tile.TileEntityWitchcraftTable;
-import com.unoriginal.beastslayer.command.CommandLocateAB;
 import com.unoriginal.beastslayer.gui.ABGuiHandler;
 import com.unoriginal.beastslayer.init.*;
 import com.unoriginal.beastslayer.integration.IntegrationBaubles;
 import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
 import com.unoriginal.beastslayer.worldGen.ModWorldGen;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,14 +22,18 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 @Mod.EventBusSubscriber
 public class CommonProxy
 {
+    private static Method CriterionRegister;
     private static final ResourceLocation D_LIGHT = new ResourceLocation(BeastSlayer.MODID,"dynamic_light");
     private static final ResourceLocation WITCHCRAFT = new ResourceLocation(BeastSlayer.MODID, "witchcraft_table");
     public void preInit(FMLPreInitializationEvent e)
@@ -72,8 +78,27 @@ public class CommonProxy
         OreDictionary.registerOre("treeLeaves", ModBlocks.CURSED_LEAVES);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(BeastSlayer.instance, new ABGuiHandler());
+        registerAdvancementTrigger(ModTriggers.OWLSTACK_INTERACT);
+        registerAdvancementTrigger(ModTriggers.SUCCUBUS_FRIEND);
+        registerAdvancementTrigger(ModTriggers.SUCCUBUS_BLOOD);
     }
-   public void postInit(FMLPostInitializationEvent e) {
+
+    @SuppressWarnings("unchecked")
+    public static <T extends ICriterionInstance> ICriterionTrigger<T> registerAdvancementTrigger(ICriterionTrigger<T> trigger) {
+        if(CriterionRegister == null) {
+            CriterionRegister = ReflectionHelper.findMethod(CriteriaTriggers.class, "register", "func_192118_a", ICriterionTrigger.class);
+            CriterionRegister.setAccessible(true);
+        }
+        try {
+            trigger = (ICriterionTrigger<T>) CriterionRegister.invoke(null, trigger);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            System.out.println("Failed to register trigger " + trigger.getId() + "!");
+            e.printStackTrace();
+        }
+        return trigger;
+    }
+
+    public void postInit(FMLPostInitializationEvent e) {
         ModEntities.registerSpawns();
    }
 

@@ -386,3 +386,21 @@ item.light_feather.name=Light Feather
 
 potion.fire_frenzy=Fire Frenzy
 entity.Fire_Elemental.name=Fire Elemental
+
+entity.succubus.name=Succubus
+item.strange_potion.name=Mysterious Liquid
+advancements.succubus_blood.title=Bloodletting
+advancements.succubus_blood.description=Make a Succubus lend you some powers in an unusual manner
+advancements.succubus_friend.title=Red Flags
+advancements.succubus_friend.description=Get bound to a Succubus
+
+subtitles.succ_ambient=Succubus giggles
+subtitles.succ_hurt=Succubus hurts
+subtitles.succ_blood=Bloodsucking
+subtitles.succ_death=Succubus dies
+subtitles.succ_spell=Succubus casts a spell
+subtitles.succ_sigh=Succubus Sighs
+
+entity.xp_mosquito.name=Needlewing
+advancements.ancientbeasts.kill_mosq.title=Pest Control
+advancements.ancientbeasts.kill_mosq.description=Kill a Needlewing

@@ -24,6 +24,8 @@ import java.util.List;
 public class ModClientEvents {
     private ModClientEvents() {}
     private static final ResourceLocation CHARM = new ResourceLocation(BeastSlayer.MODID, "shaders/post/charm.json");
+
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void ClientStuffLiving(LivingEvent.LivingUpdateEvent event){
         World world = event.getEntity().getEntityWorld();
@@ -42,7 +44,7 @@ public class ModClientEvents {
 
         }
         if(entityLiving instanceof EntityPlayer) { //note to future self, these kinds of shaders DO NOT work on non player entities, it will lead to a crash given they do not have a "camera" of their own
-            if (renderer != null && !entityLiving.isPotionActive(ModPotions.CHARMED) && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && CHARM.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
+            if (renderer != null && !entityLiving.isPotionActive(ModPotions.CHARMED) && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && CHARM.toString().equals(renderer.getShaderGroup().getShaderGroupName()) && entityLiving.world.isRemote) {
                 renderer.stopUseShader();
             }
         }

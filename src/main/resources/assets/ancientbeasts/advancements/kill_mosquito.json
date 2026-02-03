@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:experience_bottle"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_mosq.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_mosq.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Giant_Zombie": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:xp_mosquito"
+        }
+      }
+    }
+  }
+}

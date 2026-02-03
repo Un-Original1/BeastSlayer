@@ -2,49 +2,53 @@ package com.unoriginal.beastslayer.entity.Entities;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.unoriginal.beastslayer.BeastSlayer;
-import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIAttackRangedStrafe;
-import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIFollowFriend;
-import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMeleeConditional;
-import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIStalk;
-import com.unoriginal.beastslayer.init.ModItems;
-import com.unoriginal.beastslayer.init.ModPotions;
-import com.unoriginal.beastslayer.init.ModSounds;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.entity.Entities.ai.*;
+import com.unoriginal.beastslayer.init.*;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 //I have become lust... the gooner of worlds -Unoriginal while very drunk
 public class EntitySucc extends EntityMob implements IRangedAttackMob {
+    private static final DataParameter<Boolean> WAIT = EntityDataManager.createKey(EntitySucc.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> EAT = EntityDataManager.createKey(EntitySucc.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> SELL = EntityDataManager.createKey(EntitySucc.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> GIVE = EntityDataManager.createKey(EntitySucc.class, DataSerializers.VARINT);
@@ -55,17 +59,26 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     protected static final DataParameter<Optional<UUID>> FRIEND_UNIQUE_ID = EntityDataManager.createKey(EntitySucc.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     private int friendlyTicks; //mayhaps I can reuse this one for potions too!
     private int spellTime;
+    private int dropTime;
+    private int spellCooldown;
+    protected EntityAICustomSit aiSit;
+    private static final Set<Item> GIVE_ITEMS = Sets.newHashSet(Items.DIAMOND, Items.GOLD_INGOT, Items.EMERALD);
 
     final Predicate<EntityLivingBase> targetSelector = target -> target != null && target.isPotionActive(ModPotions.CHARMED) && this.friendlyTicks <= 0 && !this.isStalking() && !this.isFriendly();
     public EntitySucc(World worldIn) {
         super(worldIn);
-        this.setSize(1F, 3F);
+        this.setSize(0.95F, 2.8F);
         this.isImmuneToFire = true;
+        ((PathNavigateGround)this.getNavigator()).setEnterDoors(true);
+        this.dropTime = rand.nextInt(8000) + 8000;
 
     }
 
     protected void initEntityAI() {
+        this.aiSit = new EntityAICustomSit(this);
+        this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAISuccSpell(this));
         this.tasks.addTask(3, new EntityAIAttackRangedStrafe<>(this, 1.0D, this.world.getDifficulty()== EnumDifficulty.HARD ? 30 : 50, 20.0F));
         this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(5, new EntityAIMeleeConditional(this, 0.5D, true, this.targetSelector));
@@ -97,6 +110,8 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         this.dataManager.register(EAT, 0);
         this.dataManager.register(SELL, 0);
         this.dataManager.register(GIVE, 0);
+
+        this.dataManager.register(WAIT, Boolean.FALSE);
     }
 
     public boolean isLookingAtMe(EntityPlayer player) {
@@ -116,10 +131,39 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         {
             this.motionY *= 0.8D;
         }
+        if(this.spellTime > 0){
+            --this.spellTime;
+        }
 
-        if(this.friendlyTicks < 8000 && this.isFriendly() && this.ticksExisted % 20 == 0){
-            if(rand.nextInt(3)== 0 ){
-                this.world.setEntityState(this, (byte)13);
+        if(this.spellCooldown > 0){
+            --this.spellCooldown;
+        }
+
+        if(this.friendlyTicks < 6000 && this.isFriendly() && this.ticksExisted % 20 == 0){
+
+            this.world.setEntityState(this, (byte)13);
+
+        }
+
+
+
+        if(this.world.isRemote && this.ticksExisted % 20 == 0 && this.getSpellTime() > 0){
+            for (int i = 0; i < this.rand.nextInt(35) + 10; ++i)
+            {
+                this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.rand.nextGaussian() * 0.6D, this.posY + 1.5D + this.rand.nextGaussian() * 0.12999999523162842D, this.posZ + this.rand.nextGaussian() * 0.6D, 0.0D, 0.0D, 0.0D);
+            }
+            this.world.spawnParticle(ModParticles.SPELL, this.posX, this.posY+ 0.1F, this.posZ, 0D, 0D ,0D );
+        }
+
+        if(this.isFriendly() && this.getFriend() != null){
+            if(MathHelper.sqrt(this.getDistanceSq(this.getFriend())) < 5D){
+                if(this.ticksExisted % 20 == 0 && this.world.isRemote) {
+                    this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.rand.nextGaussian() * 0.6D, this.posY + 1.5D + this.rand.nextGaussian() * 0.12999999523162842D, this.posZ + this.rand.nextGaussian() * 0.6D, 0.0D, 0.0D, 0.0D);
+                }
+                if (!this.world.isRemote) {
+                    this.getFriend().addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 30, 1));
+                    this.aiSit.setSitting(false);
+                }
             }
         }
         if(this.getEat() > 0){
@@ -131,12 +175,12 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         if(this.getGive() > 0){
             this.setGive(this.getGive() - 1);
         }
-        if(this.isStalking()) {
+        if(this.isStalking() && !this.isFriendly()) {
             List<EntityLivingBase> list2 = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(1.5D));
             if (!list2.isEmpty() && this.isStalking()) {
                 for (EntityLivingBase entitylivingbase1 : list2) {
                     if (entitylivingbase1 instanceof EntityPlayer) {
-                        List<EntitySucc> list3 = this.world.getEntitiesWithinAABB(EntitySucc.class, this.getEntityBoundingBox().grow(16D));
+                        List<EntitySucc> list3 = this.world.getEntitiesWithinAABB(EntitySucc.class, this.getEntityBoundingBox().grow(64D));
                         if(!list3.isEmpty()) {
                             boolean taken = false;
                             for (EntitySucc entitysucc : list3) {
@@ -200,7 +244,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
             }
         }
-        if(this.friendlyTicks > 0 && !this.isStalking() && this.isFriendly() && !this.world.isRemote) {
+        if(this.friendlyTicks > 0 && !this.isStalking() && this.isFriendly() && !this.world.isRemote && this.getFriend() != null) {
             this.friendlyTicks--;
         }
         if(this.friendlyTicks <= 0 && !this.isStalking() && this.isFriendly() && !this.world.isRemote) {
@@ -208,19 +252,13 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
             this.setFriendID(null);
         }
 
-        if (!this.world.isRemote && this.isFriendly() && !this.isStalking() && this.ticksExisted % 18000 == 0)
+        if (!this.world.isRemote && this.isFriendly() && !this.isStalking() && --this.dropTime < 0)
         {
             this.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, 0.8F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.dropItem(ModItems.WEIRD_BOTTLE, 1);
+            this.dropTime = this.rand.nextInt(8000) + 8000;
         }
 
-       /* BeastSlayer.logger.info(this.friendlyTicks + "friendlyTicks");
-        BeastSlayer.logger.info(this.isStalking() + "isStalking");
-        BeastSlayer.logger.info(this.isFriendly() + "isFriendly");
-        BeastSlayer.logger.info(this.getGive() + "getGive");
-        BeastSlayer.logger.info(this.getSell() + "getSell");
-        BeastSlayer.logger.info(this.getEat() + "getEat");
-*/
     }
     @Override
     public boolean canDespawn(){return !this.isFriendly() && this.isStalking();}
@@ -266,6 +304,9 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     @SideOnly(Side.CLIENT)
     public void handleStatusUpdate(byte id)
     {
+        if(id==10){
+            this.spellTime = 80;
+        }
         if(id == 13){
             this.world.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY,  this.posX, this.posY + (double)this.height - 0.75D, this.posZ, (this.rand.nextDouble() - 0.5D) * 2.0D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2.0D);
 
@@ -311,7 +352,8 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
         if (!this.world.isRemote) {
            // this.chainTicks = 20;
-            //this.world.setEntityState(this, (byte)6);
+            this.world.setEntityState(this, (byte)10);
+            this.setSpellTime(80);
 
            // entityarrow.setMob(true);
             double d0 = target.posX - this.posX;
@@ -320,7 +362,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
             EntityCharmChain entityarrow = new EntityCharmChain(world, this, (float)d0, (float)d1, (float)d2 );
         //    entityarrow.setPositionAndRotation(this.posX, this.posY + this.getEyeHeight(), this.posZ, this.rotationYaw, this.rotationPitch);
             entityarrow.setPosition(this.posX, this.posY + this.height / 2f, this.posZ);
-            this.playSound(ModSounds.KUNAI, 0.8F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.world.playSound(null, this.posX, this.posY, this.posZ ,ModSounds.SUCC_SPELL, SoundCategory.HOSTILE, 0.8F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             this.world.spawnEntity(entityarrow);
 
         }
@@ -335,9 +377,17 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     {
         super.writeEntityToNBT(compound);
 
-        compound.setInteger("friendTimer", this.friendlyTicks);
+        compound.setInteger("friendlyTicks", this.friendlyTicks);
+
+        compound.setBoolean("stalk", this.isStalking());
 
         compound.setInteger("buff", this.getBuff());
+
+        compound.setInteger("magic", this.spellTime);
+
+        compound.setInteger("drop", this.dropTime);
+
+        compound.setInteger("cooldown", this.spellCooldown);
 
         if (this.getFriendID() == null)
         {
@@ -347,13 +397,24 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         {
             compound.setString("FriendUUID", this.getFriendID().toString());
         }
+
+        compound.setBoolean("Sitting", this.isSitting());
     }
 
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
         String s;
-
+        if (this.aiSit != null)
+        {
+            this.aiSit.setSitting(compound.getBoolean("Sitting"));
+        }
+        if(compound.hasKey("magic")){
+            this.spellTime = compound.getInteger("magic");
+        }
+        if(compound.hasKey("drop")){
+            this.dropTime = compound.getInteger("drop");
+        }
         if (compound.hasKey("FriendUUID", 8))
         {
             s = compound.getString("FriendUUID");
@@ -366,9 +427,15 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         if(compound.hasKey("friendlyTicks")){
             this.friendlyTicks = compound.getInteger("friendlyTicks");
         }
-
+        if(compound.hasKey("stalk")){
+            this.setStalking(compound.getBoolean("stalk"));
+        }
         if(compound.hasKey("buff")){
             this.setBuff(compound.getInteger("buff"));
+        }
+
+        if(compound.hasKey("cooldown")){
+            this.spellCooldown = compound.getInteger("cooldown");
         }
 
         if (!s.isEmpty())
@@ -392,7 +459,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         if(!this.isFriendly()){
             return false;
         } else {
-            if (!itemstack.isEmpty())
+            if (!itemstack.isEmpty() && this.isFriend(player))
             {
                 if (itemstack.getItem() instanceof ItemFood)
                 {
@@ -412,25 +479,35 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                     }
                 }
 
-                else if (itemstack.getItem() == Items.DIAMOND)
+                else if (GIVE_ITEMS.contains(itemstack.getItem()) && this.getGive() <= 0)
                 {
                     if (!player.capabilities.isCreativeMode)
                     {
                         itemstack.shrink(1);
                     }
                     this.world.setEntityState(this, (byte)14);
-                    this.friendlyTicks += 16000;
-                    this.setGive(4000);
+                    this.friendlyTicks += 10000;
+                    this.setGive(8000);
                     return true;
                 }
-                //add "goodies"
             }
-            else if(player.isSneaking() && this.getSell() <= 0){ //TODO add a sound for the exchange
+            if (this.isFriend(player) && !this.world.isRemote && this.isSitting())
+            {
+                this.aiSit.setSitting(false);
+                this.isJumping = false;
+                this.navigator.clearPath();
+            }
+
+            else if(player.isSneaking() && this.getSell() <= 0){
                 player.attackEntityFrom(DamageSource.causeMobDamage(this), 4F);
                 if(!this.world.isRemote) {
                     player.addPotionEffect(new PotionEffect(this.randEffect(this.rand.nextInt(7)), 3000, 0));
+                    if (player instanceof EntityPlayerMP && !this.world.isRemote){
+                        ModTriggers.SUCCUBUS_BLOOD.trigger((EntityPlayerMP)player);
+
+                    }
                 }
-                this.world.playSound(null, this.getPosition(), ModSounds.SUCC_SUCK,  SoundCategory.HOSTILE, 1.2F, this.rand.nextFloat() * 0.2F + 0.8F);
+                this.world.playSound(null, this.posX, this.posY, this.posZ , ModSounds.SUCC_SUCK, this.getSoundCategory(), 1.2F, this.rand.nextFloat() * 0.2F + 0.8F);
                 this.world.setEntityState(this, (byte)14);
                 this.friendlyTicks += 8000;
                 this.setSell(6000);
@@ -477,6 +554,15 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     public void setFriendID(@Nullable UUID p_184754_1_)
     {
         this.dataManager.set(FRIEND_UNIQUE_ID, Optional.fromNullable(p_184754_1_));
+        if(p_184754_1_ != null){
+            if(this.world.getPlayerEntityByUUID(p_184754_1_) != null){
+                EntityPlayer entityplayer = this.world.getPlayerEntityByUUID(p_184754_1_);
+                if (entityplayer instanceof EntityPlayerMP && !this.world.isRemote){
+                    ModTriggers.SUCCUBUS_FRIEND.trigger((EntityPlayerMP)entityplayer);
+
+                }
+            }
+        }
     }
 
     public void setFriendBy(EntityPlayer player)
@@ -486,7 +572,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     }
 
     @Nullable
-    public EntityLivingBase getOwner()
+    public EntityLivingBase getFriend()
     {
         try
         {
@@ -501,7 +587,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
     public boolean isFriend(EntityLivingBase entityIn)
     {
-        return entityIn == this.getOwner();
+        return entityIn == this.getFriend();
     }
 
     public boolean isFriendly()
@@ -526,10 +612,13 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         double d0 = this.posX + (this.rand.nextDouble() - 0.5D) * 32.0D;
         double d1 = this.posY + (double)(this.rand.nextInt(64) - 32);
         double d2 = this.posZ + (this.rand.nextDouble() - 0.5D) * 32.0D;
-        this.world.setEntityState(this, (byte)16);
-        this.world.playSound((EntityPlayer)null, this.prevPosX, this.prevPosY, this.prevPosZ, SoundEvents.ENTITY_BAT_TAKEOFF, this.getSoundCategory(), 0.5F, 1.0F);
+
         for (int l = 0; l <= 5; ++l) {
             if (isTeleportFriendlyBlock(d0, d1, d2)) {
+                this.world.setEntityState(this, (byte)16);
+                if (!this.world.isRemote) {
+                    this.world.playSound(null, this.prevPosX, this.prevPosY, this.prevPosZ, SoundEvents.ENTITY_BAT_TAKEOFF, this.getSoundCategory(), 0.5F, 1.0F);
+                }
                 this.setPosition(d0, d1, d2);
                 break;
             }
@@ -567,7 +656,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         return this.dataManager.get(GIVE);
     }
 
-    public class EntityAITargetAggro<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T>
+    public static class EntityAITargetAggro<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T>
     {
         private final EntitySucc tameable;
 
@@ -590,14 +679,17 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         } else if(this.getHealth() >= this.getMaxHealth() && this.getBuff() <= 9) {
             this.setBuff(this.getBuff() + 1);
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", this.getBuff(), 0).setSaved(true));
-            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, 0).setSaved(true));
+            if(this.getBuff() % 3  == 0) {
+                this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, 0).setSaved(true));
+            }
             this.setHealth(this.getMaxHealth());
         }
     }
 
     protected SoundEvent getAmbientSound()
     {
-        return ModSounds.SUCC_AMB;
+        boolean b = this.isFriendly() && this.friendlyTicks < 6000;
+        return b ? ModSounds.SUCC_SIGH : ModSounds.SUCC_AMB;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn)
@@ -607,11 +699,132 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
     protected SoundEvent getDeathSound()
     {
-        return ModSounds.SUCC_HURT;
+        return ModSounds.SUCC_DEATH;
     }
 
     @Override
     protected float getSoundVolume() {
         return 1.3F;
+    }
+
+
+    @Override
+    public boolean getCanSpawnHere() {
+        boolean b = false;
+
+        for (int i = -2; i < 3; i++) {
+            for (int j = -2; j < 3; j++) {
+                Chunk chunk = world.getChunkFromBlockCoords(this.getPosition());
+                boolean validspawn = this.tavernPos(this.world, chunk.x + i, chunk.z + j);
+                if(validspawn){
+                    b = true;
+                    break;
+                }
+            }
+        }
+        //  boolean b = chunk.equals(  TribeSavedData.loadData(this.world).getLocation());
+        BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+        //BeastSlayer.logger.debug(this.world.getBlockState(blockpos).getBlock());
+
+        return b && super.getCanSpawnHere() && blockpos.getY() >= 50;
+    }
+
+    @Override
+    public int getMaxSpawnedInChunk() {
+        return 3;
+    }
+
+    protected boolean tavernPos(World world, int chunkX, int chunkZ) {
+        int spacing = BeastSlayerConfig.TavernSpacing;
+        int separation = BeastSlayerConfig.TavernSeparation;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0)
+        {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0)
+        {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random =  world.setRandomSeed(k, l, 10387312);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l)
+        {
+
+            return world.getBiomeProvider().areBiomesViable((i << 4) + 8, (j << 4) + 8, 0, Lists.newArrayList(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST))); /*&& random.nextInt(20) == 0*/
+        } else {
+
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isPreventingPlayerRest(EntityPlayer playerIn)
+    {
+        return false;
+    }
+
+    public int getSpellTime(){
+        return this.spellTime;
+    }
+    @SideOnly(Side.CLIENT)
+    public int getSpellTimeClient(){
+        return this.spellTime;
+    }
+    public void setSpellTime(int spellTime){
+        if(!this.world.isRemote) {
+            this.playSound(ModSounds.SUCC_SPELL, 1.2F, 1.0F - (this.getRNG().nextFloat() * 0.1F) + 0.1F);
+        }
+        this.spellTime = spellTime;
+    }
+
+    public int getSpellCooldown(){
+        return this.spellCooldown;
+    }
+    public void setSpellCooldown(int spellCooldown){
+        this.spellCooldown = spellCooldown;
+
+    }
+    public void setSpellTimeId(int spell, int otherid) {
+        this.setSpellTime(spell);
+        this.world.setEntityState(this, (byte)otherid);
+    }
+
+    protected int getExperiencePoints(EntityPlayer player)
+    {
+
+        this.experienceValue = (int)((float)this.experienceValue + this.getBuff() * 2F);
+
+
+        return super.getExperiencePoints(player);
+    }
+
+    public EntityAICustomSit getAISit()
+    {
+        return this.aiSit;
+    }
+
+    public boolean isSitting()
+    {
+        return this.dataManager.get(WAIT);
+    }
+
+    public void setSitting(boolean sitting)
+    {
+        this.dataManager.set(WAIT, sitting);
+    }
+
+    public double getYOffset() {
+        return -0.5D;
     }
 }

@@ -2,51 +2,54 @@ package com.unoriginal.beastslayer.worldGen;
 
 import com.google.common.collect.Lists;
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
-import net.minecraft.world.storage.MapStorage;
+import net.minecraft.world.gen.structure.template.PlacementSettings;
+import net.minecraft.world.gen.structure.template.Template;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-public class JungleVillageWorldGen extends WorldGenerator {
+public class TavernWorldGen extends WorldGenerator {
+    private static final ResourceLocation LOOT = new ResourceLocation(BeastSlayer.MODID, "structures/tavern_up");
+    private static final ResourceLocation LOOT2 = new ResourceLocation(BeastSlayer.MODID, "structures/tavern_down");
+    public static List<Biome> VALID_BIOMES =  Lists.newArrayList(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST));
 
-    public static List<Biome> VALID_BIOMES =  Lists.newArrayList(BiomeDictionary.getBiomes(BiomeDictionary.Type.JUNGLE));
-   // private final List<Biome.SpawnListEntry> spawnList = Lists.newArrayList();
     private int separation;
     private int spacing;
 
-    public JungleVillageWorldGen(){
-        this.spacing = 30;
-        this.separation = 16;
-        //add spawns to biome
-
-      //  this.spawnList.add(new Biome.SpawnListEntry(EntityTribeWarrior.class, 30, 1, 3));
-     //   this.spawnList.add(new Biome.SpawnListEntry(EntityTank.class, 15, 1, 2));
-    //    this.spawnList.add(new Biome.SpawnListEntry(EntityHunter.class, 25, 1, 3));
-     //   this.spawnList.add(new Biome.SpawnListEntry(EntityPriest.class, 8, 1, 1));
+    public TavernWorldGen(){
+        this.spacing = BeastSlayerConfig.TavernSpacing;
+        this.separation = BeastSlayerConfig.TavernSeparation;
     }
-
     @Override
     public boolean generate(World world, Random rand, BlockPos pos) {
         boolean canSpawn = canSpawnStructureAtCoords(world, (pos.getX() - 8)  >> 4, (pos.getZ() - 8)  >> 4);
-       // if (new Random().nextInt(9) == 0) {
+        // if (new Random().nextInt(9) == 0) {
         if(canSpawn) {
-            int new_size = 96;
-            BeastSlayer.logger.debug("generating village!" + pos);
-            JungleVillageWorldGen.Start start =  (Start) this.getStructureStart(world, pos.getX(), pos.getZ(), rand);
+            int new_size = 32;
+            BeastSlayer.logger.debug("generating tavern!" + pos);
+            Start start =  (Start) this.getStructureStart(world, pos.getX(), pos.getZ(), rand);
 
             start.generateStructure(world, rand, new StructureBoundingBox(pos.getX() - new_size, pos.getZ() - new_size, pos.getX() + new_size, pos.getZ() + new_size));
 
@@ -60,18 +63,11 @@ public class JungleVillageWorldGen extends WorldGenerator {
     public boolean generateSimple(IChunkGenerator generator, BlockPos pos, World world, Random rand){
         boolean canSpawn = canSpawnStructureAtCoords(world, (pos.getX() - 8)  >> 4, (pos.getZ() - 8)  >> 4);
         if(canSpawn){
-            int new_size = 96;
-            JungleVillageWorldGen.Start start = (Start) this.getStructureStart(world, pos.getX(), pos.getZ(), rand);
+            int new_size = 32;
+            Start start = (Start) this.getStructureStart(world, pos.getX(), pos.getZ(), rand);
 
             start.generateStructure(world, rand, new StructureBoundingBox(pos.getX() - new_size, pos.getZ() - new_size, pos.getX() + new_size, pos.getZ() + new_size));
-            BeastSlayer.logger.debug("generating village!" +  (((pos.getX() - 8)  >> 4)+ "chunkx") + (((pos.getZ() - 8)  >> 4) + "chunkz"));
-
-            if (generator != null) {
-             /*   for (Biome.SpawnListEntry spawnListEntry : this.spawnList) {
-                    generator.getPossibleCreatures(EnumCreatureType.CREATURE, pos).add(spawnListEntry);
-                    //    BeastSlayer.logger.debug(generator.getPossibleCreatures(EnumCreatureType.CREATURE, pos));
-                }*/
-            }
+            BeastSlayer.logger.debug("generating tavern!" +  (((pos.getX() - 8)  >> 4)+ "chunkx") + (((pos.getZ() - 8)  >> 4) + "chunkz"));
         }
         return canSpawn;
     }
@@ -118,7 +114,7 @@ public class JungleVillageWorldGen extends WorldGenerator {
 
     protected StructureStart getStructureStart(World world, int chunkX, int chunkZ, Random rand) {
 
-        return new JungleVillageWorldGen.Start(world, rand , chunkX, chunkZ, 1);
+        return new Start(world, rand , chunkX, chunkZ, 1);
     }
 
     public static class Start extends StructureStart {
@@ -137,10 +133,9 @@ public class JungleVillageWorldGen extends WorldGenerator {
             Random random = new Random((x + z * 10387313L));
             Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
             BlockPos pos = new BlockPos(x , getGroundFromAbove(worldIn, x,z), z );
-           // List<NewJungleVillagePieces.NewJungleVillageTemplate> houses = Lists.newLinkedList();
-            NewJungleVillagePieces.generateVillage(worldIn.getSaveHandler().getStructureTemplateManager(), pos, rotation, rand, this.components, worldIn);
+            // List<NewJungleVillagePieces.NewJungleVillageTemplate> houses = Lists.newLinkedList();
+            generateTavern(worldIn.getSaveHandler().getStructureTemplateManager(), pos, rotation, rand, worldIn);
 
-           // this.components.addAll(houses);
             this.updateBoundingBox();
             this.valid = true;
         }
@@ -150,22 +145,15 @@ public class JungleVillageWorldGen extends WorldGenerator {
         }
         public NBTTagCompound writeDataToNBT(int chunkX, int chunkZ){
             NBTTagCompound nbttagcompound = new NBTTagCompound();
-            nbttagcompound.setString("id", "TribeVillage");
+            nbttagcompound.setString("id", "Tavern");
             nbttagcompound.setInteger("ChunkX", chunkX);
             nbttagcompound.setInteger("ChunkZ", chunkZ);
             nbttagcompound.setTag("BB", this.boundingBox.toNBTTagIntArray());
             nbttagcompound.setString("Location", "[" + chunkX + "," + chunkZ + "]");
-      /*      NBTTagList nbttaglist = new NBTTagList();
-
-          /*  for (StructureComponent structurecomponent : this.components)
-            {
-                nbttaglist.appendTag(structurecomponent.createStructureBaseNBT());
-            }
-
-            nbttagcompound.setTag("Children", nbttaglist);*/
             this.writeToNBT(nbttagcompound);
             return nbttagcompound;
         }
+
         public static int getGroundFromAbove(World world, int x, int z)
         {
             int y = 255;
@@ -192,6 +180,52 @@ public class JungleVillageWorldGen extends WorldGenerator {
         {
             super.readFromNBT(tagCompound);
             this.valid = tagCompound.getBoolean("Valid");
+        }
+
+        public boolean generateTavern(TemplateManager manager, BlockPos pos, Rotation rotation, Random rand, World world){
+            WorldServer worldserver = (WorldServer) world;
+            MinecraftServer minecraftserver = world.getMinecraftServer();
+            Template template = manager.getTemplate(minecraftserver, new ResourceLocation("ancientbeasts:tavern"));
+            IBlockState iblockstate = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, iblockstate, iblockstate, 3);
+
+
+
+            PlacementSettings placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE)
+                    .setRotation(rotation).setIgnoreEntities(false).setReplacedBlock(Blocks.STRUCTURE_VOID).setIgnoreStructureBlock(false);
+
+            template.addBlocksToWorld(world, pos, placementsettings, 2 | 16);
+            template.getDataBlocks(pos, placementsettings);
+            Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
+
+
+            for (Map.Entry<BlockPos, String> entry : map.entrySet()) {
+                if ("chestup".equals(entry.getValue())) {
+                    world.setBlockState(entry.getKey(), Blocks.AIR.getDefaultState(), 3);
+                    TileEntity tileentity = world.getTileEntity(entry.getKey().down());
+
+                    if (tileentity instanceof TileEntityChest) {
+                        if(rand.nextInt(4) == 0){
+                            world.setBlockState(entry.getKey().down(), Blocks.AIR.getDefaultState(), 3);
+                        } else {
+                            ((TileEntityChest) tileentity).setLootTable(LOOT, rand.nextLong());
+                        }
+                    }
+                }
+                if ("chestdown".equals(entry.getValue())) {
+                    world.setBlockState(entry.getKey(), Blocks.AIR.getDefaultState(), 3);
+                    TileEntity tileentity = world.getTileEntity(entry.getKey().down());
+
+                    if (tileentity instanceof TileEntityChest) {
+                        if(rand.nextInt(4) == 0){
+                            world.setBlockState(entry.getKey().down(), Blocks.AIR.getDefaultState(), 3);
+                        } else {
+                            ((TileEntityChest) tileentity).setLootTable(LOOT2, rand.nextLong());
+                        }
+                    }
+                }
+            }
+            return true;
         }
     }
 

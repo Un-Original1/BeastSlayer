@@ -67,6 +67,13 @@ public class ModSounds {
     public static final SoundEvent SUCC_HURT = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_hurt")).setRegistryName("succ_hurt");
     public static final SoundEvent SUCC_AMB = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_ambient")).setRegistryName("succ_ambient");
     public static final SoundEvent SUCC_SUCK = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_suck")).setRegistryName("succ_suck");
+    public static final SoundEvent SUCC_SIGH = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_sigh")).setRegistryName("succ_sigh");
+    public static final SoundEvent SUCC_SPELL = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_spell")).setRegistryName("succ_spell");
+    public static final SoundEvent SUCC_DEATH = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_death")).setRegistryName("succ_death");
+
+    public static final SoundEvent MOSQ_LOOP = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "mosq_loop")).setRegistryName("mosq_loop");
+    public static final SoundEvent MOSQ_GULP = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "mosq_gulp")).setRegistryName("mosq_gulp");
+
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
         @SubscribeEvent
@@ -118,13 +125,18 @@ public class ModSounds {
             event.getRegistry().register(OWLSTACK_DEATH);
             event.getRegistry().register(OWLSTACK_SCREAM);
             event.getRegistry().register(KUNAI);
-            event.getRegistry().registerAll(MAGIC_SHIELD);
-            event.getRegistry().registerAll(KUNAI_HIT);
-            event.getRegistry().registerAll(SMOKE);
-            event.getRegistry().registerAll(SHOCKWAVE);
-            event.getRegistry().registerAll(SUCC_HURT);
-            event.getRegistry().registerAll(SUCC_AMB);
-            event.getRegistry().registerAll(SUCC_HURT);
+            event.getRegistry().register(MAGIC_SHIELD);
+            event.getRegistry().register(KUNAI_HIT);
+            event.getRegistry().register(SMOKE);
+            event.getRegistry().register(SHOCKWAVE);
+            event.getRegistry().register(SUCC_HURT);
+            event.getRegistry().register(SUCC_AMB);
+            event.getRegistry().register(SUCC_SIGH);
+            event.getRegistry().register(SUCC_SPELL);
+            event.getRegistry().register(SUCC_DEATH);
+            event.getRegistry().register(SUCC_SUCK);
+            event.getRegistry().register(MOSQ_LOOP);
+            event.getRegistry().register(MOSQ_GULP);
         }
 
     }

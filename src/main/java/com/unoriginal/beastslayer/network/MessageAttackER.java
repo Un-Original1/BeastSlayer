@@ -57,7 +57,7 @@ public class MessageAttackER implements IMessage
             EntityLivingBase entity = (EntityLivingBase) player.world.getEntityByID(message.entityId);
 
             player.getHeldItemMainhand();
-            if (player.getHeldItemMainhand().getItem() instanceof ItemSpear)
+            if (player.getHeldItemMainhand().getItem() instanceof ItemSpear && entity != null)
             {
                 double distanceSq = player.getDistanceSq(entity);
              ///  if (10D >= distanceSq)

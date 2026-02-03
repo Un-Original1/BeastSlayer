@@ -236,7 +236,7 @@ public class BeastSlayerConfig {
     @Name("Cauldron fill chance")
     @Comment("chances that vines from weeping trees fill a cauldron with goop, less numbers mean more likely")
     @RequiresMcRestart
-    public static int CauldronFillChance = 40;
+    public static int CauldronFillChance = 30;
 
     @Name("Potion Blacklist")
     @Comment("A list of potion effects that concoction will not be able to grant (usage: modid:potion_name)")
@@ -251,5 +251,20 @@ public class BeastSlayerConfig {
     public static int[] GiantDimensionWhitelist = {
             0
     };
+
+    @Name("Tavern spacing")
+    @Comment("Spacing between tavern spawns, also affects succubus spawn logic, spacing must be always greater than separation")
+    @RequiresMcRestart
+    public static int TavernSpacing = 24;
+
+    @Name("Tavern separation")
+    @Comment("Separation between tavern spawns, also affects succubus spawn logic")
+    @RequiresMcRestart
+    public static int TavernSeparation = 18;
+
+    @Name("Needlewing spawn chance")
+    @Comment("Higher values means a higher spawn chance")
+    @RequiresMcRestart
+    public static int MosquitoSpawnChance = 20;
 
 }

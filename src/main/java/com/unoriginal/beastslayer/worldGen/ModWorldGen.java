@@ -73,6 +73,10 @@ public class ModWorldGen implements IWorldGenerator {
             structure.generate(world, rand, pos);
 
         }
+        WorldGenerator tavern = new TavernWorldGen();
+        if (pos.getY() > 31) {
+            tavern.generate(world, rand, pos);
+        }
     }
 
     private void generateNether(World world, Random rand, int chunkX, int chunkZ) {

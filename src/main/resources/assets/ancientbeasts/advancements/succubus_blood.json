@@ -1,0 +1,20 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:strange_potion"
+    },
+    "title": {
+      "translate": "advancements.succubus_blood.title"
+    },
+    "description": {
+      "translate": "advancements.succubus_blood.description"
+    }
+  },
+
+  "parent": "ancientbeasts:succubus_friend",
+  "criteria": {
+    "place_cloud_sapling": {
+      "trigger": "succubus_blood"
+    }
+  }
+}

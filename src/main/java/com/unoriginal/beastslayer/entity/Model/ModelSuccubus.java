@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.entity.Model;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.entity.Entities.EntitySucc;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -160,6 +161,7 @@ public class ModelSuccubus extends ModelBase {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         this.head.rotateAngleY = netHeadYaw * 0.017453292F;
         this.head.rotateAngleX = headPitch * 0.017453292F;
+
         this.leg_l.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
         this.leg_r.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount * 0.5F;
 
@@ -180,7 +182,74 @@ public class ModelSuccubus extends ModelBase {
         this.tail.rotateAngleX = MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
         this.tail.rotateAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.0F * limbSwingAmount * 0.5F;
 
+        this.body.rotateAngleX = 0F;
+        this.body.rotateAngleZ = 0F;
+        //reset other anim
+
+        this.arm_r.rotateAngleY = 0F;
+        this.arm_r.rotateAngleZ = 0.3054F;
+
+        this.arm_l.rotateAngleY = 0F;
+        this.arm_l.rotateAngleZ = -0.3054F;
+
+
+        this.leg_l.rotateAngleY = 0F;
+        this.leg_l.rotateAngleZ = 0F;
+
+        this.leg_r.rotateAngleY = 0F;
+        this.leg_r.rotateAngleZ = 0F;
+        float dontforget = 0.007F;
         //people are gonna hate me for this, but I cannot withstand a solid block that does not move at all, makes the model look stiff and lifeless
-        this.awooga.rotationPointY = -10.0F + MathHelper.cos(ageInTicks * (0.2F + limbSwingAmount * 0.007F)) * (0.05F + limbSwingAmount * 0.9F);
+        //NOTE: I HAVE NO CLUE WHY IT MOVES SO MUCH HELPPPPP
+        this.awooga.rotationPointY = -10.0F + MathHelper.cos(ageInTicks * (0.2F + limbSwing * 0.0003F)) * (0.05F + limbSwingAmount * 0.6F);
+        if (this.isRiding)
+        {
+            this.arm_r.rotateAngleX += -((float)Math.PI / 5F);
+            this.arm_l.rotateAngleX += -((float)Math.PI / 5F);
+            this.leg_r.rotateAngleY = ((float)Math.PI / 10F);
+            this.leg_r.rotateAngleZ = 0.07853982F;
+            this.leg_l.rotateAngleY = -((float)Math.PI / 10F);
+            this.leg_l.rotateAngleZ = -0.07853982F;
+            this.leg_l.rotateAngleX = -1.4137167F;
+            this.leg_r.rotateAngleX = -1.4137167F;
+        }
+        if(entityIn instanceof EntitySucc){
+            EntitySucc succubus = (EntitySucc)entityIn;
+            if(succubus.getSpellTimeClient() > 0){
+                float fastpi = (float)Math.PI;
+                this.head.rotateAngleY = netHeadYaw * 0.017453292F + 25F * fastpi / 180F;
+
+                this.body.rotateAngleX =  MathHelper.cos(ageInTicks * 0.3F) * 0.1F;
+                this.body.rotateAngleZ =  MathHelper.cos(ageInTicks * 0.3F) * 0.1F;
+
+                this.arm_r.rotateAngleY = 4F * fastpi / 180F;
+                this.arm_r.rotateAngleX = -177F * fastpi / 180F;
+                this.arm_r.rotateAngleZ = -38F * fastpi / 180F + MathHelper.cos(ageInTicks * 0.5F) * 0.3F;
+
+                this.arm_l.rotateAngleY = 0F;
+                this.arm_l.rotateAngleZ = -17.5F * fastpi / 180F;
+                this.arm_l.rotateAngleX = -97.5F * fastpi / 180F;
+                if(!succubus.isRiding()) {
+
+                    this.leg_l.rotateAngleX = 0F;
+                    this.leg_l.rotateAngleY = -27.5F * fastpi / 180F;
+                    this.leg_l.rotateAngleZ = -10F * fastpi / 180F;
+
+                    this.leg_r.rotateAngleX = 25F * fastpi / 180F;
+                }
+                //note on blockbench editor reverse x y axis
+            }
+            if(succubus.isSitting()){
+                float fastrad = (float)Math.PI / 180F;
+                this.arm_l.rotateAngleX = -20.5F * fastrad;
+                this.arm_l.rotateAngleY = 50F * fastrad;
+                this.arm_l.rotateAngleZ = 8.5F * fastrad;
+
+                this.arm_r.rotateAngleX = -20.5F * fastrad;
+                this.arm_r.rotateAngleY = -50F * fastrad;
+                this.arm_r.rotateAngleZ = -8.5F * fastrad;
+
+            }
+        }
     }
 }

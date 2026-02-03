@@ -5,7 +5,6 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateFlying;
@@ -46,7 +45,7 @@ public class EntityAIFollowFriend extends EntityAIBase
 
     public boolean shouldExecute()
     {
-        EntityLivingBase entitylivingbase = this.tameable.getOwner();
+        EntityLivingBase entitylivingbase = this.tameable.getFriend();
 
         if (entitylivingbase == null)
         {
@@ -97,7 +96,7 @@ public class EntityAIFollowFriend extends EntityAIBase
 
                 if (!this.petPathfinder.tryMoveToEntityLiving(this.owner, this.followSpeed))
                 {
-                    if (!this.tameable.getLeashed() && !this.tameable.isRiding())
+                    if (!this.tameable.getLeashed() /*&& !this.tameable.isRiding()*/)
                     {
                         if (this.tameable.getDistanceSq(this.owner) >= 144.0D)
                         {

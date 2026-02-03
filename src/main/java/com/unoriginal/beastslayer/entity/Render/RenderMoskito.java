@@ -3,6 +3,7 @@ package com.unoriginal.beastslayer.entity.Render;
 import com.unoriginal.beastslayer.entity.Entities.EntityMosquito;
 import com.unoriginal.beastslayer.entity.Model.ModelMosquito;
 import com.unoriginal.beastslayer.entity.Render.Layer.LayerGlowGeneric;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -19,8 +20,20 @@ public class RenderMoskito extends RenderLiving<EntityMosquito> {
     public static final Factory FACTORY = new Factory();
 
     public RenderMoskito(RenderManager rendermanagerIn) {
-        super(rendermanagerIn, new ModelMosquito(), 0.2F);
+        super(rendermanagerIn, new ModelMosquito(), 0.35F);
         this.addLayer(new LayerGlowGeneric(this, GLOW));
+    }
+
+    protected void applyRotations(EntityMosquito mosquito, float ageInTicks, float rotationYaw, float partialTicks)
+    {
+        super.applyRotations(mosquito, ageInTicks, rotationYaw, partialTicks);
+        if(mosquito.isRiding()){
+
+            GlStateManager.translate(-0.1F, 0.1F, 0.1F);
+            GlStateManager.rotate(-90F, 1.0F,0F,0.0F);
+            GlStateManager.rotate(180F, 0.0F,1F,0.0F);
+            //unrelated to the lunkertooth chest bug, already tested
+        }
     }
     @Nullable
     @Override

@@ -1,45 +1,16 @@
 {
   "pools": [
     {
-      "name": "ancientbeasts:j_wizard",
+      "name": "ancientbeasts:tavern_down",
       "rolls": {
-        "min": 3,
-        "max": 6
+        "min": 4,
+        "max": 8
       },
       "entries": [
         {
           "type": "item",
-          "name": "minecraft:golden_apple",
-          "weight": 7
-        },
-        {
-          "type": "item",
-          "name": "minecraft:cauldron",
-          "weight": 15
-        },
-        {
-          "type": "item",
-          "name": "minecraft:diamond",
-          "weight": 6,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 2
-              }
-            }
-          ]
-        },
-        {
-          "type": "item",
-          "name": "ancientbeasts:cursed_sapling",
-          "weight": 2
-        },
-        {
-          "type": "item",
-          "name": "ancientbeasts:cursed_wood",
-          "weight": 5,
+          "name": "minecraft:bread",
+          "weight": 12,
           "functions": [
             {
               "function": "set_count",
@@ -52,29 +23,17 @@
         },
         {
           "type": "item",
-          "name": "minecraft:experience_bottle",
-          "weight": 5
-        },
-        {
-          "type": "item",
           "name": "minecraft:book",
-          "weight": 2,
+          "weight": 4,
           "functions": [
             {
-              "function": "enchant_with_levels",
-              "levels": 30,
-              "treasure": true
+              "function": "enchant_randomly"
             }
           ]
         },
         {
           "type": "item",
-          "name": "minecraft:name_tag",
-          "weight": 14
-        },
-        {
-          "type": "item",
-          "name": "minecraft:carrot",
+          "name": "minecraft:wool",
           "weight": 15,
           "functions": [
             {
@@ -88,25 +47,61 @@
         },
         {
           "type": "item",
-          "name": "minecraft:golden_apple",
+          "name": "ancientbeasts:strange_potion",
+          "weight": 7
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond",
           "weight": 2,
           "functions": [
             {
-              "function": "set_data",
-              "data": 1
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 1
+              }
             }
           ]
         },
         {
           "type": "item",
-          "name": "ancientbeasts:wisp_bottle",
+          "name": "minecraft:melon",
           "weight": 10,
           "functions": [
             {
-              "function": "set_data",
+              "function": "set_count",
               "count": {
-                "min": 0,
-                "max": 2
+                "min": 1,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:emerald",
+          "weight": 7,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:string",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 8
               }
             }
           ]

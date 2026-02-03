@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.AbstractIllager;
 import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
@@ -480,6 +481,29 @@ public class ModEvents {
                         t.getNavigator().clearPath();
                         t.setAttackTarget(null);
                     }
+
+
+                }
+
+                if(t.getAttackTarget() != null && t.getAttackTarget() instanceof EntitySucc){
+                    EntitySucc succ = (EntitySucc) p;
+                    if(succ == null) return;
+                    if(succ.isFriendly()){
+                        t.getNavigator().clearPath();
+                        t.setAttackTarget(null);
+                    }
+                }
+            }
+            if(l instanceof EntityGolem){
+                EntityGolem g = (EntityGolem) l;
+                EntityLivingBase p = g.getAttackTarget();
+                if(g.getAttackTarget() != null && g.getAttackTarget() instanceof EntitySucc){
+                    EntitySucc succ = (EntitySucc) p;
+                    if(succ == null) return;
+                    if(succ.isFriendly()){
+                        g.getNavigator().clearPath();
+                        g.setAttackTarget(null);
+                    }
                 }
             }
         }
@@ -852,12 +876,13 @@ public class ModEvents {
                 if(!list.isEmpty())
                 {
                     for (EntitySucc entitySucc : list) {
+                        if(entitySucc.isFriend(player)) {
 
-                        e.setDroppedExperience(xp / 2);
+                            e.setDroppedExperience(xp / 2);
 
-                        EntitySuccXp xp1 = new EntitySuccXp(world, e.getEntity().getPosition().getX(), e.getEntity().getPosition().getY() + e.getEntity().height, e.getEntity().getPosition().getZ(), e.getDroppedExperience(), entitySucc);
-                        BeastSlayer.logger.info("XP XP XP XP XP XP");
-                        world.spawnEntity(xp1);
+                            EntitySuccXp xp1 = new EntitySuccXp(world, e.getEntity().getPosition().getX(), e.getEntity().getPosition().getY() + e.getEntity().height, e.getEntity().getPosition().getZ(), e.getDroppedExperience(), entitySucc);
+                            world.spawnEntity(xp1);
+                        }
                     }
                 }
 
@@ -868,31 +893,6 @@ public class ModEvents {
         }
 
     }
-
-   /* @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public static void onFogDensityEvent(EntityViewRenderEvent.RenderFogEvent event) {
-        Entity entity = event.getEntity();
-        if (!(entity instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer)entity;
-        if (/*enableCreativeImmunity && player.isCreative()) {
-            return;
-        }
-       // float prev = JTPGCapabilityUtils.getPrevPlayerFogProgress(player);
-        //float current = JTPGCapabilityUtils.getPlayerFogProgress(player);
-        //float progress = (float)(prev + (current - prev) * ((player.field_70173_aa % 20) + event.getRenderPartialTicks()) / 20.0D);
-        /*if (progress <= 0.0F)
-            return;
-        float vanillaFogEnd = event.getFarPlaneDistance();
-        float targetFogStart = 0.0F;
-        float fogMaxDistance = vanillaFogEnd + (/*configFogFarDistance 40f - vanillaFogEnd);/* * progress;
-        float fogMinDistance = vanillaFogEnd * 0.75F + (targetFogStart - vanillaFogEnd * 0.75F); /* progress;
-        GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
-        GlStateManager.setFogStart(fogMinDistance);
-        GlStateManager.setFogEnd(fogMaxDistance);
-    }*/
 
     public Item getActiveItem(EntityLivingBase player){
         Item item = player.getHeldItemOffhand().getItem();

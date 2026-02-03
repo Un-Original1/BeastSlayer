@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -15,7 +16,7 @@ public class MessageDismountRidingEntity implements IMessage {
 
     private int playerId;
 
-    public MessageDismountRidingEntity(EntityPlayer player, EntityOwlstack owlstack)
+    public MessageDismountRidingEntity(EntityPlayer player, EntityLivingBase owlstack)
     {
         if (player != null)
         {
@@ -53,8 +54,9 @@ public class MessageDismountRidingEntity implements IMessage {
         public IMessage onMessage(MessageDismountRidingEntity message, MessageContext ctx) {
             EntityPlayerSP player = Minecraft.getMinecraft().player;
             Entity owlstack = player.world.getEntityByID(message.entityId);
-            owlstack.dismountRidingEntity();
-
+            if(owlstack != null) {
+                owlstack.dismountRidingEntity();
+            }
             return null;
         }
     }
