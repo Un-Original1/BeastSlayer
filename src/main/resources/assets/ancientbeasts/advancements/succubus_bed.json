@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:painting"
+    },
+    "title": {
+      "translate": "advancements.succubus_bed.title"
+    },
+    "description": {
+      "translate": "advancements.succubus_bed.description"
+    },
+    "hidden": true
+  },
+
+  "parent": "ancientbeasts:succubus_friend",
+  "criteria": {
+    "place_cloud_sapling": {
+      "trigger": "succubus_bed"
+    }
+  }
+}

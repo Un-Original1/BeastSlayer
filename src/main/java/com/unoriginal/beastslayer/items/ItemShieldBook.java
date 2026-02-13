@@ -3,6 +3,7 @@ package com.unoriginal.beastslayer.items;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.EntityBeam;
+import com.unoriginal.beastslayer.entity.Entities.EntitySucc;
 import com.unoriginal.beastslayer.init.ModPotions;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -34,7 +35,7 @@ public class ItemShieldBook extends Item {
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
         World world = player.getEntityWorld();
-        if (!world.isRemote && !player.getCooldownTracker().hasCooldown(this) && !(target instanceof EntityMob)) {
+        if (!world.isRemote && !player.getCooldownTracker().hasCooldown(this) && (!(target instanceof EntityMob) || target instanceof EntitySucc)) {
             EntityBeam beam = new EntityBeam(world, player, target,280 + BeastSlayerConfig.sBTimerBonus * 2);
             target.addPotionEffect(new PotionEffect(ModPotions.SHIELDED, 280 + BeastSlayerConfig.sBTimerBonus * 2, 0));
             world.spawnEntity(beam);

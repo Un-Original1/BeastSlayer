@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:garlic_neck"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.kill_succ.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.kill_succ.description"
+    },
+    "frame": "challenge"
+  },
+  "parent": "ancientbeasts:succubus_friend",
+  "criteria": {
+    "Sandy": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:succubus"
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,6 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
-import scala.Int;
 
 @Config(modid = BeastSlayer.MODID)
 public class BeastSlayerConfig {
@@ -252,15 +251,30 @@ public class BeastSlayerConfig {
             0
     };
 
-    @Name("Tavern spacing")
-    @Comment("Spacing between tavern spawns, also affects succubus spawn logic, spacing must be always greater than separation")
+    @Name("Inn spacing")
+    @Comment("Spacing between inn spawns, also affects succubus spawn logic, spacing must be always greater than separation")
     @RequiresMcRestart
-    public static int TavernSpacing = 24;
+    public static int InnSpacing = 24;
 
-    @Name("Tavern separation")
-    @Comment("Separation between tavern spawns, also affects succubus spawn logic")
+    @Name("Inn separation")
+    @Comment("Separation between inn spawns, also affects succubus spawn logic")
     @RequiresMcRestart
-    public static int TavernSeparation = 18;
+    public static int InnSeparation = 18;
+
+    @Name("Succubus Attributes")
+    @Comment("Y'know what I mean")
+    @RequiresMcRestart
+    public static boolean succubusAttributes = true;
+
+    @Name("Enable Succubus")
+    @Comment("Setting this to false will disable succubus spawning and also Inn Spawning, stuff is still accessible via creative mode")
+    @RequiresMcRestart
+    public static boolean EnableSuccubus = true;
+
+    @Name("Succubus spawn chance")
+    @Comment("Spawn chance of succubus, works just as any other mob 0-> none, 100-> very common, remember they are structure bound!")
+    @RequiresMcRestart
+    public static int  succubusSpawnrate = 80;
 
     @Name("Needlewing spawn chance")
     @Comment("Higher values means a higher spawn chance")

@@ -3,35 +3,34 @@ package com.unoriginal.beastslayer.entity.Entities;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.ai.AIMoveControl;
 import com.unoriginal.beastslayer.entity.Entities.ai.AIMoveRandom;
-import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMeleeConditional;
 import com.unoriginal.beastslayer.init.ModParticles;
 import com.unoriginal.beastslayer.init.ModSounds;
 import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
 import com.unoriginal.beastslayer.network.MessageDismountRidingEntity;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityVex;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SPacketSetPassengers;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityMosquito extends EntityMob {
+import javax.annotation.Nullable;
+
+public class EntityMosquito extends EntityAnimal {
     private static final DataParameter<Integer> FAT = EntityDataManager.createKey(EntityMosquito.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SUCK = EntityDataManager.createKey(EntityMosquito.class, DataSerializers.BOOLEAN);
     private float takenXP;
@@ -44,15 +43,27 @@ public class EntityMosquito extends EntityMob {
         this.takenXP = 0.0F;
     }
 
+    @Nullable
+    @Override
+    public EntityAgeable createChild(EntityAgeable ageable) {
+        return new EntityMosquito(this.world);
+    }
+
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new AIMoveRandom(this));
         this.tasks.addTask(1, new EntityAIAvoidEntity<>(this, EntityLivingBase.class,Predicate -> this.getStoredXP() >= 6, 6.0F, 0.8D, 1.2D ));
         this.tasks.addTask(4, new AIChargeAttack());
-       // this.tasks.addTask(3, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
+        this.tasks.addTask(5, new EntityAITempt(this, 1D, Items.REEDS, false));
+        this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F, 1.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntityMob.class));
         this.targetTasks.addTask(0, (new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true)));
+    }
+
+    public boolean isBreedingItem(ItemStack stack)
+    {
+        return stack.getItem() == Items.REEDS && this.getStoredXP() != 0;
     }
 
     public void move(MoverType type, double x, double y, double z)
@@ -68,7 +79,7 @@ public class EntityMosquito extends EntityMob {
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
 
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((10.0D));
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+            this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 
     /*protected PathNavigate createNavigator(World worldIn)
@@ -94,7 +105,7 @@ public class EntityMosquito extends EntityMob {
             this.setPositionAndRotation(this.getRidingEntity().posX + vec3d.x * 1.4D, this.getRidingEntity().posY + this.getRidingEntity().getEyeHeight(), this.getRidingEntity().posZ + vec3d.z * 1.4D, this.getRidingEntity().rotationYaw, this.getRidingEntity().rotationPitch);
         }
         if((this.ticksExisted % 100 == 0 || this.ticksExisted == 1) && this.isEntityAlive()) {
-            this.playSound(ModSounds.MOSQ_LOOP, 1.2F,  1F);
+            this.playSound(ModSounds.MOSQ_LOOP, 1.7F,  1F);
         }
 
         if (this.world.isRemote && this.getStoredXP() > 0) {
@@ -114,7 +125,7 @@ public class EntityMosquito extends EntityMob {
 
         if(this.isSuckingSrv() && !this.world.isRemote) {
             if(this.ticksExisted % 3 == 0) {
-                this.playSound(ModSounds.MOSQ_GULP, 2F,  1F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
+                this.playSound(ModSounds.MOSQ_GULP, 2.5F,  1F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
                 this.playSound(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.1F,  (this.rand.nextFloat() - this.rand.nextFloat()) * 0.35F + 0.9F);
             }
         }
@@ -139,12 +150,13 @@ public class EntityMosquito extends EntityMob {
 
 
                 decreaseExp(entityplayer, 2);
-                if(entityplayer instanceof EntityPlayerMP) {
+                if(entityplayer instanceof EntityPlayerMP && !entityplayer.isBeingRidden()) {
                     EntityPlayerMP entityplayer1 = (EntityPlayerMP)entityplayer;
                     this.startRiding(entityplayer1, true);
                     this.getServer().getPlayerList().sendPacketToAllPlayers(new SPacketSetPassengers(entityplayer1));
                 }
                 this.setSucking(true);
+                this.enablePersistence();
             }
 
         }
@@ -271,7 +283,6 @@ public class EntityMosquito extends EntityMob {
     {
         int fat = this.getStoredXP();
         //100 is the max that players can drop
-        BeastSlayer.logger.debug(this.getTakenXp());
         return this.experienceValue + (int)this.getTakenXp();
     }
 
@@ -298,7 +309,7 @@ public class EntityMosquito extends EntityMob {
 
     @Override
     protected boolean canDespawn() {
-        return this.getStoredXP() > 0;
+        return this.getStoredXP() == 0;
     }
 
     public boolean isOnLadder()
@@ -317,6 +328,11 @@ public class EntityMosquito extends EntityMob {
         return EnumCreatureAttribute.ARTHROPOD;
     }
 
+    @Override
+    public float getEyeHeight() {
+        return 0.5F;
+    }
+
     class AIChargeAttack extends EntityAIBase
     {
         public AIChargeAttack()
@@ -326,6 +342,9 @@ public class EntityMosquito extends EntityMob {
 
         public boolean shouldExecute()
         {
+            if(EntityMosquito.this.isChild()){
+                return false;
+            }
             if (EntityMosquito.this.getAttackTarget() != null && EntityMosquito.this.getMoveHelper().isUpdating() &&EntityMosquito.this.rand.nextInt(5) == 0)
             {
                 return EntityMosquito.this.getDistanceSq(EntityMosquito.this.getAttackTarget()) > 4.0D && EntityMosquito.this.getStoredXP() < 6;
@@ -367,5 +386,17 @@ public class EntityMosquito extends EntityMob {
                 }
             }
         }
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.MOSQ_HURT;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.MOSQ_DEATH;
     }
 }

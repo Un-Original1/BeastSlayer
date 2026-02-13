@@ -9,7 +9,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -100,6 +99,8 @@ public class ModItems {
     public static Item WEIRD_BOTTLE;
     //public static Item BROKEN_ARTIFACT;
     //public static Item SLAB;
+    public static Item GARLIC_NECK;
+    public static Item HEART_AMULET;
 
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",BeastSlayerConfig.ScaleArmorDurability, BeastSlayerConfig.ScaleArmorValue, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
 
@@ -184,7 +185,9 @@ public class ModItems {
             SCALE_HOOD = new ScaleArmor("scale_hood", ModItems.DESERT_ROBES, 0, EntityEquipmentSlot.HEAD);
         }
         WEIRD_BOTTLE = new ItemStrangePotion("strange_potion");
+        GARLIC_NECK = quickItemRegistry("garlic_neck");
         TEST = new ItemTest().setRegistryName("test").setUnlocalizedName("test").setCreativeTab(BeastSlayer.BEASTSTAB);
+        HEART_AMULET = new ItemReusableHealth("succubus_amulet");
     }
 
     public static Item quickItemRegistry(String name){
@@ -273,6 +276,8 @@ public class ModItems {
         }
         event.getRegistry().registerAll(WEIRD_BOTTLE);
         event.getRegistry().registerAll(TEST);
+        event.getRegistry().registerAll(GARLIC_NECK);
+        event.getRegistry().registerAll(HEART_AMULET);
     }
     @SubscribeEvent
     public static void registerRenders(ModelRegistryEvent event)
@@ -347,6 +352,8 @@ public class ModItems {
         registerRender(TEST);
         registerRender(STORM_BOTTLE);
         registerRender(WEIRD_BOTTLE);
+        registerRender(GARLIC_NECK);
+        registerRender(HEART_AMULET);
         if(BeastSlayerConfig.isDesertRobesEnabled) {
             registerRender(SCALE_ARMOR);
             registerRender(SCALE_HOOD);

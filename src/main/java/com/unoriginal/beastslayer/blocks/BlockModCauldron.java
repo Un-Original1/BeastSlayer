@@ -1,10 +1,12 @@
 package com.unoriginal.beastslayer.blocks;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.init.ModBlocks;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.items.ItemArtifact;
 import com.unoriginal.beastslayer.items.ItemMask;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -37,6 +39,7 @@ import java.util.Random;
 
 public class BlockModCauldron extends Block{
     public static final List<ItemStack> logWood = OreDictionary.getOres("logWood");
+    public static final List<ItemStack> logSap = OreDictionary.getOres("treeSapling");
     public static final PropertyInteger LEVEL = PropertyInteger.create("level", 0, 3);
     protected static final AxisAlignedBB AABB_LEGS = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.3125D, 1.0D);
     protected static final AxisAlignedBB AABB_WALL_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.125D);
@@ -107,6 +110,28 @@ public class BlockModCauldron extends Block{
                 return true;
             } else if (item instanceof ItemBlock) {
                 ItemBlock itemBlock = (ItemBlock) item;
+               for(ItemStack itemStack1 : logSap) {
+
+                        if( OreDictionary.itemMatches(itemStack1, itemStack, false)) {
+                            if (level == 3 && !world.isRemote) {
+                            if (!player.capabilities.isCreativeMode) {
+                                itemStack.shrink(1);
+                            }
+                            if (itemStack.isEmpty()) {
+                                player.setHeldItem(hand, new ItemStack(ModBlocks.CURSED_SAPLING, 1));
+                            } else if (!player.inventory.addItemStackToInventory(new ItemStack(ModBlocks.CURSED_SAPLING, 1))) {
+                                player.dropItem(new ItemStack(ModBlocks.CURSED_SAPLING, 1), false);
+                            }
+
+
+                            player.addStat(StatList.CAULDRON_USED);
+                            this.setWaterLevel(world, pos, state, 0);
+                            world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+
+                        }
+                        return true;
+                    }
+                }
                 for (ItemStack itemstack : logWood) {
                     if (OreDictionary.itemMatches(itemstack, itemStack, false)) {
 

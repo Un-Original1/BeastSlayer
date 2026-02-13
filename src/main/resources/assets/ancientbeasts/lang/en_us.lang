@@ -39,7 +39,7 @@ item.spike.name=Spikes
 item.charred_fur.name=Charred Fur
 item.charred_cloak.name=Charred Cloak
 item.miner_helmet.name=Miner Helmet
-item.bestiary.name=Bestiarium
+item.bestiary.name=Beastiarium
 item.rifted_pearl.name=Rifted Ender Pearl
 item.paradox.name=§kParadox
 item.kunai.name=Kunai
@@ -393,6 +393,20 @@ advancements.succubus_blood.title=Bloodletting
 advancements.succubus_blood.description=Make a Succubus lend you some powers in an unusual manner
 advancements.succubus_friend.title=Red Flags
 advancements.succubus_friend.description=Get bound to a Succubus
+advancements.succubus_bed.title=Like one of your french girls
+advancements.succubus_bed.description=Guess that is her bed now
+item.garlic_neck.name=Garlic Necklace
+item.succubus_amulet.name=Heart Locket
+advancements.ancientbeasts.kill_succ.title=It's Definitively You
+advancements.ancientbeasts.kill_succ.description=Kill a Succubus
+potion.charmed=Charmed
+
+bestiary.hint15_0top=Expert manipulator
+bestiary.hint15_0bottom=Succubus can affect the actions of mobs and players, so be cautious
+bestiary.hint15_1top=Night Stalker
+bestiary.hint15_1bottom=Succubus will prey on their victims, they'll bound to them if close enough. Garlic is useful for keeping them away
+bestiary.hint15_2top=Undesirable relationship
+bestiary.hint15_2bottom=If bound to a succubus feed her cravings, or she'll KILL you
 
 subtitles.succ_ambient=Succubus giggles
 subtitles.succ_hurt=Succubus hurts
@@ -404,3 +418,15 @@ subtitles.succ_sigh=Succubus Sighs
 entity.xp_mosquito.name=Needlewing
 advancements.ancientbeasts.kill_mosq.title=Pest Control
 advancements.ancientbeasts.kill_mosq.description=Kill a Needlewing
+
+bestiary.hint16_0top=Experience theft
+bestiary.hint16_0bottom=Needlewings will steal xp from a nearby player
+bestiary.hint16_1top=Once the EXP has been stolen
+bestiary.hint16_1bottom=Needlewings will enter a passive state, they can be bred here
+bestiary.hint16_2top=Easy recovery
+bestiary.hint16_2bottom=Needlewings will always drop the amount of xp taken
+
+subtitles.mosq_loop=Needlewing flies
+subtitles.mosq_gulp=Needlewing drinks experience
+subtitles.mosq_hurt=Needlewing hurts
+subtitles.mosq_death=Needlewing bursts

@@ -73,6 +73,8 @@ public class ModSounds {
 
     public static final SoundEvent MOSQ_LOOP = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "mosq_loop")).setRegistryName("mosq_loop");
     public static final SoundEvent MOSQ_GULP = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "mosq_gulp")).setRegistryName("mosq_gulp");
+    public static final SoundEvent MOSQ_HURT = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "mosq_hurt")).setRegistryName("mosq_hurt");
+    public static final SoundEvent MOSQ_DEATH = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "mosq_death")).setRegistryName("mosq_death");
 
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
@@ -137,6 +139,8 @@ public class ModSounds {
             event.getRegistry().register(SUCC_SUCK);
             event.getRegistry().register(MOSQ_LOOP);
             event.getRegistry().register(MOSQ_GULP);
+            event.getRegistry().register(MOSQ_HURT);
+            event.getRegistry().register(MOSQ_DEATH);
         }
 
     }

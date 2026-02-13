@@ -296,7 +296,7 @@ public class EntityRiftedEnderman extends EntityMob {
     {
         net.minecraftforge.event.entity.living.EnderTeleportEvent event = new net.minecraftforge.event.entity.living.EnderTeleportEvent(this, x, y, z, 0);
         if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event)) return false;
-        boolean flag = this.attemptTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+        boolean flag = this.attemptTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ()) && !this.isVulnerable();
 
         if (flag)
         {
@@ -361,7 +361,7 @@ public class EntityRiftedEnderman extends EntityMob {
 
             boolean flag = super.attackEntityFrom(source, amount);
 
-            if (source.isUnblockable() && this.rand.nextInt(10) != 0 && !this.isArmored())
+            if (source.isUnblockable() && this.rand.nextInt(10) != 0 && !this.isArmored() && !this.isVulnerable())
             {
                 this.teleportRandomly();
             }

@@ -80,9 +80,15 @@ public class ModEvents {
             EntityMob mob = (EntityMob) event.getEntity();
             if(EntityList.getEntityString(mob) != null) {
                 if (mob.isNonBoss() && !blacklist.contains(EntityList.getEntityString(mob))) {
-                    mob.tasks.addTask(0, new EntityAIMobAvoidOwlstack<>(mob, EntityOwlstack.class, 6F, 1.0D, 1.4D));
+                    if((BeastSlayerConfig.owlstack_affects_undead && mob.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) || BeastSlayerConfig.owlstack_affects_undead == false ) {
+                        mob.tasks.addTask(0, new EntityAIMobAvoidOwlstack<>(mob, EntityOwlstack.class, 6F, 1.0D, 1.4D));
+                    }
                 }
             }
+        }
+        if(!world.isRemote && event.getEntity() instanceof EntityAnimal) {
+            EntityAnimal animal = (EntityAnimal) event.getEntity();
+            animal.tasks.addTask(3, new EntityAIAvoidEntity<>(animal, EntitySucc.class, 16F, 0.8F, 1F));
         }
 
     }
@@ -506,6 +512,17 @@ public class ModEvents {
                     }
                 }
             }
+            if(!(l instanceof EntityMob) && l instanceof EntityLiving){
+                EntityLiving m = (EntityLiving) l;
+                if(m.getAttackTarget() != null && m.getAttackTarget() instanceof EntitySucc){
+                    EntitySucc succ = (EntitySucc) m.getAttackTarget();
+                    if(succ == null) return;
+                    if(succ.isFriendly() && m.getRevengeTarget() != succ){
+                        m.getNavigator().clearPath();
+                        m.setAttackTarget(null);
+                    }
+                }
+            }
         }
     }
 
@@ -868,7 +885,7 @@ public class ModEvents {
     public void XPEvents(LivingExperienceDropEvent e){
         World world = e.getEntity().getEntityWorld();
         if(!world.isRemote && e.getAttackingPlayer() != null) {
-                EntityPlayer player = e.getAttackingPlayer();
+            EntityPlayer player = e.getAttackingPlayer();
              int xp = e.getOriginalExperience();
 
 
@@ -888,10 +905,55 @@ public class ModEvents {
 
 
                 if (getActiveItem(player) == ModItems.BOUNTIFUL_SACK) {
+                    if(!(e.getEntity() instanceof EntityMosquito)) {
                         e.setDroppedExperience(xp * 2);
+                    } else {
+                        e.setDroppedExperience(xp + 5);
+                    }
                 }
+                if(player.getHeldItemOffhand().getItem() == ModItems.HEART_AMULET && player.getHeldItemOffhand().isItemDamaged()){
+                    e.setDroppedExperience(xp /4 * 3);
+                    ItemStack itemstack = player.getHeldItemOffhand();
+                    if(itemstack.getItemDamage() - xp / 4 > 0) {
+                        itemstack.setItemDamage(itemstack.getItemDamage() - xp / 4);
+                    } else {
+                        itemstack.setItemDamage(0);
+                    }
+                }
+            if(player.getHeldItemMainhand().getItem() == ModItems.HEART_AMULET && player.getHeldItemMainhand().isItemDamaged()){
+                e.setDroppedExperience(xp /4 * 3);
+                ItemStack itemstack = player.getHeldItemMainhand();
+                int i = xp / 4;
+                if(itemstack.getItemDamage() - xp / 4 > 0) {
+                    if(xp / 4 < 1){
+                        i = 1;
+                    }
+                    itemstack.setItemDamage(itemstack.getItemDamage() - i);
+                } else {
+                    itemstack.setItemDamage(0);
+                }
+            }
         }
 
+    }
+
+    @SubscribeEvent
+    public void healEvents (LivingHealEvent e){
+        EntityLivingBase entityLivingBase = e.getEntityLiving();
+        World world = e.getEntityLiving().getEntityWorld();
+        if(entityLivingBase instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entityLivingBase;
+            if(!world.isRemote) {
+                List<EntitySucc> list = player.world.getEntitiesWithinAABB(EntitySucc.class, player.getEntityBoundingBox().grow(40D));
+                if(!list.isEmpty()){
+                    for (EntitySucc entitySucc : list) {
+                        if(entitySucc.isFriend(player) && entitySucc.getEat() <= -1200 && entitySucc.getEat() < entitySucc.getGive() && entitySucc.getEat() < entitySucc.getSell()) {
+                            e.setAmount(e.getAmount() * 0.7F);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public Item getActiveItem(EntityLivingBase player){

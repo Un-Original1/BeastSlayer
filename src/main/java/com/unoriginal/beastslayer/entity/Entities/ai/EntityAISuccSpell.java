@@ -24,10 +24,6 @@ public class EntityAISuccSpell extends EntityAIBase {
         if(this.tameable == null){
             return false;
         }
-        if (!this.tameable.isFriendly())
-        {
-            return false;
-        }
         if(this.tameable.isSitting()){
             return false;
         }
@@ -40,6 +36,15 @@ public class EntityAISuccSpell extends EntityAIBase {
 
             if (entitylivingbase == null)
             {
+                if(this.tameable.isFriendly()){
+
+                    return false;
+                } else {
+                    if(this.tameable.getAttackTarget() != null && !this.tameable.isFriendly() && !this.tameable.isStalking()){
+                        this.attacker = this.tameable.getAttackTarget();
+                        return this.attacker.isEntityAlive();
+                    }
+                }
                 return false;
             }
 
@@ -62,13 +67,12 @@ public class EntityAISuccSpell extends EntityAIBase {
         this.tameable.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 10, false, false));
         EntityLivingBase entitylivingbase = this.tameable.getFriend();
 
-        if (entitylivingbase != null)
-        {
+        if (entitylivingbase != null) {
 
             this.timestamp = entitylivingbase.getLastAttackedEntityTime();
-           // this.attacker.addPotionEffect(new PotionEffect(ModPotions.TARGETED, 400));
-            this.tameable.setSpellCooldown(1200);
+            // this.attacker.addPotionEffect(new PotionEffect(ModPotions.TARGETED, 400));
         }
+        this.tameable.setSpellCooldown(1200);
 
         super.startExecuting();
     }

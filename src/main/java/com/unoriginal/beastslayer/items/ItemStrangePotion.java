@@ -60,9 +60,10 @@ public class ItemStrangePotion extends Item {
         if(!worldIn.isRemote) {
             for (int i = 0; i < 2; i++) {
                 if (entityLiving instanceof EntityPlayer) {
-
-                    Potion potion = randEffect(entityLiving.getRNG().nextInt(7));
-                    entityLiving.addPotionEffect(new PotionEffect(potion, 1800));
+                    int rand = entityLiving.getRNG().nextInt(7);
+                    int dur = rand == 0 ? 100 : 1800;
+                    Potion potion = randEffect(rand);
+                    entityLiving.addPotionEffect(new PotionEffect(potion, dur));
                     if(entityLiving.getRNG().nextInt(2) == 0) {
                         entityLiving.addPotionEffect(new PotionEffect(ModPotions.CHARMED, 20, 0));
                     }
@@ -100,7 +101,7 @@ public class ItemStrangePotion extends Item {
         switch (random)
         {
             case 0:
-                newPotion = MobEffects.STRENGTH;
+                newPotion = MobEffects.NAUSEA;
                 break;
             case 1:
                 newPotion = MobEffects.REGENERATION;

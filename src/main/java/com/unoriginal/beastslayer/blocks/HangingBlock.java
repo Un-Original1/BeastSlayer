@@ -7,6 +7,7 @@ import com.unoriginal.beastslayer.init.ModBlocks;
 import com.unoriginal.beastslayer.init.ModParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -37,7 +38,8 @@ public class HangingBlock extends Block implements IShearable {
         this.setUnlocalizedName(name);
         this.setTickRandomly(true);
         this.setCreativeTab(BeastSlayer.BEASTSTAB);
-        this.setHardness(1.0F);
+        this.setHardness(0.4F);
+        this.setSoundType(SoundType.PLANT);
     }
 
     @Override

@@ -2,12 +2,17 @@ package com.unoriginal.beastslayer.entity.Entities.ai;
 
 import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.entity.Entities.EntitySucc;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.Set;
 
@@ -18,19 +23,14 @@ public class EntityAIStalk extends EntityAIBase
     private double targetX;
     private double targetY;
     private double targetZ;
-    private double pitch;
-    private double yaw;
     private EntityPlayer temptingPlayer;
     private int delayTemptCounter;
-    private boolean isRunning;
-    private final boolean scaredByPlayerMovement;
 
 
-    public EntityAIStalk(EntitySucc temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn)
+    public EntityAIStalk(EntitySucc temptedEntityIn, double speedIn)
     {
         this.temptedEntity = temptedEntityIn;
         this.speed = speedIn;
-        this.scaredByPlayerMovement = scaredByPlayerMovementIn;
         this.setMutexBits(3);
 
         if (!(temptedEntityIn.getNavigator() instanceof PathNavigateGround))
@@ -48,7 +48,7 @@ public class EntityAIStalk extends EntityAIBase
         }
         else
         {
-            this.temptingPlayer = this.temptedEntity.world.getClosestPlayerToEntity(this.temptedEntity, 10.0D);
+            this.temptingPlayer = this.temptedEntity.world.getClosestPlayerToEntity(this.temptedEntity, 16.0D);
 
             if (this.temptingPlayer == null)
             {
@@ -58,36 +58,12 @@ public class EntityAIStalk extends EntityAIBase
             {
                 return !this.temptedEntity.isFriendly() && this.temptedEntity.isStalking();
             }
+
         }
     }
 
     public boolean shouldContinueExecuting()
     {
-        if (this.scaredByPlayerMovement)
-        {
-            if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 36.0D)
-            {
-                if (this.temptingPlayer.getDistanceSq(this.targetX, this.targetY, this.targetZ) > 0.010000000000000002D)
-                {
-                    return false;
-                }
-
-                if (Math.abs((double)this.temptingPlayer.rotationPitch - this.pitch) > 5.0D || Math.abs((double)this.temptingPlayer.rotationYaw - this.yaw) > 5.0D)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                this.targetX = this.temptingPlayer.posX;
-                this.targetY = this.temptingPlayer.posY;
-                this.targetZ = this.temptingPlayer.posZ;
-            }
-
-            this.pitch = (double)this.temptingPlayer.rotationPitch;
-            this.yaw = (double)this.temptingPlayer.rotationYaw;
-        }
-
         return this.shouldExecute();
     }
 
@@ -96,26 +72,26 @@ public class EntityAIStalk extends EntityAIBase
         this.targetX = this.temptingPlayer.posX;
         this.targetY = this.temptingPlayer.posY;
         this.targetZ = this.temptingPlayer.posZ;
-        this.isRunning = true;
     }
 
     public void resetTask()
     {
         this.temptingPlayer = null;
         this.temptedEntity.getNavigator().clearPath();
+        this.teleportRandomly();
         this.delayTemptCounter = 100;
-        this.isRunning = false;
     }
 
     public void updateTask()
     {
+
         this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, (float)(this.temptedEntity.getHorizontalFaceSpeed() + 20), (float)this.temptedEntity.getVerticalFaceSpeed());
 
         if(this.temptedEntity.isLookingAtMe(this.temptingPlayer)){
-            this.temptedEntity.teleportRandomly();
+            this.teleportRandomly();
         }
 
-        if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 6.25D)
+        if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 9D)
         {
             this.temptedEntity.getNavigator().clearPath();
         }
@@ -125,8 +101,28 @@ public class EntityAIStalk extends EntityAIBase
         }
     }
 
-    public boolean isRunning()
+    public void teleportRandomly()
     {
-        return this.isRunning;
+
+        double d0 = this.temptedEntity.posX + (this.temptedEntity.getRNG().nextDouble() - 0.5D) * 32.0D;
+        double d1 = this.temptedEntity.posY + (double)(this.temptedEntity.getRNG().nextInt(16) - 8);
+        double d2 = this.temptedEntity.posZ + (this.temptedEntity.getRNG().nextDouble() - 0.5D) * 32.0D;
+
+
+        for (int l = 0; l <= 30; ++l) {
+            if (isTeleportFriendlyBlock(d0, d1, d2)) {
+                this.temptedEntity.teleport();
+                this.temptedEntity.setLocationAndAngles(d0, d1, d2, this.temptedEntity.rotationYaw, this.temptedEntity.rotationPitch);
+                break;
+            }
+        }
     }
+
+    protected boolean isTeleportFriendlyBlock(double x, double y, double z)
+    {
+        BlockPos blockpos = new BlockPos(x, y -1, z);
+        IBlockState iblockstate = this.temptedEntity.world.getBlockState(blockpos);
+        return iblockstate.getBlockFaceShape(this.temptedEntity.world, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID && iblockstate.canEntitySpawn(this.temptedEntity) && this.temptedEntity.world.isAirBlock(blockpos.up()) && this.temptedEntity.world.isAirBlock(blockpos.up(2) ) && this.temptedEntity.world.isAirBlock(blockpos.up(3));
+    }
+
 }

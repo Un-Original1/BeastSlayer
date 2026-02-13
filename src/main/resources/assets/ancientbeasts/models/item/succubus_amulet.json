@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "ancientbeasts:items/succubus_amulet"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "off": 1
+      },
+      "model": "ancientbeasts:item/succubus_amulet_off"
+    }
+  ]
+}

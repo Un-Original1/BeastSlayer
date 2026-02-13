@@ -54,7 +54,7 @@ public class ModWorldGen implements IWorldGenerator {
               //  BeastSlayer.logger.debug("spawning village at" + pos);
             }
         }
-        if (canStructureSpawn((blockX  - 8)  >> 4, (blockZ - 8)  >> 4, world, 2) && BeastSlayerConfig.EnableExperimentalFeatures) { //>> and << prevent wrong conversions with negative values
+        if (canStructureSpawn((blockX  - 8)  >> 4, (blockZ - 8)  >> 4, world, 2)) { //>> and << prevent wrong conversions with negative values
             if (pos.getY() > 31 && BiomeDictionary.getTypes(world.getBiome(pos)).contains(BiomeDictionary.Type.JUNGLE)) {
 
                 for (int i = 0; i < rand.nextInt(5) + 1; i++){
@@ -73,9 +73,11 @@ public class ModWorldGen implements IWorldGenerator {
             structure.generate(world, rand, pos);
 
         }
-        WorldGenerator tavern = new TavernWorldGen();
-        if (pos.getY() > 31) {
-            tavern.generate(world, rand, pos);
+        if(BeastSlayerConfig.EnableSuccubus) {
+            WorldGenerator tavern = new TavernWorldGen();
+            if (pos.getY() > 31) {
+                tavern.generate(world, rand, pos);
+            }
         }
     }
 

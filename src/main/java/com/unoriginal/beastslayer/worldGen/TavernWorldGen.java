@@ -39,8 +39,8 @@ public class TavernWorldGen extends WorldGenerator {
     private int spacing;
 
     public TavernWorldGen(){
-        this.spacing = BeastSlayerConfig.TavernSpacing;
-        this.separation = BeastSlayerConfig.TavernSeparation;
+        this.spacing = BeastSlayerConfig.InnSpacing;
+        this.separation = BeastSlayerConfig.InnSeparation;
     }
     @Override
     public boolean generate(World world, Random rand, BlockPos pos) {

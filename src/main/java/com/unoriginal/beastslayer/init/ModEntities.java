@@ -127,9 +127,10 @@ public class ModEntities
         EntityRegistry.addSpawn(EntityPriest.class, 20, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityTank.class, 40, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
 
-        EntityRegistry.addSpawn(EntitySucc.class, 80, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.FOREST).toArray(new Biome[0]));
-
-        EntityRegistry.addSpawn(EntityMosquito.class, BeastSlayerConfig.MosquitoSpawnChance, 1, 4, EnumCreatureType.CREATURE, BiomeDictionary.getBiomes(Type.SWAMP).toArray(new Biome[0]));
+        if(BeastSlayerConfig.EnableSuccubus) {
+            EntityRegistry.addSpawn(EntitySucc.class, BeastSlayerConfig.succubusSpawnrate, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.FOREST).toArray(new Biome[0]));
+        }
+        EntityRegistry.addSpawn(EntityMosquito.class, BeastSlayerConfig.MosquitoSpawnChance, 1, 3, EnumCreatureType.CREATURE, BiomeDictionary.getBiomes(Type.SWAMP).toArray(new Biome[0]));
 
         Multimap<Type, Biome> ExclusiveList = HashMultimap.create();
 
@@ -146,7 +147,7 @@ public class ModEntities
 
         for(Type type : Type.getAll()) {
             EntityRegistry.addSpawn(EntityDamcell.class, BeastSlayerConfig.damcellSpawnChance, 1, 1, EnumCreatureType.MONSTER, ExclusiveList.get(type).toArray(new Biome[0]));
-            EntityRegistry.addSpawn(EntityBoulderer.class, BeastSlayerConfig.boulderingSpawnChance, 1, 4, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityBoulderer.class, BeastSlayerConfig.boulderingSpawnChance, 1, 3, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
             EntityRegistry.addSpawn(EntityRiftedEnderman.class, BeastSlayerConfig.riftedEndermanSpawnChance, 1, 1, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
 
             EntityRegistry.addSpawn(EntityBonepile.class, BeastSlayerConfig.bonepileSpawnChance, 1, 3, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));

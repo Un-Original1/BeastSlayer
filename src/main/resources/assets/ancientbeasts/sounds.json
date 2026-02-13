@@ -445,5 +445,19 @@
     "sounds":[
       "ancientbeasts:mosq_gulp"
     ]
+  },
+  "mosq_hurt": {
+    "subtitle": "subtitles.mosq_hurt",
+    "sounds": [
+      "ancientbeasts:mosq_hurt1",
+      "ancientbeasts:mosq_hurt2",
+      "ancientbeasts:mosq_hurt3"
+    ]
+  },
+  "mosq_death": {
+    "subtitle": "subtitles.mosq_death",
+    "sounds": [
+      "ancientbeasts:mosq_death"
+    ]
   }
 }

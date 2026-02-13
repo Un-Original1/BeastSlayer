@@ -41,6 +41,7 @@ public class ItemToughGlove extends ItemAbstractMultimodel {
             if(!p.getCooldownTracker().hasCooldown(this)){
                 if(!(target instanceof EntityGiant) && !world.isRemote) {
                     target.addVelocity(d0, 0.2, d1);
+                    target.velocityChanged = true;
                     p.getCooldownTracker().setCooldown(this, 40);
                 }
             }

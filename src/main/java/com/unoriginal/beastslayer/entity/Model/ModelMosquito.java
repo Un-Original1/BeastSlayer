@@ -101,16 +101,34 @@ public class ModelMosquito extends ModelBase {
             }
         }
 
-        float f = b ? MathHelper.cos(ageInTicks * 0.5F) * 0.15F : 0F;
+        if (this.isChild)
+        {
+            float f = 2.0F;
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0.0F, 5.0F * f5, 2.0F * f5);
+            this.head.render(f5);
+            GlStateManager.popMatrix();
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            GlStateManager.translate(0.0F, 24.0F * f5, 0.0F);
+            this.body.render(f5);
+            this.butt.render(f5);
+            this.big_butt.render(f5);
+            GlStateManager.popMatrix();
+        }
+        else {
+
+            float f = b ? MathHelper.cos(ageInTicks * 0.5F) * 0.15F : 0F;
 
             head.render(f5);
-		    body.render(f5);
+            body.render(f5);
             butt.render(f5);
             GlStateManager.pushMatrix();
-            GlStateManager.scale(1F +f,1F + f,1F + f);
+            GlStateManager.scale(1F + f, 1F + f, 1F + f);
             GlStateManager.translate(0.0F, -f, 0.0F);
             big_butt.render(f5);
             GlStateManager.popMatrix();
+        }
 
 	}
 
@@ -151,17 +169,24 @@ public class ModelMosquito extends ModelBase {
         this.leg_r3.rotateAngleZ = MathHelper.cos(ageInTicks * 0.2F + (float)Math.PI + (float)Math.PI) * 0.15F;
 
         float f = ageInTicks * 0.3F;
+        if(entityIn.onGround){
+            this.wing_l.rotateAngleX = 30F * fastradian;
+            this.wing_l.rotateAngleY = -10F * fastradian;
+            this.wing_l.rotateAngleZ = 22.5F* fastradian;
 
+            this.wing_r.rotateAngleX = 30F * fastradian;
+            this.wing_r.rotateAngleY = -10F * fastradian;
+            this.wing_r.rotateAngleZ = -22.5F* fastradian;
+        } else {
 
-        this.wing_l.rotateAngleZ = -30F * fastradian ;
-        this.wing_l.rotateAngleX = 32F * fastradian + MathHelper.cos(ageInTicks * 2F) * 0.8F;
-     //   this.wing_l.rotationPointY = 16.94F + f;
+            this.wing_l.rotateAngleZ = -30F * fastradian;
+            this.wing_l.rotateAngleX = 32F * fastradian + MathHelper.cos(ageInTicks * 2F) * 0.8F;
+            this.wing_l.rotateAngleY = 40F * fastradian;
 
-        this.wing_l.rotateAngleY = 40F * fastradian;
-
-        this.wing_r.rotateAngleZ = 30F * fastradian;
-        this.wing_r.rotateAngleX = 32F * fastradian + MathHelper.cos(ageInTicks * 2F) * 0.8F;
-        this.wing_r.rotateAngleY = -40F * fastradian;
+            this.wing_r.rotateAngleZ = 30F * fastradian;
+            this.wing_r.rotateAngleX = 32F * fastradian + MathHelper.cos(ageInTicks * 2F) * 0.8F;
+            this.wing_r.rotateAngleY = -40F * fastradian;
+        }
         if(entityIn.isRiding()){
             this.head.rotateAngleY = 0F ;
             this.head.rotateAngleX = 90F * fastradian;

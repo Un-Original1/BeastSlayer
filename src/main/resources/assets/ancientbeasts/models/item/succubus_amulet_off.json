@@ -1,0 +1,6 @@
+{
+  "parent": "ancientbeasts:item/succubus_amulet",
+  "textures": {
+    "layer0": "ancientbeasts:items/succubus_amulet_off"
+  }
+}

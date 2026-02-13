@@ -81,6 +81,7 @@ public class CommonProxy
         registerAdvancementTrigger(ModTriggers.OWLSTACK_INTERACT);
         registerAdvancementTrigger(ModTriggers.SUCCUBUS_FRIEND);
         registerAdvancementTrigger(ModTriggers.SUCCUBUS_BLOOD);
+        registerAdvancementTrigger(ModTriggers.SUCCUBUS_BED);
     }
 
     @SuppressWarnings("unchecked")
