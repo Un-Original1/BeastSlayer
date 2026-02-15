@@ -16,6 +16,7 @@ public class EntityBoulder extends EntityProjectileGeneric {
     public EntityBoulder(World worldIn)
     {
         super(worldIn);
+        this.setSize(2.2F, 2.2F);
     }
 
     public EntityBoulder(World worldIn, EntityLivingBase owner)

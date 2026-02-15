@@ -122,7 +122,7 @@ public class EntityCharmChain extends EntityProjectileFireball2{
 
     public boolean hasBuffedEntity()
     {
-        return this.dataManager.get(OWNER) != 0;
+        return !(this.dataManager.get(OWNER).equals(0));
     }
 
     private void setBuffedEntity(int entityId)
@@ -131,6 +131,16 @@ public class EntityCharmChain extends EntityProjectileFireball2{
         Entity mob = this.world.getEntityByID(entityId);
         if(mob instanceof EntityLivingBase) {
             this.owner = (EntityLivingBase) mob;
+        }
+    }
+
+    public void notifyDataManagerChange(DataParameter<?> key)
+    {
+        super.notifyDataManagerChange(key);
+
+        if (OWNER.equals(key))
+        {
+            this.owner = null;
         }
     }
 }

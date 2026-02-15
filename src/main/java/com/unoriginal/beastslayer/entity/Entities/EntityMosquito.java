@@ -82,15 +82,6 @@ public class EntityMosquito extends EntityAnimal {
             this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
     }
 
-    /*protected PathNavigate createNavigator(World worldIn)
-    {
-        PathNavigateFlying pathnavigateflying = new PathNavigateFlying(this, worldIn);
-        pathnavigateflying.setCanOpenDoors(false);
-        pathnavigateflying.setCanFloat(true);
-        pathnavigateflying.setCanEnterDoors(true);
-        return pathnavigateflying;
-    }*/
-
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -145,7 +136,7 @@ public class EntityMosquito extends EntityAnimal {
         if(entityIn instanceof EntityPlayer && this.getStoredXP() < 6) {
 
             EntityPlayer entityplayer = (EntityPlayer)entityIn;
-            if(entityplayer.experienceLevel > 6) {
+            if(entityplayer.experienceLevel > 6 && this.isEntityAlive()) {
 
 
 
@@ -184,7 +175,7 @@ public class EntityMosquito extends EntityAnimal {
         if (entity != null && !this.world.isRemote)
         {
 
-            if(entity instanceof EntityPlayer && this.getStoredXP() < 6) {
+            if(entity instanceof EntityPlayer && this.getStoredXP() < 6 && this.isEntityAlive()) {
 
                 EntityPlayer entityplayer = (EntityPlayer)entity;
                 decreaseExp(entityplayer, 1);
@@ -221,7 +212,7 @@ public class EntityMosquito extends EntityAnimal {
             return;
         }
 
-        player.experienceTotal -= amount;
+        player.experienceTotal -= (int) amount;
 
         if (player.experience * (float)player.xpBarCap() < amount) // Removing experience within current level to floor it to player.experience == 0.0f
         {
@@ -307,11 +298,6 @@ public class EntityMosquito extends EntityAnimal {
         return -0.5D;
     }
 
-    @Override
-    protected boolean canDespawn() {
-        return this.getStoredXP() == 0;
-    }
-
     public boolean isOnLadder()
     {
         return false;
@@ -330,7 +316,7 @@ public class EntityMosquito extends EntityAnimal {
 
     @Override
     public float getEyeHeight() {
-        return 0.5F;
+        return this.isChild() ? 0.2F : 0.5F;
     }
 
     class AIChargeAttack extends EntityAIBase

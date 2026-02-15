@@ -74,9 +74,19 @@ public class EntityBeam extends Entity {
         }
     }
 
+    public void notifyDataManagerChange(DataParameter<?> key)
+    {
+        super.notifyDataManagerChange(key);
+
+        if (BUFFED_ENTITY.equals(key))
+        {
+            this.buffedEntity = null;
+        }
+    }
+
     public boolean hasBuffedEntity()
     {
-        return this.dataManager.get(BUFFED_ENTITY) != 0;
+        return !(this.dataManager.get(BUFFED_ENTITY).equals(0));
     }
 
     @Nullable
@@ -125,13 +135,15 @@ public class EntityBeam extends Entity {
             this.tryMoveWithTarget(this.target);
         }
         if(this.caster != null){
-            if(this.caster instanceof EntityZealot)
-            this.setBuffedEntity(caster.getEntityId());
+            if(this.caster instanceof EntityZealot) {
+                this.setBuffedEntity(caster.getEntityId());
+            }
         }
         if(this.target == null || this.caster == null || this.target.getHealth() <= 0F)
         {
-            if(!this.world.isRemote)
-            this.setDead();
+            if(!this.world.isRemote) {
+                this.setDead();
+            }
         }
         if(!this.world.isRemote && this.ticksExisted >= this.lifeticks) {
             this.setDead();
@@ -145,10 +157,7 @@ public class EntityBeam extends Entity {
     protected boolean canTriggerWalking() {
         return false;
     }
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
-    }
+
     @Override
     protected void readEntityFromNBT(NBTTagCompound compound) {
         if (compound.hasUniqueId("owner")){

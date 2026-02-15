@@ -12,7 +12,6 @@ import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,9 +21,9 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateClimber;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -82,6 +81,10 @@ public class EntityBoulderer extends EntityZombie {
     {
         super.onUpdate();
 
+        double d3 = this.isBuried() ? 0.3F : 1.95F;
+        double d4 = this.width / 2F;
+        this.setEntityBoundingBox(new AxisAlignedBB(this.posX - d4, this.posY, this.posZ - d4, this.posX + d4, this.posY + d3, this.posZ + d4));
+
         if (!this.world.isRemote)
         {
             this.setBesideClimbableBlock(this.collidedHorizontally);
@@ -100,7 +103,7 @@ public class EntityBoulderer extends EntityZombie {
                 for(int x = 0; x < 4; x++) {
                     this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.1D, this.rand.nextGaussian() * 0.02D, Block.getStateId(iblockstate));
                 }
-                if (!world.isRemote && this.ticksExisted % 150 == 0 ) {
+                if (!world.isRemote && this.ticksExisted % 5 == 0 ) {
                     this.playSound(iblockstate.getBlock().getSoundType().getBreakSound(), 1.0F, 1.0F);
                 }
             }
@@ -137,12 +140,16 @@ public class EntityBoulderer extends EntityZombie {
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Leader zombie bonus", this.rand.nextDouble() * 3.0D + 1.0D, 2));
             this.setBreakDoorsAItask(true);
         }
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Health bonus", BeastSlayerConfig.GlobalDamageMultiplier, 2));
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Health bonus", BeastSlayerConfig.GlobalHealthMultiplier, 2));
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(new AttributeModifier("Armor bonus", BeastSlayerConfig.GlobalArmor, 0));
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Damage bonus", BeastSlayerConfig.GlobalDamageMultiplier, 2));
         return livingdata;
     }
 
+    @Override
+    public float getEyeHeight() {
+        return this.isBuried()? 0.2F : super.getEyeHeight();
+    }
 
     public boolean attackEntityAsMob(Entity entityIn)
     {

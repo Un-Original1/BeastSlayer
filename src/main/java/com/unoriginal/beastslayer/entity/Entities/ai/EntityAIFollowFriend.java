@@ -96,7 +96,7 @@ public class EntityAIFollowFriend extends EntityAIBase
 
                 if (!this.petPathfinder.tryMoveToEntityLiving(this.owner, this.followSpeed))
                 {
-                    if (!this.tameable.getLeashed() /*&& !this.tameable.isRiding()*/)
+                    if (!this.tameable.getLeashed() && !this.tameable.isRiding())
                     {
                         if (this.tameable.getDistanceSq(this.owner) >= 144.0D)
                         {

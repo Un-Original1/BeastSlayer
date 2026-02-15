@@ -17,10 +17,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.AbstractIllager;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityGolem;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
@@ -449,14 +446,22 @@ public class ModEvents {
                 e.setFire(4);
             }
         }
-        if (e.isPotionActive(ModPotions.TARGETED)){
+        if (e.isPotionActive(ModPotions.TARGETED) && !(e instanceof EntityCreeper)){
             List<EntityMob> list = world.getEntitiesWithinAABB(EntityMob.class, e.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
+            int dur = e.getActivePotionEffect(ModPotions.TARGETED).getDuration();
 
-            if(!list.isEmpty() && !world.isRemote ){
-                for (EntityMob mob : list){
-                    mob.setAttackTarget(e);
+            if (!list.isEmpty() && !world.isRemote) {
+                for (EntityMob mob : list) {
+                    if (!(mob instanceof EntityCreeper)) {
+                        if(dur > 1) {
+                            mob.setAttackTarget(e);
+                        } else {
+                            mob.setAttackTarget(null);
+                        }
+                    }
                 }
             }
+
         }
     }
     @SubscribeEvent

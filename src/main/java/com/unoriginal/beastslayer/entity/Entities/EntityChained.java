@@ -91,7 +91,7 @@ public class EntityChained extends EntityProjectileGeneric{
 
     public boolean hasBuffedEntity()
     {
-        return this.dataManager.get(OWNER) != 0;
+        return !(this.dataManager.get(OWNER).equals(0));
     }
 
     @Nullable
@@ -125,5 +125,15 @@ public class EntityChained extends EntityProjectileGeneric{
 
     public boolean isMob(){
         return this.getDataManager().get(Mob);
+    }
+
+    public void notifyDataManagerChange(DataParameter<?> key)
+    {
+        super.notifyDataManagerChange(key);
+
+        if (OWNER.equals(key))
+        {
+            this.owner = null;
+        }
     }
 }

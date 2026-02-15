@@ -30,7 +30,8 @@ public class ModelSuccubus extends ModelBase {
 	private final ModelRenderer leg_l;
 	private final ModelRenderer leg_r;
 
-	public ModelSuccubus() {
+
+    public ModelSuccubus() {
 		textureWidth = 128;
 		textureHeight = 128;
 
@@ -102,7 +103,7 @@ public class ModelSuccubus extends ModelBase {
 		awooga.cubeList.add(new ModelBox(awooga, 35, 0, -6.5F, -2.0F, -7.0F, 13, 7, 8, 0.0F, false));
 		awooga.cubeList.add(new ModelBox(awooga, 86, 57, -6.5F, -2.0F, -7.0F, 13, 7, 8, 0.25F, false));
 
-		wing_r = new ModelRenderer(this);
+        wing_r = new ModelRenderer(this);
 		wing_r.setRotationPoint(-4.0F, -4.0F, 1.0F);
 		body.addChild(wing_r);
 		setRotationAngle(wing_r, 0.0F, 0.5236F, 0.6109F);

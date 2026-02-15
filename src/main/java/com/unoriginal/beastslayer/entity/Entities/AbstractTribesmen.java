@@ -1,14 +1,12 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.unoriginal.beastslayer.entity.Entities.ai.AIRestrictLeaves;
 import com.unoriginal.beastslayer.entity.Entities.ai.navigation.PathNavigateAvoidLeaves;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.init.ModBlocks;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.items.ItemMask;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +14,6 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -45,7 +42,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 
 public class AbstractTribesmen extends EntityMob {
@@ -56,7 +52,6 @@ public class AbstractTribesmen extends EntityMob {
     public int fieryTicks;
     protected static final DataParameter<Boolean> FIERY = EntityDataManager.createKey(AbstractTribesmen.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> TRADING = EntityDataManager.createKey(AbstractTribesmen.class, DataSerializers.BOOLEAN);
-    private static final Set<Block> SPAWNBLOCKS = Sets.newHashSet(ModBlocks.CURSED_PLANK, Blocks.GRASS, ModBlocks.CURSED_SLAB_HALF, ModBlocks.STICK, Blocks.STONE, Blocks.FARMLAND, Blocks.MELON_BLOCK, ModBlocks.CURSED_STAIR);
     private EntityAITempt aiTempt;
     public int tradeTicks;
     private EntityPlayer player;

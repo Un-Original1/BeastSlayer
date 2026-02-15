@@ -16,6 +16,14 @@ entity.Owlstack.name=Apilúho
 entity.Rifted_Enderman.name=Enderman Inverso
 entity.Bonepile.name=Purohueso
 entity.Nekros.name=Nekros
+entity.Fire_Elemental.name=Elemental de Fuego
+
+entity.Tribe_Warrior.name=Merodeador
+entity.Hunter.name=Cazadora
+entity.Scorcher.name=Calcinador
+entity.Priest.name=Tejealmas
+entity.Tribe_Child.name=Niño de la Tribu
+
 #Items
 item.sandmonster_scale.name=Escama de Engendro de Arena
 item.cactus_broth.name=Caldo de Cactus
@@ -216,7 +224,7 @@ bestiary.hint6_2top=Los nekros se desvanecen con la luz del día
 bestiary.hint6_2bottom=Muy oportuno, si sobrevives hasta entonces
 
 bestiary.hint7_0top=Ataque molesto
-bestiary.hint7_0bottom=Los puerohueso atacarán con un kunai con cadena
+bestiary.hint7_0bottom=Los purohueso atacarán con un kunai con cadena
 bestiary.hint7_1top=Get over here!
 bestiary.hint7_1bottom=Los ataques de los purohueso te arrastrarán a un lugar aleatorio
 bestiary.hint7_2top=Los purohueso arden en el día
@@ -271,3 +279,149 @@ bestiary.hint14_1top=Embestida a alta velocidad
 bestiary.hint14_1bottom=No te quedes quieto si es que un sabueso lo hace
 bestiary.hint14_2top=KABOOM!
 bestiary.hint14_2bottom=Los sabuesos explotan al ser derrotados
+
+
+
+#2.0
+item.cursed_wood.name=Madera Maldita
+item.spear.name=Lanza
+item.tribe_staff.name=Báculo
+item.wisp_torch.name=Antorcha de Espíritu
+item.mysterious_dust.name=Polvo Misterioso
+item.wisp_bottle.name=Espíritu en una botella
+item.windforce_dart.name=Windforce Dart
+item.windforce.name=Windforce
+item.broken_talisman.name=Talismán Roto
+item.ancient_tablet.name=Tableta Antigua
+item.cloth.name=Trapo
+item.concoction.name=Poción Potente
+item.wisp_locket.name=Medallón Espiritual
+item.protection_talisman.name=Talismán de Protección
+item.blast_skull.name=Cráneo Explosivo
+item.tamers_charm.name=Silbato de Hueso
+item.warriors_lock.name=Mechón del Guerrero
+item.dream_catcher.name=Atrapasueños
+item.hunters_eye.name=Ojo de Cazador
+item.bountiful_sack.name=Saco de la Abundancia
+item.fire_key.name=Runa de Fuego
+item.agility_talon.name=Garra de Agilidad
+item.water_rune.name=Runa de Agua
+item.mossy_whetstone.name=Piedra de Afilar Mohosa
+item.ocelot_paw.name=Pata de Ocelote
+item.telekinesis.name=Telekinesis
+item.wolf_amulet.name=Amuleto de Lobo
+item.fire_horn.name=Cuerno Quemado
+item.fire_rain.name=Lluvia Ígnea
+
+item.marauder_mask.name=Máscara de Merodeador
+item.hunter_mask.name=Máscara de Cazadora
+item.scorcher_mask.name=Máscara de Calcinador
+item.spiritweaver_mask.name=Máscara de Tejealmas
+
+tile.witchcraft_table.name=Mesa de Brujería
+tile.magic_cauldron.name=Caldero Mágico
+container.witchcraft=Mesa de Brujería
+
+#Item Tooltips
+item.protection_talisman.tooltip=Brinda resistencia al usuario, pero lo hace más lento
+item.wisp_locket.tooltip=Crea un espíritu al vencer a un enemigo
+item.blast_skull.tooltip=Los enemigos pueden explotar al morir
+item.tamers_charm.tooltip=Las mascotas tendran más resistencia y daño
+item.warriors_lock.tooltip=Brinda fuerza, al tener menos vida el poder aumenta
+item.dream_catcher.tooltip=Muestra a criaturas cercanas al interactuar con una cama
+item.hunters_eye.tooltip=Los enemigos no pueden escapar de su mirada...
+item.bountiful_sack.tooltip=Matar criaturas dará más recompenzas
+item.wolf_amulet.tooltip=Invoca a una bestia cuando se le necesite...
+item.fire_key.tooltip=...
+item.agility_talon.tooltip=Aumenta la velocidad del usuario al ser lastimado
+item.telekinesis.tooltip=Una mano amiga, se puede usar para mover cosas y entes
+item.water_rune.tooltip=Aumenta el daño contra ciertas entidades...
+item.mossy_whetstone.tooltip=Aplica veneno al atacar
+item.ocelot_paw.tooltip=Agilidad felina
+item.fire_horn.tooltip=Esta lleno de ira... Enloquece a enemigos
+item.irongrass.name=Pasto cristalizado
+item.irongrass.tooltip=Niega 1 golpe cada 20 segundos
+item.magic_feather.name=Pluma Máravillosa
+item.magic_feather.tooltip=WIP
+item.traitors_blade.tooltip=Daño extra contra criaturas que no te tengan de objetivo
+item.hungry_tooth.tooltip=Consume a tu enemigo! Tienes un hambre insaciable...
+item.glass_shard.tooltip=Golpes mucho más fuertes, pero un cuerpo frágil...
+item.heart_amulet.tooltip=Tener la barra de hambre casi llena dará salud, pero harás menos daño
+item.miners_charm.tooltip=La luz solar te hará romper bloques más rápido
+item.leech.tooltip=Roba las pociones del enemigo!
+item.fish_tail.tooltip=Te mueves mucho más rápido en el agua, pero es difícil controlar el movimiento
+item.blazing_spring.tooltip=Te lanza por los aires al tocar la lava
+item.heavy_rock.tooltip=Resistencia al retroceso
+item.light_feather.tooltip=Te dará una caída lenta por unos segundos
+
+tile.cursed_log.name=Tronco de Sauce Fúnebre
+tile.cursed_plank.name=Tablones de Sauce Fúnebre
+tile.cursed_stairs.name=Escaleras de Sauce Fúnebre
+tile.cursed_slab_half.name=Losa de Sauce Fúnebre
+tile.cursed_fence.name=Valla de Sauce Fúnebre
+tile.cursed_gate.name=Puerta de Valla de Sauce Fúnebre
+tile.cursed_door.name=Puerta de Sauce Fúnebre
+tile.cursed_leaves.name=Hojas de Sauce Fúnebre
+tile.hanging_leaves.name=Fruta inusual
+tile.cursed_sapling.name=Brote de Sauce Fúnebre
+tile.green_torch.name=Antorcha de Sauce Fúnebre
+tile.fire_idol.name=Idolo de Fuego
+item.test.name=Generador de Aldea de la Jungla
+item.logo_beast.name=Máscara de Fuego
+item.traitors_blade.name=Daga del Traídor
+item.hungry_tooth.name=Diente Hambriento
+item.glass_shard.name=Fragmentos de Vidrio
+item.heart_amulet.name=Amuleto de Corazón
+item.miners_charm.name=Talismán del Minero
+item.leech.name=Sanguijuela de pociones
+item.fish_tail.name=Cola de Pescado
+item.blazing_spring.name=Resorte Ardiente
+item.heavy_rock.name=Roca Pesada
+item.light_feather.name=Pluma Ligera
+
+potion.fire_frenzy=Frenesí de Fuego
+entity.Fire_Elemental.name=Elemental de Fuego
+
+entity.succubus.name=Súcubo
+item.strange_potion.name=Líquido Extraño
+advancements.succubus_blood.title=Exanguinación
+advancements.succubus_blood.description=Obten poderes de un Súcubo de formas inusuales
+advancements.succubus_friend.title=Red Flags
+advancements.succubus_friend.description=Ten a un Súcubo vínculado a ti
+advancements.succubus_bed.title=Dibujame como una de tus chicas francesas
+advancements.succubus_bed.description=Supongo que esa es su cama ahora...
+item.garlic_neck.name=Collar de Ajos
+item.succubus_amulet.name=Medallón de Corazón
+advancements.ancientbeasts.kill_succ.title=No soy yo... Eres tú
+advancements.ancientbeasts.kill_succ.description=Mata a un Súcubo
+potion.charmed=Encantado
+
+bestiary.hint15_0top=Manipuladora Experta
+bestiary.hint15_0bottom=Los Súcubos pueden alterar el comportamiento de tanto críaturas como jugadores.
+bestiary.hint15_1top=Cazadora Nocturna
+bestiary.hint15_1bottom=Los Súcubos persiguen a sus víctimas y si estan lo suficientemente cerca, generan un vínculo con estas. El ajo las mantiene lejos
+bestiary.hint15_2top=Relación No Deseada
+bestiary.hint15_2bottom=Si tienes a un Súcubo enlazado tendrás que saciar sus deseos o la cosa se pondrá fea...
+
+subtitles.succ_ambient=Súcubo ríe
+subtitles.succ_hurt=Súcubo herida
+subtitles.succ_blood=Succión de sangre
+subtitles.succ_death=Súcubo muere
+subtitles.succ_spell=Súcubo usa un hechizo
+subtitles.succ_sigh=Súcubo suspira
+
+entity.xp_mosquito.name=Ala-aguja
+advancements.ancientbeasts.kill_mosq.title=Control de Plagas
+advancements.ancientbeasts.kill_mosq.description=Mata a un Ala-aguja
+
+bestiary.hint16_0top=Ladrón de Experiencia
+bestiary.hint16_0bottom=Los Ala-aguja roban experiencia de los jugadores cercanos
+bestiary.hint16_1top=Una vez estos se encuentren llenos
+bestiary.hint16_1bottom=Estas criaturas entran a un estado pasivo, donde se les puede reproducir
+bestiary.hint16_2top=Recuperación Sencilla
+bestiary.hint16_2bottom=Los Ala-aguja siempre te darán la experiencia que se llevaron
+
+subtitles.mosq_loop=Ala-aguja vuela
+subtitles.mosq_gulp=Ala-aguja succiona experiencia
+subtitles.mosq_hurt=Ala-aguja herido
+subtitles.mosq_death=Ala-aguja revienta

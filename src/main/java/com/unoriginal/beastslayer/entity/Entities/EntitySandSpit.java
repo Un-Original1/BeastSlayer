@@ -11,6 +11,7 @@ public class EntitySandSpit extends EntityProjectileGeneric {
     public EntitySandSpit(World worldIn)
     {
         super(worldIn);
+        this.setSize(0.25F, 0.25F);
     }
 
     public EntitySandSpit(World worldIn, EntitySandy owner)
@@ -47,5 +48,6 @@ public class EntitySandSpit extends EntityProjectileGeneric {
 
     protected void entityInit()
     {
+        super.entityInit();
     }
 }

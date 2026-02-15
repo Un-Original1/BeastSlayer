@@ -29,6 +29,7 @@ public class RenderChained extends Render<EntityChained> {
         super(renderManager);
     }
 
+    @Override
     public boolean shouldRender(EntityChained chained, ICamera camera, double camX, double camY, double camZ)
     {
         if (super.shouldRender(chained, camera, camX, camY, camZ))

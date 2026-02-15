@@ -76,27 +76,29 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
     public EntitySucc(World worldIn) {
         super(worldIn);
-        this.setSize(0.95F, 2.8F);
+        this.setSize(0.95F, 2.3F);
         this.isImmuneToFire = true;
         this.experienceValue = 15;
-        ((PathNavigateGround)this.getNavigator()).setEnterDoors(true);
-        this.dropTime = rand.nextInt(8000) + 8000;
+        this.setFriend(false);
+        this.setStalking(true);
+        ((PathNavigateGround)this.getNavigator()).setEnterDoors(true); //she can't fit through tho
+        this.dropTime = this.rand.nextInt(8000) + 8000;
 
     }
 
     protected void initEntityAI() {
         this.aiSit = new EntityAICustomSit(this);
-        this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(2, new EntityAISuccSpell(this));
         this.tasks.addTask(3, new EntityAIAttackRangedStrafe<>(this, 1.0D, this.world.getDifficulty()== EnumDifficulty.HARD ? 100 : 130, 20.0F));
-        this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 0.6D));
-        this.tasks.addTask(7, new AIMoveToBed(this, 1.0D));
+        this.tasks.addTask(4, new EntityAIStalk(this, 0.4D));
         this.tasks.addTask(5, new EntityAIMeleeConditional(this, 0.7D, true, this.targetSelector));
         this.tasks.addTask(6, new EntityAIFollowFriend(this, 1.0D, 8.0F, 2.0F));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-        this.tasks.addTask(4, new EntityAIStalk(this, 0.4D));
+        this.tasks.addTask(7, new AIMoveToBed(this, 1.0D));
+        this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 0.6D));
+        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 16.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntitySucc.class));
         this.targetTasks.addTask(2, new EntityAITargetAggro<>(this, EntityPlayer.class, false, this.targetSelector));
         this.targetTasks.addTask(3, new EntityAITargetAggro<>(this, EntityAnimal.class , false, this.targetSelector2));
@@ -157,7 +159,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
             this.world.setEntityState(this, (byte)13);
 
         }
-        double d3 = this.isBed() ? 1D : 2.8D;
+        double d3 = this.isBed() ? 1D : 2.3D;
         double d4 = this.width / 2F;
         this.setEntityBoundingBox(new AxisAlignedBB(this.posX - d4, this.posY, this.posZ - d4, this.posX + d4, this.posY + d3, this.posZ + d4));
 
@@ -232,9 +234,9 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                                     this.spawnHeartParticles();
                                     this.world.setEntityState(this, (byte) 14);
                                     this.friendlyTicks = 24000 + rand.nextInt(12000);
-                                    this.setFriend(true);
+                                 //   this.setFriend(true);
                                     this.setFriendBy(entityplayer);
-                                    this.setFriendID(entityplayer.getUniqueID());
+                                  //  this.setFriendID(entityplayer.getUniqueID());
 
                                     this.enablePersistence();
                                     this.setStalking(false);
@@ -245,9 +247,9 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                                 this.spawnHeartParticles();
                                 this.world.setEntityState(this, (byte) 14);
                                 this.friendlyTicks = 24000 + rand.nextInt(12000);
-                                this.setFriend(true);
+                                //this.setFriend(true);
                                 this.setFriendBy(entityplayer);
-                                this.setFriendID(entityplayer.getUniqueID());
+                                //this.setFriendID(entityplayer.getUniqueID());
                                 this.enablePersistence();
                                 this.setStalking(false);
                             }
@@ -287,7 +289,11 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
             }
         }
         if(this.friendlyTicks >= 0 && !this.isStalking() && this.isFriendly() && this.getFriend() != null) {
-            this.friendlyTicks--;
+            int i = (this.getBuff() + 1) / 4;
+            if(i == 0){
+                i = 1;
+            }
+            this.friendlyTicks -= i;
         }
         if(this.friendlyTicks <= 0 && !this.isStalking() && this.isFriendly() && !this.world.isRemote) {
             this.setFriend(false);
@@ -440,6 +446,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
@@ -469,6 +476,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         compound.setBoolean("bed", this.isBed());
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -527,9 +535,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.getHeldItem(hand);
-        if(!this.isFriendly()){
-            return false;
-        } else {
+        if(this.isFriendly()){
             if (!itemstack.isEmpty() && this.isFriend(player))
             {
                 if(itemstack.getItem() == ModItems.GARLIC_NECK && !this.world.isRemote){
@@ -571,17 +577,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                     return true;
                 }
             }
-            if (this.isFriend(player) && !this.world.isRemote && this.isSitting())
-            {
-                this.aiSit.setSitting(false);
-                if(this.isBed()){
-                    this.setBed(false);
-                }
-                this.isJumping = false;
-                this.navigator.clearPath();
-            }
-
-            else if(player.isSneaking() && this.getSell() <= 0){
+            else if(player.isSneaking() && itemstack.isEmpty() && this.getSell() <= 0){
                 player.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor(), 4F);
                 if(!this.world.isRemote) {
                     int i = this.rand.nextInt(7);
@@ -590,11 +586,26 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                         ModTriggers.SUCCUBUS_BLOOD.trigger((EntityPlayerMP)player);
 
                     }
+                    for(PotionEffect potioneffect : player.getActivePotionEffects()){
+                        if(potioneffect.getPotion().isBadEffect()){
+                            player.removePotionEffect(potioneffect.getPotion());
+                        }
+                    }
                 }
                 this.world.playSound(null, this.posX, this.posY, this.posZ , ModSounds.SUCC_SUCK, this.getSoundCategory(), 1.2F, this.rand.nextFloat() * 0.2F + 0.8F);
                 this.world.setEntityState(this, (byte)14);
                 this.friendlyTicks += 8000;
                 this.setSell(6000);
+            }
+
+            if (this.isFriend(player) && !this.world.isRemote && this.isSitting())
+            {
+                this.aiSit.setSitting(false);
+                if(this.isBed()){
+                    this.setBed(false);
+                }
+                this.isJumping = false;
+                this.navigator.clearPath();
             }
         }
         return super.processInteract(player, hand);
@@ -632,7 +643,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     @Nullable
     public UUID getFriendID()
     {
-        return (UUID)((Optional)this.dataManager.get(FRIEND_UNIQUE_ID)).orNull();
+        return (UUID)((Optional<?>)this.dataManager.get(FRIEND_UNIQUE_ID)).orNull();
     }
 
     public void setFriendID(@Nullable UUID p_184754_1_)
@@ -739,7 +750,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         }
         if(this.getHealth() < this.getMaxHealth()) {
             this.heal(6F);
-        } else if(this.getHealth() >= this.getMaxHealth() && this.getBuff() <= 9) {
+        } else if(this.getHealth() >= this.getMaxHealth() && this.getBuff() <= 9 && rand.nextInt(6)==0) {
             this.setBuff(this.getBuff() + 1);
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", this.getBuff(), 0).setSaved(true));
             if(this.getBuff() % 3  == 0) {
@@ -899,6 +910,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     @Override
     public void addPotionEffect(PotionEffect potioneffectIn) {
         Potion potion = potioneffectIn.getPotion();
+        //noinspection StatementWithEmptyBody
         if(potion == MobEffects.WITHER) {
 
         }else {

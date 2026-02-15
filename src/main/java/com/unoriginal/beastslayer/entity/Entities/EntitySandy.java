@@ -89,7 +89,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
 
     public float getEyeHeight()
     {
-        return 2.8F;
+        return this.isBuried()? 0.4F : 2.8F;
     }
 
     protected void initEntityAI()
@@ -161,6 +161,9 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
         else {
                this.dataManager.set(MAGIC, (byte)0);
             }
+        double d3 = this.isBuried() ? 0.6F : 3.5F;
+        double d4 = this.width / 2F;
+        this.setEntityBoundingBox(new AxisAlignedBB(this.posX - d4, this.posY, this.posZ - d4, this.posX + d4, this.posY + d3, this.posZ + d4));
         float f1 = MathHelper.sin(this.renderYawOffset * 0.017453292F + (float)Math.PI);
         float f2 = MathHelper.cos(this.renderYawOffset * 0.017453292F);
         this.sandyPartMain.onUpdate();
@@ -221,7 +224,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
                 for(int x = 0; x < 4; x++) {
                     this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.1D, this.rand.nextGaussian() * 0.02D, Block.getStateId(iblockstate));
                 }
-                if (!world.isRemote && this.ticksExisted % 150 == 0 ) {
+                if (!world.isRemote && this.ticksExisted % 5 == 0 ) {
                     this.playSound(iblockstate.getBlock().getSoundType().getBreakSound(), 1.0F, 1.0F); //this is deprecated! ... joe mama is deprecated
                 }
             }

@@ -5,6 +5,8 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Config(modid = BeastSlayer.MODID)
 public class BeastSlayerConfig {
@@ -260,11 +262,6 @@ public class BeastSlayerConfig {
     @Comment("Separation between inn spawns, also affects succubus spawn logic")
     @RequiresMcRestart
     public static int InnSeparation = 18;
-
-    @Name("Succubus Attributes")
-    @Comment("Y'know what I mean")
-    @RequiresMcRestart
-    public static boolean succubusAttributes = true;
 
     @Name("Enable Succubus")
     @Comment("Setting this to false will disable succubus spawning and also Inn Spawning, stuff is still accessible via creative mode")
