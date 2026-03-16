@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "QBQ",
+    "QAQ",
+    "QEQ"
+  ],
+  "key":
+  {
+    "Q":
+    {
+      "item": "minecraft:quartz"
+    },
+    "A":
+    {
+      "item": "minecraft:armor_stand"
+    },
+    "B": {
+      "item": "ancientbeasts:vessel_blueprint"
+    },
+    "E": {
+      "item": "ancientbeasts:ectoplasm"
+    }
+  },
+  "result":
+  {
+    "item": "ancientbeasts:vessel"
+  }
+}

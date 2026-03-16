@@ -50,6 +50,8 @@ public class EntityRiftedEnderman extends EntityMob {
     private int armorWeakTicks;
     private int shockwaveTicks;
     private int shockwaveCD;
+    private int stareTicks;
+    private int maxWait;
     private static final DataParameter<Boolean> SHOCKWAVE = EntityDataManager.createKey(EntityRiftedEnderman.class, DataSerializers.BOOLEAN);
 
     public static final ResourceLocation LOOT = new ResourceLocation(BeastSlayer.MODID, "entities/Rifted_Enderman");
@@ -87,6 +89,7 @@ public class EntityRiftedEnderman extends EntityMob {
     public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn)
     {
         super.setAttackTarget(entitylivingbaseIn);
+
         IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
         if (entitylivingbaseIn == null)
@@ -165,6 +168,12 @@ public class EntityRiftedEnderman extends EntityMob {
         {
             this.shockwaveTicks = compound.getInteger("LaserTicks");
         }
+        if (compound.hasKey("SeenTicks")){
+            this.stareTicks = compound.getInteger("SeenTicks");
+        }
+        if (compound.hasKey("WaitTicks")){
+            this.maxWait = compound.getInteger("WaitTicks");
+        }
         this.setShockwaving(compound.getBoolean("Shockwaving"));
     }
 
@@ -173,6 +182,8 @@ public class EntityRiftedEnderman extends EntityMob {
         super.readEntityFromNBT(compound);
 
         compound.setInteger("WeakTicks", this.armorWeakTicks);
+        compound.setInteger("SeenTicks", this.stareTicks);
+        compound.setInteger("WaitTicks", this.maxWait);
         compound.setInteger("ArmorTicks", this.armoredTicks);
         compound.setInteger("ArmorCooldown", this.armoredCooldown);
         compound.setInteger("LaserCooldown", this.shockwaveCD);
@@ -182,10 +193,28 @@ public class EntityRiftedEnderman extends EntityMob {
 
     private boolean shouldAttackPlayer(EntityPlayer player)
     {
+        return player.canEntityBeSeen(this) && this.stareTicks > 0 && this.maxWait >= 200;
+    }
+
+    private boolean isPlayerLookingAt(EntityPlayer player)
+    {
         ItemStack itemstack = player.inventory.armorInventory.get(3);
 
-        return itemstack.getItem() != Item.getItemFromBlock(Blocks.PUMPKIN) && this.canEntityBeSeen(player) && player.canEntityBeSeen(this);
+        if (itemstack.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN))
+        {
+            return false;
+        }
+        else
+        {
+            Vec3d vec3d = player.getLook(1.0F).normalize();
+            Vec3d vec3d1 = new Vec3d(this.posX - player.posX, this.getEntityBoundingBox().minY + (double)this.getEyeHeight() - (player.posY + (double)player.getEyeHeight()), this.posZ - player.posZ);
+            double d0 = vec3d1.lengthVector();
+            vec3d1 = vec3d1.normalize();
+            double d1 = vec3d.dotProduct(vec3d1);
+            return d1 > 1.0D - 0.025D / d0 ? player.canEntityBeSeen(this) : false;
+        }
     }
+
 
     public float getEyeHeight()
     {
@@ -213,21 +242,21 @@ public class EntityRiftedEnderman extends EntityMob {
             if(this.ticksExisted % (300 + rand.nextInt(100)) == 0 && !this.isVulnerable()){
                 this.armorWeakTicks = 60;
                 this.world.setEntityState(this, (byte)11);
-                if(this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget()) && this.getAttackTarget().canEntityBeSeen(this)) {
+                if(this.getAttackTarget() != null && this.getAttackTarget().canEntityBeSeen(this)) {
                     this.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 60, 0, false, false));
                 }
             }
             if(this.shockwaveCD < 0){
-                Predicate<EntityLiving> selector = entityLiving -> !(entityLiving instanceof EntityRiftedEnderman);
-                List<EntityLiving> list = this.world.getEntitiesWithinAABB(EntityLiving.class, this.getEntityBoundingBox().grow(3D, 1D, 3D), selector);
+                Predicate<EntityLivingBase> selector = entityLiving -> !(entityLiving instanceof EntityRiftedEnderman);
+                List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(3D, 1D, 3D), selector);
                 if(!list.isEmpty()) {
                     this.shockwaveTicks = 20;
                     this.playSound(ModSounds.SHOCKWAVE, 1.5F, 1.0F);
                     this.world.setEntityState(this, (byte) 10);
-                    for (EntityLiving living : list){
+                    for (EntityLivingBase living : list){
                         if(!(living instanceof EntityRiftedEnderman)) {
                             living.attackEntityFrom(DamageSource.MAGIC, 5F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
-                            living.setFire(5);
+                            living.setFire(3);
                             living.motionX += (living.posX - this.posX) * 0.5;
                             living.motionY += 0.3D;
                             living.motionZ += (living.posZ - this.posZ) * 0.5;
@@ -412,7 +441,7 @@ public class EntityRiftedEnderman extends EntityMob {
         public boolean shouldExecute()
         {
             double d0 = this.getTargetDistance();
-            this.player = this.enderman.world.getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, null, p_apply_1_ -> p_apply_1_ != null && AIFindPlayer.this.enderman.shouldAttackPlayer(p_apply_1_));
+            this.player = this.enderman.world.getNearestAttackablePlayer(this.enderman.posX, this.enderman.posY, this.enderman.posZ, d0, d0, null, p_apply_1_ -> p_apply_1_ != null);
             return this.player != null;
         }
 
@@ -420,6 +449,9 @@ public class EntityRiftedEnderman extends EntityMob {
         {
             this.aggroTime = 5;
             this.teleportTime = 0;
+
+            this.enderman.stareTicks = 100;
+            this.enderman.maxWait = 0;
         }
 
         public void resetTask()
@@ -432,15 +464,10 @@ public class EntityRiftedEnderman extends EntityMob {
         {
             if (this.player != null)
             {
-                if (!this.enderman.shouldAttackPlayer(this.player))
-                {
-                    return false;
-                }
-                else
-                {
-                    this.enderman.faceEntity(this.player, 10.0F, 10.0F);
-                    return true;
-                }
+
+                this.enderman.faceEntity(this.player, 10.0F, 10.0F);
+                return true;
+
             }
             else
             {
@@ -450,35 +477,47 @@ public class EntityRiftedEnderman extends EntityMob {
 
         public void updateTask()
         {
-            if (this.player != null)
-            {
-                if (--this.aggroTime <= 0)
-                {
-                    this.targetEntity = this.player;
-                    this.player = null;
-                    super.startExecuting();
+            if(this.player != null) {
+                if (!this.enderman.shouldAttackPlayer(this.player)) {
+                    if (this.player.canEntityBeSeen(this.enderman)) {
+                        //this.stareTicks = 100;
+                        ++this.enderman.maxWait;
+                        if (this.enderman.isPlayerLookingAt(this.player) && this.enderman.maxWait < 200) {
+                            --this.enderman.stareTicks;
+                        } else {
+                            this.enderman.stareTicks = 100;
+                        }
+                        if (this.enderman.stareTicks <= 0) {
+                            this.enderman.teleportRandomly();
+                            this.enderman.setDead();
+                        }
+                    }
+                } else {
+
+
+                    if (--this.aggroTime <= 0) {
+                        this.targetEntity = this.player;
+                        this.player = null;
+                        super.startExecuting();
+                    }
                 }
             }
-            else
-            {
-                if (this.targetEntity != null)
-                {
-                    if (this.enderman.shouldAttackPlayer(this.targetEntity))
-                    {
-                        if (this.targetEntity.getDistanceSq(this.enderman) < 16.0D && this.enderman.getRNG().nextInt(5) == 0)
-                        {
-                            this.enderman.teleportRandomly();
+
+            else {
+                    if (this.targetEntity != null) {
+                        if (this.enderman.shouldAttackPlayer(this.targetEntity)) {
+                            if (this.targetEntity.getDistanceSq(this.enderman) < 16.0D && this.enderman.getRNG().nextInt(5) == 0) {
+                                this.enderman.teleportRandomly();
+                            }
+
+                            this.teleportTime = 0;
+                        } else if (this.targetEntity.getDistanceSq(this.enderman) > 256.0D && this.teleportTime++ >= 30 && this.enderman.teleportToEntity(this.targetEntity)) {
+                            this.teleportTime = 0;
                         }
-
-                        this.teleportTime = 0;
                     }
-                    else if (this.targetEntity.getDistanceSq(this.enderman) > 256.0D && this.teleportTime++ >= 30 && this.enderman.teleportToEntity(this.targetEntity))
-                    {
-                        this.teleportTime = 0;
-                    }
-                }
 
-                super.updateTask();
+                    super.updateTask();
+
             }
         }
     }

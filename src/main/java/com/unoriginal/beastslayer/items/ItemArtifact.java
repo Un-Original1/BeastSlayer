@@ -1,40 +1,57 @@
 package com.unoriginal.beastslayer.items;
 
+import baubles.api.BaubleType;
+import baubles.api.BaublesApi;
+import baubles.api.IBauble;
 import com.unoriginal.beastslayer.BeastSlayer;
-import com.unoriginal.beastslayer.integration.IntegrationBaubles;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemArtifact extends Item {
-    private final baubleSlot baubleSlot;
+@Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles")
+public class ItemArtifact extends Item implements IBauble {
     protected int tier;
     protected boolean breaksOnDeath;
     protected boolean breaksOnDamage;
-    public enum baubleSlot {
-        CHARM(1);
-        baubleSlot(int max){
 
-        }
+    @Optional.Method(modid = "baubles")
+    public BaubleType getBaubleType(ItemStack itemstack) {
+        return BaubleType.CHARM;
     }
 
-    public ItemArtifact(String name, baubleSlot slot, boolean BORIP, boolean BOD) {
+    @Optional.Method(modid = "baubles")
+    public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
+        int max = 0;
+        if(player instanceof EntityPlayer) {
+            EntityPlayer entityplayer = (EntityPlayer)player;
+            for (int i = 0; i < BaublesApi.getBaublesHandler(entityplayer).getSlots(); i++) {
+                ItemStack stack = BaublesApi.getBaublesHandler(entityplayer).getStackInSlot(i);
+                if(stack.getItem() instanceof ItemArtifact) {
+                   max = max + 1;
+                }
+            }
+        }
+        return max <= BeastSlayerConfig.MaxBaublesPerPlayer - 1;
+    }
+
+    public ItemArtifact(String name, boolean BORIP, boolean BOD) {
         setRegistryName(name);
         setUnlocalizedName(name);
         setCreativeTab(BeastSlayer.BEASTSTAB);
         this.setMaxStackSize(1);
         this.setMaxDamage(3 + this.getRarity());
-        baubleSlot = slot;
         breaksOnDamage = BOD;
         breaksOnDeath = BORIP;
         //I cannot define much about artifacts because most work very differently, I'll build onto it later, hopefully not a lot of (if x == y)
@@ -49,12 +66,6 @@ public class ItemArtifact extends Item {
         String s = stack.getItem().getUnlocalizedName() + ".tooltip";
         String result = I18n.format(s);
         tooltip.add(result);
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt){
-        return IntegrationBaubles.isEnabled() ? new IntegrationBaubles.BaubleProvider(baubleSlot) : null;
     }
 
     public boolean canBreakOnDeath(){

@@ -78,7 +78,7 @@ public class EntityGhost extends EntityMob implements IMagicUser {
         super.onUpdate();
         this.noClip = false;
         this.setNoGravity(true);
-        if (this.world.isDaytime() && this.dimension == 0 && !this.world.isRemote)
+        if (this.world.isDaytime() && this.dimension == 0 && !this.world.isRemote && this.world.canSeeSky(this.getPosition()))
         {
             this.setHealth(0.0F);
         }
@@ -190,14 +190,16 @@ public class EntityGhost extends EntityMob implements IMagicUser {
         protected void useMagic() {
             EntityLivingBase livingBase = EntityGhost.this.getPossessedEntity();
             EntityGhost.this.followTicks = 200;
-            if(livingBase != null && !world.isRemote && livingBase instanceof EntityLiving && !(livingBase instanceof EntityVillager)){
-                EntityLiving possessed = (EntityLiving)livingBase;
-                possessed.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 400));
-                possessed.addPotionEffect(new PotionEffect(MobEffects.SPEED, 400, 2));
-                possessed.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400, 2));
-                possessed.setAttackTarget(EntityGhost.this.getAttackTarget());
+            if(livingBase != null && !EntityGhost.this.world.isRemote && livingBase instanceof EntityLiving && !(livingBase instanceof EntityVillager)){
+                if(!(livingBase instanceof EntitySucc)) {
+                    EntityLiving possessed = (EntityLiving) livingBase;
+                    possessed.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 400));
+                    possessed.addPotionEffect(new PotionEffect(MobEffects.SPEED, 400, 2));
+                    possessed.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400, 2));
+                    possessed.setAttackTarget(EntityGhost.this.getAttackTarget());
+                }
             }
-            else if(livingBase instanceof EntityPlayer && !((EntityPlayer) livingBase).capabilities.isCreativeMode|| livingBase instanceof EntityVillager && !world.isRemote){
+            else if(livingBase instanceof EntityPlayer && !((EntityPlayer) livingBase).capabilities.isCreativeMode|| livingBase instanceof EntityVillager && !EntityGhost.this.world.isRemote){
                 livingBase.addPotionEffect(new PotionEffect(ModPotions.POSSESSED, 400));
                 livingBase.attackEntityFrom(DamageSource.causeMobDamage(EntityGhost.this), 4.0F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
             }

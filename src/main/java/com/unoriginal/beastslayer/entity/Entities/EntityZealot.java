@@ -196,6 +196,7 @@ public class EntityZealot extends EntitySpellcasterIllager {
                     if(mob != null && mob.isEntityAlive() && !world.isRemote)
                     {
                         EntityBeam beam = new EntityBeam(world, EntityZealot.this, mob);
+                        beam.setBuffedEntity(EntityZealot.this.getEntityId());
                         mob.addPotionEffect(new PotionEffect(ModPotions.SHIELDED, 200, 0, false, false));
                         EntityZealot.this.getNavigator().tryMoveToEntityLiving(mob, 0.6F);
                         world.spawnEntity(beam);

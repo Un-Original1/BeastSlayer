@@ -28,7 +28,10 @@ public class ItemKunai extends Item {
         this.attackDamage = 3.0F;
 
     }
-
+    public int getItemEnchantability()
+    {
+        return 15;
+    }
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         if(itemRand.nextInt(2)==0) {
@@ -50,6 +53,8 @@ public class ItemKunai extends Item {
 
             EntityChained dart = new EntityChained(world, player);
             dart.setMob(false);
+            dart.setEnchantmentfromPlayer(player);
+            dart.setBuffedEntity(player.getEntityId());
             Vec3d vec3d = player.getLookVec();
             dart.setPosition(player.posX + vec3d.x * 1.4D,player.posY + vec3d.y + player.getEyeHeight(), player. posZ + vec3d.z * 1.4D);
             dart.shoot( vec3d.x * 1.4D, vec3d.y * 1.4D, vec3d.z * 1.4D, 1.0F, 0.0F);

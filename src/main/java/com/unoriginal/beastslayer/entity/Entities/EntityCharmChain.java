@@ -4,6 +4,7 @@ import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModPotions;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 
 public class EntityCharmChain extends EntityProjectileFireball2{
-    private EntityLivingBase owner;
+    public EntityLivingBase owner;
     private static final DataParameter<Integer> OWNER = EntityDataManager.createKey(EntityChained.class, DataSerializers.VARINT);
 
     public EntityCharmChain(World worldIn) {
@@ -103,20 +104,22 @@ public class EntityCharmChain extends EntityProjectileFireball2{
             return null;
         }
         else if(this.world.isRemote){
-            Entity entity = this.world.getEntityByID(this.dataManager.get(OWNER));
-
-            if (entity instanceof EntityLivingBase)
-            {
-                this.owner = (EntityLivingBase) entity;
+            if(this.owner != null){
                 return this.owner;
             }
-            else
-            {
-                return null;
+            else {
+                Entity entity = this.world.getEntityByID(this.dataManager.get(OWNER));
+
+                if (entity instanceof EntityLivingBase) {
+                    this.owner = (EntityLivingBase) entity;
+                    return this.owner;
+                } else {
+                    return null;
+                }
             }
         }
         else {
-            return owner;
+            return this.owner;
         }
     }
 
@@ -125,7 +128,7 @@ public class EntityCharmChain extends EntityProjectileFireball2{
         return !(this.dataManager.get(OWNER).equals(0));
     }
 
-    private void setBuffedEntity(int entityId)
+    public void setBuffedEntity(int entityId)
     {
         this.dataManager.set(OWNER, entityId);
         Entity mob = this.world.getEntityByID(entityId);
@@ -141,6 +144,26 @@ public class EntityCharmChain extends EntityProjectileFireball2{
         if (OWNER.equals(key))
         {
             this.owner = null;
+        }
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        if(compound.hasKey("buffedEntity")){
+            if(this.world.getEntityByID(compound.getInteger("buffedEntity")) instanceof EntityLivingBase) {
+                this.owner = (EntityLivingBase) this.world.getEntityByID(compound.getInteger("buffedEntity"));
+            }
+            this.setBuffedEntity(compound.getInteger("buffedEntity"));
+        }
+
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        if(this.owner != null) {
+            compound.setInteger("buffedEntity", this.owner.getEntityId());
         }
     }
 }

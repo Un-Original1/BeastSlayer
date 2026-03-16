@@ -101,6 +101,8 @@ public class ModItems {
     //public static Item SLAB;
     public static Item GARLIC_NECK;
     public static Item HEART_AMULET;
+    public static Item BLUEPRINT;
+    public static Item TOTEM_OF_DYING;
 
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",BeastSlayerConfig.ScaleArmorDurability, BeastSlayerConfig.ScaleArmorValue, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
 
@@ -139,35 +141,35 @@ public class ModItems {
 
         CONCOCTION = new ItemConcoction("concoction");
         //BORIP BOD
-        IRONGRASS = new ItemArtifact("irongrass", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(3);
-        SOUL_LOCKET = new ItemArtifact("wisp_locket", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
-        PROTECTION_TALISMAN = new ItemArtifact("protection_talisman", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(2);
-        BLAST_SKULL = new ItemArtifact("blast_skull", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
-        TAMERS_CHARM = new ItemArtifact("tamers_charm", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
-        WARRIORS_LOCK = new ItemArtifact("warriors_lock", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(2);
-        DREAM_CATCHER = new ItemArtifact("dream_catcher", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
-        MAGIC_FEATHER = new ItemArtifact("magic_feather", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
-        HUNTERS_EYE = new ItemArtifact("hunters_eye", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
-        BOUNTIFUL_SACK = new ItemArtifact("bountiful_sack", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
-        WOLF_AMULET = new ItemArtifact("wolf_amulet", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(3);
-        FIRE_KEY = new ItemArtifact("fire_key", ItemArtifact.baubleSlot.CHARM, false, false).setRarity(3);
-        AGILITY_TALON = new ItemArtifact("agility_talon", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(1);
-        TELEKINESIS = new ItemArtifact("telekinesis", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
-        WATER_RUNE = new ItemArtifact("water_rune", ItemArtifact.baubleSlot.CHARM, true, false).setRarity(2);
-        WHETSTONE = new ItemArtifact("mossy_whetstone", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
-        PAW = new ItemArtifact("ocelot_paw", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
-        HORN = new ItemArtifact("fire_horn", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
+        IRONGRASS = new ItemArtifact("irongrass", true, false).setRarity(3);
+        SOUL_LOCKET = new ItemArtifact("wisp_locket", true, true).setRarity(1);
+        PROTECTION_TALISMAN = new ItemArtifact("protection_talisman", true, false).setRarity(2);
+        BLAST_SKULL = new ItemArtifact("blast_skull", true, true).setRarity(3);
+        TAMERS_CHARM = new ItemArtifact("tamers_charm", true, true).setRarity(2);
+        WARRIORS_LOCK = new ItemArtifact("warriors_lock", true, false).setRarity(2);
+        DREAM_CATCHER = new ItemArtifact("dream_catcher",  true, true).setRarity(0);
+        MAGIC_FEATHER = new ItemArtifact("magic_feather",true, true).setRarity(3);
+        HUNTERS_EYE = new ItemArtifact("hunters_eye",  true, true).setRarity(2);
+        BOUNTIFUL_SACK = new ItemArtifact("bountiful_sack",  true, true).setRarity(3);
+        WOLF_AMULET = new ItemArtifact("wolf_amulet", true, false).setRarity(3);
+        FIRE_KEY = new ItemArtifact("fire_key",  true, false).setRarity(3);
+        AGILITY_TALON = new ItemArtifact("agility_talon", true, false).setRarity(1);
+        TELEKINESIS = new ItemArtifact("telekinesis",  true, true).setRarity(1);
+        WATER_RUNE = new ItemArtifact("water_rune", true, false).setRarity(2);
+        WHETSTONE = new ItemArtifact("mossy_whetstone",  true, true).setRarity(0);
+        PAW = new ItemArtifact("ocelot_paw",  true, true).setRarity(1);
+        HORN = new ItemArtifact("fire_horn", true, true).setRarity(1);
         FIRERAIN = new ItemFireRain("fire_rain");
-        TRAITORS_BLADE = new ItemArtifact("traitors_blade", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(1);
-        HUNGRY_TOOTH = new ItemArtifact("hungry_tooth", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
-        GLASS_SHARD = new ItemArtifact("glass_shard", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
-        HEART = new ItemArtifact("heart_amulet", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(3);
-        PICKAXE_AMULET = new ItemArtifact("miners_charm", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
-        LEECH = new ItemArtifact("leech", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(2);
-        FISH_TAIL = new ItemArtifact("fish_tail", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
-        ROCK = new ItemArtifact("heavy_rock", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
-        SPRING = new ItemArtifact("blazing_spring", ItemArtifact.baubleSlot.CHARM, false, false).setRarity(0);
-        FALL_FEATHER = new ItemArtifact("light_feather", ItemArtifact.baubleSlot.CHARM, false, true).setRarity(0);
+        TRAITORS_BLADE = new ItemArtifact("traitors_blade", true, true).setRarity(1);
+        HUNGRY_TOOTH = new ItemArtifact("hungry_tooth",  true, true).setRarity(2);
+        GLASS_SHARD = new ItemArtifact("glass_shard", true, true).setRarity(3);
+        HEART = new ItemArtifact("heart_amulet", true, true).setRarity(3);
+        PICKAXE_AMULET = new ItemArtifact("miners_charm",  true, true).setRarity(2);
+        LEECH = new ItemArtifact("leech",  true, true).setRarity(2);
+        FISH_TAIL = new ItemArtifact("fish_tail",  true, true).setRarity(0);
+        ROCK = new ItemArtifact("heavy_rock", true, true).setRarity(0);
+        SPRING = new ItemArtifact("blazing_spring",  true, false).setRarity(0);
+        FALL_FEATHER = new ItemArtifact("light_feather", true, true).setRarity(0);
 
         MASK_W = new ItemMask("marauder_mask").setTier(0);
         MASK_H = new ItemMask("hunter_mask").setTier(1);
@@ -188,6 +190,8 @@ public class ModItems {
         GARLIC_NECK = quickItemRegistry("garlic_neck");
         TEST = new ItemTest().setRegistryName("test").setUnlocalizedName("test").setCreativeTab(BeastSlayer.BEASTSTAB);
         HEART_AMULET = new ItemReusableHealth("succubus_amulet");
+        BLUEPRINT = new ItemSelfContainer("vessel_blueprint");
+        TOTEM_OF_DYING = new ItemTooltip("undead_necklace");
     }
 
     public static Item quickItemRegistry(String name){
@@ -278,6 +282,8 @@ public class ModItems {
         event.getRegistry().registerAll(TEST);
         event.getRegistry().registerAll(GARLIC_NECK);
         event.getRegistry().registerAll(HEART_AMULET);
+        event.getRegistry().registerAll(BLUEPRINT);
+        event.getRegistry().registerAll(TOTEM_OF_DYING);
     }
     @SubscribeEvent
     public static void registerRenders(ModelRegistryEvent event)
@@ -358,6 +364,8 @@ public class ModItems {
             registerRender(SCALE_ARMOR);
             registerRender(SCALE_HOOD);
         }
+        registerRender(BLUEPRINT);
+        registerRender(TOTEM_OF_DYING);
     }
     public static void registerRender(Item item)
     {

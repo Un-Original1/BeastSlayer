@@ -459,5 +459,11 @@
     "sounds": [
       "ancientbeasts:mosq_death"
     ]
+  },
+  "giant_growl": {
+    "subtitle" : "subtitles.giant.angry",
+    "sounds":[
+      "ancientbeasts:giant_growl"
+    ]
   }
 }

@@ -506,7 +506,7 @@ public class EntityFrostashFox extends EntityTameable {
         }
     }
     @Override
-    public boolean canDespawn(){return !this.isTamed();}
+    public boolean canDespawn(){return false;}
 
     @Override
     protected SoundEvent getAmbientSound() {

@@ -63,6 +63,8 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     private static final DataParameter<Integer> BUFF = EntityDataManager.createKey(EntitySucc.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> STALK = EntityDataManager.createKey(EntitySucc.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FRIEND = EntityDataManager.createKey(EntitySucc.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> TRUE_LOVE = EntityDataManager.createKey(EntitySucc.class, DataSerializers.BOOLEAN);
+
     protected static final DataParameter<Optional<UUID>> FRIEND_UNIQUE_ID = EntityDataManager.createKey(EntitySucc.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     private int friendlyTicks; //mayhaps I can reuse this one for potions too!
     private int spellTime;
@@ -80,6 +82,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         this.isImmuneToFire = true;
         this.experienceValue = 15;
         this.setFriend(false);
+        this.setTrueLove(false);
         this.setStalking(true);
         ((PathNavigateGround)this.getNavigator()).setEnterDoors(true); //she can't fit through tho
         this.dropTime = this.rand.nextInt(8000) + 8000;
@@ -117,7 +120,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(BUFF, 1);
+        this.dataManager.register(BUFF, 0);
         this.dataManager.register(STALK, Boolean.TRUE);
         this.dataManager.register(FRIEND, Boolean.FALSE);
         this.dataManager.register(FRIEND_UNIQUE_ID, Optional.absent());
@@ -128,6 +131,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
         this.dataManager.register(WAIT, Boolean.FALSE);
         this.dataManager.register(BED, Boolean.FALSE);
+        this.dataManager.register(TRUE_LOVE, Boolean.FALSE);
     }
 
     public boolean isLookingAtMe(EntityPlayer player) {
@@ -155,10 +159,9 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         }
 
         if(this.friendlyTicks < 6000 && this.isFriendly() && this.ticksExisted % 20 == 0){
-
             this.world.setEntityState(this, (byte)13);
-
         }
+
         double d3 = this.isBed() ? 1D : 2.3D;
         double d4 = this.width / 2F;
         this.setEntityBoundingBox(new AxisAlignedBB(this.posX - d4, this.posY, this.posZ - d4, this.posX + d4, this.posY + d3, this.posZ + d4));
@@ -176,13 +179,8 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                     }
                     this.setRotation(iBlockState.getValue(BlockBed.FACING).rotateYCCW().getHorizontalAngle(), this.rotationPitch);
                     this.rotationYawHead = this.rotationYaw;
-                  //  this.rotationYaw = iBlockState.getValue(BlockBed.FACING).getHorizontalAngle();
-
-            }/* else {
-                this.setBed(false);
-            }*/
+            }
         }
-
 
 
         if(this.world.isRemote && this.ticksExisted % 20 == 0 && this.getSpellTime() > 0){
@@ -190,7 +188,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
             {
                 this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.rand.nextGaussian() * 0.6D, this.posY + 1.5D + this.rand.nextGaussian() * 0.12999999523162842D, this.posZ + this.rand.nextGaussian() * 0.6D, 0.0D, 0.0D, 0.0D);
             }
-            this.world.spawnParticle(ModParticles.SPELL, this.posX, this.posY+ 0.1F, this.posZ, 0D, 0D ,0D );
+            this.world.spawnParticle(ModParticles.SPELL_SUCCUBUS, this.posX, this.posY+ 0.1F, this.posZ, 0D, 0D ,0D );
         }
 
         if(this.isFriendly() && this.getFriend() != null){
@@ -204,58 +202,73 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                     if(this.isSitting() && !this.isBed()) {
                         this.aiSit.setSitting(false);
                     }
+
+
+                }
+            }
+            if(!this.world.isRemote){
+                if(this.isStalking()){
+                    this.setStalking(false); //should not happen but it's a failsafe
+                    BeastSlayer.logger.debug("found a succubus stalking while friendly, triggering failsafe");
+                }
+
+                if(this.friendlyTicks >= 0 && !this.isStalking() && this.isFriendly() && this.getFriend() != null) {
+                    int i = this.isTrueLove() ? 1 : (this.getBuff() + 1) / 4;
+
+                    if(i > 0){
+                        this.friendlyTicks -= i;
+                    }
+
+                    if(this.isTrueLove() && this.friendlyTicks <= 5900){
+                        this.friendlyTicks = 5900;
+                    }
+
+                }
+
+                if(this.getEat() > -1200  && !this.isStalking()){
+                    this.setEat(this.getEat() - 1);
+                }
+                if(this.getSell() > -8000  && !this.isStalking()){
+                    this.setSell(this.getSell() - 1);
+                }
+                if(this.getGive() > -15000 && !this.isStalking()){
+                    this.setGive(this.getGive() - 1);
                 }
             }
         }
-        if(this.getEat() > -1200  && !this.isStalking() && this.isFriendly() && this.getFriend() != null){
-            this.setEat(this.getEat() - 1);
-        }
-        if(this.getSell() > -8000  && !this.isStalking() && this.isFriendly() && this.getFriend() != null){
-            this.setSell(this.getSell() - 1);
-        }
-        if(this.getGive() > -15000 && !this.isStalking() && this.isFriendly() && this.getFriend() != null){
-            this.setGive(this.getGive() - 1);
-        }
+
         if(this.isStalking() && !this.isFriendly() && !this.world.isRemote) {
             List<EntityPlayer> list2 = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().grow(1.5D));
             if (!list2.isEmpty() && this.isStalking()) {
                 for (EntityPlayer  entityplayer : list2) {
-                        List<EntitySucc> list3 = this.world.getEntitiesWithinAABB(EntitySucc.class, this.getEntityBoundingBox().grow(64D));
-                        if(!list3.isEmpty()) {
-                            boolean taken = false;
-                            for (EntitySucc entitysucc : list3) {
-                                if(entitysucc.isFriendly() && entitysucc.getFriendID() == entityplayer.getUniqueID()) {
+                    List<EntitySucc> list3 = this.world.getEntitiesWithinAABB(EntitySucc.class, this.getEntityBoundingBox().grow(64D));
+                    if(!list3.isEmpty()) {
+                        boolean taken = false;
+                        for (EntitySucc entitysucc : list3) {
+                            if(entitysucc.isFriendly() && entitysucc.getFriendID() == entityplayer.getUniqueID()) {
                                     taken = true;
                                     break;
-                                }
                             }
-                            if (!taken && entityplayer.getHeldItemOffhand().getItem() != ModItems.GARLIC_NECK && entityplayer.getHeldItemMainhand().getItem() != ModItems.GARLIC_NECK){
+                        }
+                        if (!taken && entityplayer.getHeldItemOffhand().getItem() != ModItems.GARLIC_NECK && entityplayer.getHeldItemMainhand().getItem() != ModItems.GARLIC_NECK){
 
-                                    this.spawnHeartParticles();
-                                    this.world.setEntityState(this, (byte) 14);
-                                    this.friendlyTicks = 24000 + rand.nextInt(12000);
-                                 //   this.setFriend(true);
-                                    this.setFriendBy(entityplayer);
-                                  //  this.setFriendID(entityplayer.getUniqueID());
-
-                                    this.enablePersistence();
-                                    this.setStalking(false);
-
-                            }
-                        } else {
-                            if(entityplayer.getHeldItemOffhand().getItem() != ModItems.GARLIC_NECK && entityplayer.getHeldItemMainhand().getItem() != ModItems.GARLIC_NECK) {
-                                this.spawnHeartParticles();
-                                this.world.setEntityState(this, (byte) 14);
-                                this.friendlyTicks = 24000 + rand.nextInt(12000);
-                                //this.setFriend(true);
-                                this.setFriendBy(entityplayer);
-                                //this.setFriendID(entityplayer.getUniqueID());
-                                this.enablePersistence();
-                                this.setStalking(false);
-                            }
-
+                            this.spawnHeartParticles();
+                            this.world.setEntityState(this, (byte) 14);
+                            this.friendlyTicks = 80000 + this.rand.nextInt(40000);
+                            this.enablePersistence();
+                            this.setFriendBy(entityplayer);
+                        }
+                    }
+                    else {
+                        if(entityplayer.getHeldItemOffhand().getItem() != ModItems.GARLIC_NECK && entityplayer.getHeldItemMainhand().getItem() != ModItems.GARLIC_NECK) {
+                            this.spawnHeartParticles();
+                            this.world.setEntityState(this, (byte) 14);
+                            this.friendlyTicks = 80000 + this.rand.nextInt(40000);
+                            this.enablePersistence();
+                            this.setFriendBy(entityplayer);
                         }
 
+                    }
                 }
             }
         }
@@ -288,13 +301,8 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
             }
         }
-        if(this.friendlyTicks >= 0 && !this.isStalking() && this.isFriendly() && this.getFriend() != null) {
-            int i = (this.getBuff() + 1) / 4;
-            if(i == 0){
-                i = 1;
-            }
-            this.friendlyTicks -= i;
-        }
+
+
         if(this.friendlyTicks <= 0 && !this.isStalking() && this.isFriendly() && !this.world.isRemote) {
             this.setFriend(false);
             this.setFriendID(null);
@@ -308,6 +316,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         }
 
     }
+
     public void spawnHeartParticles(){
 
             for (int i = 0; i < this.rand.nextInt(5) + 10; ++i) {
@@ -318,7 +327,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
 
     @Override
-    public boolean canDespawn(){return !this.isFriendly() && this.isStalking();}
+    public boolean canDespawn(){return false;}
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -346,6 +355,10 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                 return super.attackEntityFrom(source, amount);
             }
         } else {
+            if(this.getFriend() != null && BeastSlayerConfig.SuccubusHealthBound){
+                this.getFriend().attackEntityFrom(source, amount / 2);
+                amount = amount / 2;
+            }
             return super.attackEntityFrom(source, amount);
         }
     }
@@ -434,6 +447,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
             double d2 = target.posZ - this.posZ;
             EntityCharmChain entityarrow = new EntityCharmChain(world, this, (float)d0, (float)d1, (float)d2 );
         //    entityarrow.setPositionAndRotation(this.posX, this.posY + this.getEyeHeight(), this.posZ, this.rotationYaw, this.rotationPitch);
+            entityarrow.setBuffedEntity(this.getEntityId());
             entityarrow.setPosition(this.posX, this.posY + this.height / 2f, this.posZ);
             this.world.playSound(null, this.posX, this.posY, this.posZ ,ModSounds.SUCC_SPELL, SoundCategory.HOSTILE, 0.8F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             this.world.spawnEntity(entityarrow);
@@ -472,8 +486,13 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
             compound.setString("FriendUUID", this.getFriendID().toString());
         }
 
+        compound.setBoolean("true_love", this.isTrueLove());
         compound.setBoolean("Sitting", this.isSitting());
         compound.setBoolean("bed", this.isBed());
+
+        compound.setInteger("eat", this.getEat());
+        compound.setInteger("sell", this.getSell());
+        compound.setInteger("give", this.getGive());
     }
 
     @Override
@@ -484,6 +503,15 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         if (this.aiSit != null)
         {
             this.aiSit.setSitting(compound.getBoolean("Sitting"));
+        }
+        if(compound.hasKey("eat")){
+            this.setEat(compound.getInteger("eat"));
+        }
+        if(compound.hasKey("sell")){
+            this.setSell(compound.getInteger("sell"));
+        }
+        if(compound.hasKey("give")){
+            this.setGive(compound.getInteger("give"));
         }
         if(compound.hasKey("bed")) {
             this.setBed(compound.getBoolean("bed"));
@@ -516,6 +544,9 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         if(compound.hasKey("cooldown")){
             this.spellCooldown = compound.getInteger("cooldown");
         }
+        if(compound.hasKey("true_love")){
+            this.setTrueLove(compound.getBoolean("true_love"));
+        }
 
         if (!s.isEmpty())
         {
@@ -541,8 +572,12 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                 if(itemstack.getItem() == ModItems.GARLIC_NECK && !this.world.isRemote){
                     this.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, 0.3F + this.rand.nextFloat() * 0.5F, this.rand.nextFloat() * 0.7F + 0.3F);
                     this.friendlyTicks = 0;
+                    if(this.isTrueLove()) {
+                        this.setTrueLove(false);
+                    }
                     this.world.setEntityState(this, (byte)19);
                     this.playHurtSound(DamageSource.GENERIC);
+                    return true;
                 }
                 if (itemstack.getItem() instanceof ItemFood)
                 {
@@ -553,6 +588,9 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                         if (!player.capabilities.isCreativeMode)
                         {
                             itemstack.shrink(1);
+                        }
+                        if(itemstack.getItem() == Items.GOLDEN_APPLE && itemstack.getMetadata() == 1 && !this.world.isRemote){
+                            this.setTrueLove(true);
                         }
                         if (this.getEat() <= 0) {
                             this.friendlyTicks += 2000;
@@ -576,6 +614,12 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                     this.setGive(8000);
                     return true;
                 }
+            } else if(!player.isSneaking() && itemstack.isEmpty()){
+                if(this.getAttackTarget() != null){
+                    this.setAttackTarget(null);
+                    this.navigator.clearPath();
+                    return true;
+                }
             }
             else if(player.isSneaking() && itemstack.isEmpty() && this.getSell() <= 0){
                 player.attackEntityFrom(DamageSource.causeMobDamage(this).setDamageBypassesArmor(), 4F);
@@ -591,11 +635,13 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                             player.removePotionEffect(potioneffect.getPotion());
                         }
                     }
+                    this.friendlyTicks += 8000;
+                    this.setSell(6000);
                 }
                 this.world.playSound(null, this.posX, this.posY, this.posZ , ModSounds.SUCC_SUCK, this.getSoundCategory(), 1.2F, this.rand.nextFloat() * 0.2F + 0.8F);
                 this.world.setEntityState(this, (byte)14);
-                this.friendlyTicks += 8000;
-                this.setSell(6000);
+
+                return true;
             }
 
             if (this.isFriend(player) && !this.world.isRemote && this.isSitting())
@@ -606,6 +652,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
                 }
                 this.isJumping = false;
                 this.navigator.clearPath();
+                return true;
             }
         }
         return super.processInteract(player, hand);
@@ -664,6 +711,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     {
         this.setFriend(true);
         this.setFriendID(player.getUniqueID());
+        this.setStalking(false);
     }
 
     @Nullable
@@ -920,6 +968,12 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
     }
 
     @Override
+    protected float getSoundPitch() {
+        boolean b = this.isFriendly() && this.friendlyTicks < 6000;
+        return b ? (this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F + 0.9F : super.getSoundPitch();
+    }
+
+    @Override
     public boolean canBeLeashedTo(EntityPlayer player)
     {
         return !this.getLeashed() && this.isFriend(player);
@@ -940,9 +994,27 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         this.dataManager.set(BED, bed);
     }
 
+    public boolean isTrueLove(){
+        return this.dataManager.get(TRUE_LOVE);
+    }
+
+    public void setTrueLove(boolean trueLove){
+        this.dataManager.set(TRUE_LOVE, trueLove);
+    }
+
     @Nullable
     @Override
     protected ResourceLocation getLootTable() {
         return LOOT;
+    }
+
+    public void onDeath(DamageSource cause)
+    {
+        if (!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && this.getFriend() instanceof EntityPlayerMP)
+        {
+            this.getFriend().sendMessage(this.getCombatTracker().getDeathMessage());
+        }
+
+        super.onDeath(cause);
     }
 }

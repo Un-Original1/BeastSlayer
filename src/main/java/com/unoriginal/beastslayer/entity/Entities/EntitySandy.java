@@ -260,7 +260,7 @@ public class EntitySandy extends EntityTameable implements IMagicUser, IEntityMu
     }
 
     @Override
-    public boolean canDespawn(){return !this.isTamed();}
+    public boolean canDespawn(){return false;}
 
     @Override
     public boolean canBePushed(){return false;}

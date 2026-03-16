@@ -7,10 +7,8 @@ import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -63,7 +61,7 @@ public class ItemReusableHealth extends Item {
                 player.swingArm(hand);
             }
             if(world.isRemote){
-                world.spawnParticle(ModParticles.SPELL, player.posX, player.posY+ 0.1F, player.posZ, 0D, 0D ,0D );
+                world.spawnParticle(ModParticles.SPELL_SUCCUBUS, player.posX, player.posY+ 0.1F, player.posZ, 0D, 0D ,0D );
             }
         }
         return super.itemInteractionForEntity(stack, player, target, hand);
@@ -81,7 +79,7 @@ public class ItemReusableHealth extends Item {
                 player.swingArm(hand);
             }
             if(world.isRemote){
-                world.spawnParticle(ModParticles.SPELL, player.posX, player.posY+ 0.1F, player.posZ, 0D, 0D ,0D );
+                world.spawnParticle(ModParticles.SPELL_SUCCUBUS, player.posX, player.posY+ 0.1F, player.posZ, 0D, 0D ,0D );
             }
         }
 

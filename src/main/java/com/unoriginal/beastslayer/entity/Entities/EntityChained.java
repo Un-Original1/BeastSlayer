@@ -1,10 +1,12 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.init.ModEnchantments;
 import com.unoriginal.beastslayer.init.ModSounds;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -18,6 +20,9 @@ import javax.annotation.Nullable;
 public class EntityChained extends EntityProjectileGeneric{
     private static final DataParameter<Integer> OWNER = EntityDataManager.createKey(EntityChained.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> Mob = EntityDataManager.createKey(EntityChained.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> HitCount = EntityDataManager.createKey(EntityChained.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> Pull = EntityDataManager.createKey(EntityChained.class, DataSerializers.BOOLEAN);
+    public EntityLivingBase buff;
 
     public EntityChained(World worldIn) {
         super(worldIn);
@@ -35,24 +40,34 @@ public class EntityChained extends EntityProjectileGeneric{
         this.setSize(0.5F, 0.5F);
     }
 
+    public void setEnchantmentfromPlayer(EntityLivingBase p_190547_1_)
+    {
+        boolean b = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.pulling, p_190547_1_.getHeldItemMainhand()) != 0;
+        boolean c = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.hook, p_190547_1_.getHeldItemMainhand()) != 0;
+        this.setMob(b);
+        this.setPull(c);
+    }
+
     public void onHit(RayTraceResult rayTraceResult)
     {
         if (rayTraceResult.entityHit != null && this.owner != null && !(rayTraceResult.entityHit instanceof EntityProjectileGeneric || rayTraceResult.entityHit == this.owner))
         {
             rayTraceResult.entityHit.attackEntityFrom(DamageSource.causeIndirectDamage(this, this.owner).setProjectile(), 6.0F  * (float) BeastSlayerConfig.GlobalDamageMultiplier);
         }
-        if(this.owner != null && !(this.owner instanceof EntityMob) && this.isMob() && rayTraceResult.entityHit == null && rayTraceResult.typeOfHit.equals(RayTraceResult.Type.BLOCK)){
-            owner.motionX += (rayTraceResult.hitVec.x - owner.posX) * 0.4D;
-            owner.motionY += (rayTraceResult.hitVec.y - owner.posY) * 0.4D;
-            owner.motionZ +=  (rayTraceResult.hitVec.z - owner.posZ) * 0.4D;
+        if(this.owner != null && (this.getHitCount() == 1 && this.isMob() && !this.isPull() || this.isPull()) && rayTraceResult.entityHit == null && rayTraceResult.typeOfHit.equals(RayTraceResult.Type.BLOCK)){
+            this.owner.motionX += (rayTraceResult.hitVec.x - this.owner.posX) * 0.4D;
+            this.owner.motionY += (rayTraceResult.hitVec.y - this.owner.posY) * 0.2D;
+            this.owner.motionZ +=  (rayTraceResult.hitVec.z - this.owner.posZ) * 0.4D;
+            this.owner.velocityChanged = true;
         }
 
         if (!this.world.isRemote && !(rayTraceResult.entityHit instanceof EntityProjectileGeneric) && !(rayTraceResult.entityHit == this.owner))
         {
 
-            if (isMob() && !(rayTraceResult.entityHit instanceof EntityMob) && rayTraceResult.entityHit instanceof EntityLivingBase){
+            if (isMob() && rayTraceResult.entityHit instanceof EntityLivingBase && this.getHitCount() == 0){
                 EntityLivingBase newOwner = (EntityLivingBase)rayTraceResult.entityHit;
                 EntityChained entityarrow = new EntityChained(world, newOwner);
+                entityarrow.setHitCount(1);
                 entityarrow.setMob(true);
                 double d0 = (newOwner.getPosition().getX() + rand.nextInt(16)) - newOwner.getPosition().getX();
                 double d1 = newOwner.getPosition().getY();
@@ -64,10 +79,19 @@ public class EntityChained extends EntityProjectileGeneric{
                 this.world.spawnEntity(entityarrow);
             }
             else if(!isMob() && rayTraceResult.entityHit instanceof EntityLivingBase){
+
                 EntityLivingBase target = (EntityLivingBase)rayTraceResult.entityHit;
-                target.motionX += (owner.posX - target.posX) * 0.3D;
-                target.motionY += (owner.posY - target.posY) * 0.1D;
-                target.motionZ +=  (owner.posZ - target.posZ) * 0.3D;
+                if(this.isPull()){
+                    this.owner.motionX += (target.posX - this.owner.posX) * 0.4D;
+                    this.owner.motionY += (target.posY - this.owner.posY) * 0.2D;
+                    this.owner.motionZ +=  (target.posZ - this.owner.posZ) * 0.4D;
+                    this.owner.velocityChanged = true;
+                } else {
+                    target.motionX += (owner.posX - target.posX) * 0.3D;
+                    target.motionY += (owner.posY - target.posY) * 0.1D;
+                    target.motionZ += (owner.posZ - target.posZ) * 0.3D;
+                    target.velocityChanged = true;
+                }
             }
             this.playSound(ModSounds.KUNAI_HIT, 0.7F, 1.0F / (this.rand.nextFloat() * 0.2F + 0.8F));
             this.setDead();
@@ -78,14 +102,16 @@ public class EntityChained extends EntityProjectileGeneric{
         super.entityInit();
         this.dataManager.register(OWNER, 0);
         this.dataManager.register(Mob, false);
+        this.dataManager.register(Pull, false);
+        this.dataManager.register(HitCount, 0);
     }
 
-    private void setBuffedEntity(int entityId)
+    public void setBuffedEntity(int entityId)
     {
         this.dataManager.set(OWNER, entityId);
         Entity mob = this.world.getEntityByID(entityId);
         if(mob instanceof EntityLivingBase) {
-            this.owner = (EntityLivingBase) mob;
+            this.buff = (EntityLivingBase) mob;
         }
     }
 
@@ -102,21 +128,32 @@ public class EntityChained extends EntityProjectileGeneric{
             return null;
         }
         else if(this.world.isRemote){
-            Entity entity = this.world.getEntityByID(this.dataManager.get(OWNER));
-
-            if (entity instanceof EntityLivingBase)
-            {
-                this.owner = (EntityLivingBase) entity;
-                return this.owner;
+            if(this.buff != null){
+                return this.buff;
             }
-            else
-            {
-                return null;
+            else{
+                Entity entity = this.world.getEntityByID(this.dataManager.get(OWNER));
+
+                if (entity instanceof EntityLivingBase) {
+                    this.buff = (EntityLivingBase) entity;
+                    return this.buff;
+                } else {
+                    return null;
+                }
             }
         }
         else {
-            return owner;
+            return this.buff;
         }
+    }
+
+    public void setHitCount(int count)
+    {
+        this.dataManager.set(HitCount, count);
+    }
+    public int getHitCount()
+    {
+        return this.dataManager.get(HitCount);
     }
 
     public void setMob (boolean mob){
@@ -127,13 +164,54 @@ public class EntityChained extends EntityProjectileGeneric{
         return this.getDataManager().get(Mob);
     }
 
+    public void setPull (boolean mob){
+        this.getDataManager().set(Pull, mob);
+    }
+
+    public boolean isPull(){
+        return this.getDataManager().get(Pull);
+    }
+
+
     public void notifyDataManagerChange(DataParameter<?> key)
     {
         super.notifyDataManagerChange(key);
 
         if (OWNER.equals(key))
         {
-            this.owner = null;
+            this.buff = null;
         }
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        if(compound.hasKey("buffedEntity")){
+            if(this.world.getEntityByID(compound.getInteger("buffedEntity")) instanceof EntityLivingBase) {
+                this.buff = (EntityLivingBase) this.world.getEntityByID(compound.getInteger("buffedEntity"));
+            }
+            this.setBuffedEntity(compound.getInteger("buffedEntity"));
+        }
+        if(compound.hasKey("mob")){
+            this.setMob(compound.getBoolean("mob"));
+        }
+        if(compound.hasKey("pull")){
+            this.setMob(compound.getBoolean("pull"));
+        }
+        if(compound.hasKey("hitCount")){
+            this.setHitCount(compound.getInteger("hitCount"));
+        }
+
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        if(this.buff != null) {
+            compound.setInteger("buffedEntity", this.buff.getEntityId());
+        }
+        compound.setBoolean("mob", this.isMob());
+        compound.setBoolean("pull", this.isPull());
+        compound.setInteger("hitCount", this.getHitCount());
     }
 }

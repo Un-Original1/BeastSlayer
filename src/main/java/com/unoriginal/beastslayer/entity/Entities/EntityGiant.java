@@ -1,8 +1,11 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
+import com.google.common.base.Predicate;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
@@ -15,11 +18,11 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -33,6 +36,7 @@ import java.util.List;
 public class EntityGiant extends EntityMob {
     protected static final IAttribute SPAWN_REINFORCEMENTS_CHANCE = (new RangedAttribute(null, "zombie.spawnReinforcements", 0.0D, 0.0D, 1.0D)).setDescription("Spawn Reinforcements Chance");
     public static final ResourceLocation LOOT = new ResourceLocation(BeastSlayer.MODID, "entities/Giant");
+    final Predicate<EntityLivingBase> selector = entityMob -> entityMob instanceof EntityVillager || entityMob instanceof EntityIronGolem || entityMob instanceof EntityPlayer ;
   //  List<Integer> DimWhitelist = Arrays.asList(BeastSlayerConfig.GiantDimensionWhitelist);
     private int attackTimer;
     private int grabTicks;
@@ -66,7 +70,7 @@ public class EntityGiant extends EntityMob {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((180.0D + BeastSlayerConfig.GiantHealthBonus) * BeastSlayerConfig.GlobalHealthMultiplier);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(35.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(15.0D * BeastSlayerConfig.GlobalDamageMultiplier);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(4.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D + BeastSlayerConfig.GlobalArmor);
@@ -140,12 +144,12 @@ public class EntityGiant extends EntityMob {
         {
             --this.throwTicks;
         }
-        if(!world.isRemote && !this.isBeingRidden() && this.actionCooldown <= 0)
+        if(!this.world.isRemote && !this.isBeingRidden() && this.actionCooldown <= 0)
         {
-            if(rand.nextInt(6) == 0){
-                List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(6D));
+            if(this.rand.nextInt(6) == 0){
+                List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(6D), this.selector);
                 if(!list.isEmpty()) {
-                    EntityLivingBase p = list.get(this.world.rand.nextInt(list.size()));
+                    EntityLivingBase p = list.get(this.rand.nextInt(list.size()));
                     if(p instanceof EntityPlayer || p instanceof EntityVillager || p instanceof EntityIronGolem) {
                         if(p instanceof EntityPlayer) {
                             EntityPlayer entityPlayer = (EntityPlayer)p;
@@ -162,6 +166,9 @@ public class EntityGiant extends EntityMob {
                 }
             }
         }
+        if(!this.world.isRemote){
+            destroyBlocksInAABB(this.getEntityBoundingBox().grow(1.25D));
+        }
         if(this.isBeingRidden())
         {
             for(Entity e : this.getPassengers())
@@ -175,16 +182,16 @@ public class EntityGiant extends EntityMob {
             if(this.grabTicks <= 0 || this.hurtTime != 0)
             {
                 this.removePassengers();
-                this.actionCooldown = 800;
+                this.actionCooldown = 300;
             }
         }
         if(this.getAttackTarget() != null && !this.world.isRemote && actionCooldown <= 0 && rand.nextInt(6) == 0 && !this.isBeingRidden()){
             EntityLivingBase target = this.getAttackTarget();
-            if(this.getDistanceSq(target) > 16D && !this.didThrow){
+            if(!this.didThrow){
                 this.world.setEntityState(this, (byte)6);
                 this.throwBoulder(target);
                 this.throwTicks = 12;
-                this.actionCooldown = 400;
+                this.actionCooldown = 100;
             }
         }
         if (this.motionX * this.motionX + this.motionZ * this.motionZ > 2.500000277905201E-7D && this.rand.nextInt(5) == 0)
@@ -261,9 +268,17 @@ public class EntityGiant extends EntityMob {
                     }
                 }
             }
+            if (source instanceof EntityDamageSourceIndirect)
+            {
+                this.playSound(ModSounds.GIANT_ANGRY, 6.0F, 1.0F);
+                this.addPotionEffect(new PotionEffect(MobEffects.SPEED, 180, 3));
+                return super.attackEntityFrom(source, amount * 0.3F);
+            } else {
 
-            return true;
+                return true;
+            }
         }
+
         else
         {
             return false;
@@ -367,13 +382,29 @@ public class EntityGiant extends EntityMob {
     }
 
     private void throwBoulder(EntityLivingBase target){
-        EntityBoulder boulder = new EntityBoulder(this.world, this);
-        double d0 = target.posX - this.posX;
-        double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 2.0F) - boulder.posY;
-        double d2 = target.posZ - this.posZ;
-        float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
-        boulder.shoot(d0, d1 + (double)f, d2, 1.3F, 0.0F);
-        this.world.spawnEntity(boulder);
+        double throwx = target.posX - this.posX;
+        double throwy = target.getEntityBoundingBox().minY + (double)(target.height / 2.0F) ;
+        double throwz = target.posZ - this.posZ;
+        List<EntityMob> mobs = this.world.getEntitiesWithinAABB(EntityMob.class, this.getEntityBoundingBox().grow(6d));
+        if(!mobs.isEmpty() && rand.nextInt(8) == 0){
+            EntityMob entitymob = mobs.get(this.rand.nextInt(mobs.size()));
+            if(entitymob.isNonBoss() && !(entitymob instanceof EntityGiant)){
+                entitymob.motionX = throwx;
+                entitymob.motionY = throwy;
+                entitymob.motionZ = throwz;
+                entitymob.velocityChanged = true;
+            }
+        } else {
+
+
+            EntityBoulder boulder = new EntityBoulder(this.world, this);
+            double d0 = target.posX - this.posX;
+            double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 2.0F) - boulder.posY;
+            double d2 = target.posZ - this.posZ;
+            float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
+            boulder.shoot(d0, d1 + (double) f, d2, 1.3F, 0.0F);
+            this.world.spawnEntity(boulder);
+        }
         this.didThrow = true;
     }
     public int getMaxSpawnedInChunk()
@@ -398,5 +429,47 @@ public class EntityGiant extends EntityMob {
 
     public static boolean contains(final int[] arr, final int key) {
         return Arrays.stream(arr).anyMatch(i -> i == key);
+    }
+
+    private boolean destroyBlocksInAABB(AxisAlignedBB p_70972_1_)
+    {
+        int i = MathHelper.floor(p_70972_1_.minX);
+        int j = MathHelper.floor(p_70972_1_.minY);
+        int k = MathHelper.floor(p_70972_1_.minZ);
+        int l = MathHelper.floor(p_70972_1_.maxX);
+        int i1 = MathHelper.floor(p_70972_1_.maxY);
+        int j1 = MathHelper.floor(p_70972_1_.maxZ);
+        boolean flag = false;
+
+        for (int k1 = i; k1 <= l; ++k1)
+        {
+            for (int l1 = j; l1 <= i1; ++l1)
+            {
+                for (int i2 = k; i2 <= j1; ++i2)
+                {
+                    BlockPos blockpos = new BlockPos(k1, l1, i2);
+                    IBlockState iblockstate = this.world.getBlockState(blockpos);
+                    Block block = iblockstate.getBlock();
+
+                    if (!block.isAir(iblockstate, this.world, blockpos) && (iblockstate.getMaterial() == Material.LEAVES || block instanceof BlockLog))
+                    {
+                      //  if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this))
+                     //   {
+
+                            flag = true;
+                            this.world.destroyBlock(blockpos, BeastSlayerConfig.GriefyGiantDropsBlocks);
+
+                        }
+                    //    else if (block.canEntityDestroy(iblockstate, this.world, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, iblockstate))
+                    //    {
+
+                         //   flag = true;
+
+                    //    }
+                    }
+                }
+           // }
+        }
+        return flag && BeastSlayerConfig.GriefyGiant;
     }
 }

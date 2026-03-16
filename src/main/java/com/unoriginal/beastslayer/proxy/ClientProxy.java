@@ -39,7 +39,7 @@ public class ClientProxy extends CommonProxy
         Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.RIFT.getParticleID(), new ParticleRift.Factory());
         Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.WISPFLAME.getParticleID(), new ParticleWispFire.Factory());
         Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.DRIP.getParticleID(), new ParticleColoredDrip.Factory());
-        Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.SPELL.getParticleID(), new ParticleSpellCircle.Factory());
+        Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.SPELL_SUCCUBUS.getParticleID(), new ParticleSpellCircle.Factory());
     }
     @Override
     public Object getArmorModel(Item item, EntityLivingBase entity) {

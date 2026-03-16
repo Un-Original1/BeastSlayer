@@ -175,7 +175,7 @@ public class EntityMosquito extends EntityAnimal {
         if (entity != null && !this.world.isRemote)
         {
 
-            if(entity instanceof EntityPlayer && this.getStoredXP() < 6 && this.isEntityAlive()) {
+            if(entity instanceof EntityPlayer && this.getStoredXP() < 6 && this.isEntityAlive() && !this.isDead) {
 
                 EntityPlayer entityplayer = (EntityPlayer)entity;
                 decreaseExp(entityplayer, 1);
@@ -204,6 +204,8 @@ public class EntityMosquito extends EntityAnimal {
 
     public void decreaseExp(EntityPlayer player, float amount)
     {
+        this.updateXp(amount);
+
         if (player.experienceTotal - amount <= 0) // If not enough levels or will be negative
         {
             player.experienceLevel = 0;
@@ -230,7 +232,7 @@ public class EntityMosquito extends EntityAnimal {
             this.onLostLevel();
         }
         player.experience -= amount / (float)player.xpBarCap();
-        this.updateXp(amount);
+
         // Removing experience from remaining level
     }
     public void onLostLevel(){
@@ -384,5 +386,10 @@ public class EntityMosquito extends EntityAnimal {
     @Override
     protected SoundEvent getDeathSound() {
         return ModSounds.MOSQ_DEATH;
+    }
+
+    public int getMaxSpawnedInChunk()
+    {
+        return 8;
     }
 }

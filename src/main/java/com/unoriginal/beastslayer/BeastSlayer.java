@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import org.apache.logging.log4j.Logger;
 
 
-@Mod(modid = BeastSlayer.MODID, name = BeastSlayer.NAME, version = BeastSlayer.VERSION)
+@Mod(modid = BeastSlayer.MODID, name = BeastSlayer.NAME, version = BeastSlayer.VERSION, dependencies="after:baubles;")
 public class BeastSlayer
 {
     public static final String MODID = "ancientbeasts";

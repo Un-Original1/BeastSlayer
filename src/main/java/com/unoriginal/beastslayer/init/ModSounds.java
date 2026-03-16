@@ -76,6 +76,8 @@ public class ModSounds {
     public static final SoundEvent MOSQ_HURT = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "mosq_hurt")).setRegistryName("mosq_hurt");
     public static final SoundEvent MOSQ_DEATH = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "mosq_death")).setRegistryName("mosq_death");
 
+    public static final SoundEvent GIANT_ANGRY = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "giant_growl")).setRegistryName("giant_growl");
+
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
         @SubscribeEvent
@@ -141,6 +143,7 @@ public class ModSounds {
             event.getRegistry().register(MOSQ_GULP);
             event.getRegistry().register(MOSQ_HURT);
             event.getRegistry().register(MOSQ_DEATH);
+            event.getRegistry().register(GIANT_ANGRY);
         }
 
     }

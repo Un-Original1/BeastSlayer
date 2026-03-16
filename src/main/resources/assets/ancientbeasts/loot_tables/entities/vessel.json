@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "item",
-          "name": "ancientbeasts:vessel",
+          "name": "ancientbeasts:vessel_blueprint",
           "weight": 1,
           "functions": [
             {

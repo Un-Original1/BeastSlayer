@@ -45,7 +45,7 @@ public class RenderSuccubus extends RenderLiving<EntitySucc> {
     @Override
     protected void renderLeash(EntitySucc entityLivingIn, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        super.renderLeash(entityLivingIn, x, y - 0.4D, z, entityYaw, partialTicks);
+        super.renderLeash(entityLivingIn, x, y - 0.16D, z, entityYaw, partialTicks);
         /*Entity entity = entityLivingIn.getLeashHolder();
 
         if (entity != null)

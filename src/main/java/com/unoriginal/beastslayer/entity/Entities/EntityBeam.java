@@ -7,6 +7,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -65,7 +67,7 @@ public class EntityBeam extends Entity {
         this.dataManager.register(BUFFED_ENTITY, 0);
     }
 
-    private void setBuffedEntity(int entityId)
+    public void setBuffedEntity(int entityId)
     {
         this.dataManager.set(BUFFED_ENTITY, entityId);
         Entity mob = this.world.getEntityByID(entityId);
@@ -97,20 +99,22 @@ public class EntityBeam extends Entity {
             return null;
         }
         else if(this.world.isRemote){
-            Entity entity = this.world.getEntityByID(this.dataManager.get(BUFFED_ENTITY));
 
-            if (entity instanceof EntityZealot)
-            {
-                this.buffedEntity = (EntityZealot) entity;
+            if(this.buffedEntity != null){
                 return this.buffedEntity;
-            }
-            else
-            {
-                return null;
+            } else {
+                Entity entity = this.world.getEntityByID(this.dataManager.get(BUFFED_ENTITY));
+
+                if (entity instanceof EntityZealot) {
+                    this.buffedEntity = (EntityZealot) entity;
+                    return this.buffedEntity;
+                } else {
+                    return null;
+                }
             }
         }
         else {
-            return buffedEntity;
+            return this.buffedEntity;
         }
     }
 
@@ -163,6 +167,9 @@ public class EntityBeam extends Entity {
         if (compound.hasUniqueId("owner")){
             this.casterUuid = compound.getUniqueId("owner");
         }
+        if(compound.hasKey("buffedEntity")){
+            this.buffedEntity = (EntityZealot)this.world.getEntityByID(compound.getInteger("buffedEntity"));
+        }
         if(compound.hasUniqueId("target")){
             this.targetUUID = compound.getUniqueId("target");
         }
@@ -172,9 +179,13 @@ public class EntityBeam extends Entity {
         if(this.casterUuid != null){
             compound.setUniqueId("owner", this.casterUuid);
         }
+
         if(this.targetUUID != null)
         {
             compound.setUniqueId("target", this.targetUUID);
+        }
+        if(this.buffedEntity != null){
+            compound.setInteger("buffedEntity", this.buffedEntity.getEntityId());
         }
 
     }

@@ -34,7 +34,7 @@ public class BeastSlayerConfig {
     @Name("Sandmonster Spawn Rate")
     @Comment("Sandmonster spawn rate, higher numbers make it more common")
     @RequiresMcRestart
-    public static int sandmonsterSpawnChance = 1;
+    public static int sandmonsterSpawnChance = 8;
 
     @Name("Sandmonster tame stack size")
     @Comment("this is mostly due to compatibility")
@@ -110,7 +110,7 @@ public class BeastSlayerConfig {
     @Name("Netherhound spawn chance")
     @Comment("Netherhound spawn chance")
     @RequiresMcRestart
-    public static int netherhoundSpawnChance = 40;
+    public static int netherhoundSpawnChance = 20;
 
     @Name("Bouldering spawn chance")
     @Comment("Bouldering Zombie spawn chance")
@@ -277,5 +277,35 @@ public class BeastSlayerConfig {
     @Comment("Higher values means a higher spawn chance")
     @RequiresMcRestart
     public static int MosquitoSpawnChance = 20;
+
+    @Name("Garlic AI whitelist")
+    @Comment("A list of creatures whose AI will be affected by holding a garlic necklace, making them flee the player")
+    @RequiresMcRestart
+    public static String[] vampireWhitelist = {};
+
+    @Name("Succubus health bound")
+    @Comment("Whether the succubus will cause damage to their owner when hurt")
+    @RequiresMcRestart
+    public static boolean SuccubusHealthBound = true;
+
+    @Name("Succubus Targeting Whitelist")
+    @Comment("A list of creatures who are allowed to target succubus despite not being aggravated by one")
+    @RequiresMcRestart
+    public static String[] SuccubusTargetingWhitelist = {};
+
+    @Name("MaxBaublesPerPlayer")
+    @Comment("Maximum amount of baubles a player can have active at the same time")
+    @RequiresMcRestart
+    public static int MaxBaublesPerPlayer = 1;
+
+    @Name("Griefy Giant")
+    @Comment("Enable or disable giant breaking leaves & logs when collided, for the sake of making their pathfinding easier")
+    @RequiresMcRestart
+    public static boolean GriefyGiant = false;
+
+    @Name("Griefy Giant Drops Blocks")
+    @Comment("Whether Giants should drop the blocks they break")
+    @RequiresMcRestart
+    public static boolean GriefyGiantDropsBlocks = false;
 
 }

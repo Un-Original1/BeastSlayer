@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:dark_goop"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.return_soul.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.return_soul.description"
+    }
+  },
+  "parent": "ancientbeasts:get_undead_necklace",
+  "criteria": {
+    "Ghost": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "ancientbeasts:xp_ghost"
+        }
+      }
+    }
+  }
+}

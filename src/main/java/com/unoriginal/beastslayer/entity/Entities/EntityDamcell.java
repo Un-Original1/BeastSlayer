@@ -117,7 +117,7 @@ public class EntityDamcell extends EntityMob implements IRangedAttackMob {
                         this.b = false;
                     }
                     for(EntityLivingBase livingBase : list){
-                        if((livingBase instanceof EntityPlayer && !((EntityPlayer) livingBase).capabilities.isCreativeMode || livingBase instanceof EntityTameable) && this.suckTimer > 0) {
+                        if((livingBase instanceof EntityPlayer && !((EntityPlayer) livingBase).capabilities.isCreativeMode && !((EntityPlayer) livingBase).isSpectator() || livingBase instanceof EntityTameable) && this.suckTimer > 0) {
                             this.world.setEntityState(this, (byte) 5);
                             if (this.canEntityBeSeen(livingBase) && world.isRemote && !this.isBeingRidden()) {
                                 double d0 = (this.posX - livingBase.posX) * 0.1;

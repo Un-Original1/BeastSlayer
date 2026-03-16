@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:undead_necklace"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.immortal.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.immortal.description"
+    }
+  },
+  "parent": "ancientbeasts:kill_nekros",
+  "criteria": {
+    "Boulderer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+             {
+      "item": "ancientbeasts:undead_necklace"
+            }
+          ]
+
+      }
+    }
+  }
+}

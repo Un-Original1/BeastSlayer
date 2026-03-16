@@ -6,36 +6,17 @@ everything else is on our clickup
 
 New entities
 
+Riftling - Light
+thieves - basic
+Axolong - Water
+Ghouls, note: remeber ragers from GOW? 4 - Fire
+Earthling - Earth (obvs)
+BlackGuard - Fire
+ooze - Fire
+Voyager - Darkness
+Bulb - light
+crystal guy - light
 
-Dark oak forest (hostile - neutral)
-Plains (all)
-Birch forest (passive - neutral)
-
-normal forest (passive - neutral)
-???
-Mountains (all)
-???
-Savanna (passive - neutral - hostile)
-???
-Desert (hostile - neutral)
-thieves
-Ocean (all)
-Ocean giant anglerfish
-Stronghold (hostile)
-Possessed tome?
-Swamps (hostile - neutral - Passive)
-Axolong
-Mesa (hostile - neutral)
-???
-Mushroom fields (passive)
-???
-CAVES:
-The Nether (hostile)
-Ghouls, note: remeber ragers from GOW? 4
-The End (hostile)
-???
-Flower Forest:
-Earthling
 
 
 What does animated?

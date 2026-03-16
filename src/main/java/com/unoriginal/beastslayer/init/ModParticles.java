@@ -12,7 +12,7 @@ public class ModParticles {
    public static EnumParticleTypes RIFT;
    public static EnumParticleTypes WISPFLAME;
    public static EnumParticleTypes DRIP;
-   public static EnumParticleTypes SPELL;
+   public static EnumParticleTypes SPELL_SUCCUBUS;
 
    public static void init() {
         Class<?>[] particlesParams = {
@@ -26,7 +26,7 @@ public class ModParticles {
        RIFT = EnumHelper.addEnum(EnumParticleTypes.class, "RIFT", particlesParams, "rift", id++, true);
        WISPFLAME = EnumHelper.addEnum(EnumParticleTypes.class, "WISPFLAME", particlesParams, "wisp_flame", id++, true);
        DRIP = EnumHelper.addEnum(EnumParticleTypes.class, "DRIP", particlesParams, "drip", id++, true);
-       SPELL = EnumHelper.addEnum(EnumParticleTypes.class, "SPELL", particlesParams, "spell", id++, true);
+       SPELL_SUCCUBUS = EnumHelper.addEnum(EnumParticleTypes.class, "SPELL_SUCCUBUS", particlesParams, "spell_succubus", id++, true);
 
        EnumParticleTypes.PARTICLES.put(SAND_SPIT.getParticleID(), SAND_SPIT);
        EnumParticleTypes.PARTICLES.put(SHIELDED.getParticleID(), SHIELDED);
@@ -34,7 +34,7 @@ public class ModParticles {
        EnumParticleTypes.PARTICLES.put(RIFT.getParticleID(), RIFT);
        EnumParticleTypes.PARTICLES.put(WISPFLAME.getParticleID(), WISPFLAME);
        EnumParticleTypes.PARTICLES.put(DRIP.getParticleID(), DRIP);
-       EnumParticleTypes.PARTICLES.put(SPELL.getParticleID(), SPELL);
+       EnumParticleTypes.PARTICLES.put(SPELL_SUCCUBUS.getParticleID(), SPELL_SUCCUBUS);
 
        EnumParticleTypes.BY_NAME.put(SAND_SPIT.getParticleName(), SAND_SPIT);
        EnumParticleTypes.BY_NAME.put(SHIELDED.getParticleName(), SHIELDED);
@@ -42,7 +42,7 @@ public class ModParticles {
        EnumParticleTypes.BY_NAME.put(RIFT.getParticleName(), RIFT);
        EnumParticleTypes.BY_NAME.put(WISPFLAME.getParticleName(), WISPFLAME);
        EnumParticleTypes.BY_NAME.put(DRIP.getParticleName(), DRIP);
-       EnumParticleTypes.BY_NAME.put(SPELL.getParticleName(), SPELL);
+       EnumParticleTypes.BY_NAME.put(SPELL_SUCCUBUS.getParticleName(), SPELL_SUCCUBUS);
 
        BeastSlayer.commonProxy.registerParticles();
    }

@@ -88,7 +88,15 @@ public class EntityNetherhound extends EntityTameable {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(28.0D * BeastSlayerConfig.GlobalHealthMultiplier);
+        if (this.isTamed())
+        {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(28.0D* BeastSlayerConfig.GlobalHealthMultiplier);
+        }
+        else
+        {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(9.0D* BeastSlayerConfig.GlobalHealthMultiplier);
+        }
+
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D * BeastSlayerConfig.GlobalDamageMultiplier);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D + BeastSlayerConfig.GlobalArmor);
     }
@@ -128,7 +136,7 @@ public class EntityNetherhound extends EntityTameable {
         if (flag)
         {
             this.applyEnchantments(this, entityIn);
-            entityIn.setFire(4);
+            entityIn.setFire(3);
             if(this.isSprinting()){
                 entityIn.motionX += (entityIn.posX - this.posX) * 0.8D;
                 entityIn.motionY += 0.2D;
@@ -150,7 +158,7 @@ public class EntityNetherhound extends EntityTameable {
                 for(EntityLivingBase l : list){
                     if(!this.isOnSameTeam(l) && !this.world.isRemote){
                         if(!l.isImmuneToFire()) {
-                            l.setFire(4);
+                            l.setFire(3);
                             l.attackEntityFrom(DamageSource.causeMobDamage(this), 3F * (float) BeastSlayerConfig.GlobalDamageMultiplier);
                             this.world.setEntityState(this, (byte) 10);
                             this.playSound(ModSounds.NETHERHOUND_CHARGE, 1.0F, 1.0F);
@@ -469,7 +477,22 @@ public class EntityNetherhound extends EntityTameable {
     }
 
     @Override
-    public boolean canDespawn(){return !this.isTamed();}
+    public boolean canDespawn(){return false;}
+
+
+    public void setTamed(boolean tamed)
+    {
+        super.setTamed(tamed);
+
+        if (tamed)
+        {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(28.0D);
+        }
+        else
+        {
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(9.0D);
+        }
+    }
 
     @Override
     @Nullable
@@ -530,5 +553,9 @@ public class EntityNetherhound extends EntityTameable {
             }
         }
     }
-
+    @Override
+    public int getMaxSpawnedInChunk()
+    {
+        return 3;
+    }
 }

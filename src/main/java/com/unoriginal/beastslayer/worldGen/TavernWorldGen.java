@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +21,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
@@ -51,7 +53,7 @@ public class TavernWorldGen extends WorldGenerator {
             BeastSlayer.logger.debug("generating tavern!" + pos);
             Start start =  (Start) this.getStructureStart(world, pos.getX(), pos.getZ(), rand);
 
-            start.generateStructure(world, rand, new StructureBoundingBox(pos.getX() - new_size, pos.getZ() - new_size, pos.getX() + new_size, pos.getZ() + new_size));
+            start.generateStructure(world, rand, new StructureBoundingBox(pos.getX() -new_size, pos.getZ() - new_size, pos.getX() + new_size, pos.getZ() + new_size));
 
 
 
@@ -63,7 +65,7 @@ public class TavernWorldGen extends WorldGenerator {
     public boolean generateSimple(IChunkGenerator generator, BlockPos pos, World world, Random rand){
         boolean canSpawn = canSpawnStructureAtCoords(world, (pos.getX() - 8)  >> 4, (pos.getZ() - 8)  >> 4);
         if(canSpawn){
-            int new_size = 32;
+            int new_size = 40;
             Start start = (Start) this.getStructureStart(world, pos.getX(), pos.getZ(), rand);
 
             start.generateStructure(world, rand, new StructureBoundingBox(pos.getX() - new_size, pos.getZ() - new_size, pos.getX() + new_size, pos.getZ() + new_size));
@@ -73,7 +75,7 @@ public class TavernWorldGen extends WorldGenerator {
     }
 
     public boolean generateBypass(World world, Random rand, BlockPos position){
-        int new_size = 96;
+        int new_size = 40;
         //  BeastSlayer.logger.debug("generating village!" + position);
         getStructureStart(world, position.getX(), position.getZ(), rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
         return true;
@@ -139,9 +141,9 @@ public class TavernWorldGen extends WorldGenerator {
             this.updateBoundingBox();
             this.valid = true;
         }
-        public void generateStructure(World worldIn, Random rand, StructureBoundingBox structurebb)
+        public void generateStructure(World world, Random rand, StructureBoundingBox structurebb)
         {
-            super.generateStructure(worldIn, rand, structurebb);
+            super.generateStructure(world, rand, structurebb);
         }
         public NBTTagCompound writeDataToNBT(int chunkX, int chunkZ){
             NBTTagCompound nbttagcompound = new NBTTagCompound();
@@ -194,10 +196,10 @@ public class TavernWorldGen extends WorldGenerator {
             PlacementSettings placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE)
                     .setRotation(rotation).setIgnoreEntities(false).setReplacedBlock(Blocks.STRUCTURE_VOID).setIgnoreStructureBlock(false);
 
-            template.addBlocksToWorld(world, pos, placementsettings, 2 | 16);
+            template.addBlocksToWorldChunk(world, pos, placementsettings);
+
             template.getDataBlocks(pos, placementsettings);
             Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
-
 
             for (Map.Entry<BlockPos, String> entry : map.entrySet()) {
                 if ("chestup".equals(entry.getValue())) {
@@ -228,5 +230,35 @@ public class TavernWorldGen extends WorldGenerator {
             return true;
         }
     }
+    private static BlockPos transformedBlockPos(BlockPos pos, Mirror mirrorIn, Rotation rotationIn)
+    {
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
+        boolean flag = true;
 
+        switch (mirrorIn)
+        {
+            case LEFT_RIGHT:
+                k = -k;
+                break;
+            case FRONT_BACK:
+                i = -i;
+                break;
+            default:
+                flag = false;
+        }
+
+        switch (rotationIn)
+        {
+            case COUNTERCLOCKWISE_90:
+                return new BlockPos(k, j, -i);
+            case CLOCKWISE_90:
+                return new BlockPos(-k, j, i);
+            case CLOCKWISE_180:
+                return new BlockPos(-i, j, -k);
+            default:
+                return flag ? new BlockPos(i, j, k) : pos;
+        }
+    }
 }

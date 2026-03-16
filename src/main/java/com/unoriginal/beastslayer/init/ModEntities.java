@@ -74,34 +74,39 @@ public class ModEntities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Rifted_Enderman"), EntityRiftedEnderman.class, "Rifted_Enderman", id++, BeastSlayer.instance, 80, 1, true, 16777215, 12833728);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Rifted_pearl"), EntityRiftedPearl.class, "Rifted_pearl", id++, BeastSlayer.instance, 64, 1, true);
 
-        if(BeastSlayerConfig.EnableExperimentalFeatures) {
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "TribeWarrior"), EntityTribeWarrior.class, "Tribe_Warrior", id++, BeastSlayer.instance, 80, 1, true, 4679293, 4864586);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter"), EntityHunter.class, "Hunter", id++, BeastSlayer.instance, 80, 1, true, 9061427, 4864586);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Scorcher"), EntityTank.class, "Scorcher", id++, BeastSlayer.instance, 80, 1, true, 4679293, 6759439);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Priest"), EntityPriest.class, "Priest", id++, BeastSlayer.instance, 80, 1, true, 6759439, 4864586);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wispfire"), EntityWispfire.class, "Wispfire", id++, BeastSlayer.instance, 64, 1, true);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wisp"), EntityWisp.class, "Wisp", id++, BeastSlayer.instance, 64, 3, true);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Fire_Elemental"), EntityFireElemental.class, "Fire_Elemental", id++, BeastSlayer.instance, 128, 1, true, 0, 0);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Windforce_dart"), EntityWindforceDart.class, "Windforce_dart", id++, BeastSlayer.instance, 64, 1, true);
 
-            //Fire Boss Misc
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "shock_wave_tile"), EntityMoveTile.class, "shock_wave_tile", id++, BeastSlayer.instance, 64, 1, true);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "elemental_meteor"), ProjectileMeteor.class, "elemental_meteor", id++, BeastSlayer.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "TribeWarrior"), EntityTribeWarrior.class, "Tribe_Warrior", id++, BeastSlayer.instance, 80, 1, true, 4679293, 4864586);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter"), EntityHunter.class, "Hunter", id++, BeastSlayer.instance, 80, 1, true, 9061427, 4864586);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Scorcher"), EntityTank.class, "Scorcher", id++, BeastSlayer.instance, 80, 1, true, 4679293, 6759439);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Priest"), EntityPriest.class, "Priest", id++, BeastSlayer.instance, 80, 1, true, 6759439, 4864586);
+
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wispfire"), EntityWispfire.class, "Wispfire", id++, BeastSlayer.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Wisp"), EntityWisp.class, "Wisp", id++, BeastSlayer.instance, 64, 3, true);
+
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Fire_Elemental"), EntityFireElemental.class, "Fire_Elemental", id++, BeastSlayer.instance, 128, 1, true, 0, 0);
+           //Fire Boss Misc
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Windforce_dart"), EntityWindforceDart.class, "Windforce_dart", id++, BeastSlayer.instance, 64, 1, true);
+
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "shock_wave_tile"), EntityMoveTile.class, "shock_wave_tile", id++, BeastSlayer.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "elemental_meteor"), ProjectileMeteor.class, "elemental_meteor", id++, BeastSlayer.instance, 64, 1, true);
             //artifact entities
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hand"), EntityHand.class, "Hand", id++, BeastSlayer.instance, 64, 1, true);
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter_Wolf"), EntitySpiritWolf.class, "Hunter_Wolf", id++,BeastSlayer.instance, 64, 1, true);
-        }
+
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hand"), EntityHand.class, "Hand", id++, BeastSlayer.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Hunter_Wolf"), EntitySpiritWolf.class, "Hunter_Wolf", id++,BeastSlayer.instance, 64, 1, true);
+
+
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Bonepile"), EntityBonepile.class, "Bonepile", id++, BeastSlayer.instance, 80, 1, true, 14540253, 11315887);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Chained"), EntityChained.class, "Chained", id++, BeastSlayer.instance,64, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Nekros"), EntityNekros.class, "Nekros", id++, BeastSlayer.instance, 80, 1, true, 5058665, 3416400);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Storm_Mob"), EntityStormSetter.class, "Storm_Mob", id++, BeastSlayer.instance, 64, 1, true);
-        if(BeastSlayerConfig.EnableExperimentalFeatures) {
-            EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Tribe_Child"), EntityTribeChild.class, "Tribe_Child", id++, BeastSlayer.instance, 64, 1, true, 0, 0);
-        }
+
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "Tribe_Child"), EntityTribeChild.class, "Tribe_Child", id++, BeastSlayer.instance, 64, 1, true, 0, 0);
+
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "succubus"), EntitySucc.class, "succubus", id++, BeastSlayer.instance, 64, 1, true, 13345745, 2757438);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "charm_chain"), EntityCharmChain.class, "charm_chain", id++, BeastSlayer.instance, 64, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "xp_mosquito"), EntityMosquito.class, "xp_mosquito", id++, BeastSlayer.instance, 64, 1, true, 10025984, 4208169);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "fake_xp"), EntitySuccXp.class, "fake_xp", id++, BeastSlayer.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "xp_ghost"), EntityGhostHolder.class, "xp_ghost", id++, BeastSlayer.instance, 64, 1, true);
 
 
     }
@@ -116,16 +121,18 @@ public class ModEntities
         EntityRegistry.addSpawn(EntityFrostashFox.class, BeastSlayerConfig.foxSpawnChance, 1, 6, EnumCreatureType.CREATURE,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityFrostWalker.class, BeastSlayerConfig.frostWalkerSpawnChance, 1, 2, EnumCreatureType.MONSTER,  BiomeDictionary.getBiomes(Type.SNOWY).toArray(new Biome[0]));
 
-        EntityRegistry.addSpawn(EntityNetherhound.class, BeastSlayerConfig.netherhoundSpawnChance, 2, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.NETHER).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityNetherhound.class, BeastSlayerConfig.netherhoundSpawnChance, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.NETHER).toArray(new Biome[0]));
         EntityRegistry.addSpawn(EntityOwlstack.class, BeastSlayerConfig.owlstackSpawnChance, 2, 4, EnumCreatureType.CREATURE, Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.MUTATED_BIRCH_FOREST, Biomes.MUTATED_BIRCH_FOREST_HILLS);
 
         EntityRegistry.addSpawn(EntityNekros.class, BeastSlayerConfig.nekrosSpawnChance, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.SPOOKY).toArray(new Biome[0]));
 
-        EntityRegistry.addSpawn(EntityTribeWarrior.class, 70, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityHunter.class, 60, 1, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityTribeChild.class, 60, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityPriest.class, 20, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-        EntityRegistry.addSpawn(EntityTank.class, 40, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+            EntityRegistry.addSpawn(EntityTribeWarrior.class, 70, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityHunter.class, 60, 1, 4, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityTribeChild.class, 60, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityPriest.class, 20, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityTank.class, 40, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+        }
 
         if(BeastSlayerConfig.EnableSuccubus) {
             EntityRegistry.addSpawn(EntitySucc.class, BeastSlayerConfig.succubusSpawnrate, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.FOREST).toArray(new Biome[0]));
@@ -207,13 +214,9 @@ public class ModEntities
             RenderingRegistry.registerEntityRenderingHandler(EntityHunter.class, RenderHunter.FACTORY);
             RenderingRegistry.registerEntityRenderingHandler(EntityTank.class, RenderTank.FACTORY);
             RenderingRegistry.registerEntityRenderingHandler(EntityPriest.class, RenderPriest.FACTORY);
-            RenderingRegistry.registerEntityRenderingHandler(EntityWispfire.class, RenderWispFire.FACTORY);
-            RenderingRegistry.registerEntityRenderingHandler(EntityWisp.class, RenderWisp.FACTORY);
-            RenderingRegistry.registerEntityRenderingHandler(EntityFireElemental.class, RenderFireElemental.FACTORY);
-            RenderingRegistry.registerEntityRenderingHandler(EntityWindforceDart.class, RenderWindforceDart.FACTORY);
 
-            RenderingRegistry.registerEntityRenderingHandler(EntityHand.class, RenderHand.FACTORY);
-            RenderingRegistry.registerEntityRenderingHandler(EntitySpiritWolf.class, RenderSpiritWolf.FACTORY);
+            RenderingRegistry.registerEntityRenderingHandler(EntityFireElemental.class, RenderFireElemental.FACTORY);
+
 
             //Fire Boss Misc
             RenderingRegistry.registerEntityRenderingHandler(EntityMoveTile.class, RenderMoveTile::new);
@@ -221,6 +224,14 @@ public class ModEntities
 
             RenderingRegistry.registerEntityRenderingHandler(EntityTribeChild.class, RenderTribeChild.FACTORY);
         }
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityWindforceDart.class, RenderWindforceDart.FACTORY);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityHand.class, RenderHand.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySpiritWolf.class, RenderSpiritWolf.FACTORY);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityWispfire.class, RenderWispFire.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityWisp.class, RenderWisp.FACTORY);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityBonepile.class, RenderBonePile.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityChained.class, RenderChained.FACTORY);
@@ -231,6 +242,7 @@ public class ModEntities
         RenderingRegistry.registerEntityRenderingHandler(EntityCharmChain.class, RenderCharmChain.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityMosquito.class, RenderMoskito.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntitySuccXp.class, RenderSuccXp.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhostHolder.class, RenderXpGhost.FACTORY);
     }
 
 

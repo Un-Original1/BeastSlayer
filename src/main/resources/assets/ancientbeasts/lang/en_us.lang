@@ -430,3 +430,17 @@ subtitles.mosq_loop=Needlewing flies
 subtitles.mosq_gulp=Needlewing drinks experience
 subtitles.mosq_hurt=Needlewing hurts
 subtitles.mosq_death=Needlewing bursts
+
+item.vessel_blueprint.name=Vessel Blueprint
+enchantment.ancientbeasts.pulling=Pulling
+enchantment.ancientbeasts.pulling.desc=Pulls impacted mobs to a random position nearby
+enchantment.ancientbeasts.hook=Grappling
+enchantment.ancientbeasts.hook.desc=Pulls you towards the entity or block the kunai hits, just like a grappling hook
+item.undead_necklace.name=Undead Necklace
+item.undead_necklace.tooltip=Saves you from death, catch your ghost to get your levels back!
+entity.xp_ghost.name=Soul
+advancements.ancientbeasts.immortal.title=Eternal Life?
+advancements.ancientbeasts.immortal.description=Obtain an undead necklace
+advancements.ancientbeasts.return_soul.title=Who's Who?
+advancements.ancientbeasts.return_soul.description=Catch your soul
+subtitles.giant_growl=Giant growls

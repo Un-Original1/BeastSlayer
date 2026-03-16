@@ -111,7 +111,7 @@ public class EntityNekros extends EntityMob implements IMagicUser {
         super.onUpdate();
         this.noClip = false;
         this.setNoGravity(true);
-        if (this.world.isDaytime() && this.dimension == 0 && !this.world.isRemote)
+        if (this.world.isDaytime() && this.dimension == 0 && !this.world.isRemote && this.world.canSeeSky(this.getPosition()))
         {
             this.setHealth(0.0F);
         }

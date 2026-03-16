@@ -3,6 +3,8 @@ package com.unoriginal.beastslayer.command;
 import com.google.common.base.Functions;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.worldGen.TavernWorldGen;
 import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
@@ -45,7 +47,7 @@ public class CommandLocateAB implements ICommand {
         else
         {
             String s = args[0];
-            BlockPos blockpos = findNearestPos(sender);
+            BlockPos blockpos = findNearestPos(sender, s);
 
             if (blockpos != null)
             {
@@ -65,7 +67,7 @@ public class CommandLocateAB implements ICommand {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "TribeVillage") : Collections.emptyList();
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, "TribeVillage", "Inn") : Collections.emptyList();
     }
 
     @Override
@@ -125,7 +127,7 @@ public class CommandLocateAB implements ICommand {
         return region.regionMatches(true, 0, original, 0, original.length());
     }
 
-    public static BlockPos findNearestPos (ICommandSender sender){
+    public static BlockPos findNearestPos (ICommandSender sender, String structure){
         BlockPos resultpos = null;
         BlockPos pos = sender.getPosition();
         World world = sender.getEntityWorld();
@@ -136,11 +138,20 @@ public class CommandLocateAB implements ICommand {
                 // boolean validspawn = this.IsVillageAtPos(world, (pos.getX() - 8)  >> 4 + i, (pos.getZ() - 8)  >> 4 + j);
                 //if(validspawn){
                 //Chunk chunk = world.getChunkFromBlockCoords(pos);
-                boolean c = IsVillageAtPos(world, chunk.x + i, chunk.z + j);
-                if (c) {
-                    resultpos = new BlockPos((chunk.x+i) << 4, 100, (chunk.z +j) << 4 );
-                    break;
+                if(structure.equals("TribeVillage")) {
+                    boolean c = IsVillageAtPos(world, chunk.x + i, chunk.z + j);
+                    if (c) {
+                        resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                        break;
+                    }
+                }else if (structure.equals("Inn") && BeastSlayerConfig.EnableSuccubus){
+                    boolean c = isInnAtCoords(world, chunk.x + i, chunk.z + j);
+                    if(c){
+                        resultpos = new BlockPos((chunk.x + i) << 4, 100, (chunk.z + j) << 4);
+                        break;
+                    }
                 }
+
                 // }
             }
         }
@@ -175,6 +186,40 @@ public class CommandLocateAB implements ICommand {
         {
 
             return world.getBiomeProvider().areBiomesViable((i << 4) + 8, (j << 4) + 8, 0, Lists.newArrayList(BiomeDictionary.getBiomes(BiomeDictionary.Type.JUNGLE))); /*&& random.nextInt(20) == 0*/
+        } else {
+
+            return false;
+        }
+    }
+
+    protected static boolean isInnAtCoords(World world, int chunkX, int chunkZ) {
+        int spacing = BeastSlayerConfig.InnSpacing;
+        int separation= BeastSlayerConfig.InnSeparation;
+        int i = chunkX;
+        int j = chunkZ;
+
+        if (chunkX < 0)
+        {
+            chunkX -= spacing - 1;
+        }
+
+        if (chunkZ < 0)
+        {
+            chunkZ -= spacing - 1;
+        }
+
+        int k = chunkX / spacing;
+        int l = chunkZ / spacing;
+        Random random =  world.setRandomSeed(k, l, 10387312);
+        k = k * spacing;
+        l = l * spacing;
+        k = k + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+        l = l + (random.nextInt(spacing - separation) + random.nextInt(spacing - separation)) / 2;
+
+        if (i == k && j == l)
+        {
+
+            return world.getBiomeProvider().areBiomesViable((i << 4) + 8, (j << 4) + 8, 0,  Lists.newArrayList(BiomeDictionary.getBiomes(BiomeDictionary.Type.FOREST))); /*&& random.nextInt(20) == 0*/
         } else {
 
             return false;

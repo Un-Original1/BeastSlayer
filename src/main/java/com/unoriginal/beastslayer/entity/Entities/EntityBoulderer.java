@@ -64,8 +64,6 @@ public class EntityBoulderer extends EntityZombie {
         this.buriedTicks = this.entityAIBurrow.getBuriedTimer();
     }
 
-    public boolean isChild(){return false;}
-
     protected void entityInit()
     {
         super.entityInit();
@@ -80,8 +78,8 @@ public class EntityBoulderer extends EntityZombie {
     public void onUpdate()
     {
         super.onUpdate();
-
-        double d3 = this.isBuried() ? 0.3F : 1.95F;
+        double height = this.isChild() ? 0.975F: 1.95F;
+        double d3 = this.isBuried() ? 0.3F : height;
         double d4 = this.width / 2F;
         this.setEntityBoundingBox(new AxisAlignedBB(this.posX - d4, this.posY, this.posZ - d4, this.posX + d4, this.posY + d3, this.posZ + d4));
 
