@@ -5,6 +5,9 @@ import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.EntityChained;
 import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentSweepingEdge;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -89,5 +92,10 @@ public class ItemKunai extends Item {
         }
 
         return multimap;
+    }
+
+    public boolean canApplyAtEnchantingTable(ItemStack stack, net.minecraft.enchantment.Enchantment enchantment)
+    {
+        return enchantment.type == EnumEnchantmentType.WEAPON  && !(enchantment instanceof EnchantmentSweepingEdge);
     }
 }

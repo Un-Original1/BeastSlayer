@@ -1,3 +1,4 @@
+#PARSE_ESCAPES
 #Mobs
 entity.SandMonster.name=Sandmonster
 entity.Zealot.name=Zealot
@@ -444,3 +445,60 @@ advancements.ancientbeasts.immortal.description=Obtain an undead necklace
 advancements.ancientbeasts.return_soul.title=Who's Who?
 advancements.ancientbeasts.return_soul.description=Catch your soul
 subtitles.giant_growl=Giant growls
+
+beastslayer.gui.more=Read
+
+#NOTE TO WHOEVER IS BRAVE ENOUGH TO TRANSLATE THIS @!#&%=, /n /n is for line breaks, keep characters roughly the same amount cuz else it won't fit the page!
+beastslayer.gui.left_info.0=Welcome to the bestiarium! This book will help you identify and learn more about the creatures in the mod, so how about we go through the basics?
+beastslayer.gui.right_info.0=Each and every creature is related to one of the elements: Light, Darkness, Basic, Earth, Water, and Fire.\nFor the time being, you should be aware that this index is organized following that logic.
+
+beastslayer.gui.left_info.3=This Enderman went to a place it wasn't supposed to be and found something it wasn't supposed to find.\n \nThey are incredibly dangerous. If you ever happen to spot one, it is likely they have spotted you too. Just look at them for a while and they should go away.
+beastslayer.gui.right_info.3=If for some reason you fail to keep eye contact with them, you are now their target.\n \nThese mobs create armor made of some kind of crystal, protecting them from damage. The armor glows every now and then; hitting it a few times while glowing should break it.
+
+beastslayer.gui.left_info.4=You may stumble upon these undead illagers in dark oak forests and other spooky biomes. They may seem harmless, but they wield some powerful magic.\n \nThey'll use it to protect nearby mobs from damage, so it may be a good idea to take them out first.
+beastslayer.gui.right_info.4=Other than that, these guys are not really a threat on their own. Kill them and you might be lucky enough to steal their book and use their protection magic for allies and yourself! (And some free emeralds too.)
+
+beastslayer.gui.left_info.5=Ghosts do not need an introduction. They may not be the nastiest mob around, but they surely like to mess with the living.\n \nGhosts can possess nearby mobs (including you!) and affect their actions, so watch out for them!\nPossessed mobs will deal increased damage and move faster; ghosts will move behind possessed mobs.
+beastslayer.gui.right_info.5=Ghosts do not seem to be nearly as good at controlling humans as they are with other lifeforms, so lucky you! Instead of losing all control, they'll just move you around.\n \nAfter killing a ghost, you can use their ectoplasm to make a potion to phase through walls. Pretty useful, right?
+
+beastslayer.gui.left_info.6=Succubi are nasty creatures found in ruined buildings in forests. They are bloodsuckers, but instead of blood, they want everything in their path! Blood, experience, gold, food, you name it!\n \nThey may not show their true nature at first and just look like a useful little critter to you, but do not be fooled, they are evil.
+beastslayer.gui.right_info.6=Once they are bored of you, they'll just finish you off and look for another unfortunate individual.\nSure, you can try feeding their cravings, but you are only making the inevitable take longer.\n \nThey are pretty dangerous in close quarters, so keep your distance and don't let your guard down.
+
+beastslayer.gui.left_info.7=Vessels are haunted puppets that one can find in an abandoned circus in a dark forest.\n \nVessels do not do anything during the day, but they come alive at night!\nIt seems like the puppet is possessed by a bunch of ghosts...
+beastslayer.gui.right_info.7=Dodge everything it throws at you and make sure to kill the ghosts when they come out!\n \nIt's the only way to take this evil doll down. And don't forget you are on the clock. If it turns daytime, the vessel will go back to its inactive state and force you to wait for another night.
+
+beastslayer.gui.left_info.8=Damcells are haunted iron maidens found in caves. Who put them there? Who knows...\n \nDamcells pull nearby creatures toward them and lock them inside, and also shoot projectiles occasionally.\n \nIt seems all armor is useless against them, so you better tread carefully.
+beastslayer.gui.right_info.8=They are a great source of iron ingots, and their spikes can be used to make traps activated with redstone contraptions.\n \nRemember, overconfidence is a slow and insidious killer.
+
+beastslayer.gui.left_info.9=Nekros are ghostly creatures that spawn rarely in spooky biomes. While they are similar to ghosts, they have the ability to summon the undead.\n \nIf you happen to run into one of them, it is advised to take them down as quickly as possible.\n \nOnce defeated, they may drop a necklace that has the ability to
+beastslayer.gui.right_info.9=negate your death once, but it takes all your experience points and creates a special ghost you'll have to chase and catch to get it back.\n \nNekros also drop dark essence, which can be used to create a potion to fool the undead and make them fight by your side, believing you are one of them.
+
+beastslayer.gui.left_info.10=Bonepiles are skeletal creatures that roam the overworld during the night.\nThey are hostile and quite dangerous on their own.\n \nThey'll shoot a projectile that will launch you in a random direction.\nThis is especially dangerous in mountains and large caves,
+beastslayer.gui.right_info.10=where environmental hazards can be significant.\n \nOnce defeated, they can drop the Kunai, which you can use to pull mobs nearby, or use enchantments to make it do other interesting things.
+
+beastslayer.gui.left_info.11=Little vessels are not like their evil jester counterparts. These are completely friendly and built with a vessel blueprint, which Vessels drop when defeated.\n \nThey are very customizable, being able to wear both armor and weapons.\n \nThey can also be set to follow mode or patrol mode,
+beastslayer.gui.right_info.11=simply shift-right-click to change their state. They will make a sound letting you know the change has been successful.\n \nYou can also change their behavior slightly. If you have a little vessel, use some gunpowder to make them hostile to other players; you can revert this by using sugar.
+
+beastslayer.gui.left_info.12=Sandmonsters are rare creatures found in deserts during thunderstorms. They are formidable enemies, as their magic attacks can be a threat to unprepared explorers.\n \nThey can summon magical tornadoes that lift nearby creatures and sand explosions that damage nearby mobs.
+beastslayer.gui.right_info.12=Sandmonsters can surprisingly be tamed, but this requires copious amounts of food.\n \nWhile they can be useful in combat, their powers may hurt friend and foe alike.\n \nIf, on the other hand, one decides to kill them, their scales can be used to create armor that mimics some of their powers.
+
+beastslayer.gui.left_info.13=Owlstacks are passive mobs exclusive to birch forests. These owls like to stack up into tall, totem-like formations.\n \nThese creatures pose no threat at all unless you are an undead creature. Owlstacks will get agitated when a mob is nearby, making a loud screech in hopes of driving it away.
+beastslayer.gui.right_info.13=This screech seems very effective against undead mobs like zombies and skeletons, so it may be wise to have owlstacks around at night.\n \nOne cannot tame an owlstack, but by giving it some sticks and then interacting with it with an empty hand, it will hop onto your head and stay for a while, protecting you from nearby undead creatures.
+
+beastslayer.gui.left_info.14=Bouldering zombies can be found deep underground in caves. These undead creatures can burrow underground and climb walls to reach you.\n \nWhile they are not that different from an average zombie, these abilities make them a force to be reckoned with underground.
+beastslayer.gui.right_info.14=One may spot one of these zombies with a mining helmet. This helmet can be used to light up the surroundings, making it very useful for traversing caves, especially if you lack torches or other light sources.
+
+beastslayer.gui.left_info.15=Giants are big, hulking zombies that usually spawn in plains. They are hostile and often have a horde of zombies nearby to aid them in battle.\n \nThese brutish creatures can throw boulders and grab their target, using their strength to their advantage.\n \nTaking them out with swords seems unlikely,
+beastslayer.gui.right_info.15=given their strength and health, but bows also pose a challenge, as they will enrage the beast and make it move faster for a few seconds.\n \nIf you manage to defeat one, it will drop a magical glove that allows you to throw any entity very far away.
+
+beastslayer.gui.left_info.16=Frostash foxes are passive creatures found in cold biomes. They are mostly inoffensive and will try to avoid the player if possible.\n \nIf they feel threatened, they will shoot the ice spikes that grow on their backs and try to run away. They spawn in large groups and have several variants, one of the most prominent
+beastslayer.gui.right_info.16=being the red one, whose spikes inflict wither on whatever they hit.\n \nFrostash foxes cannot be "tamed," but one can earn their trust by giving them food like rabbit or chicken.\n \nFrostash foxes are not effective in combat and are very frail, so it is not recommended to put them in danger.
+
+beastslayer.gui.left_info.17=Frostwalkers are zombies found in cold biomes. This creature seems to have some sort of magical ice growing around its body.\n \nFrostwalkers can spawn ice spikes that will freeze players on contact. If a player is frozen, frostwalkers will run at them at full speed.
+beastslayer.gui.right_info.17=They also have the ability to freeze nearby water, similar to the Frost Walker enchantment.\n \nWhen defeated, they can drop an ice wand that can be used to perform an attack similar to theirs. One can also spot a red variant, which is more dangerous, as it also inflicts wither.
+
+beastslayer.gui.left_info.18=Needlewings are swamp creatures similar to mosquitoes that will lunge at you and try to suck up your experience.\n \nOther than that, these creatures are fairly harmless and won't attack you once they are full of experience, which they seem to store in their abdomen.
+beastslayer.gui.right_info.18=They can be bred using sugar cane, but breeding requires both mosquitoes to be full of experience.\n \nWhile they may seem annoying at first, there may be some untapped potential with this mob...
+
+beastslayer.gui.left_info.19=Netherhounds are wolf-like creatures that roam the Nether. They are aggressive and tend to show up in small groups.\n \nThese creatures can set anything on fire with their bite and also use their horns to ram nearby targets.\n \nThey also possess the ability to set nearby entities ablaze upon death, and will do
+beastslayer.gui.right_info.19=this to any creature that stays nearby for too long.\n \nThey can be tamed, but you'll need to fight them first and get their health low enough. If those requirements are met, some rotten flesh will do the trick.\n \nWith some of their fur, one can make a cloak to fool them, reducing the chance of being attacked.

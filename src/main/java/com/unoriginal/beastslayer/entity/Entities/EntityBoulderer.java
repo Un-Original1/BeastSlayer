@@ -112,7 +112,7 @@ public class EntityBoulderer extends EntityZombie {
         }
     }
 
-    @Nullable
+   /* @Nullable
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
@@ -142,7 +142,7 @@ public class EntityBoulderer extends EntityZombie {
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(new AttributeModifier("Armor bonus", BeastSlayerConfig.GlobalArmor, 0));
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Damage bonus", BeastSlayerConfig.GlobalDamageMultiplier, 2));
         return livingdata;
-    }
+    }*/
 
     @Override
     public float getEyeHeight() {
@@ -233,7 +233,7 @@ public class EntityBoulderer extends EntityZombie {
     @Override
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty)
     {
-        if (this.rand.nextFloat() < 0.15F * difficulty.getClampedAdditionalDifficulty())
+        if (this.rand.nextFloat() < 0.25F * difficulty.getClampedAdditionalDifficulty())
         {
             float f = this.world.getDifficulty() == EnumDifficulty.HARD ? 0.1F : 0.25F;
 

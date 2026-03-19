@@ -193,7 +193,7 @@ public class EntityRiftedEnderman extends EntityMob {
 
     private boolean shouldAttackPlayer(EntityPlayer player)
     {
-        return player.canEntityBeSeen(this) && this.stareTicks > 0 && this.maxWait >= 200;
+        return player.canEntityBeSeen(this) && this.stareTicks > 0 && this.maxWait >= 300;
     }
 
     private boolean isPlayerLookingAt(EntityPlayer player)
@@ -482,7 +482,7 @@ public class EntityRiftedEnderman extends EntityMob {
                     if (this.player.canEntityBeSeen(this.enderman)) {
                         //this.stareTicks = 100;
                         ++this.enderman.maxWait;
-                        if (this.enderman.isPlayerLookingAt(this.player) && this.enderman.maxWait < 200) {
+                        if (this.enderman.isPlayerLookingAt(this.player) && this.enderman.maxWait < 300) {
                             --this.enderman.stareTicks;
                         } else {
                             this.enderman.stareTicks = 100;

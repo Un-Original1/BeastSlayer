@@ -38,6 +38,7 @@ public class GuiWiki extends GuiScreen {
     private static final ResourceLocation OTHER = new ResourceLocation("ancientbeasts:textures/bestiary/other_drawings.png");
     private static final ResourceLocation ICONS = new ResourceLocation("ancientbeasts:textures/bestiary/mob_icons.png");
     private static final ResourceLocation CRAFTING = new ResourceLocation("ancientbeasts:textures/bestiary/craftables.png");
+    private static final ResourceLocation REAL_INFO = new ResourceLocation("ancientbeasts:textures/bestiary/actual_info.png");
     protected ItemStack book;
     private GuiButton buttonDone;
     private NextPageButton buttonNextPage;
@@ -46,21 +47,25 @@ public class GuiWiki extends GuiScreen {
     private CreaturePageButton pageButton2;
     private CreaturePageButton pageButton3;
     public static GuiWiki self;
-
+    private boolean isShowingMore = false;
     private HintButton hintButton;
     private HintButton hintButton2;
     private HintButton hintButton3;
+    private GuiButton moreInfo;
     private float time = 0F;
 
     public GuiWiki(ItemStack book) {
         this.book = book;
         self = this;
     }
-    /** -- is moving to left ++ is moving smth to the right side of the screen **/
-    public void initGui()
-    {
+
+    /**
+     * -- is moving to left ++ is moving smth to the right side of the screen
+     **/
+    public void initGui() {
         super.initGui();
-        this.buttonDone = this.addButton(new GuiButton(0, (this.width ) / 2 - 49, 196, 98, 20, I18n.format("gui.done")));
+        this.isShowingMore = false;
+        this.buttonDone = this.addButton(new GuiButton(0, (this.width) / 2 + 20, 196, 98, 20, I18n.format("gui.done")));
         int i = (this.width - X) / 2;
         this.buttonNextPage = this.addButton(new NextPageButton(1, i + 240, 154, true));
         this.buttonPreviousPage = this.addButton(new NextPageButton(2, i + 12, 154, false));
@@ -68,53 +73,53 @@ public class GuiWiki extends GuiScreen {
       /*  for(int x = 0; x < bookTotalPages - 3; x++) {
             this.pageButton = this.addButton(new CreaturePageButton(3 + x, i + (x * 10), 10 + (x * 20), x, x + 3, 0));
         }*/
-        this.pageButton1 = this.addButton(new CreaturePageButton(3, 76 + i - 43, 65 + ((-1) * 20 -1), 0, 3, 0));
+        this.pageButton1 = this.addButton(new CreaturePageButton(3, 76 + i - 43, 65 + ((-1) * 20 - 1), 0, 3, 0));
 
-        for(int x = 0; x < 7; x++) {
+        for (int x = 0; x < 7; x++) {
             boolean xflag = x % 2 == 0;
-            int xpos = xflag ?  43 : 0;
-                this.pageButton1 = this.addButton(new CreaturePageButton(4 + x, 207 + i - xpos, 65 + (((x / 2) - 1) * 20 - 1), x + 1, x + 4, 0));
+            int xpos = xflag ? 43 : 0;
+            this.pageButton1 = this.addButton(new CreaturePageButton(4 + x, 207 + i - xpos, 65 + (((x / 2) - 1) * 20 - 1), x + 1, x + 4, 0));
         }
 
 
-        for(int x = 0; x < 5; x++) {
+        for (int x = 0; x < 5; x++) {
             boolean pageflag = x % 2 == 0;
             boolean xflag = x % 2 == 0;
 
-           // int extrapos = pageflag ? 76 : 164; //should invert flag if the previous page reaches an even number and reverted if odd
-          //  this.pageButton2 = this.addButton(new CreaturePageButton(9 + x, extrapos + i - xpos, 65 + (((x / 2) - 1) * 21), x + 6, x + 9, 1));
-            if(x < 1 ) {
-                int xpos = xflag ?  43 : 0;
-                this.pageButton2 = this.addButton(new CreaturePageButton(11 + x, 76 + i - xpos, 65 + (((x / 3) - 1) * 20-1), x + 8, x + 11, 1));
-            }
-            else {
-                int xpos = xflag ?  0 : 43;
-                this.pageButton2 = this.addButton(new CreaturePageButton(11 + x, 207 + i - xpos, 65 + ((((x - 1) / 2) - 1) * 20-1), x + 8, x + 11, 1));
+            // int extrapos = pageflag ? 76 : 164; //should invert flag if the previous page reaches an even number and reverted if odd
+            //  this.pageButton2 = this.addButton(new CreaturePageButton(9 + x, extrapos + i - xpos, 65 + (((x / 2) - 1) * 21), x + 6, x + 9, 1));
+            if (x < 1) {
+                int xpos = xflag ? 43 : 0;
+                this.pageButton2 = this.addButton(new CreaturePageButton(11 + x, 76 + i - xpos, 65 + (((x / 3) - 1) * 20 - 1), x + 8, x + 11, 1));
+            } else {
+                int xpos = xflag ? 0 : 43;
+                this.pageButton2 = this.addButton(new CreaturePageButton(11 + x, 207 + i - xpos, 65 + ((((x - 1) / 2) - 1) * 20 - 1), x + 8, x + 11, 1));
             }
         }
-        for(int x = 0; x < 4; x++) {
+        for (int x = 0; x < 4; x++) {
             boolean xflag = x % 2 == 0;
             int xpos = xflag ? 43 : 0;
             if (x < 3) {
-                this.pageButton3 = this.addButton(new CreaturePageButton(16 + x, 76 + i - xpos, 65 + (((x / 2) - 1) * 20-1), x + 13, x + 16, 2));
+                this.pageButton3 = this.addButton(new CreaturePageButton(16 + x, 76 + i - xpos, 65 + (((x / 2) - 1) * 20 - 1), x + 13, x + 16, 2));
             } else {
-                this.pageButton3 = this.addButton(new CreaturePageButton(16 + x, 207 + i - 43, 65 + (( - 1) * 20-1), x + 13, x + 16, 2));
+                this.pageButton3 = this.addButton(new CreaturePageButton(16 + x, 207 + i - 43, 65 + ((-1) * 20 - 1), x + 13, x + 16, 2));
             }
         }
         //for(int y = 0; y < 46; y++) {
-          //0, ..., 14
+        //0, ..., 14
 
-         //    for (int x = 0; x < 3; x++) { //0, 1, 2
-                 int y = 0;
-                 this.hintButton = this.addButton(new HintButton((0+70) + (y+1), (this.width - 208 + (54 * 0)) / 2, 129, 0, 0, y + 3)); //hint = 71 and above
-                 this.hintButton2 = this.addButton(new HintButton((1+70) + (y+1), (this.width - 208 + (54 * 1)) / 2, 129, 0, 1, y + 3));
-                 this.hintButton3 = this.addButton(new HintButton((2+70) + (y+1), (this.width - 208 + (54 * 2)) / 2, 129, 0, 2, y + 3));
-                 //154 100
-                 //currpage can be called from here and stored correctly?
-                    //Nope, it can't
-           //  }
-       //  }
-     /*   }*/
+        //    for (int x = 0; x < 3; x++) { //0, 1, 2
+        int y = 0;
+        this.hintButton = this.addButton(new HintButton((70) + (y + 1), (this.width - 208 + (54 * 0)) / 2, 129, 0, 0, y + 3)); //hint = 71 and above
+        this.hintButton2 = this.addButton(new HintButton((1 + 70) + (y + 1), (this.width - 208 + (54 * 1)) / 2, 129, 0, 1, y + 3));
+        this.hintButton3 = this.addButton(new HintButton((2 + 70) + (y + 1), (this.width - 208 + (54 * 2)) / 2, 129, 0, 2, y + 3));
+        this.moreInfo = this.addButton(new GuiButton(75, (this.width) / 2 - 118, 196, 98, 20, I18n.format("beastslayer.gui.more")));
+        //154 100
+        //currpage can be called from here and stored correctly?
+        //Nope, it can't
+        //  }
+        //  }
+        /*   }*/
         this.updateButtons();
     }
 
@@ -128,13 +133,14 @@ public class GuiWiki extends GuiScreen {
         }
     }
 
-    public void drawScreen(int mouse_x, int mouse_y, float p_ticks){
+    public void drawScreen(int mouse_x, int mouse_y, float p_ticks) {
         this.drawDefaultBackground();
+
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(BOOK_GUI_TEXTURES);
         int cornerX = (this.width - X) / 2;
         int cornerY = (this.height - Y) / 2;
-        drawModalRectWithCustomSizedTexture((this.width - X) / 2, 2, 0, 0, 276, 180,  288, 224);
+        drawModalRectWithCustomSizedTexture((this.width - X) / 2, 2, 0, 0, 276, 180, 288, 224);
         this.drawPages(this.currPage);
         GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
@@ -146,6 +152,9 @@ public class GuiWiki extends GuiScreen {
             this.cachedPage = this.currPage;
         }
         super.drawScreen(mouse_x, mouse_y, p_ticks);
+        if(this.isShowingMore){
+            this.drawExtraInfo(this.currPage);
+        }
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.pushMatrix();
         GlStateManager.translate(cornerX, cornerY, 0.0F);
@@ -175,12 +184,12 @@ public class GuiWiki extends GuiScreen {
             } else if (button.id >= 11 && button.id < 16) {
                 button.enabled = this.currPage == this.pageButton2.getRenderOrder();
                 button.visible = this.currPage == this.pageButton2.getRenderOrder();
-            } else if (button.id >= 16) {
+            } else if (button.id >= 16 && button.id != 75) {
                 button.enabled = this.currPage == this.pageButton3.getRenderOrder();
                 button.visible = this.currPage == this.pageButton3.getRenderOrder();
             }
 
-            if(button instanceof HintButton){
+            if (button instanceof HintButton) {
                 HintButton hintButton = (HintButton) button;
                 button.visible = this.currPage > 2;
                 button.enabled = this.currPage > 2;
@@ -189,38 +198,49 @@ public class GuiWiki extends GuiScreen {
         }
     }
 
-    protected void actionPerformed(GuiButton button)
-    {
-        if (button.enabled)
-        {
-            if (button.id == 0)
-            {
+    public void setShowingMore(boolean b){
+        this.isShowingMore = b;
+    }
+
+    protected void actionPerformed(GuiButton button) {
+        if (button.enabled) {
+            if (button.id == 0) {
                 this.mc.displayGuiScreen(null);
-            }
-            else if (button.id == 1)
-            {
-                if (this.currPage < this.bookTotalPages - 1)
-                {
+            } else if (button.id == 1) {
+                if (this.currPage < this.bookTotalPages - 1) {
                     ++this.currPage;
                 }
-            }
-            else if (button.id == 2)
-            {
-                if (this.currPage > 0)
-                {
+            } else if (button.id == 2) {
+                if (this.currPage > 0) {
                     --this.currPage;
                 }
+            } else if (button.id == 75) {
+                this.setShowingMore(!this.isShowingMore);
             }
-            else if (button.id >= 3 && button.id < 70){
-                CreaturePageButton button1 = (CreaturePageButton)button;
+            else if (button.id >= 3 && button.id < 70) {
+                CreaturePageButton button1 = (CreaturePageButton) button;
                 this.currPage = button1.getPage();
             }
             this.updateButtons();
         }
     }
 
-    private void drawPages (int pages){
-        switch (pages){
+
+    private void drawExtraInfo(int page){
+       // GlStateManager.pushMatrix();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(REAL_INFO);
+        drawModalRectWithCustomSizedTexture((this.width - X) / 2, 2, 0, 0, 276, 180, 288, 224);
+        if(this.currPage < 3){
+            page = 0;
+        }
+        this.fontRenderer.drawSplitString(TextFormatting.GRAY + I18n.format("beastslayer.gui.left_info."+ page), (this.width ) / 2 - 123, 12, 118, 0);
+        this.fontRenderer.drawSplitString(TextFormatting.GRAY + I18n.format("beastslayer.gui.right_info."+ page), (this.width ) / 2 + 8, 12, 118, 0);
+       // GlStateManager.popMatrix();
+    }
+
+    private void drawPages(int pages) {
+        switch (pages) {
             case 0:
             default:
                 GlStateManager.pushMatrix();
@@ -263,16 +283,16 @@ public class GuiWiki extends GuiScreen {
                 this.drawElement(4);
                 this.drawBiome(3);
                 this.updateHintPage(0);
-               // this.drawEvenMoreStuff(12);
+                // this.drawEvenMoreStuff(12);
                 this.drawItemType(2, 56);
-                this.drawItemStack(new ItemStack(ModItems.RIFTED_PEARL), (this.width + 58 * 2) / 2,54);
+                this.drawItemStack(new ItemStack(ModItems.RIFTED_PEARL), (this.width + 58 * 2) / 2, 54);
                 ItemStack potionRift = new ItemStack(Items.POTIONITEM);
                 PotionUtils.addPotionToItemStack(potionRift, ModPotions.rifted); //why I typed poison instead of potion?, still a mystery
-                this.drawItemStack(potionRift, (this.width + 85 * 2) / 2 ,99);
+                this.drawItemStack(potionRift, (this.width + 85 * 2) / 2, 99);
                 ItemStack potionRift1 = new ItemStack(Items.POTIONITEM);
                 PotionUtils.addPotionToItemStack(potionRift1, PotionTypes.AWKWARD);
-                this.drawItemStack(potionRift1, (this.width + 57 * 2) / 2 ,126);
-                this.drawItemStack(new ItemStack(ModItems.RIFTED_PEARL), (this.width + 30 * 2) / 2 ,99);
+                this.drawItemStack(potionRift1, (this.width + 57 * 2) / 2, 126);
+                this.drawItemStack(new ItemStack(ModItems.RIFTED_PEARL), (this.width + 30 * 2) / 2, 99);
                 this.drawText(1, 5, 40, "entity.Rifted_Enderman.name");
                 GlStateManager.popMatrix();
                 break;
@@ -286,14 +306,14 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(1);
-               // this.drawEvenMoreStuff(1);
+                // this.drawEvenMoreStuff(1);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
                 this.updateHintPage(1);
-                this.drawItemStack(new ItemStack(ModItems.SHIELD_BOOK), (this.width + 30 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(Items.BONE), (this.width + 58 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(Items.EMERALD), (this.width + 86 * 2)/ 2 ,54);
+                this.drawItemStack(new ItemStack(ModItems.SHIELD_BOOK), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.BONE), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.EMERALD), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 0, 24, "entity.Zealot.name");
                 GlStateManager.popMatrix();
                 break;
@@ -307,17 +327,17 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(1);
-              //  this.drawEvenMoreStuff(2);
+                //  this.drawEvenMoreStuff(2);
                 this.drawItemType(2, 56);
-                this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 58 * 2) / 2 ,54);
+                this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 58 * 2) / 2, 54);
                 ItemStack potionIn1 = new ItemStack(Items.POTIONITEM);
                 PotionUtils.addPotionToItemStack(potionIn1, ModPotions.ghostly); //why I typed poison instead of potion?, still a mystery
-                this.drawItemStack(potionIn1, (this.width + 85 * 2)/ 2 ,99);
+                this.drawItemStack(potionIn1, (this.width + 85 * 2) / 2, 99);
                 ItemStack potionIn = new ItemStack(Items.POTIONITEM);
                 PotionUtils.addPotionToItemStack(potionIn, PotionTypes.AWKWARD);
-                this.drawItemStack(potionIn, (this.width + 57 * 2) / 2 ,126);
+                this.drawItemStack(potionIn, (this.width + 57 * 2) / 2, 126);
                 this.updateHintPage(2);
-                this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 30 * 2) / 2 ,99);
+                this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 30 * 2) / 2, 99);
                 this.drawText(1, 4, 28, "entity.Ghost.name");
                 GlStateManager.popMatrix();
                 break;
@@ -336,9 +356,9 @@ public class GuiWiki extends GuiScreen {
                 this.drawItemType(1, 0);
                 this.drawItemType(1, 56);
                 this.drawItemType(1, 114);
-                this.drawItemStack(new ItemStack(Items.BEEF), (this.width + 30 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(Items.GOLD_INGOT), (this.width + 58 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(ModItems.GARLIC_NECK), (this.width + 86 * 2)/ 2 ,54);
+                this.drawItemStack(new ItemStack(Items.BEEF), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.GOLD_INGOT), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.GARLIC_NECK), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 16, 32, "entity.succubus.name");
                 GlStateManager.popMatrix();
                 break;
@@ -357,9 +377,9 @@ public class GuiWiki extends GuiScreen {
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
-                this.drawItemStack(new ItemStack(ModItems.VESSEL), (this.width + 30 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(Items.STRING), (this.width + 58 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 86 * 2) / 2,54);
+                this.drawItemStack(new ItemStack(ModItems.BLUEPRINT), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.STRING), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 6, 60 + (int) BeastSlayerConfig.VesselHealthBonus, "entity.Vessel.name");
                 GlStateManager.popMatrix();
                 break;
@@ -373,15 +393,15 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(4);
-             //   this.drawEvenMoreStuff(8);
+                //   this.drawEvenMoreStuff(8);
                 this.updateHintPage(5);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
                 this.drawRecipe(0);
-                this.drawItemStack(new ItemStack(ModItems.SPIKE), (this.width + 30 * 2)/ 2 ,54);
-                this.drawItemStack(new ItemStack(Items.IRON_INGOT), (this.width + 58 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(Items.IRON_INGOT), (this.width + 86 * 2)/ 2 ,54);
+                this.drawItemStack(new ItemStack(ModItems.SPIKE), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.IRON_INGOT), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.IRON_INGOT), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 6, 40, "entity.Damcell.name");
                 GlStateManager.popMatrix();
                 break;
@@ -395,17 +415,19 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(1);
-              //  this.drawEvenMoreStuff(13);
+                //  this.drawEvenMoreStuff(13);
                 this.updateHintPage(6);
+                this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
-                this.drawItemStack(new ItemStack(ModItems.DARK_GOOP), (this.width + 58 * 2) / 2 ,54);
+                this.drawItemStack(new ItemStack(ModItems.TOTEM_OF_DYING), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.DARK_GOOP), (this.width + 58 * 2) / 2, 54);
                 ItemStack potionIn2 = new ItemStack(Items.POTIONITEM);
                 PotionUtils.addPotionToItemStack(potionIn2, ModPotions.undead); //why I typed poison instead of potion?, still a mystery
-                this.drawItemStack(potionIn2, (this.width + 85 * 2)/ 2 ,99);
+                this.drawItemStack(potionIn2, (this.width + 85 * 2) / 2, 99);
                 ItemStack potionIn3 = new ItemStack(Items.POTIONITEM);
                 PotionUtils.addPotionToItemStack(potionIn3, PotionTypes.AWKWARD);
-                this.drawItemStack(potionIn3, (this.width + 57 * 2) / 2 ,126);
-                this.drawItemStack(new ItemStack(ModItems.DARK_GOOP), (this.width + 30 * 2) / 2 ,99);
+                this.drawItemStack(potionIn3, (this.width + 57 * 2) / 2, 126);
+                this.drawItemStack(new ItemStack(ModItems.DARK_GOOP), (this.width + 30 * 2) / 2, 99);
                 this.drawText(1, 5, 12, "entity.Nekros.name");
                 GlStateManager.popMatrix();
                 break;
@@ -419,14 +441,14 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(1);
                 this.drawBiome(3);
-               // this.drawEvenMoreStuff(14);
+                // this.drawEvenMoreStuff(14);
                 this.updateHintPage(7);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
-                this.drawItemStack(new ItemStack(ModItems.KUNAI), (this.width + 30 * 2)/ 2 ,54);
-                this.drawItemStack(new ItemStack(Items.BONE), (this.width + 58 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(Items.BONE), (this.width + 86 * 2)/ 2 ,54);
+                this.drawItemStack(new ItemStack(ModItems.KUNAI), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.BONE), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.BONE), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 6, 32, "entity.Bonepile.name");
                 GlStateManager.popMatrix();
                 break;
@@ -445,9 +467,9 @@ public class GuiWiki extends GuiScreen {
                 this.drawItemType(0, 0);
                 this.drawItemType(1, 56);
                 this.drawItemType(1, 114);
-                this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 30 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(Items.GUNPOWDER), (this.width + 58 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(Items.SUGAR), (this.width + 86 * 2) / 2 ,54);
+                this.drawItemStack(new ItemStack(ModItems.ECTOPLASM), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.GUNPOWDER), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.SUGAR), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 1, 18, "entity.Lil_Vessel.name");
                 GlStateManager.popMatrix();
                 break;
@@ -467,9 +489,9 @@ public class GuiWiki extends GuiScreen {
                 this.drawItemType(0, 56);
                 this.drawItemType(2, 114);
                 this.drawRecipe(1);
-                this.drawItemStack(new ItemStack(Items.BEEF, BeastSlayerConfig.sandmonsterTameStackSize), (this.width + 30 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(Items.RABBIT, BeastSlayerConfig.sandmonsterTameStackSize), (this.width + 58 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(ModItems.SANDMONSTER_SCALE), (this.width + 86 * 2)/ 2 ,54);
+                this.drawItemStack(new ItemStack(Items.BEEF, BeastSlayerConfig.sandmonsterTameStackSize), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.RABBIT, BeastSlayerConfig.sandmonsterTameStackSize), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.SANDMONSTER_SCALE), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 6, 120 + (int) BeastSlayerConfig.SandyHealthBonus, "entity.SandMonster.name");
                 GlStateManager.popMatrix();
 
@@ -484,14 +506,14 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(0);
                 this.drawElement(0);
                 this.drawBiome(6);
-              //  this.drawEvenMoreStuff(11);
+                //  this.drawEvenMoreStuff(11);
                 this.updateHintPage(10);
                 this.drawItemType(1, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
-                this.drawItemStack(new ItemStack(Items.STICK), (this.width + 30 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(Items.STICK), (this.width + 58 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(Items.FEATHER), (this.width + 86 * 2) / 2,54);
+                this.drawItemStack(new ItemStack(Items.STICK), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.STICK), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.FEATHER), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 1, 8, "entity.Owlstack.name");
                 GlStateManager.popMatrix();
                 break;
@@ -510,9 +532,9 @@ public class GuiWiki extends GuiScreen {
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
-                this.drawItemStack(new ItemStack(Items.ROTTEN_FLESH), (this.width + 30 * 2)/ 2 ,54);
-                this.drawItemStack(new ItemStack(Items.POTATO), (this.width + 58 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(ModItems.MINER_HELMET), (this.width + 86 * 2) / 2,54);
+                this.drawItemStack(new ItemStack(Items.ROTTEN_FLESH), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.POTATO), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.MINER_HELMET), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 3, 20, "entity.Boulderer.name");
                 GlStateManager.popMatrix();
                 break;
@@ -531,9 +553,9 @@ public class GuiWiki extends GuiScreen {
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
-                this.drawItemStack(new ItemStack(ModItems.TOUGH_GLOVE), (this.width + 30 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(Items.ROTTEN_FLESH), (this.width + 58 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(Items.LEATHER), (this.width + 86 * 2)/ 2 ,54);
+                this.drawItemStack(new ItemStack(ModItems.TOUGH_GLOVE), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.ROTTEN_FLESH), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.LEATHER), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 15, 180 + (int) BeastSlayerConfig.GiantHealthBonus, "entity.Giant_Zombie.name");
                 GlStateManager.popMatrix();
                 break;
@@ -552,9 +574,9 @@ public class GuiWiki extends GuiScreen {
                 this.drawItemType(0, 0);
                 this.drawItemType(1, 56);
                 this.drawItemType(1, 114);
-                this.drawItemStack(new ItemStack(Items.RABBIT), (this.width + 30 * 2)/ 2 ,54);
-                this.drawItemStack(new ItemStack(ModItems.ICE_DART, 1, 0), (this.width + 58 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(ModItems.ICE_DART, 1, 1), (this.width + 86 * 2)/ 2 ,54);
+                this.drawItemStack(new ItemStack(Items.RABBIT), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.ICE_DART, 1, 0), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.ICE_DART, 1, 1), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 2, 14, "entity.Frostash_fox.name");
                 GlStateManager.popMatrix();
                 break;
@@ -568,14 +590,14 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(2);
                 this.drawElement(2);
                 this.drawBiome(2);
-             //   this.drawEvenMoreStuff(5);
+                //   this.drawEvenMoreStuff(5);
                 this.updateHintPage(13);
                 this.drawItemType(2, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
-                this.drawItemStack(new ItemStack(ModItems.ICE_WAND), (this.width + 30 * 2)/ 2 ,54);
-                this.drawItemStack(new ItemStack(ModItems.ICE_WAND_RED), (this.width + 58 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(ModItems.ICE_DART), (this.width + 86 * 2) / 2,54);
+                this.drawItemStack(new ItemStack(ModItems.ICE_WAND), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.ICE_WAND_RED), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.ICE_DART), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 4, 32, "entity.Frost_walker.name");
                 GlStateManager.popMatrix();
                 break;
@@ -591,11 +613,11 @@ public class GuiWiki extends GuiScreen {
                 this.drawBiome(7);
                 //   this.drawEvenMoreStuff(5);
                 this.updateHintPage(16);
-              //  this.drawItemType(0, 0);
+                //  this.drawItemType(0, 0);
                 this.drawItemType(1, 56);
                 //this.drawItemType(0, 114);
                 //this.drawItemStack(new ItemStack(), (this.width + 30 * 2)/ 2 ,54);
-                this.drawItemStack(new ItemStack(Items.REEDS), (this.width + 58 * 2) / 2,54);
+                this.drawItemStack(new ItemStack(Items.REEDS), (this.width + 58 * 2) / 2, 54);
                 //this.drawItemStack(new ItemStack(ModItems.ICE_DART), (this.width + 86 * 2) / 2,54);
                 this.drawText(1, 4, 32, "entity.xp_mosquito.name");
                 GlStateManager.popMatrix();
@@ -610,22 +632,22 @@ public class GuiWiki extends GuiScreen {
                 this.drawDifficulty(1);
                 this.drawElement(5);
                 this.drawBiome(5);
-              //  this.drawEvenMoreStuff(9);
+                //  this.drawEvenMoreStuff(9);
                 this.updateHintPage(14);
                 this.drawItemType(0, 0);
                 this.drawItemType(2, 56);
                 this.drawItemType(2, 114);
                 this.drawRecipe(2);
-                this.drawItemStack(new ItemStack(Items.ROTTEN_FLESH), (this.width + 30 * 2) / 2 ,54);
-                this.drawItemStack(new ItemStack(Items.BONE), (this.width + 58 * 2) / 2,54);
-                this.drawItemStack(new ItemStack(ModItems.FUR), (this.width + 86 * 2) / 2 ,54);
+                this.drawItemStack(new ItemStack(Items.ROTTEN_FLESH), (this.width + 30 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(Items.BONE), (this.width + 58 * 2) / 2, 54);
+                this.drawItemStack(new ItemStack(ModItems.FUR), (this.width + 86 * 2) / 2, 54);
                 this.drawText(1, 5, 28, "entity.Netherhound.name");
                 GlStateManager.popMatrix();
                 break;
         }
     }
 
-    private void drawDifficulty(int difficulty){
+    private void drawDifficulty(int difficulty) {
         this.mc.renderEngine.bindTexture(BOOK_GUI_TEXTURES);
         switch (difficulty) {
             case 0:
@@ -649,9 +671,9 @@ public class GuiWiki extends GuiScreen {
         return false;
     }
 
-    private void drawElement(int element){
+    private void drawElement(int element) {
         this.mc.renderEngine.bindTexture(BOOK_GUI_TEXTURES);
-        switch (element){
+        switch (element) {
             case 0: //earth
             default:
                 drawModalRectWithCustomSizedTexture((this.width - 210) / 2, 53, 172, 184, 26, 12, 288, 224);
@@ -674,9 +696,9 @@ public class GuiWiki extends GuiScreen {
         }
     }
 
-    private void drawBiome(int biomeIn){
+    private void drawBiome(int biomeIn) {
         this.mc.renderEngine.bindTexture(BIOMES);
-        switch (biomeIn){
+        switch (biomeIn) {
             case 0: //desert
             default: //         haha incidental funny number here                 v
                 drawModalRectWithCustomSizedTexture((this.width - 210) / 2, 69, 1, 1, 26, 22, 168, 72);
@@ -706,9 +728,9 @@ public class GuiWiki extends GuiScreen {
         }
     }
 
-    private void drawItemType(int type, int x){
+    private void drawItemType(int type, int x) {
         this.mc.renderEngine.bindTexture(BOOK_GUI_TEXTURES);
-        switch (type){
+        switch (type) {
             case 0: //tame
             default:
                 drawModalRectWithCustomSizedTexture((this.width + 52 + x) / 2, 38, 32, 207, 22, 12, 288, 224);
@@ -722,13 +744,13 @@ public class GuiWiki extends GuiScreen {
         }
     }
 
-    private void drawText(int pageTypeIn, int mDI, int mHI, String name){
+    private void drawText(int pageTypeIn, int mDI, int mHI, String name) {
         String dC = I18n.format("bestiary.items");
-        String s2= String.valueOf(mDI * BeastSlayerConfig.GlobalDamageMultiplier);
+        String s2 = String.valueOf(mDI * BeastSlayerConfig.GlobalDamageMultiplier);
         String s = I18n.format(name);
         int k = this.fontRenderer.getStringWidth(s) / 2;
         int i = (this.width - X) / 2;
-        switch (pageTypeIn){
+        switch (pageTypeIn) {
             case 0:
             default:
                 break;
@@ -742,8 +764,8 @@ public class GuiWiki extends GuiScreen {
                 GlStateManager.popMatrix();
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(1.0F, 1.0F, 1.0F);
-                this.fontRenderer.drawString(TextFormatting.GRAY + s1, i + 47 , 107, 0);
-                this.fontRenderer.drawString(TextFormatting.GRAY + s2 , i + 84, 107, 0);
+                this.fontRenderer.drawString(TextFormatting.GRAY + s1, i + 47, 107, 0);
+                this.fontRenderer.drawString(TextFormatting.GRAY + s2, i + 84, 107, 0);
                 break;
         }
     }
@@ -766,34 +788,32 @@ public class GuiWiki extends GuiScreen {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
     }
-    public void updateHintPage(int creatureNum){
+
+    public void updateHintPage(int creatureNum) {
         hintButton.setCreatureNum(creatureNum);
         hintButton2.setCreatureNum(creatureNum);
         hintButton3.setCreatureNum(creatureNum);
     }
 
-    private void drawRecipe(int recipeIn){
+    private void drawRecipe(int recipeIn) {
         int c = (this.width - X) / 2;
-        switch (recipeIn){
+        switch (recipeIn) {
             case 0:
             default:
                 GlStateManager.pushMatrix();
                 this.mc.renderEngine.bindTexture(CRAFTING);
                 drawModalRectWithCustomSizedTexture(c + 216, 86, 79, 1, 37, 56, 256, 128);
-                for (int x = 0; x < 7; x++){
+                for (int x = 0; x < 7; x++) {
                     int xpos = 0;
                     if (x == 3) {
                         xpos = 20;
-                    }
-                    else if (x > 3){
+                    } else if (x > 3) {
                         xpos = 40;
                     }
                     int ybonus = 0;
-                    if (x == 1 || x == 5)
-                    {
+                    if (x == 1 || x == 5) {
                         ybonus = 20;
-                    }
-                    else if (x == 2 || x == 6){
+                    } else if (x == 2 || x == 6) {
                         ybonus = 40;
                     }
                     RenderHelper.enableGUIStandardItemLighting();
@@ -809,7 +829,7 @@ public class GuiWiki extends GuiScreen {
                 GlStateManager.pushMatrix();
                 this.mc.renderEngine.bindTexture(CRAFTING);
                 drawModalRectWithCustomSizedTexture(c + 216, 86, 1, 1, 37, 56, 256, 128);
-                if(--this.time <= 0) {
+                if (--this.time <= 0) {
                     for (int x = 0; x < 5; x++) {
                         int xpos = 0;
                         if (x == 2) {
@@ -826,22 +846,18 @@ public class GuiWiki extends GuiScreen {
                     if (--this.time <= -200F) {
                         this.time = 200F;
                     }
-                }
-                else{
-                    for (int x = 0; x < 8; x++){
+                } else {
+                    for (int x = 0; x < 8; x++) {
                         int xpos = 0;
                         if (x > 2 && x <= 4) {
                             xpos = 20;
-                        }
-                        else if (x > 4){
+                        } else if (x > 4) {
                             xpos = 40;
                         }
                         int ybonus = 0;
-                        if (x == 1 || x == 3 || x == 6)
-                        {
+                        if (x == 1 || x == 3 || x == 6) {
                             ybonus = 20;
-                        }
-                        else if(x == 2 || x == 4 || x == 7){
+                        } else if (x == 2 || x == 4 || x == 7) {
                             ybonus = 40;
                         }
                         drawItemStack(new ItemStack(ModItems.SANDMONSTER_SCALE), c + 154 + xpos, 86 + ybonus);
@@ -853,17 +869,15 @@ public class GuiWiki extends GuiScreen {
                 GlStateManager.pushMatrix();
                 this.mc.renderEngine.bindTexture(CRAFTING);
                 drawModalRectWithCustomSizedTexture(c + 216, 86, 40, 1, 38, 56, 256, 128);
-                for (int x = 0; x < 5; x++){
+                for (int x = 0; x < 5; x++) {
                     int xpos = 0;
                     if (x == 2) {
                         xpos = 20;
-                    }
-                    else if (x > 2){
+                    } else if (x > 2) {
                         xpos = 40;
                     }
                     int ybonus = 0;
-                    if (x == 0 || x == 4)
-                    {
+                    if (x == 0 || x == 4) {
                         ybonus = 20;
                     }
                     drawItemStack(new ItemStack(ModItems.FUR), c + 154 + xpos, 106 + ybonus);
@@ -876,32 +890,26 @@ public class GuiWiki extends GuiScreen {
 
 
     @SideOnly(Side.CLIENT)
-    static class NextPageButton extends GuiButton
-    {
+    static class NextPageButton extends GuiButton {
         private final boolean isForward;
 
-        public NextPageButton(int buttonId, int x, int y, boolean isForwardIn)
-        {
+        public NextPageButton(int buttonId, int x, int y, boolean isForwardIn) {
             super(buttonId, x, y, 23, 13, "");
             this.isForward = isForwardIn;
         }
 
-        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
-        {
-            if (this.visible)
-            {
+        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+            if (this.visible) {
                 boolean flag = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
                 int i = 110;
                 int j = 190;
 
-                if (flag)
-                {
+                if (flag) {
                     i += 23;
                 }
-                if (!this.isForward)
-                {
+                if (!this.isForward) {
                     j += 13;
                 }
                 drawModalRectWithCustomSizedTexture(this.x, this.y, i, j, 23, 13, 288, 224);
@@ -910,14 +918,12 @@ public class GuiWiki extends GuiScreen {
     }
 
     @SideOnly(Side.CLIENT)
-    static class CreaturePageButton extends GuiButton
-    {
+    static class CreaturePageButton extends GuiButton {
         private final int number;
         private final int page;
         private final int renderOrder;
 
-        public CreaturePageButton(int buttonId, int x, int y, int numIn, int pageIn, int renderOrder)
-        {
+        public CreaturePageButton(int buttonId, int x, int y, int numIn, int pageIn, int renderOrder) {
             super(buttonId, x, y, 23, 13, "");
             this.number = numIn;
             this.page = pageIn;
@@ -932,29 +938,42 @@ public class GuiWiki extends GuiScreen {
             return renderOrder;
         }
 
-        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
-        {
-            if (this.visible)
-            {
+        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+            if (this.visible) {
                 boolean flag = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(GuiWiki.ICONS);
                 int x = 0;
-                if (number > 9){
+                if (number > 9) {
                     x = 72;
                 }
                 int i = x;
                 int j = (number * 16);
 
-                if (flag)
-                {
+                if (flag) {
                     i += 36;
-                   // drawHoveringText(this.getItemToolTip(stack), x, y, font);
+                    // drawHoveringText(this.getItemToolTip(stack), x, y, font);
                 }
                 drawModalRectWithCustomSizedTexture(this.x, this.y, i, j, 36, 16, 360, 160);
             }
         }
     }
+
+    @SideOnly(Side.CLIENT)
+    static class InfoButton extends GuiButton {
+        private final Minecraft mc = Minecraft.getMinecraft();
+        private int pageNum;
+
+        protected InfoButton(int ID, int x, int y, int numb) {
+            super(ID, x, y, 23, 13, "");
+            this.pageNum = numb;
+        }
+
+        public void setPageNum(int pageNum) {
+            this.pageNum = pageNum;
+        }
+    }
+
 
     @SideOnly(Side.CLIENT)
     static class HintButton extends GuiButton {

@@ -932,20 +932,24 @@ public class ModEvents {
                     }
                 }
                 if(player.getHeldItemOffhand().getItem() == ModItems.HEART_AMULET && player.getHeldItemOffhand().isItemDamaged()){
-                    e.setDroppedExperience(xp /4 * 3);
+                    e.setDroppedExperience(xp /3 * 3);
                     ItemStack itemstack = player.getHeldItemOffhand();
-                    if(itemstack.getItemDamage() - xp / 4 > 0) {
-                        itemstack.setItemDamage(itemstack.getItemDamage() - xp / 4);
+                    if(itemstack.getItemDamage() - xp / 3 > 0) {
+                        int i = xp / 3;
+                        if(xp / 3 < 1){
+                            i = 1;
+                        }
+                        itemstack.setItemDamage(itemstack.getItemDamage() - i);
                     } else {
                         itemstack.setItemDamage(0);
                     }
                 }
             if(player.getHeldItemMainhand().getItem() == ModItems.HEART_AMULET && player.getHeldItemMainhand().isItemDamaged()){
-                e.setDroppedExperience(xp /4 * 3);
+                e.setDroppedExperience(xp /3 * 3);
                 ItemStack itemstack = player.getHeldItemMainhand();
-                int i = xp / 4;
-                if(itemstack.getItemDamage() - xp / 4 > 0) {
-                    if(xp / 4 < 1){
+                int i = xp / 3;
+                if(itemstack.getItemDamage() - xp / 3 > 0) {
+                    if(xp / 3 < 1){
                         i = 1;
                     }
                     itemstack.setItemDamage(itemstack.getItemDamage() - i);

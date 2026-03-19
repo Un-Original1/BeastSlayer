@@ -157,7 +157,7 @@ public class ModEntities
             EntityRegistry.addSpawn(EntityBoulderer.class, BeastSlayerConfig.boulderingSpawnChance, 1, 3, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
             EntityRegistry.addSpawn(EntityRiftedEnderman.class, BeastSlayerConfig.riftedEndermanSpawnChance, 1, 1, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
 
-            EntityRegistry.addSpawn(EntityBonepile.class, BeastSlayerConfig.bonepileSpawnChance, 1, 3, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityBonepile.class, BeastSlayerConfig.bonepileSpawnChance, 1, 2, EnumCreatureType.MONSTER,  ExclusiveList.get(type).toArray(new Biome[0]));
 
             EntityRegistry.addSpawn(EntityGiant.class, BeastSlayerConfig.giantSpawnChance, 1, 1, EnumCreatureType.MONSTER, ExclusiveList.get(Type.PLAINS).toArray(new Biome[0]));
 

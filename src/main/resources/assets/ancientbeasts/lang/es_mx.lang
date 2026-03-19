@@ -1,4 +1,5 @@
 #Mobs
+#PARSE_ESCAPES
 entity.SandMonster.name=Engendro de Arena
 entity.Zealot.name=Ocultista
 entity.Ghost.name=Fantasma
@@ -425,3 +426,80 @@ subtitles.mosq_loop=Ala-aguja vuela
 subtitles.mosq_gulp=Ala-aguja succiona experiencia
 subtitles.mosq_hurt=Ala-aguja herido
 subtitles.mosq_death=Ala-aguja revienta
+
+item.vessel_blueprint.name=Plano de Receptáculo
+enchantment.ancientbeasts.pulling=Lanzamiento
+enchantment.ancientbeasts.pulling.desc=Mueve al mob impactado a una posición aleatoria;
+enchantment.ancientbeasts.hook=Enganche
+enchantment.ancientbeasts.hook.desc=Muevete hacia el bloque o entidad que el kunai golpee, como una pistola gancho.
+item.undead_necklace.name=Collar del muerto
+item.undead_necklace.tooltip=Te salva de la muerte, atrapa a tu fantasma para recuperar tus niveles!
+entity.xp_ghost.name=Alma
+advancements.ancientbeasts.immortal.title=Vida Eterna?
+advancements.ancientbeasts.immortal.description=Obten un collar del muerto
+advancements.ancientbeasts.return_soul.title=Quién es quién?
+advancements.ancientbeasts.return_soul.description=Recupera tu alma
+subtitles.giant_growl=Gigante gruñe
+
+beastslayer.gui.more=Leer
+
+
+beastslayer.gui.left_info.0=¡Bienvenido al bestiario! Este libro te ayudará a identificar y aprender más sobre las criaturas del mod, así que ¿Qué tal si vemos lo básico?
+beastslayer.gui.right_info.0=Todas y cada una de las criaturas están relacionadas con uno de los elementos: Luz, Oscuridad, Básico, Tierra, Agua y Fuego.\nPor el momento, debes saber que este índice está organizado siguiendo esa lógica.
+
+beastslayer.gui.left_info.3=Este Enderman fue a un lugar al que no debía ir y encontró algo que no debía encontrar.\n \nSon increíblemente peligrosos. Si alguna vez llegas a ver uno, es probable que ellos también te hayan visto. Míralos por un momento debería hacer que se vaya.
+beastslayer.gui.right_info.3=Si por alguna razón fallas en mantener el contacto visual con ellos, ahora eres su objetivo.\n \nEstas criaturas crean una armadura hecha de algún tipo de cristal que los protege del daño. La armadura brilla de vez en cuando; golpeala varias veces mientras brilla para romperla.
+
+beastslayer.gui.left_info.4=Podrías encontrarte con estos illagers no muertos en bosques de roble oscuro y otros biomas espeluznantes. Pueden parecer inofensivos, pero poseen una magia bastante poderosa.\n \nLa usarán para proteger a los mobs cercanos del daño, así que puede ser buena idea eliminarlos primero.
+beastslayer.gui.right_info.4=Fuera de eso, estos mobs no son realmente una gran amenaza por sí solos. ¡Mátalos y podrías tener la suerte de robar su libro y usar su magia de protección para tus aliados y para ti mismo! (Y tener algunas esmeraldas gratis también).
+
+beastslayer.gui.left_info.5=Los Fantasmas no son los mobs más peligrosos, pero definitivamente les gusta molestar a los vivos.\n \nLos Fantasmas pueden poseer mobs cercanos (¡incluyéndote!) y afectar sus acciones, ¡así que ten cuidado!\nLos mobs poseídos harán más daño y se moverán más rápido; los fantasmas se moverán detrás de los mobs poseídos.
+beastslayer.gui.right_info.5=Los fantasmas no parecen ser tan buenos controlando humanos como otras formas de vida, ¡así que suerte para ti! En lugar de perder el control por completo, solo te moverán.\n \nDespués de matar un fantasma, puedes usar su ectoplasma para hacer una poción que te permita atravesar paredes. Bastante útil, ¿no?
+
+beastslayer.gui.left_info.6=Los Súcubos son criaturas que se encuentran en estructuras en ruinas dentro de bosques. Son chupasangres, ¡quieren todo lo que se puedan llevar! Sangre, experiencia, oro, comida, ¡Lo que sea!\n \nPuede que al principio no muestren su verdadera cara y solo parezcan una criatura útil, pero no te dejes engañar, son seres malvados.
+beastslayer.gui.right_info.6=Una vez que se aburran de ti, simplemente te rematarán y buscarán a otra víctima desafortunada.\nClaro, puedes intentar satisfacer sus antojos, pero solo estás retrasando lo inevitable.\n \nSon bastante peligrosos en combate cercano, así que mantén la distancia y no bajes la guardia.
+
+beastslayer.gui.left_info.7=Los Receptáculos son marionetas embrujadas que se pueden encontrar en un circo abandonado en un bosque oscuro.\n \nLos Vessels no hacen nada durante el día, ¡Pero cobran vida durante la noche!\nParece que la marioneta está poseída por un grupo de fantasmas...
+beastslayer.gui.right_info.7=¡Esquiva todo lo que te lancen y asegúrate de matar a los fantasmas cuando salgan!\n \nEs la única forma de acabar con este muñeco malvado. Y no olvides que el tiempo corre. Si se hace de día, el receptáculo volverá a su estado inactivo y te obligará a esperar otra noche.
+
+beastslayer.gui.left_info.8=Las Damiceldas son doncellas de hierro embrujadas que se encuentran en cuevas.\n \nLas damiceldas atraen a las criaturas cercanas hacia ellos y las encierran dentro de si mismas, además de disparar proyectiles ocasionalmente.\n \nParece que toda armadura es inútil contra ellas, será mejor que avances con cuidado.
+beastslayer.gui.right_info.8=Son una gran fuente de lingotes de hierro, y sus púas pueden usarse para fabricar trampas activadas con mecanismos de redstone.\n \nRecuerda que el exceso de confianza es un asesino lento e insidioso.
+
+beastslayer.gui.left_info.9=Los Nekros son criaturas espectrales que aparecen en biomas espeluznantes. Aunque son similares a los fantasmas, tienen la capacidad de invocar no-muertos.\n \nSi te encuentras con uno, es recomendable eliminarlo lo más rápido posible.\n \nUna vez derrotados, pueden soltar un collar que tiene la habilidad de
+beastslayer.gui.right_info.9=negar tu muerte una vez, pero a cambio toma toda tu experiencia, con la cual crea un fantasma que tendrás que perseguir y atrapar para recuperarla.\n \nLos Nekros también sueltan esencia oscura, que sirve para una poción que hace que los no-muertos luchen a tu lado, creyendo que eres uno de ellos.
+
+beastslayer.gui.left_info.10=Los Purohueso son criaturas esqueléticas que deambulan por el overworld durante la noche.\nSon hostiles y bastante peligrosos por sí solos.\n \nDispararán un proyectil que te lanzará en una dirección aleatoria.\nEsto es especialmente peligroso en montañas y cuevas grandes,
+beastslayer.gui.right_info.10=donde los peligros del entorno pueden ser significativos.\n \nUna vez derrotados, pueden soltar el Kunai, que puedes usar para atraer mobs cercanos o aplicar encantamientos para darle otros usos interesantes.
+
+beastslayer.gui.left_info.11=Estos Receptáculos no son malvados como los bufones. Estos son amigables y se construyen con un plano de receptáculo, que los bufones sueltan al ser derrotados.\n \nSon muy personalizables, pudiendo equipar tanto armaduras como armas.\n \nTambién pueden ponerse en modo seguimiento o patrulla,
+beastslayer.gui.right_info.11=simplemente haz shift + clic derecho para cambiar su estado. Harán un sonido para indicarte que el cambio fue exitoso.\n \nTambién puedes cambiar ligeramente su comportamiento. Si tienes un Receptáculo, usa pólvora para hacerlos hostiles hacia otros jugadores; puedes revertir esto usando azúcar.
+
+beastslayer.gui.left_info.12=Los Engendros de arena son criaturas raras que aparecen en desiertos durante tormentas. Son enemigos formidables, ya que sus ataques mágicos son una amenaza para exploradores desprevenidos.\n \nPueden invocar tornados que levantan a las criaturas cercanas y explosiones de arena que dañan a los mobs cercanos.
+beastslayer.gui.right_info.12=Sorprendentemente, los Engendros de arena pueden domesticarse, pero requiere grandes cantidades de comida.\n \nAunque pueden ser útiles en combate, sus poderes pueden dañar tanto a aliados como enemigos.\n \nSi, decides matarlos, sus escamas pueden usarse para crear una armadura que imita algunos de sus poderes.
+
+beastslayer.gui.left_info.13=Los Apilúhos son mobs pasivos exclusivos de bosques de abedules. A estos búhos les gusta apilarse formando tótems.\n \nEstas criaturas no representan ninguna amenaza, a menos que seas una criatura no-muerta. Los Apilúhos se alterarán cuando haya un mob cerca, emitiendo un fuerte chillido con la esperanza de ahuyentarlo.
+beastslayer.gui.right_info.13=Este chillido parece muy efectivo contra mobs no-muertos, por lo que puede ser buena idea tener Apilúhos cerca durante la noche.\n \nNo se puede domesticar un owlstack, pero si le das palos y luego interactúas con él con la mano vacía, subira a tu cabeza por un rato, protegiéndote de criaturas no-muertas cercanas.
+
+beastslayer.gui.left_info.14=Los Zombies de cueva pueden encontrarse en lo profundo de cuevas subterráneas. Estas criaturas no-muertas pueden excavar bajo tierra y trepar paredes para alcanzarte.\n \nAunque no son muy diferentes de un zombie normal, estas habilidades los convierten en un enemigo a tener en cuenta bajo tierra.
+beastslayer.gui.right_info.14=Puede que veas uno de estos zombies con un casco de minero. Este casco puede usarse para iluminar el entorno, lo que lo hace muy útil para explorar cuevas, especialmente si no tienes antorchas u otras fuentes de luz.
+
+beastslayer.gui.left_info.15=Los Gigantes son corpulentos zombies que suelen aparecer en llanuras. Son hostiles y a menudo están acompañados por una horda de zombies que los ayudan en combate.\n \nEstas criaturas pueden lanzar rocas y agarrar a su objetivo, usando su fuerza a su favor.\n \nUsar espadas parece mala idea,
+beastslayer.gui.right_info.15=dada su fuerza y salud, pero los arcos también representan un reto, ya que enfurecerán a la bestia y la harán moverse más rápido por unos segundos.\n \nSi logras derrotar a uno, soltará un guante mágico que te permitirá lanzar cualquier entidad muy lejos.
+
+beastslayer.gui.left_info.16=Los Zorros de escarcha son criaturas pasivas que se encuentran en biomas fríos. Son inofensivos y evitaran al jugador si es posible.\n \nSi se sienten amenazados, dispararán púas de hielo e intentarán huir. Aparecen en grandes grupos y tienen muchas variantes, una de las más destacadas
+beastslayer.gui.right_info.16=es la roja, cuyas púas infligen wither a aquello que golpean.\n \nLos Zorros de escarcha no pueden ser "domesticados", pero se puede ganar su confianza dándoles comida como conejo o pollo.\n \nNo son efectivos en combate y son muy frágiles, por lo que no se recomienda ponerlos en peligro.
+
+beastslayer.gui.left_info.17=Los Zombies congelados se encuentran en biomas fríos. Esta criatura parece tener algún tipo de hielo mágico creciendo alrededor de su cuerpo.\n \nLos Zombies congelados pueden generar púas de hielo que congelan a jugadores al contacto. Si un jugador está congelado, correrán hacia él a toda velocidad.
+beastslayer.gui.right_info.17=También tienen la habilidad de congelar el agua cercana, similar al encantamiento Paso Helado.\n \nAl ser derrotados, pueden soltar una varita de hielo que permite realizar un ataque similar al suyo. También existe una variante roja, que es más peligrosa, ya que también inflige wither.
+
+beastslayer.gui.left_info.18=Los Ala-aguja son criaturas de pantano similares a mosquitos que se abalanzarán sobre ti para absorber tu experiencia.\n \nFuera de eso, son bastante inofensivos y no te atacarán una vez que estén llenos de experiencia, la cual parecen almacenar en su abdomen.
+beastslayer.gui.right_info.18=Pueden reproducirse usando caña de azúcar, pero esto requiere que ambos estén llenos de experiencia.\n \nAunque al principio puedan parecer molestos, puede que haya un potencial oculto en este mob...
+
+beastslayer.gui.left_info.19=Los Sabuesos del nether son criaturas que deambulan por el Nether. Son agresivos y suelen aparecer en pequeños grupos.\n \nEstas criaturas pueden prender fuego a cualquier cosa con su mordida y también usan sus cuernos para embestir a sus objetivos.\n \nTambién pueden incendiar entidades al morir, y harán
+beastslayer.gui.right_info.19=lo mismo con cualquiera que este cerca durante demasiado tiempo.\n \nPueden domesticarse, pero tendrás que luchar y bajarles la vida lo suficiente. Cumpliendo esas condiciones, un poco de carne podrida bastará.\n \nCon parte de su pelaje se puede fabricar un disfraz evitar que te ataquen.
+
+item.storm_bottle.0.name=Tormenta en una Botella
+item.storm_bottle.1.name=Lluvia en una Botella
+item.storm_bottle.2.name=Nube en una Botella
+potion.target=Marcado
+item.paradox.name=§kParadoja

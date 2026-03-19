@@ -22,7 +22,7 @@ public class ItemReusableHealth extends Item {
         setRegistryName(name);
         setUnlocalizedName(name);
         setCreativeTab(BeastSlayer.BEASTSTAB);
-        this.setMaxDamage(300);
+        this.setMaxDamage(100);
         this.setMaxStackSize(1);
         this.addPropertyOverride(new ResourceLocation("off"), new IItemPropertyGetter()
         {
@@ -35,8 +35,8 @@ public class ItemReusableHealth extends Item {
                 }
                 else
                 {
-                    boolean flag = stack.getItemDamage() > (300F / 2F);
-                    boolean flag1 = stack.getItemDamage() > (300F / 2F);
+                    boolean flag = stack.getItemDamage() > (100F / 2F);
+                    boolean flag1 = stack.getItemDamage() > (100F / 2F);
 
                     return (flag || flag1) ? 1.0F : 0.0F;
                 }
@@ -54,10 +54,10 @@ public class ItemReusableHealth extends Item {
         World world = player.getEntityWorld();
         if (!player.getCooldownTracker().hasCooldown(this) && (!(target instanceof EntityMob) || target instanceof EntitySucc) && stack.getItemDamage() < (this.getMaxDamage(stack) / 2F)) {
             if(!world.isRemote) {
-                target.heal((float) stack.getItemDamage() / 10F);
+                target.heal((float) stack.getItemDamage() / 2F);
                 player.getCooldownTracker().setCooldown(this, 2000);
                 world.playSound(null, player.posX, player.posY, player.posZ, ModSounds.SUCC_SPELL, SoundCategory.PLAYERS, 0.8F, 1.0F / (player.getRNG().nextFloat() * 0.4F + 0.8F));
-                stack.setItemDamage(299);
+                stack.setItemDamage(99);
                 player.swingArm(hand);
             }
             if(world.isRemote){
@@ -72,10 +72,10 @@ public class ItemReusableHealth extends Item {
         ItemStack stack = player.getHeldItem(hand);
         if (!player.getCooldownTracker().hasCooldown(this) && stack.getItemDamage() < (this.getMaxDamage(stack) / 2F)) {
             if(!world.isRemote) {
-                player.heal((200F - (float) stack.getItemDamage()) / 10F);
+                player.heal((100F - (float) stack.getItemDamage()) / 5F);
                 player.getCooldownTracker().setCooldown(this, 2000);
                 world.playSound(null, player.posX, player.posY, player.posZ, ModSounds.SUCC_SPELL, SoundCategory.PLAYERS, 0.8F, 1.0F / (player.getRNG().nextFloat() * 0.4F + 0.8F));
-                stack.setItemDamage(299);
+                stack.setItemDamage(99);
                 player.swingArm(hand);
             }
             if(world.isRemote){
