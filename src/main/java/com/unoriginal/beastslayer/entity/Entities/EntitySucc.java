@@ -101,7 +101,7 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
         this.tasks.addTask(7, new AIMoveToBed(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 16.0F));
+        this.tasks.addTask(9, new EntityAIFleeGarlic<>(this, EntityLivingBase.class, 2F, 0.6D, 0.9D));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, EntitySucc.class));
         this.targetTasks.addTask(2, new EntityAITargetAggro<>(this, EntityPlayer.class, false, this.targetSelector));
         this.targetTasks.addTask(3, new EntityAITargetAggro<>(this, EntityAnimal.class , false, this.targetSelector2));

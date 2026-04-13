@@ -8,9 +8,11 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -23,6 +25,7 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ModClientEvents {
+
     private ModClientEvents() {}
     private static final ResourceLocation CHARM = new ResourceLocation(BeastSlayer.MODID, "shaders/post/charm.json");
 

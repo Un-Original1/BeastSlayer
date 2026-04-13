@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:painting"
+      "item": "ancientbeasts:monster_paintings"
     },
     "title": {
       "translate": "advancements.succubus_bed.title"

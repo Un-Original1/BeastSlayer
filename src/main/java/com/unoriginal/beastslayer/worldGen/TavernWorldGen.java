@@ -188,6 +188,7 @@ public class TavernWorldGen extends WorldGenerator {
             WorldServer worldserver = (WorldServer) world;
             MinecraftServer minecraftserver = world.getMinecraftServer();
             Template template = manager.getTemplate(minecraftserver, new ResourceLocation("ancientbeasts:tavern"));
+            Template t2 = manager.getTemplate(minecraftserver, new ResourceLocation("ancientbeasts:dirt")); //lol
             IBlockState iblockstate = world.getBlockState(pos);
             world.notifyBlockUpdate(pos, iblockstate, iblockstate, 3);
 
@@ -197,9 +198,13 @@ public class TavernWorldGen extends WorldGenerator {
                     .setRotation(rotation).setIgnoreEntities(false).setReplacedBlock(Blocks.STRUCTURE_VOID).setIgnoreStructureBlock(false);
 
             template.addBlocksToWorldChunk(world, pos, placementsettings);
+            BlockPos pos1 = new BlockPos(pos.getX(), pos.getY() - template.getSize().getY(), pos.getZ());
+            PlacementSettings placementsettings1 = (new PlacementSettings()).setMirror(Mirror.NONE)
+                    .setRotation(rotation).setIgnoreEntities(false).setReplacedBlock(Blocks.DIRT).setIgnoreStructureBlock(false);
 
             template.getDataBlocks(pos, placementsettings);
-            Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
+            t2.addBlocksToWorldChunk(world, pos1, placementsettings);
+            Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings1);
 
             for (Map.Entry<BlockPos, String> entry : map.entrySet()) {
                 if ("chestup".equals(entry.getValue())) {

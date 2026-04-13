@@ -1,5 +1,6 @@
 package com.unoriginal.beastslayer.entity.Render.Layer;
 
+import com.unoriginal.beastslayer.entity.Entities.EntityEarthling;
 import com.unoriginal.beastslayer.entity.Entities.EntityFrostashFox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,7 +25,6 @@ public class LayerGlowGeneric implements LayerRenderer<EntityLiving> {
         this.renderLiving = renderLiving;
         TEXTURE = resourceLocation;
     }
-
     public void doRenderLayer(EntityLiving entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         if(TEXTURE != null) {
@@ -41,6 +41,25 @@ public class LayerGlowGeneric implements LayerRenderer<EntityLiving> {
                 } else {
                     this.renderLiving.bindTexture(EYE_BOTH);
                 }
+                GlStateManager.enableBlend();
+                GlStateManager.disableAlpha();
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+                GlStateManager.disableLighting();
+                GlStateManager.depthFunc(514);
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 65536.0F, 0.0F);
+                GlStateManager.enableLighting();
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
+                this.renderLiving.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+                Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
+                this.renderLiving.setLightmap(entitylivingbaseIn);
+                GlStateManager.depthFunc(515);
+                GlStateManager.disableBlend();
+                GlStateManager.enableAlpha();
+            }
+        } else if (entitylivingbaseIn instanceof EntityEarthling){
+            EntityEarthling entity = (EntityEarthling)entitylivingbaseIn;
+            if(entity.getSleepClient() <= 0){
                 GlStateManager.enableBlend();
                 GlStateManager.disableAlpha();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);

@@ -109,6 +109,23 @@
               }
             }
           ]
+        },
+
+        {
+          "type": "item",
+          "name": "ancientbeasts:monster_paintings",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Variant:6}"
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "ancientbeasts:monster_paintings",
+          "weight": 8
         }
       ]
     }

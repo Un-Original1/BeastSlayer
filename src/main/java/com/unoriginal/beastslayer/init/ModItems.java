@@ -2,6 +2,7 @@ package com.unoriginal.beastslayer.init;
 
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
+import com.unoriginal.beastslayer.entity.Entities.EntityBSPainting;
 import com.unoriginal.beastslayer.items.*;
 import com.unoriginal.beastslayer.items.client.CustomModelLoader;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -103,6 +104,7 @@ public class ModItems {
     public static Item HEART_AMULET;
     public static Item BLUEPRINT;
     public static Item TOTEM_OF_DYING;
+    public static Item PAINTINGS;
 
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",BeastSlayerConfig.ScaleArmorDurability, BeastSlayerConfig.ScaleArmorValue, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
 
@@ -192,6 +194,7 @@ public class ModItems {
         HEART_AMULET = new ItemReusableHealth("succubus_amulet");
         BLUEPRINT = new ItemSelfContainer("vessel_blueprint");
         TOTEM_OF_DYING = new ItemTooltip("undead_necklace");
+        PAINTINGS = new ItemPainting(EntityBSPainting.class, "monster_paintings");
     }
 
     public static Item quickItemRegistry(String name){
@@ -284,6 +287,7 @@ public class ModItems {
         event.getRegistry().registerAll(HEART_AMULET);
         event.getRegistry().registerAll(BLUEPRINT);
         event.getRegistry().registerAll(TOTEM_OF_DYING);
+        event.getRegistry().registerAll(PAINTINGS);
     }
     @SubscribeEvent
     public static void registerRenders(ModelRegistryEvent event)
@@ -366,6 +370,7 @@ public class ModItems {
         }
         registerRender(BLUEPRINT);
         registerRender(TOTEM_OF_DYING);
+        registerRender(PAINTINGS);
     }
     public static void registerRender(Item item)
     {

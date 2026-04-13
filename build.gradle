@@ -21,7 +21,7 @@ fancyGradle {
 
 java.toolchain.getLanguageVersion().set(JavaLanguageVersion.of(8))
 
-version = "not.2.0.03.release"
+version = "not.2.0.031.release"
 group = "com.unoriginal.beastslayer" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "beastslayer"
 

@@ -502,3 +502,20 @@ beastslayer.gui.right_info.18=They can be bred using sugar cane, but breeding re
 
 beastslayer.gui.left_info.19=Netherhounds are wolf-like creatures that roam the Nether. They are aggressive and tend to show up in small groups.\n \nThese creatures can set anything on fire with their bite and also use their horns to ram nearby targets.\n \nThey also possess the ability to set nearby entities ablaze upon death, and will do
 beastslayer.gui.right_info.19=this to any creature that stays nearby for too long.\n \nThey can be tamed, but you'll need to fight them first and get their health low enough. If those requirements are met, some rotten flesh will do the trick.\n \nWith some of their fur, one can make a cloak to fool them, reducing the chance of being attacked.
+
+entity.earthling.name=Earthling
+entity.beastslayer_paint.name=Painting
+
+
+beast.paintings.rand=Random
+beast.paintings.0=End
+beast.paintings.1=Totem
+beast.paintings.2=Study of the occult
+beast.paintings.3=Sandmonster's head
+beast.paintings.4=Stańczyk
+beast.paintings.5=Otherwordly
+beast.paintings.6=Sin
+beast.paintings.7=Lone giant
+beast.paintings.8=Frozen Tomb
+beast.paintings.9=Grind
+item.monster_paintings.name=Painting

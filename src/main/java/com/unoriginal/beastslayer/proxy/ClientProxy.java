@@ -2,6 +2,7 @@ package com.unoriginal.beastslayer.proxy;
 
 import com.unoriginal.beastslayer.animation.IAnimatedEntity;
 import com.unoriginal.beastslayer.gui.GuiWiki;
+import com.unoriginal.beastslayer.init.ModColorHandler;
 import com.unoriginal.beastslayer.init.ModEntities;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.init.ModParticles;
@@ -13,6 +14,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,6 +35,13 @@ public class ClientProxy extends CommonProxy
         super.preInit(e);
         ModEntities.initModels();
     }
+
+    @Override
+    public void init(FMLInitializationEvent e) {
+        super.init(e);
+        ModColorHandler.registerColorHandler();
+    }
+
     @Override
     public void registerParticles() {
         Minecraft.getMinecraft().effectRenderer.registerParticle(ModParticles.SAND_SPIT.getParticleID(), new ParticleSandSpit.Factory());

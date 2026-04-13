@@ -1,10 +1,10 @@
 package com.unoriginal.beastslayer.init;
 
 import baubles.api.BaublesApi;
-import com.google.common.base.Predicate;
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.*;
+import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIFleeGarlic;
 import com.unoriginal.beastslayer.entity.Entities.ai.EntityAIMobAvoidOwlstack;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
 import com.unoriginal.beastslayer.integration.IntegrationBaubles;
@@ -27,12 +27,10 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.potion.PotionEffect;
@@ -50,7 +48,6 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -64,7 +61,7 @@ public class ModEvents {
     List<String> succubusWhitelist = Arrays.asList(BeastSlayerConfig.SuccubusTargetingWhitelist);
     List<String> blacklist = Arrays.asList(BeastSlayerConfig.AI_blacklist);
     List<String> vampireList = Arrays.asList(BeastSlayerConfig.vampireWhitelist);
-    final Predicate<EntityLivingBase> vampireSelector = target -> target != null && (target.getHeldItemMainhand().getItem() == ModItems.GARLIC_NECK || target.getHeldItemOffhand().getItem() == ModItems.GARLIC_NECK);
+    //final Predicate<EntityLivingBase> vampireSelector = target -> target != null && (target.getHeldItemMainhand().getItem() == ModItems.GARLIC_NECK || target.getHeldItemOffhand().getItem() == ModItems.GARLIC_NECK);
     @SubscribeEvent
     public void onEntityJoin(EntityJoinWorldEvent event) {
         World world = event.getWorld();
@@ -85,19 +82,24 @@ public class ModEvents {
         }
         if (!world.isRemote && event.getEntity() instanceof EntityMob) {
             EntityMob mob = (EntityMob) event.getEntity();
-            if(EntityList.getEntityString(mob) != null) {
-                if (mob.isNonBoss() && !blacklist.contains(EntityList.getEntityString(mob))) {
+            if(EntityList.getKey(mob) != null) {
+                if (mob.isNonBoss() && !blacklist.contains(EntityList.getKey(mob).toString())) {
                     if((BeastSlayerConfig.owlstack_affects_undead && mob.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) || BeastSlayerConfig.owlstack_affects_undead == false ) {
                         mob.tasks.addTask(0, new EntityAIMobAvoidOwlstack<>(mob, EntityOwlstack.class, 6F, 1.0D, 1.4D));
                     }
                 }
             }
         }
-        if(!vampireList.isEmpty() && event.getEntity() instanceof EntityCreature) {
-            EntityCreature entity = (EntityCreature) event.getEntity();
-            if(EntityList.getEntityString(entity) != null) {
-                if (vampireList.contains(EntityList.getEntityString(entity))) {
-                    entity.tasks.addTask(4, new EntityAIAvoidEntity<>(entity, EntityPlayer.class, vampireSelector, 8.0F, 0.8D, 1.0D));
+        if(!vampireList.isEmpty() && event.getEntity() instanceof EntityCreature && !world.isRemote) {
+
+            EntityCreature creature = (EntityCreature) event.getEntity();
+            if(EntityList.getKey(creature) != null) {
+                if (vampireList.contains(EntityList.getKey(creature).toString())) {
+
+                    creature.tasks.addTask(0, new EntityAIFleeGarlic<>(creature, EntityLivingBase.class, 8F, 1D, 1.4D));
+                } else
+                {
+                    BeastSlayer.logger.debug(EntityList.getKey(creature).toString());
                 }
             }
         }
@@ -488,7 +490,7 @@ public class ModEvents {
                 EntityMob m = (EntityMob) l;
                 EntityLivingBase p = m.getAttackTarget();
                 if(m.isEntityUndead() && p != null && p.isPotionActive(ModPotions.UNDEAD) && p.getActivePotionEffect(ModPotions.UNDEAD).getDuration() > 0 && m.isNonBoss()){
-                    if((m.getRevengeTarget() != null && m.getRevengeTarget() != p) || m.getRevengeTarget() == null) {
+                    if(m.getRevengeTarget() == null || m.getRevengeTarget() != p) {
                         if (m.getMaxHealth() == m.getHealth()) {
                             m.getNavigator().clearPath();
                             m.setAttackTarget(null);

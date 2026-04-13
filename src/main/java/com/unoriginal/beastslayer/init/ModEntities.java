@@ -105,8 +105,11 @@ public class ModEntities
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "succubus"), EntitySucc.class, "succubus", id++, BeastSlayer.instance, 64, 1, true, 13345745, 2757438);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "charm_chain"), EntityCharmChain.class, "charm_chain", id++, BeastSlayer.instance, 64, 1, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "xp_mosquito"), EntityMosquito.class, "xp_mosquito", id++, BeastSlayer.instance, 64, 1, true, 10025984, 4208169);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "fake_xp"), EntitySuccXp.class, "fake_xp", id++, BeastSlayer.instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "fake_xp"), EntitySuccXp.class, "fake_xp", id++, BeastSlayer.instance, 64, 20, true);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "xp_ghost"), EntityGhostHolder.class, "xp_ghost", id++, BeastSlayer.instance, 64, 1, true);
+
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "beastslayer_paint"), EntityBSPainting.class, "beastslayer_paint", id++, BeastSlayer.instance, 160, Integer.MAX_VALUE, false);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "earthling"), EntityEarthling.class, "earthling", id++, BeastSlayer.instance, 64, 1, true, 7951674 , 4154415);
 
 
     }
@@ -243,6 +246,8 @@ public class ModEntities
         RenderingRegistry.registerEntityRenderingHandler(EntityMosquito.class, RenderMoskito.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntitySuccXp.class, RenderSuccXp.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostHolder.class, RenderXpGhost.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityEarthling.class, RenderEarthling.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBSPainting.class, RenderBSPainting::new);
     }
 
 

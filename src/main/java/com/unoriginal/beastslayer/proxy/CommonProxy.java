@@ -52,7 +52,6 @@ import java.lang.reflect.Method;
 @Mod.EventBusSubscriber
 public class CommonProxy
 {
-    private static Method CriterionRegister;
     private static final ResourceLocation D_LIGHT = new ResourceLocation(BeastSlayer.MODID,"dynamic_light");
     private static final ResourceLocation WITCHCRAFT = new ResourceLocation(BeastSlayer.MODID, "witchcraft_table");
     public void preInit(FMLPreInitializationEvent e)
@@ -97,25 +96,6 @@ public class CommonProxy
         OreDictionary.registerOre("treeLeaves", ModBlocks.CURSED_LEAVES);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(BeastSlayer.instance, new ABGuiHandler());
-        registerAdvancementTrigger(ModTriggers.OWLSTACK_INTERACT);
-        registerAdvancementTrigger(ModTriggers.SUCCUBUS_FRIEND);
-        registerAdvancementTrigger(ModTriggers.SUCCUBUS_BLOOD);
-        registerAdvancementTrigger(ModTriggers.SUCCUBUS_BED);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T extends ICriterionInstance> ICriterionTrigger<T> registerAdvancementTrigger(ICriterionTrigger<T> trigger) {
-        if(CriterionRegister == null) {
-            CriterionRegister = ReflectionHelper.findMethod(CriteriaTriggers.class, "register", "func_192118_a", ICriterionTrigger.class);
-            CriterionRegister.setAccessible(true);
-        }
-        try {
-            trigger = (ICriterionTrigger<T>) CriterionRegister.invoke(null, trigger);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            System.out.println("Failed to register trigger " + trigger.getId() + "!");
-            e.printStackTrace();
-        }
-        return trigger;
     }
 
     public void postInit(FMLPostInitializationEvent e) {

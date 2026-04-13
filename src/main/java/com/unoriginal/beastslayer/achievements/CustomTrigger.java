@@ -1,10 +1,9 @@
 package com.unoriginal.beastslayer.achievements;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.critereon.AbstractCriterionInstance;
@@ -12,13 +11,12 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Set;
 
-public class CustomTrigger implements ICriterionTrigger
+public class CustomTrigger implements ICriterionTrigger<CustomTrigger.Instance>
 {
     private final ResourceLocation RL;
-    private final Map<PlayerAdvancements, CustomTrigger.Listeners> listeners = Maps.newHashMap();
+    private final SetMultimap<PlayerAdvancements, Listener<? extends ICriterionInstance>> listeners = HashMultimap.create();
 
     public CustomTrigger(String parString)
     {
@@ -42,39 +40,21 @@ public class CustomTrigger implements ICriterionTrigger
     }
 
     @Override
-    public void addListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener listener)
+    public void addListener(PlayerAdvancements playerAdvancementsIn, Listener<Instance> listener)
     {
-        CustomTrigger.Listeners myCustomTrigger$listeners = listeners.get(playerAdvancementsIn);
-
-        if (myCustomTrigger$listeners == null)
-        {
-            myCustomTrigger$listeners = new CustomTrigger.Listeners(playerAdvancementsIn);
-            listeners.put(playerAdvancementsIn, myCustomTrigger$listeners);
-        }
-
-        myCustomTrigger$listeners.add(listener);
+        listeners.put(playerAdvancementsIn, listener);
     }
 
     @Override
-    public void removeListener(PlayerAdvancements playerAdvancementsIn, ICriterionTrigger.Listener listener)
+    public void removeListener(PlayerAdvancements playerAdvancementsIn,Listener<Instance> listener)
     {
-        CustomTrigger.Listeners tameanimaltrigger$listeners = listeners.get(playerAdvancementsIn);
-
-        if (tameanimaltrigger$listeners != null)
-        {
-            tameanimaltrigger$listeners.remove(listener);
-
-            if (tameanimaltrigger$listeners.isEmpty())
-            {
-                listeners.remove(playerAdvancementsIn);
-            }
-        }
+        listeners.remove(playerAdvancementsIn, listener);
     }
 
     @Override
     public void removeAllListeners(PlayerAdvancements playerAdvancementsIn)
     {
-        listeners.remove(playerAdvancementsIn);
+        listeners.removeAll(playerAdvancementsIn);
     }
 
     /**
@@ -97,12 +77,10 @@ public class CustomTrigger implements ICriterionTrigger
      */
     public void trigger(EntityPlayerMP parPlayer)
     {
-        CustomTrigger.Listeners tameanimaltrigger$listeners = listeners.get(parPlayer.getAdvancements());
 
-        if (tameanimaltrigger$listeners != null)
-        {
-            tameanimaltrigger$listeners.trigger(parPlayer);
-        }
+        final PlayerAdvancements advancement = parPlayer.getAdvancements();
+
+        listeners.get(advancement).forEach(listener -> listener.grantCriterion(advancement) );
     }
 
     public static class Instance extends AbstractCriterionInstance
@@ -134,7 +112,7 @@ public class CustomTrigger implements ICriterionTrigger
          */
         public Listeners(PlayerAdvancements playerAdvancementsIn)
         {
-            playerAdvancements = playerAdvancementsIn;
+            this.playerAdvancements = playerAdvancementsIn;
         }
 
         /**
@@ -144,7 +122,7 @@ public class CustomTrigger implements ICriterionTrigger
          */
         public boolean isEmpty()
         {
-            return listeners.isEmpty();
+            return this.listeners.isEmpty();
         }
 
         /**
@@ -152,9 +130,9 @@ public class CustomTrigger implements ICriterionTrigger
          *
          * @param listener the listener
          */
-        public void add(ICriterionTrigger.Listener listener)
+        public void add(ICriterionTrigger.Listener<Instance> listener)
         {
-            listeners.add(listener);
+            this.listeners.add(listener);
         }
 
         /**
@@ -162,9 +140,9 @@ public class CustomTrigger implements ICriterionTrigger
          *
          * @param listener the listener
          */
-        public void remove(ICriterionTrigger.Listener listener)
+        public void remove(ICriterionTrigger.Listener<Instance> listener)
         {
-            listeners.remove(listener);
+            this.listeners.remove(listener);
         }
 
         /**
@@ -176,7 +154,7 @@ public class CustomTrigger implements ICriterionTrigger
         {
             ArrayList<Listener<CustomTrigger.Instance>> list = null;
 
-            for (Listener<CustomTrigger.Instance> listener : listeners)
+            for (Listener<Instance> listener : this.listeners)
             {
                 if (listener.getCriterionInstance().test())
                 {
@@ -191,9 +169,9 @@ public class CustomTrigger implements ICriterionTrigger
 
             if (list != null)
             {
-                for (Listener listener1 : list)
+                for (Listener<Instance> listener1 : list)
                 {
-                    listener1.grantCriterion(playerAdvancements);
+                    listener1.grantCriterion(this.playerAdvancements);
                 }
             }
         }

@@ -15,7 +15,7 @@
         {
           "type": "item",
           "name": "minecraft:golden_apple",
-          "weight": 15
+          "weight": 13
         },
         {
           "type": "item",
@@ -31,6 +31,11 @@
           "type": "item",
           "name": "minecraft:chainmail_chestplate",
           "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "ancientbeasts:monster_paintings",
+          "weight": 12
         }
       ]
     },
@@ -52,6 +57,22 @@
                 "min": 1,
                 "max": 4
               }
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "ancientbeasts:monster_paintings",
+          "weight": 12
+        },
+        {
+          "type": "item",
+          "name": "ancientbeasts:monster_paintings",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_nbt",
+              "tag": "{Variant:4}"
             }
           ]
         },
