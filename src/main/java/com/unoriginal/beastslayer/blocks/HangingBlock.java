@@ -12,7 +12,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -103,6 +102,7 @@ public class HangingBlock extends Block implements IShearable {
                     BlockCauldron blockCauldron = (BlockCauldron) state1.getBlock();
                     if(blockCauldron.getMetaFromState(state1) == 0){
                         worldIn.setBlockState(pos.down(i + 1), ModBlocks.CAULDRON.getDefaultState().withProperty(BlockModCauldron.LEVEL, 1));
+                        break;
                     }
                 }
                 else if (state1.getBlock() != Blocks.AIR){

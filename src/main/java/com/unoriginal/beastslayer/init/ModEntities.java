@@ -212,7 +212,7 @@ public class ModEntities
         RenderingRegistry.registerEntityRenderingHandler(EntityRiftedEnderman.class, RenderRiftedEnderman.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityRiftedPearl.class, RenderRiftedPearl.FACTORY);
 
-        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+
             RenderingRegistry.registerEntityRenderingHandler(EntityTribeWarrior.class, RenderTribeWarrior.FACTORY);
             RenderingRegistry.registerEntityRenderingHandler(EntityHunter.class, RenderHunter.FACTORY);
             RenderingRegistry.registerEntityRenderingHandler(EntityTank.class, RenderTank.FACTORY);
@@ -226,7 +226,7 @@ public class ModEntities
             registerProjectileRenderer(ProjectileMeteor.class, Items.FIRE_CHARGE);
 
             RenderingRegistry.registerEntityRenderingHandler(EntityTribeChild.class, RenderTribeChild.FACTORY);
-        }
+
 
         RenderingRegistry.registerEntityRenderingHandler(EntityWindforceDart.class, RenderWindforceDart.FACTORY);
 

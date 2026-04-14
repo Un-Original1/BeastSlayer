@@ -57,11 +57,13 @@ public class ModBlocks {
 
         STICK = new BlockRotatedPillarBase("stick_wall", Material.WOOD, SoundType.WOOD, 1.0F, true, 60);
         THATCH = new BlockThatch("Thatch", Material.GRASS, SoundType.PLANT, 0.8F, false, 60);
-        if(BeastSlayerConfig.EnableExperimentalFeatures) {
-            CAULDRON = new BlockModCauldron("magic_cauldron");
+
+        CAULDRON = new BlockModCauldron("magic_cauldron");
+
+
             WITCHCRAFT_TABLE = new BlockWitchcraftTable("witchcraft_table");
             FIRE_IDOL = new BlockFireIdol("fire_idol");
-        }
+
             CURSED_LOG = new BlockRotatedPillarBase("cursed_log", Material.WOOD, SoundType.WOOD, 1.0F, true, 60).setHardness(2.0F);
             CURSED_PLANK = new Block(Material.WOOD).setRegistryName("cursed_plank").setUnlocalizedName("cursed_plank").setCreativeTab(BeastSlayer.BEASTSTAB).setHardness(2.0F);
             CURSED_STAIR = new BlockStairsAB(ModBlocks.CURSED_PLANK.getDefaultState(), "cursed_stairs").setHardness(2.0F);
@@ -85,11 +87,12 @@ public class ModBlocks {
 
             event.getRegistry().registerAll(STICK);
             event.getRegistry().registerAll(THATCH);
-        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+
             event.getRegistry().registerAll(CAULDRON);
+
             event.getRegistry().registerAll(WITCHCRAFT_TABLE);
             event.getRegistry().registerAll(FIRE_IDOL);
-        }
+
             event.getRegistry().registerAll(CURSED_LOG);
             event.getRegistry().registerAll(CURSED_PLANK);
             event.getRegistry().registerAll(CURSED_STAIR);
@@ -113,11 +116,12 @@ public class ModBlocks {
         event.getRegistry().registerAll(new ItemBlock(LIGHT).setRegistryName(LIGHT.getRegistryName()));
         event.getRegistry().registerAll(new ItemBlock(STICK).setRegistryName(STICK.getRegistryName()));
         event.getRegistry().registerAll(new ItemBlock(THATCH).setRegistryName(THATCH.getRegistryName()));
-        if(BeastSlayerConfig.EnableExperimentalFeatures) {
+
             event.getRegistry().registerAll(new ItemBlock(CAULDRON).setRegistryName(CAULDRON.getRegistryName()));
+
             event.getRegistry().registerAll(new ItemBlock(WITCHCRAFT_TABLE).setRegistryName(WITCHCRAFT_TABLE.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(FIRE_IDOL).setRegistryName(FIRE_IDOL.getRegistryName()));
-        }
+
             event.getRegistry().registerAll(new ItemBlock(CURSED_LOG).setRegistryName(CURSED_LOG.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(CURSED_PLANK).setRegistryName(CURSED_PLANK.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(CURSED_STAIR).setRegistryName(CURSED_STAIR.getRegistryName()));
@@ -143,11 +147,11 @@ public class ModBlocks {
          registerRender(Item.getItemFromBlock(LIGHT));
          registerRender(Item.getItemFromBlock(STICK));
          registerRender(Item.getItemFromBlock(THATCH));
-        if(BeastSlayerConfig.EnableExperimentalFeatures) {
-            registerRender(Item.getItemFromBlock(CAULDRON));
+         registerRender(Item.getItemFromBlock(CAULDRON));
+
             registerRender(Item.getItemFromBlock(WITCHCRAFT_TABLE));
             registerRender(Item.getItemFromBlock(FIRE_IDOL));
-        }
+
             registerRender(Item.getItemFromBlock(CURSED_LOG));
             registerRender(Item.getItemFromBlock(CURSED_PLANK));
             registerRender(Item.getItemFromBlock(CURSED_STAIR));

@@ -740,7 +740,7 @@ public class ModEvents {
         ItemStack stack = player.getHeldItemMainhand();
         BlockPos pos = e.getPos();
         IBlockState state = world.getBlockState(pos);
-        if(!world.isRemote && world.getBlockState(pos).getBlock() == Blocks.CAULDRON && BeastSlayerConfig.EnableExperimentalFeatures ){
+        if(!world.isRemote && world.getBlockState(pos).getBlock() == Blocks.CAULDRON){
             BlockCauldron cauldron = (BlockCauldron) world.getBlockState(pos).getBlock();
             if(cauldron.getMetaFromState(state) == 3 && stack.getItem() == ModItems.DARK_GOOP){
                 world.setBlockState(pos, ModBlocks.CAULDRON.getDefaultState());
