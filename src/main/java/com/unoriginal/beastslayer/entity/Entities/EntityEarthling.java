@@ -3,12 +3,11 @@ package com.unoriginal.beastslayer.entity.Entities;
 import com.google.common.collect.Lists;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -23,6 +22,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -32,6 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityEarthling extends EntityCreature implements IAnimals, IShearable {
@@ -55,7 +56,7 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
         this.tasks.addTask(3, new EarthlingDoNothing(this));
         this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(8, new EntityAIAvoidEntity<>(this, EntityMob.class, 8F, 0.6D, 1D));
+        this.tasks.addTask(8, new EntityAIAvoidEntity<>(this, EntityMob.class, 8F, 0.6D, 0.8D));
         this.tasks.addTask(9, new EntityAILookIdle(this));
     }
 
@@ -224,7 +225,7 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
     protected boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Block block = Block.getBlockFromItem(itemstack.getItem());
-        if(block instanceof IPlantable && !this.world.isRemote && !(block instanceof BlockCrops)) {
+        if(block instanceof IPlantable && !(block instanceof BlockCrops)) {
            if(this.getFlower().isEmpty()) {
                this.setFlower(itemstack);
                if(!player.capabilities.isCreativeMode) {
@@ -262,6 +263,16 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
         this.setFlower(ItemStack.EMPTY);
         this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
         return result;
+    }
+
+    @Nullable
+    public AxisAlignedBB getCollisionBox(Entity entityIn)
+    { return entityIn.canBePushed() ? entityIn.getEntityBoundingBox() : null; }
+
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox()
+    {
+        return this.isEntityAlive() ? this.getEntityBoundingBox() : null;
     }
 
 
@@ -307,6 +318,7 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
                 return this.tameable.getSleep() > 0;
             }
         }
+
 
         public void startExecuting()
         {

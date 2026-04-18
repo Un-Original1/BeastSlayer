@@ -308,4 +308,14 @@ public class BeastSlayerConfig {
     @RequiresMcRestart
     public static boolean GriefyGiantDropsBlocks = false;
 
+    @Name("Earthling spawn Chance")
+    @Comment("Modifies earthlings spawn weight")
+    @RequiresMcRestart
+    public static int earthlingSpawnChance = 10;
+
+    @Name("Earthling Flower forest spawn Chance")
+    @Comment("Modifies earthlings spawn weight on flower forest biome")
+    @RequiresMcRestart
+    public static int earthlingFlowerForestSpawnChance = 25;
+
 }

@@ -29,6 +29,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeForestMutated;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
@@ -135,6 +136,9 @@ public class ModEntities
             EntityRegistry.addSpawn(EntityTribeChild.class, 60, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
             EntityRegistry.addSpawn(EntityPriest.class, 20, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
             EntityRegistry.addSpawn(EntityTank.class, 40, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
+
+            EntityRegistry.addSpawn(EntityEarthling.class, BeastSlayerConfig.earthlingSpawnChance, 1, 1, EnumCreatureType.CREATURE, BiomeDictionary.getBiomes(Type.FOREST).toArray(new Biome[0]));
+            EntityRegistry.addSpawn(EntityEarthling.class, BeastSlayerConfig.earthlingFlowerForestSpawnChance, 1, 1, EnumCreatureType.CREATURE, Biomes.MUTATED_FOREST);
         }
 
         if(BeastSlayerConfig.EnableSuccubus) {

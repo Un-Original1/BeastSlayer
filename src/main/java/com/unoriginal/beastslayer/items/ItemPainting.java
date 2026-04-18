@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.items;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.EntityBSPainting;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -36,10 +37,13 @@ public class ItemPainting extends ItemHangingEntity {
         ItemStack itemstack = player.getHeldItem(hand);
         BlockPos offsetPos = pos.offset(facing);
 
-        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && player.canPlayerEdit(offsetPos, facing, itemstack)) {
+        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && player.canPlayerEdit(offsetPos, facing, itemstack) && !world.isRemote) {
             EntityBSPainting entity = new EntityBSPainting(world, offsetPos, facing);
 
             int i = world.rand.nextInt(10);
+            if(!BeastSlayerConfig.EnableSuccubus && i == 6){
+                i = 7;
+            }
             NBTTagCompound compound = itemstack.getTagCompound();
             if(compound == null){
                 compound = new NBTTagCompound();
@@ -49,16 +53,18 @@ public class ItemPainting extends ItemHangingEntity {
              //   compound.setInteger("Variant", i);
            // }
             if(compound.hasKey("Variant")) {
+                if(!BeastSlayerConfig.EnableSuccubus && compound.getInteger("Variant") == 6){
+                    compound.setInteger("Variant", 7);
+                }
                 entity.setArt(compound.getInteger("Variant"));
+                entity.setPersist(true);
             } else{
                 entity.setArt(i);
             }
             if (entity != null && entity.onValidSurface()) {
-                if (!world.isRemote) {
-                    entity.playPlaceSound();
-                    world.spawnEntity(entity);
-                }
 
+                entity.playPlaceSound();
+                world.spawnEntity(entity);
                 itemstack.shrink(1);
             }
 

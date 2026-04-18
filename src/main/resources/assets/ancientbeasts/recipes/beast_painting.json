@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+
+    {
+      "item": "minecraft:painting"
+    },
+    {
+      "item": "ancientbeasts:monster_paintings"
+    }
+  ],
+  "result": {
+    "item": "ancientbeasts:monster_paintings",
+    "count": 2
+  }
+}

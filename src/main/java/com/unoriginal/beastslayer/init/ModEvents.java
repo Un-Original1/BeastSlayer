@@ -97,9 +97,6 @@ public class ModEvents {
                 if (vampireList.contains(EntityList.getKey(creature).toString())) {
 
                     creature.tasks.addTask(0, new EntityAIFleeGarlic<>(creature, EntityLivingBase.class, 8F, 1D, 1.4D));
-                } else
-                {
-                    BeastSlayer.logger.debug(EntityList.getKey(creature).toString());
                 }
             }
         }
