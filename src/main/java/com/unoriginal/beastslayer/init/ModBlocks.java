@@ -49,6 +49,8 @@ public class ModBlocks {
     public static Block CURSED_SAPLING;
     public static Block GREEN_TORCH;
 
+    public static Block WONDER_FLOWER;
+
     public static void init(){
         POKEY = new BlockSpikeTrap("pokey");
         SKEWER = new BlockSkewer("skewer");
@@ -76,6 +78,8 @@ public class ModBlocks {
             HANGING_LEAVES = new HangingBlock(Material.PLANTS, "hanging_leaves");
             CURSED_SAPLING = new BlockModSapling("cursed_sapling");
             GREEN_TORCH = new GreenTorch("green_torch");
+
+            WONDER_FLOWER = new BlockModFlower("wonder_flower");
 
     }
     @SubscribeEvent
@@ -107,6 +111,8 @@ public class ModBlocks {
             event.getRegistry().registerAll(CURSED_SAPLING);
             event.getRegistry().registerAll(GREEN_TORCH);
 
+            event.getRegistry().registerAll(WONDER_FLOWER);
+
     }
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
@@ -136,6 +142,8 @@ public class ModBlocks {
             event.getRegistry().registerAll(new ItemBlock(CURSED_SAPLING).setRegistryName(CURSED_SAPLING.getRegistryName()));
             event.getRegistry().registerAll(new ItemBlock(GREEN_TORCH).setRegistryName(GREEN_TORCH.getRegistryName()));
 
+            event.getRegistry().registerAll(new ItemBlock(WONDER_FLOWER).setRegistryName(WONDER_FLOWER.getRegistryName()));
+
     }
 
     @SubscribeEvent
@@ -143,7 +151,7 @@ public class ModBlocks {
     public static void registerRenders(ModelRegistryEvent event) {
          registerRender(Item.getItemFromBlock(POKEY));
          registerRender(Item.getItemFromBlock(SKEWER));
-         registerRender(Item.getItemFromBlock(SPIKE));
+         registerRenderInv(Item.getItemFromBlock(SPIKE));
          registerRender(Item.getItemFromBlock(LIGHT));
          registerRender(Item.getItemFromBlock(STICK));
          registerRender(Item.getItemFromBlock(THATCH));
@@ -166,7 +174,11 @@ public class ModBlocks {
             registerRenderInv(Item.getItemFromBlock(CURSED_SAPLING));
             registerRender(Item.getItemFromBlock(GREEN_TORCH));
 
+            registerRenderInv(Item.getItemFromBlock(WONDER_FLOWER));
+
     }
+
+    //DO NOT FORGET RENDER INV = INVENTORY AS 2D ITEM
 
     public static void registerRender(Item item) {
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation( item.getRegistryName(), "normal"));

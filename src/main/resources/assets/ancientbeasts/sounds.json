@@ -465,5 +465,59 @@
     "sounds":[
       "ancientbeasts:giant_growl"
     ]
+  },
+  "succ_liquid" : {
+    "subtitle" : "subtitle.succ.liquid",
+    "sounds" : [
+      "ancientbeasts:succ_liquid",
+      "ancientbeasts:succ_liquid2"
+    ]
+  },
+  "succ_xp" : {
+    "subtitle" : "subtitle.succ.xp",
+    "sounds" : [
+      "ancientbeasts:succ_xp"
+    ]
+  },
+  "succ_step" : {
+    "subtitle" : "subtitle.succ.step",
+    "sounds" : [
+      "ancientbeasts:succ_step1",
+      "ancientbeasts:succ_step2",
+      "ancientbeasts:succ_step3",
+      "ancientbeasts:succ_step4",
+      "ancientbeasts:succ_step5"
+    ]
+  },
+  "earthling_hurt": {
+    "subtitle" : "subtitle.earthling.hurt",
+    "sounds" : [
+      "ancientbeasts:earthling_hurt",
+      "ancientbeasts:earthling_hurt2",
+      "ancientbeasts:earthling_hurt3"
+    ]
+  },
+  "earthling_death": {
+    "subtitle": "subtitle.earthling.death",
+    "sounds": [
+      "ancientbeasts:earthling_death",
+      "ancientbeasts:earthling_death2"
+    ]
+  },
+  "earthling_idle": {
+    "subtitle": "subtitle.earthling.idle",
+    "sounds": [
+      "ancientbeasts:earthling_idle",
+      "ancientbeasts:earthling_idle2",
+      "ancientbeasts:earthling_idle3"
+    ]
+  },
+  "earthling_bonemeal": {
+    "subtitle": "subtitle.earthling.interact",
+    "sounds": [
+      "ancientbeasts:earthling_bonemeal1",
+      "ancientbeasts:earthling_bonemeal2",
+      "ancientbeasts:earthling_bonemeal3"
+    ]
   }
 }

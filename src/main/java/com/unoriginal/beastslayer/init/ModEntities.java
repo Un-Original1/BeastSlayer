@@ -111,6 +111,7 @@ public class ModEntities
 
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "beastslayer_paint"), EntityBSPainting.class, "beastslayer_paint", id++, BeastSlayer.instance, 160, Integer.MAX_VALUE, false);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "earthling"), EntityEarthling.class, "earthling", id++, BeastSlayer.instance, 64, 1, true, 7951674 , 4154415);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "gloop"), EntityGloop.class, "gloop", id++, BeastSlayer.instance, 64, 1, true, 1, 1);
 
 
     }
@@ -252,6 +253,7 @@ public class ModEntities
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostHolder.class, RenderXpGhost.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityEarthling.class, RenderEarthling.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityBSPainting.class, RenderBSPainting::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityGloop.class, RenderGloop.FACTORY);
     }
 
 

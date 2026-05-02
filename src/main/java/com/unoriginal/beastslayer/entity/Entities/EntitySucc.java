@@ -8,6 +8,7 @@ import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.entity.Entities.ai.*;
 import com.unoriginal.beastslayer.init.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.*;
@@ -310,8 +311,8 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
         if (!this.world.isRemote && this.isFriendly() && !this.isStalking() && --this.dropTime <= 0)
         {
-            this.playSound(SoundEvents.BLOCK_BREWING_STAND_BREW, 0.8F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-            this.dropItem(ModItems.WEIRD_BOTTLE, 1);
+            this.playSound(ModSounds.SUCC_POTION, 0.8F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            this.dropItemWithOffset(ModItems.WEIRD_BOTTLE, 1, 1.5F);
             this.dropTime = this.rand.nextInt(8000) + 8000;
         }
 
@@ -325,6 +326,15 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
 
     }
 
+    protected SoundEvent getStepSound()
+    {
+        return ModSounds.SUCC_STEP;
+    }
+
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(this.getStepSound(), 0.15F, 1.0F);
+    }
 
     @Override
     public boolean canDespawn(){return false;}

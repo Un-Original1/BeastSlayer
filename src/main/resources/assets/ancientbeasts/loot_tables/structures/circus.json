@@ -67,17 +67,6 @@
         },
         {
           "type": "item",
-          "name": "ancientbeasts:monster_paintings",
-          "weight": 10,
-          "functions": [
-            {
-              "function": "set_nbt",
-              "tag": "{Variant:4}"
-            }
-          ]
-        },
-        {
-          "type": "item",
           "name": "minecraft:bread",
           "weight": 20
         },

@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "ancientbeasts:wonder_flower" },
+    "inventory": { "model": "ancientbeasts:item/wonder_flower" }
+  }
+}

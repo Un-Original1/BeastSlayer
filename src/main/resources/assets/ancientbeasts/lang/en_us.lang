@@ -519,3 +519,14 @@ beast.paintings.7=Lone giant
 beast.paintings.8=Frozen Tomb
 beast.paintings.9=Grind
 item.monster_paintings.name=Painting
+
+tile.wonder_flower.name=Blooming Paradise
+subtitle.succ.step=Footsteps
+subtitle.succ.xp=Experience taken
+subtitle.succ.liquid=Bottle fills
+item.flower_dust.name=Bloom Powder
+
+subtitle.earthling.hurt=Earthling hurts
+subtitle.earthling.death=Earthling dies
+subtitle.earthling.idle=Earthling hums
+subtitle.earthling.interact=Earthling is powered up

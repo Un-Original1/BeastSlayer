@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ancientbeasts:wonder_flower"
+    }
+  ],
+  "result": {
+    "item": "ancientbeasts:flower_dust",
+    "count": 3
+  }
+}

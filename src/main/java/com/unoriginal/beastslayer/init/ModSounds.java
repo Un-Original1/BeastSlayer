@@ -78,6 +78,14 @@ public class ModSounds {
 
     public static final SoundEvent GIANT_ANGRY = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "giant_growl")).setRegistryName("giant_growl");
 
+    public static final SoundEvent SUCC_XP = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_xp")).setRegistryName("succ_xp");
+    public static final SoundEvent SUCC_POTION = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_liquid")).setRegistryName("succ_liquid");
+    public static final SoundEvent SUCC_STEP = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "succ_step")).setRegistryName("succ_step");
+    public static final SoundEvent EARTHLING_HURT = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "earthling_hurt")).setRegistryName("earthling_hurt");
+    public static final SoundEvent EARTHLING_DEATH = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "earthling_death")).setRegistryName("earthling_death");
+    public static final SoundEvent EARTHLING_IDLE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "earthling_idle")).setRegistryName("earthling_idle");
+    public static final SoundEvent EARTHLING_BONEMEAL = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "earthling_bonemeal")).setRegistryName("earthling_bonemeal");
+
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
         @SubscribeEvent
@@ -144,6 +152,12 @@ public class ModSounds {
             event.getRegistry().register(MOSQ_HURT);
             event.getRegistry().register(MOSQ_DEATH);
             event.getRegistry().register(GIANT_ANGRY);
+            event.getRegistry().register(SUCC_XP);
+            event.getRegistry().register(SUCC_POTION);
+            event.getRegistry().register(SUCC_STEP);
+            event.getRegistry().register(EARTHLING_HURT);
+            event.getRegistry().register(EARTHLING_DEATH);
+            event.getRegistry().register(EARTHLING_IDLE);
         }
 
     }

@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
@@ -209,7 +210,7 @@ public class EntitySuccXp extends Entity {
             EntitySucc entity = (EntitySucc)entityIn;
             if (entity == this.closestSuccubus)
             {
-                this.world.playSound(null, this.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.HOSTILE,0.3F,  (this.rand.nextFloat() - this.rand.nextFloat()) * 0.35F + 0.9F);
+                this.world.playSound(null, this.getPosition(), ModSounds.SUCC_XP, SoundCategory.HOSTILE,0.3F,  (this.rand.nextFloat() - this.rand.nextFloat()) * 0.35F + 0.9F);
                 entity.giveXpBonus();
                 this.setDead();
             }

@@ -1,15 +1,21 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.google.common.collect.Lists;
+import com.unoriginal.beastslayer.init.ModBlocks;
+import com.unoriginal.beastslayer.init.ModItems;
+import com.unoriginal.beastslayer.init.ModSounds;
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -22,8 +28,11 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -41,11 +50,12 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
     private static final DataParameter<Integer> BONEMEAL = EntityDataManager.createKey(EntityEarthling.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> SLEEP = EntityDataManager.createKey(EntityEarthling.class, DataSerializers.VARINT);
     private float sleepYaw;
-   // private static final DataParameter<Integer> PATCH = EntityDataManager.createKey(EntityEarthling.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> PATCH = EntityDataManager.createKey(EntityEarthling.class, DataSerializers.VARINT);
 
     public EntityEarthling(World worldIn){
         super(worldIn);
         this.setSize(1.1F,1.4F);
+        this.experienceValue = 0;
     }
 
     protected void initEntityAI()
@@ -54,7 +64,7 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
         this.tasks.addTask(1, new EntityAIPanic(this, 0.6D));
         this.tasks.addTask(3, new EarthlingTempt(this, 0.6D, Items.DYE , false));
         this.tasks.addTask(3, new EarthlingDoNothing(this));
-        this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D));
+        this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 0.6D, this.getBonemeal() > 0 ? 0.0001f : 0.001f));
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
         this.tasks.addTask(8, new EntityAIAvoidEntity<>(this, EntityMob.class, 8F, 0.6D, 0.8D));
         this.tasks.addTask(9, new EntityAILookIdle(this));
@@ -73,7 +83,7 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
         super.entityInit();
         this.dataManager.register(FLOWER, ItemStack.EMPTY);
         this.dataManager.register(BONEMEAL, 0);
-     //   this.dataManager.register(PATCH, 0);
+        this.dataManager.register(PATCH, 0);
         this.dataManager.register(SLEEP, 0);
     }
 
@@ -103,6 +113,46 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
 
     @Override
     public void onLivingUpdate() {
+
+        if(!this.world.isRemote && this.world.isRaining() && this.world.canSeeSky(this.getPosition()) && this.getPatch() <= 0){
+            this.setPatch(1000 + rand.nextInt(1000));
+        }
+        if(this.getPatch() > 0 && !this.world.isRemote && this.getSleep() < 0){
+            this.setPatch(this.getPatch() - 1);
+
+
+            for (int l = 0; l < 4; ++l)
+            {
+               int i = MathHelper.floor(this.posX + (double)((float)(l % 2 * 2 - 1) * 0.25F));
+               int j = MathHelper.floor(this.posY-1);
+               int k = MathHelper.floor(this.posZ + (double)((float)(l / 2 % 2 * 2 - 1) * 0.25F));
+                BlockPos blockpos = new BlockPos(i, j, k);
+
+                int count = 0;
+                boolean neighborFlag = true;
+                for(int x1 = -2; x1 < 3; ++x1){
+                    for (int z1 = -2; z1 < 3; ++z1){
+                        blockpos = new BlockPos(i + x1, j, k + z1);
+                        if(this.world.getBlockState(blockpos).getMaterial() != Material.AIR){
+                            count++;
+                            if(count > 16) {
+                                neighborFlag = false;
+                                break;
+                            }
+                        }
+
+                    }
+                }
+                for(int x1 = -1; x1 < 2; ++x1) {
+                    for (int z1 = -1; z1 < 2; ++z1) {
+                        blockpos = new BlockPos(i + x1, j, k + z1);
+                        if (this.world.getBlockState(blockpos).getMaterial() == Material.AIR && Blocks.GRASS.canPlaceBlockAt(this.world, blockpos) && !neighborFlag) {
+                            this.world.setBlockState(blockpos, Blocks.GRASS.getDefaultState());
+                        }
+                    }
+                }
+            }
+        }
         if (this.onGround && !this.world.isRemote && this.getBonemeal() > 0)
         {
             IBlockState iblockstate1 = this.world.getBlockState(this.getPosition().down());
@@ -125,7 +175,7 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
                }
             }
         }
-        if(this.world.isDaytime() && !this.world.isRemote && this.getSleep() < -5000){
+        if(this.world.isDaytime() && !this.world.isRemote && this.getSleep() < -5000 && this.getPatch() <= 0 && this.getBonemeal() <= 0){
             this.setSleep(2000 + rand.nextInt(2000));
         }
         if(this.getSleep() >= -5000 && !this.world.isRemote){
@@ -181,6 +231,9 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
         if(compound.hasKey("sleep")) {
             this.setSleep(compound.getInteger("sleep"));
         }
+        if(compound.hasKey("patch")){
+            this.setPatch(compound.getInteger("patch"));
+        }
     }
 
     @Override
@@ -190,6 +243,7 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
         compound.setInteger("bonemeal", this.getBonemeal());
         compound.setTag("flower", this.getFlower().serializeNBT());
         compound.setInteger("sleep", this.getSleep());
+        compound.setInteger("patch", this.getPatch());
     }
 
     public ItemStack getFlower() {
@@ -221,6 +275,15 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
         return this.dataManager.get(SLEEP);
     }
 
+    public void setPatch(int ticks){this.dataManager.set(PATCH, ticks);}
+    public int getPatch(){
+        return this.dataManager.get(PATCH);
+    }
+    @SideOnly(Side.CLIENT)
+    public int getPatchClient(){
+        return this.dataManager.get(PATCH);
+    }
+
     @Override
     protected boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
@@ -244,6 +307,16 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
             } else {
                 this.setSleep(this.getSleep() - 1000 - this.rand.nextInt(200));
             }
+            this.playSound(ModSounds.EARTHLING_BONEMEAL, 0.75F, 1.0F);
+            return true;
+        } else if (itemstack.getItem() == ModItems.FLOWER_DUST){
+            if(!player.capabilities.isCreativeMode) {
+                itemstack.shrink(1);
+            }
+                this.setPatch(1000);
+                this.setBonemeal(1000);
+
+            this.playSound(ModSounds.EARTHLING_BONEMEAL, 0.75F, 1.0F);
             return true;
         }
         return super.processInteract(player, hand);
@@ -334,5 +407,38 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
         {
             super.resetTask();
         }
+    }
+
+    @Nullable
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+
+        if(this.world.getBiome(this.getPosition()) == Biomes.MUTATED_FOREST && rand.nextInt(3)==0 || this.rand.nextInt(32)==0) {
+            this.setFlower(new ItemStack(ModBlocks.WONDER_FLOWER));
+        }
+        return super.onInitialSpawn(difficulty, livingdata);
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.EARTHLING_HURT;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.EARTHLING_DEATH;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.EARTHLING_IDLE;
+    }
+
+    @Override
+    public int getTalkInterval() {
+        return 200;
     }
 }

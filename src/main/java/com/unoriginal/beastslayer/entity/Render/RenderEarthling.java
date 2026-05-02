@@ -4,6 +4,7 @@ import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.EntityEarthling;
 import com.unoriginal.beastslayer.entity.Model.ModelEarthling;
 import com.unoriginal.beastslayer.entity.Render.Layer.LayerEarthling;
+import com.unoriginal.beastslayer.entity.Render.Layer.LayerEarthlingGlow;
 import com.unoriginal.beastslayer.entity.Render.Layer.LayerGlowGeneric;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -21,7 +22,8 @@ public class RenderEarthling extends RenderLiving<EntityEarthling> {
 
     public RenderEarthling(RenderManager manager){
         super(manager, new ModelEarthling(), 0.6F);
-        this.addLayer(new LayerGlowGeneric(this, GLOW));
+       // this.addLayer(new LayerGlowGeneric(this, GLOW));
+        this.addLayer(new LayerEarthlingGlow(this));
         this.addLayer(new LayerEarthling(this));
     }
 

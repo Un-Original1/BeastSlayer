@@ -106,6 +106,8 @@ public class ModItems {
     public static Item TOTEM_OF_DYING;
     public static Item PAINTINGS;
 
+    public static Item FLOWER_DUST;
+
     public static ItemArmor.ArmorMaterial DESERT_ROBES = EnumHelper.addArmorMaterial("desert_robes", "ancientbeasts:textures/models/armor/desert_armor.png",BeastSlayerConfig.ScaleArmorDurability, BeastSlayerConfig.ScaleArmorValue, 12, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F);
 
     public static void init() {
@@ -195,6 +197,8 @@ public class ModItems {
         BLUEPRINT = new ItemSelfContainer("vessel_blueprint");
         TOTEM_OF_DYING = new ItemTooltip("undead_necklace");
         PAINTINGS = new ItemPainting(EntityBSPainting.class, "monster_paintings");
+        FLOWER_DUST = quickItemRegistry("flower_dust");
+
     }
 
     public static Item quickItemRegistry(String name){
@@ -288,6 +292,7 @@ public class ModItems {
         event.getRegistry().registerAll(BLUEPRINT);
         event.getRegistry().registerAll(TOTEM_OF_DYING);
         event.getRegistry().registerAll(PAINTINGS);
+        event.getRegistry().registerAll(FLOWER_DUST);
     }
     @SubscribeEvent
     public static void registerRenders(ModelRegistryEvent event)
@@ -371,6 +376,7 @@ public class ModItems {
         registerRender(BLUEPRINT);
         registerRender(TOTEM_OF_DYING);
         registerRender(PAINTINGS);
+        registerRender(FLOWER_DUST);
     }
     public static void registerRender(Item item)
     {
