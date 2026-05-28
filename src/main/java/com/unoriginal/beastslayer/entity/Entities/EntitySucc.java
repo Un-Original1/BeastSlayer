@@ -308,10 +308,13 @@ public class EntitySucc extends EntityMob implements IRangedAttackMob {
             this.setFriend(false);
             this.setFriendID(null);
         }
+        if(this.world.isRemote && this.isFriendly() && !this.isStalking() && this.dropTime == 20){
+            this.playSound(ModSounds.SUCC_POTION, 0.8F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+        }
 
         if (!this.world.isRemote && this.isFriendly() && !this.isStalking() && --this.dropTime <= 0)
         {
-            this.playSound(ModSounds.SUCC_POTION, 0.8F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+
             this.dropItemWithOffset(ModItems.WEIRD_BOTTLE, 1, 1.5F);
             this.dropTime = this.rand.nextInt(8000) + 8000;
         }

@@ -316,6 +316,21 @@ public class ModEvents {
                     }
                 }
             }
+        if(item == ModItems.WOLF_AMULET ){
+            if(entity instanceof EntityPlayer){
+                if(!((EntityPlayer) entity).getCooldownTracker().hasCooldown(ModItems.WOLF_AMULET)) {
+                    EntityPlayer p = (EntityPlayer)entity;
+                    EntitySpiritWolf spiritWolf = new EntitySpiritWolf(world, entity);
+                    //victim = wielder
+                    BlockPos blockpos = (new BlockPos(entity)).add(-4 +entity.getRNG().nextInt(8), 1, -4 + entity.getRNG().nextInt(8));
+                    spiritWolf.setAttackTarget((EntityLivingBase) attacker);
+                    spiritWolf.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+                    p.getCooldownTracker().setCooldown(ModItems.WOLF_AMULET, 800);
+                    world.spawnEntity(spiritWolf);
+                    spiritWolf.setStalkTicks(200);
+                }
+            }
+        }
             if(item == ModItems.AGILITY_TALON ){
                 entity.addPotionEffect(new PotionEffect(MobEffects.SPEED, 40, 2, true, false));
             }
@@ -402,19 +417,6 @@ public class ModEvents {
                     p.getCooldownTracker().setCooldown(ModItems.WOLF_AMULET, 800);
                     world.spawnEntity(spiritWolf);
                     spiritWolf.setStalkTicks(200);
-                }
-                if(entity instanceof EntityPlayer){
-                    if(!((EntityPlayer) entity).getCooldownTracker().hasCooldown(ModItems.WOLF_AMULET)) {
-                        EntityPlayer p = (EntityPlayer)entity;
-                        EntitySpiritWolf spiritWolf = new EntitySpiritWolf(world, entity);
-                        //victim = wielder
-                        BlockPos blockpos = (new BlockPos(entity)).add(-4 +entity.getRNG().nextInt(8), 1, -4 + entity.getRNG().nextInt(8));
-                        spiritWolf.setAttackTarget((EntityLivingBase) attacker);
-                        spiritWolf.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
-                        p.getCooldownTracker().setCooldown(ModItems.WOLF_AMULET, 800);
-                        world.spawnEntity(spiritWolf);
-                        spiritWolf.setStalkTicks(200);
-                    }
                 }
             }
             if ((item2 == ModItems.HORN ) && entity instanceof EntityLiving && entity.isNonBoss() && entity.getRNG().nextInt(3)==0){

@@ -2,7 +2,9 @@ package com.unoriginal.beastslayer.entity.Render;
 
 import com.unoriginal.beastslayer.BeastSlayer;
 import com.unoriginal.beastslayer.entity.Entities.EntityGloop;
+import com.unoriginal.beastslayer.entity.Model.ModelFatGloop;
 import com.unoriginal.beastslayer.entity.Model.ModelGloop;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -16,10 +18,17 @@ import javax.annotation.Nullable;
 @SideOnly(Side.CLIENT)
 public class RenderGloop extends RenderLiving<EntityGloop> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(BeastSlayer.MODID,"textures/entity/gloop.png");
+    public static final ResourceLocation FAT = new ResourceLocation(BeastSlayer.MODID,"textures/entity/gloop_fat.png");
     public static final Factory FACTORY = new Factory();
 
     public RenderGloop(RenderManager rendermanagerIn) {
         super(rendermanagerIn, new ModelGloop(), 0.4F);
+    }
+
+    @Override
+    public void doRender(EntityGloop entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        this.mainModel = entity.getBalloonClient() > 0 ? new ModelFatGloop() : new ModelGloop();
+        super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
     public static class  Factory implements IRenderFactory<EntityGloop> {
@@ -32,6 +41,6 @@ public class RenderGloop extends RenderLiving<EntityGloop> {
     @Nullable
     @Override
     protected ResourceLocation getEntityTexture(EntityGloop entity) {
-        return TEXTURE;
+        return  entity.getBalloonClient() > 0 ? FAT : TEXTURE;
     }
 }

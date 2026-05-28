@@ -1,6 +1,7 @@
 package com.unoriginal.beastslayer.entity.Entities;
 
 import com.google.common.collect.Lists;
+import com.unoriginal.beastslayer.config.BeastSlayerConfig;
 import com.unoriginal.beastslayer.init.ModBlocks;
 import com.unoriginal.beastslayer.init.ModItems;
 import com.unoriginal.beastslayer.init.ModSounds;
@@ -42,6 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 
 public class EntityEarthling extends EntityCreature implements IAnimals, IShearable {
@@ -440,5 +442,13 @@ public class EntityEarthling extends EntityCreature implements IAnimals, ISheara
     @Override
     public int getTalkInterval() {
         return 200;
+    }
+
+    @Override
+    public boolean getCanSpawnHere() {
+        return super.getCanSpawnHere() && contains(BeastSlayerConfig.EarthlingDimensionSpawn, this.dimension);
+    }
+    public static boolean contains(final int[] arr, final int key) {
+        return Arrays.stream(arr).anyMatch(i -> i == key);
     }
 }

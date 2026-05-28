@@ -33,12 +33,6 @@ public class AnimationMessage implements IMessage {
 
     public static class Handler implements IMessageHandler<AnimationMessage, IMessage> {
 
-        public Handler() {
-
-        }
-
-
-
         @Override
         public IMessage onMessage(AnimationMessage message, MessageContext ctx) {
             BeastSlayer.commonProxy.handleAnimationPacket(message.entityID, message.index);

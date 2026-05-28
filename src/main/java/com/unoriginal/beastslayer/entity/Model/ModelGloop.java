@@ -3,7 +3,13 @@ package com.unoriginal.beastslayer.entity.Model;// Made with Blockbench 5.1.3
 // Paste this class into your mod and generate all required imports
 
 
+import com.google.common.collect.ImmutableList;
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.animation.IAnimatedEntity;
+import com.unoriginal.beastslayer.animation.model.BasicModelEntity;
+import com.unoriginal.beastslayer.animation.model.BasicModelPart;
+import com.unoriginal.beastslayer.animation.model.EZModelAnimator;
+import com.unoriginal.beastslayer.entity.Entities.EntityGloop;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -14,43 +20,54 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelGloop extends ModelBase {
-	private final ModelRenderer leg2; //left
-	private final ModelRenderer leg1;
-	private final ModelRenderer body;
-	private final ModelRenderer head;
-	private final ModelRenderer tail;
+public class ModelGloop extends BasicModelEntity {
+	private final BasicModelPart leg2; //left
+	private final BasicModelPart leg1;
+	private final BasicModelPart body;
+	private final BasicModelPart head;
+	private final BasicModelPart tail;
+
+    private final EZModelAnimator animator;
 
 	public ModelGloop() {
 		textureWidth = 64;
 		textureHeight = 64;
 
-		leg2 = new ModelRenderer(this);
+		leg2 = new BasicModelPart(this);
 		leg2.setRotationPoint(5.0F, 22.0F, -0.5F);
 		leg2.cubeList.add(new ModelBox(leg2, 0, 0, -1.0F, -1.0F, -1.5F, 2, 3, 3, 0.0F, true));
 
-		leg1 = new ModelRenderer(this);
+		leg1 = new BasicModelPart(this);
 		leg1.setRotationPoint(-5.0F, 22.0F, -0.5F);
 		leg1.cubeList.add(new ModelBox(leg1, 0, 0, -1.0F, -1.0F, -1.5F, 2, 3, 3, 0.0F, false));
 
-		body = new ModelRenderer(this);
+		body = new BasicModelPart(this);
 		body.setRotationPoint(0.0F, 23.0F, 0.0F);
 		body.cubeList.add(new ModelBox(body, 30, 5, -4.0F, -8.0F, -5.0F, 8, 8, 9, 0.25F, false));
 		body.cubeList.add(new ModelBox(body, 30, 23, -4.0F, -0.5F, -5.0F, 8, 8, 9, 0.25F, false));
 
-		head = new ModelRenderer(this);
+		head = new BasicModelPart(this);
 		head.setRotationPoint(0.0F, -3.0F, 3.0F);
 		body.addChild(head);
 		head.cubeList.add(new ModelBox(head, 0, 0, 0.0F, -9.0F, -7.0F, 0, 12, 12, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 0, 32, -4.0F, -5.0F, -8.0F, 8, 8, 9, 0.0F, false));
 		head.cubeList.add(new ModelBox(head, 39, 54, -4.0F, 0.0F, -8.0F, 8, 0, 9, 0.0F, false));
 
-		tail = new ModelRenderer(this);
+		tail = new BasicModelPart(this);
 		tail.setRotationPoint(0.0F, -1.0F, 4.0F);
 		body.addChild(tail);
 		setRotationAngle(tail, -0.3927F, 0.0F, 0.0F);
 		tail.cubeList.add(new ModelBox(tail, 6, 0, -4.0F, 0.0F, 0.0F, 8, 0, 5, 0.0F, false));
+
+        this.updateDefaultPose();
+
+        this.animator = EZModelAnimator.create();
 	}
+
+    @Override
+    public Iterable<BasicModelPart> getAllParts() {
+        return ImmutableList.of(head, body, tail, leg1, leg2);
+    }
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -79,14 +96,87 @@ public class ModelGloop extends ModelBase {
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
-        this.body.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.body.rotateAngleX = headPitch * 0.017453292F;
         this.tail.rotateAngleY = MathHelper.cos(limbSwing * 1.8F) * 3F * limbSwingAmount * 0.5F;
+    }
+    //note to self and/or whoever reads this, in this thing the y value (in movement, not rotation) is inverted if compared to blockbench, z value is not
+    @Override
+    public void animate(IAnimatedEntity entity) {
+        this.animator.update(entity);
 
-        this.leg1.rotationPointY =  22F + MathHelper.cos(limbSwing * 3.6F) * 4F * limbSwingAmount;
-        this.leg2.rotationPointY =  22F + MathHelper.cos(limbSwing * 3.6F + (float)Math.PI) * 4F * limbSwingAmount ;
+        this.animator.setAnimation(EntityGloop.ANIMATION_WALK);
+        this.animator.startKeyframe(1);
+        //start
+        this.animator.rotate( this.leg1, (float) Math.toRadians(45), 0, 0);
+        this.animator.rotate( this.leg2, 0, 0, 0);
+        this.animator.rotate( this.body, 0, (float) Math.toRadians(-2.5F), 0);
+        this.animator.rotate( this.head, (float) Math.toRadians(7.5F), 0, 0);
 
-        this.leg1.rotationPointZ =  0F - MathHelper.cos(limbSwing * 1.8F+ (float)Math.PI) * 6F * limbSwingAmount;
-        this.leg2.rotationPointZ =  0F - MathHelper.cos(limbSwing * 1.8F)  * 6F * limbSwingAmount ;
+        this.animator.move( this.leg1, 0, -1, -2);
+        this.animator.move( this.leg2, 0, 0, 0);
+        this.animator.move( this.body, 0, 0,0 );
+
+        this.animator.endKeyframe();
+
+        //keyf 1
+        this.animator.startKeyframe(5);
+
+        this.animator.rotate( this.leg1, 0, 0, 0);
+        this.animator.rotate( this.leg2, 0, 0, 0);
+        this.animator.rotate( this.body, 0, 0, 0);
+        this.animator.rotate( this.head, (float) Math.toRadians(-5F), 0, 0);
+
+        this.animator.move( this.leg1, 0, 0, -2);
+        this.animator.move( this.leg2, 0, -1, 0);
+        this.animator.move( this.body, 0, 1,0 );
+
+        this.animator.endKeyframe();
+        //leg impact frame
+        this.animator.startKeyframe(1);
+        this.animator.rotate( this.leg1, (float) Math.toRadians(-12.5), 0, 0);
+        this.animator.move( this.leg1, 0, 1, -2);
+        this.animator.endKeyframe();
+        //keyf2
+        this.animator.startKeyframe(4);
+
+        this.animator.rotate( this.leg1, 0, 0, 0);
+        this.animator.rotate( this.leg2, (float) Math.toRadians(45F), 0, 0);
+        this.animator.rotate( this.body, 0,  (float) Math.toRadians(2.5F), 0);
+        this.animator.rotate( this.head, (float) Math.toRadians(7.5F), 0, 0);
+
+        this.animator.move( this.leg1, 0, 0, 0);
+        this.animator.move( this.leg2, 0, -1, -2);
+        this.animator.move( this.body, 0, 0,0 );
+
+        this.animator.endKeyframe();
+        //keyf3
+        this.animator.startKeyframe(5);
+
+        this.animator.rotate( this.leg1, 0, 0, 0);
+        this.animator.rotate( this.leg2, 0, 0, 0);
+        this.animator.rotate( this.body, 0, 0, 0);
+        this.animator.rotate( this.head, (float) Math.toRadians(-2.5F), 0, 0);
+
+        this.animator.move( this.leg1, 0, -1, 0);
+        this.animator.move( this.leg2, 0, 0, -2);
+        this.animator.move( this.body, 0, 1,0 );
+        this.animator.endKeyframe();
+        //leg impct frame 2
+        this.animator.startKeyframe(1);
+        this.animator.rotate( this.leg2, (float) Math.toRadians(-12.5F), 0, 0);
+        this.animator.move( this.leg2, 0, 1, -2);
+        this.animator.endKeyframe();
+        //keyframe 4
+        this.animator.startKeyframe(4);
+        this.animator.rotate( this.leg1, (float) Math.toRadians(45F), 0, 0);
+        this.animator.rotate( this.leg2, 0, 0, 0);
+        this.animator.rotate( this.body, 0,  (float) Math.toRadians(-2.5F), 0);
+        this.animator.rotate( this.head, (float) Math.toRadians(7.5F), 0, 0);
+
+        this.animator.move( this.leg1, 0, -1, -2);
+        this.animator.move( this.leg2, 0, 0, 0);
+        this.animator.move( this.body, 0, 0,0 );
+        this.animator.endKeyframe();
+
+        this.animator.resetKeyframe(20);
     }
 }

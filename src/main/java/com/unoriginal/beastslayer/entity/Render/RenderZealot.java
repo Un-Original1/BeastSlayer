@@ -32,20 +32,6 @@ public class RenderZealot extends RenderLiving<EntityZealot> {
     {
         super(manager, new ModelZealot(), 0.5F);
         this.addLayer(new LayerGlowGeneric(this, FIRE));
-        this.addLayer(new LayerHeldItem(this)
-        {
-            public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
-            {
-                if (((EntitySpellcasterIllager)entitylivingbaseIn).isSpellcasting())
-                {
-                    super.doRenderLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
-                }
-            }
-            protected void translateToHand(EnumHandSide p_191361_1_)
-            {
-                ((ModelIllager)this.livingEntityRenderer.getMainModel()).getArm(p_191361_1_).postRender(0.0625F);
-            }
-        });
     }
 
     protected void preRenderCallback(EntityZealot zealot, float partialTickTime)

@@ -85,6 +85,7 @@ public class ClientProxy extends CommonProxy
         Minecraft.getMinecraft().displayGuiScreen(new GuiWiki(bestiary));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void handleAnimationPacket(int entityId, int index) {
         EntityPlayerSP player = Minecraft.getMinecraft().player;

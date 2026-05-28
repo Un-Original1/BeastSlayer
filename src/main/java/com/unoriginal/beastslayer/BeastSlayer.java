@@ -2,6 +2,7 @@ package com.unoriginal.beastslayer;
 
 import com.unoriginal.beastslayer.command.CommandLocateAB;
 import com.unoriginal.beastslayer.gui.ABGuiHandler;
+import com.unoriginal.beastslayer.proxy.ClientProxy;
 import com.unoriginal.beastslayer.proxy.CommonProxy;
 import com.unoriginal.beastslayer.tab.ModTab;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,7 +27,7 @@ public class BeastSlayer
 {
     public static final String MODID = "ancientbeasts";
     public static final String NAME = "Beast Slayer";
-    public static final String VERSION = "not.2.0.034";
+    public static final String VERSION = "2.0.035";
     public static final CreativeTabs BEASTSTAB = new ModTab("beaststab");
     @SidedProxy(serverSide = "com.unoriginal.beastslayer.proxy.CommonProxy", clientSide = "com.unoriginal.beastslayer.proxy.ClientProxy")
     public static CommonProxy commonProxy;

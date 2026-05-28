@@ -14,12 +14,12 @@ import java.util.Iterator;
 
 @SideOnly(Side.CLIENT)
 public class EZModelAnimator {
-    private int tempTick = 0;
-    private int prevTempTick;
+    private float tempTick = 0;
+    private float prevTempTick;
     private boolean correctAnimation = false;
     private IAnimatedEntity entity;
-    private HashMap<ModelRenderer, Transform> transformMap = new HashMap();
-    private HashMap<ModelRenderer, Transform> prevTransformMap = new HashMap();
+    private HashMap<ModelRenderer, Transform> transformMap = new HashMap<>();
+    private HashMap<ModelRenderer, Transform> prevTransformMap = new HashMap<>();
 
 
 
@@ -36,6 +36,7 @@ public class EZModelAnimator {
 
     public void update(IAnimatedEntity entity) {
         this.tempTick = this.prevTempTick = 0;
+
         this.correctAnimation = false;
         this.entity = entity;
         this.transformMap.clear();
@@ -91,8 +92,9 @@ public class EZModelAnimator {
             if (animationTick >= this.prevTempTick && animationTick < this.tempTick) {
                 ModelRenderer box;
                 Transform transform;
+
                 if (stationary) {
-                    for(Iterator var3 = this.prevTransformMap.keySet().iterator(); var3.hasNext(); box.rotationPointZ += transform.getOffsetZ()) {
+                    for(Iterator<ModelRenderer> var3 = this.prevTransformMap.keySet().iterator(); var3.hasNext(); box.rotationPointZ += transform.getOffsetZ()) {
                         box = (ModelRenderer) var3.next();
                         transform = this.prevTransformMap.get(box);
                         box.rotateAngleX += transform.getRotationX();
@@ -102,10 +104,12 @@ public class EZModelAnimator {
                         box.rotationPointY += transform.getOffsetY();
                     }
                 } else {
-                    float tick = ((float)(animationTick - this.prevTempTick) + Minecraft.getMinecraft().getLimitFramerate()) / (float)(this.tempTick - this.prevTempTick);
-                    double interval = (double)tick * Math.PI / 2.0;
-                    double inc = Math.sin(interval);
-                    float dec = 1.0F - (float) inc;
+                    float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+
+                    float tick = ((animationTick - this.prevTempTick) + partialTicks) / (this.tempTick - this.prevTempTick);
+                   // double interval = (double)tick * Math.PI / 2.0; //lowkey I don't like sin smooth animations maybe make toggles in the future?
+                    float inc = tick;
+                    float dec = 1.0F - inc;
 
                     Iterator var6;
 
