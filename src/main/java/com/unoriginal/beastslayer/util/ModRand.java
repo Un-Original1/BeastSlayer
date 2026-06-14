@@ -129,6 +129,10 @@ public class ModRand {
         }
 
         public E next() {
+            if (map.isEmpty()) {
+                throw new IllegalStateException("RandomCollection contains no valid entries");
+            }
+
             double value = random.nextDouble() * total;
             return map.higherEntry(value).getValue();
         }

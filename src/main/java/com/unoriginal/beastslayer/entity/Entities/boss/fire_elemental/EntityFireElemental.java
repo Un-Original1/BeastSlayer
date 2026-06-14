@@ -278,16 +278,16 @@ public class EntityFireElemental extends EntityAbstractBoss implements IAttack, 
         if(!this.isFightMode() && this.getAnimation() == NO_ANIMATION) {
             //Gathers all attacks in a list
             List<Consumer<EntityLivingBase>> attacks = new ArrayList<>(Arrays.asList(punch, smash, summonMinions, getOverHERE, pushAttack, meteorShower));
-            double[] weights = {
-                    //this is where you add weights to the attacks and add a lot of parameters if you want
-                    //these first two are just saying if the distance is less than 4 and the attack is not a repeat then do this attack
-                    (distance < 4 && previousAttack != punch) ? 1/distance : 0, // Punch attack
-                    (distance <= 10) ? 1/distance : 1, // Smash Attack, will edit later, just now to prevent crashing
-                    (distance <= 10 && previousAttack != summonMinions && !hasMinionsNearby) ? 1/distance : 0, // Summon minions
-                    (distance <= 16 && distance >= 12) ? 1/distance : 0, //Might have to have this operate outside of the system as well, GET OVER HERE
-                    (distance < 4 && previousAttack != pushAttack) ? 1/distance : 0, // Push Attack
-                    (distance <= 16 && previousAttack != meteorShower) ? distance * 0.02 : 0 //Meteor Shower
 
+            double invDistance = 1.0 / Math.max(distance, 0.1);
+
+            double[] weights = {
+                    (distance < 4 && previousAttack != punch) ? invDistance : 0,
+                    (distance <= 10) ? invDistance : 1,
+                    (distance <= 10 && previousAttack != summonMinions && !hasMinionsNearby) ? invDistance : 0,
+                    (distance <= 16 && distance >= 12) ? invDistance : 0,
+                    (distance < 4 && previousAttack != pushAttack) ? invDistance : 0,
+                    (distance <= 16 && previousAttack != meteorShower) ? distance * 0.02 : 0
             };
 
             previousAttack = ModRand.choice(attacks, rand, weights).next();

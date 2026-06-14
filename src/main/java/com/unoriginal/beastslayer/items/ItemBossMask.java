@@ -7,7 +7,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -42,11 +41,11 @@ public class ItemBossMask extends ItemArmor {
 
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        if(player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() == ModItems.LOGO){
+
             if(!player.getCooldownTracker().hasCooldown(this)) {
                 player.addPotionEffect(new PotionEffect(ModPotions.FRENZY, 200));
                 player.getCooldownTracker().setCooldown(this, 1000);
             }
-        }
+
     }
 }
