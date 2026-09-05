@@ -3,10 +3,14 @@ package com.unoriginal.beastslayer.entity.Model;// Made with Blockbench 5.1.4
 // Paste this class into your mod and generate all required imports
 
 
+import com.unoriginal.beastslayer.entity.Entities.EntityGloop;
+import com.unoriginal.beastslayer.entity.Entities.EntityMosquito;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -50,8 +54,23 @@ public class ModelFatGloop extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		body.render(f5);
+	public void render(Entity entity,float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float f5) {
+        boolean b = false;
+        if(entity instanceof EntityGloop){
+            EntityGloop gloop = (EntityGloop)entity;
+            if(gloop.getBallonInfTick() > 0){
+                b = true;
+            }
+        }
+
+        float f = b ? MathHelper.cos(ageInTicks * 0.5F) * 0.15F : 0F;
+
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1F + f, 1F + f, 1F + f);
+        GlStateManager.translate(0.0F, -f, 0.0F);
+        body.render(f5);
+        GlStateManager.popMatrix();
 	}
 
 	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
@@ -59,4 +78,13 @@ public class ModelFatGloop extends ModelBase {
 		modelRenderer.rotateAngleY = y;
 		modelRenderer.rotateAngleZ = z;
 	}
+
+    @Override
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+        this.leg_l.rotateAngleZ = MathHelper.cos(ageInTicks * 0.5F) * (22.5F * (float)Math.PI / 180F) ;
+        this.leg_r.rotateAngleZ = MathHelper.cos(ageInTicks * 0.5F) * (22.5F * (float)Math.PI / 180F) ;
+        this.tail.rotateAngleY = MathHelper.cos(ageInTicks * 0.8F) * (25F * (float)Math.PI / 180F) ;
+
+    }
 }

@@ -270,8 +270,10 @@ public class EntityGiant extends EntityMob {
             }
             if (source instanceof EntityDamageSourceIndirect)
             {
-                this.playSound(ModSounds.GIANT_ANGRY, 6.0F, 1.0F);
-                this.addPotionEffect(new PotionEffect(MobEffects.SPEED, 180, 3));
+                if(!this.isPotionActive(MobEffects.SPEED)) {
+                    this.playSound(ModSounds.GIANT_ANGRY, 6.0F, 1.0F);
+                    this.addPotionEffect(new PotionEffect(MobEffects.SPEED, 180, 3));
+                }
                 return super.attackEntityFrom(source, amount * 0.3F);
             } else {
 

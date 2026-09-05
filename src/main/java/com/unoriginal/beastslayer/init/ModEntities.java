@@ -12,26 +12,17 @@ import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.misc.rende
 import com.unoriginal.beastslayer.entity.Entities.boss.projectile.ProjectileMeteor;
 import com.unoriginal.beastslayer.entity.Render.*;
 import com.unoriginal.beastslayer.entity.Render.projectile.RenderProjectile;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderCreeper;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderSilverfish;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySilverfish;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeForestMutated;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -111,7 +102,8 @@ public class ModEntities
 
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "beastslayer_paint"), EntityBSPainting.class, "beastslayer_paint", id++, BeastSlayer.instance, 160, Integer.MAX_VALUE, false);
         EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "earthling"), EntityEarthling.class, "earthling", id++, BeastSlayer.instance, 64, 1, true, 7951674 , 4154415);
-        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "gloop"), EntityGloop.class, "gloop", id++, BeastSlayer.instance, 64, 1, true, 1, 1);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "gloop"), EntityGloop.class, "gloop", id++, BeastSlayer.instance, 64, 1, true, 6077128, 15662591);
+        EntityRegistry.registerModEntity(new ResourceLocation(BeastSlayer.MODID, "bubble_proyectile"), EntityProjectileBubble.class, "bubble_proyectile", id++, BeastSlayer.instance, 64, 1, true);
 
 
     }
@@ -137,15 +129,18 @@ public class ModEntities
             EntityRegistry.addSpawn(EntityTribeChild.class, 60, 1, 3, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
             EntityRegistry.addSpawn(EntityPriest.class, 20, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
             EntityRegistry.addSpawn(EntityTank.class, 40, 1, 2, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.JUNGLE).toArray(new Biome[0]));
-
-            EntityRegistry.addSpawn(EntityEarthling.class, BeastSlayerConfig.earthlingSpawnChance, 1, 1, EnumCreatureType.CREATURE, BiomeDictionary.getBiomes(Type.FOREST).toArray(new Biome[0]));
-            EntityRegistry.addSpawn(EntityEarthling.class, BeastSlayerConfig.earthlingFlowerForestSpawnChance, 1, 1, EnumCreatureType.CREATURE, Biomes.MUTATED_FOREST);
         }
+
+        EntityRegistry.addSpawn(EntityEarthling.class, BeastSlayerConfig.earthlingSpawnChance, 1, 1, EnumCreatureType.CREATURE, BiomeDictionary.getBiomes(Type.FOREST).toArray(new Biome[0]));
+        EntityRegistry.addSpawn(EntityEarthling.class, BeastSlayerConfig.earthlingFlowerForestSpawnChance, 1, 1, EnumCreatureType.CREATURE, Biomes.MUTATED_FOREST);
+
 
         if(BeastSlayerConfig.EnableSuccubus) {
             EntityRegistry.addSpawn(EntitySucc.class, BeastSlayerConfig.succubusSpawnrate, 1, 1, EnumCreatureType.MONSTER, BiomeDictionary.getBiomes(Type.FOREST).toArray(new Biome[0]));
         }
         EntityRegistry.addSpawn(EntityMosquito.class, BeastSlayerConfig.MosquitoSpawnChance, 1, 3, EnumCreatureType.CREATURE, BiomeDictionary.getBiomes(Type.SWAMP).toArray(new Biome[0]));
+
+        EntityRegistry.addSpawn(EntityGloop.class, BeastSlayerConfig.gloopSpawnChance, 1, 4, EnumCreatureType.CREATURE, BiomeDictionary.getBiomes(Type.BEACH).toArray(new Biome[0]));
 
         Multimap<Type, Biome> ExclusiveList = HashMultimap.create();
 
@@ -254,6 +249,7 @@ public class ModEntities
         RenderingRegistry.registerEntityRenderingHandler(EntityEarthling.class, RenderEarthling.FACTORY);
         RenderingRegistry.registerEntityRenderingHandler(EntityBSPainting.class, RenderBSPainting::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityGloop.class, RenderGloop.FACTORY);
+        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileBubble.class, RenderBubble::new);
     }
 
 

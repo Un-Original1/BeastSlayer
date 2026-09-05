@@ -73,7 +73,7 @@ public class ModelGloop extends BasicModelEntity {
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         if (this.isChild) {
             GlStateManager.pushMatrix();
-            GlStateManager.translate(0.0F, 12F*f5, 0.0F);
+            GlStateManager.translate(0.0F, 12F * f5, 0.0F);
             GlStateManager.scale(0.5F, 0.5F, 0.5F);
             leg2.render(f5);
             leg1.render(f5);
@@ -97,6 +97,21 @@ public class ModelGloop extends BasicModelEntity {
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         this.tail.rotateAngleY = MathHelper.cos(limbSwing * 1.8F) * 3F * limbSwingAmount * 0.5F;
+        this.body.rotateAngleY = netHeadYaw * 0.017453292F;
+        this.body.rotateAngleX = headPitch * 0.017453292F;
+        if(entityIn instanceof EntityGloop){
+            EntityGloop gloop = (EntityGloop)entityIn;
+            if(gloop.getBubbleTicksClient() > 0){
+                float fastRad = (float)Math.PI / 180F;
+
+                this.head.rotateAngleX =(0.2f * gloop.getBubbleTicksClient() * gloop.getBubbleTicksClient() +  -8f * gloop.getBubbleTicksClient()) * fastRad;
+                if(this.head.rotateAngleX >= -60.0F * fastRad){
+                    this.head.rotateAngleX = -60.0F * fastRad;
+                }
+
+
+            }
+        }
     }
     //note to self and/or whoever reads this, in this thing the y value (in movement, not rotation) is inverted if compared to blockbench, z value is not
     @Override

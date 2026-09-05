@@ -242,7 +242,7 @@ public class EntityVessel extends EntitySpellcasterIllager {
                         EntityGhost ghost = new EntityGhost(EntityVessel.this.world);
                         ghost.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                         ghost.onInitialSpawn(EntityVessel.this.world.getDifficultyForLocation(blockpos), null);
-                        this.playSound(ModSounds.GHOST_POSSESS, 1.0F, 1.0F);
+                        this.playSound(ModSounds.GHOST_POSSESS, 0.7F, 1.0F);
                         EntityVessel.this.world.spawnEntity(ghost);
                     }
 
@@ -257,7 +257,7 @@ public class EntityVessel extends EntitySpellcasterIllager {
                         EntityGhost ghost = new EntityGhost(EntityVessel.this.world);
                         ghost.moveToBlockPosAndAngles(blockpos, 0.0F, 0.0F);
                         ghost.onInitialSpawn(EntityVessel.this.world.getDifficultyForLocation(blockpos), null);
-                        this.playSound(ModSounds.GHOST_POSSESS, 1.0F, 1.0F);
+                        this.playSound(ModSounds.GHOST_POSSESS, 0.7F, 1.0F);
                         EntityVessel.this.world.spawnEntity(ghost);
                     }
                 }

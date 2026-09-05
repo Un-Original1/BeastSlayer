@@ -519,5 +519,57 @@
       "ancientbeasts:earthling_bonemeal2",
       "ancientbeasts:earthling_bonemeal3"
     ]
+  },
+  "gloop_ambient" : {
+    "subtitle": "subtitle.gloop.ambient",
+    "sounds": [
+      "ancientbeasts:gloop_ambient1",
+      "ancientbeasts:gloop_ambient2",
+      "ancientbeasts:gloop_ambient3"
+    ]
+  },
+  "gloop_hurt" : {
+    "subtitle": "subtitle.gloop.hurt",
+    "sounds": [
+      "ancientbeasts:gloop_hurt1",
+      "ancientbeasts:gloop_hurt2",
+      "ancientbeasts:gloop_hurt3"
+    ]
+  },
+  "gloop_death" : {
+    "subtitle": "subtitle.gloop.death",
+    "sounds": [
+      "ancientbeasts:gloop_death1",
+      "ancientbeasts:gloop_death2"
+    ]
+  },
+  "gloop_jump" : {
+    "subtitle": "subtitle.gloop.jump",
+    "sounds": [
+      "ancientbeasts:bubble_jump1",
+      "ancientbeasts:bubble_jump2",
+      "ancientbeasts:bubble_jump3"
+    ]
+  },
+  "gloop_inflate" : {
+    "subtitle" : "subtitle.gloop.inflate",
+    "sounds": [
+      "ancientbeasts:bubble_inflate"
+    ]
+  },
+  "gloop_deflate" : {
+    "subtitle" : "subtitle.gloop.deflate",
+    "sounds": [
+      "ancientbeasts:bubble_deflate"
+    ]
+  },
+  "gloop_bubble": {
+    "subtitle": "subtitle.gloop.bubble",
+    "sounds": [
+      "ancientbeasts:bubbles1",
+      "ancientbeasts:bubbles2",
+      "ancientbeasts:bubbles3"
+
+    ]
   }
 }

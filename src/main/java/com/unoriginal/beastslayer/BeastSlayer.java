@@ -27,7 +27,7 @@ public class BeastSlayer
 {
     public static final String MODID = "ancientbeasts";
     public static final String NAME = "Beast Slayer";
-    public static final String VERSION = "2.0.036";
+    public static final String VERSION = "2.0.1";
     public static final CreativeTabs BEASTSTAB = new ModTab("beaststab");
     @SidedProxy(serverSide = "com.unoriginal.beastslayer.proxy.CommonProxy", clientSide = "com.unoriginal.beastslayer.proxy.ClientProxy")
     public static CommonProxy commonProxy;

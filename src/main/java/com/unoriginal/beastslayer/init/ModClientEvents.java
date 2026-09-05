@@ -1,30 +1,40 @@
 package com.unoriginal.beastslayer.init;
 
 import com.unoriginal.beastslayer.BeastSlayer;
+import com.unoriginal.beastslayer.entity.Entities.EntityGloop;
 import com.unoriginal.beastslayer.entity.Entities.boss.fire_elemental.EntityFireElemental;
+import com.unoriginal.beastslayer.gui.GuiGloopBar;
+import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
+import com.unoriginal.beastslayer.network.MessageExtraJump;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ModClientEvents {
+
+
 
     private ModClientEvents() {}
     private static final ResourceLocation CHARM = new ResourceLocation(BeastSlayer.MODID, "shaders/post/charm.json");
@@ -55,7 +65,7 @@ public class ModClientEvents {
     }
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void fogColour(EntityViewRenderEvent.FogColors event) {
+    public static void fogColour(EntityViewRenderEvent.FogColors event) {
         //todo add config to tint
         Minecraft mc = Minecraft.getMinecraft();
         WorldClient world = mc.world;
@@ -79,7 +89,7 @@ public class ModClientEvents {
         }
     }
     @SideOnly(Side.CLIENT)
-    public float getSunBrightness(float partialTicks)
+    public static float getSunBrightness(float partialTicks)
     {
         int i = (int)(20000 % 24000L);
         float f = ((float)i + partialTicks) / 24000.0F - 0.25F;
@@ -100,5 +110,56 @@ public class ModClientEvents {
         f1 = MathHelper.clamp(f1, 0.0F, 1.0F);
         f1 = 1.0F - f1;
         return f1 * 0.8F + 0.2F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void ClientTick(TickEvent.PlayerTickEvent event) {
+
+        if(Minecraft.getMinecraft().player != null) { //prevents many, many crashes
+            EntityPlayerSP player = Minecraft.getMinecraft().player;
+
+            if (player.isBeingRidden()) {
+                if (player.getPassengers().get(0) instanceof EntityGloop) {
+                    EntityGloop gleep = (EntityGloop) player.getPassengers().get(0);
+
+                    if (event.phase.equals(TickEvent.Phase.END) && gleep.getMaxJump() <= 3 && !player.onGround && !gleep.isCooldownActive()) {
+                        if (Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown()) {
+
+                            if (!gleep.isCooldownActive() && gleep.getMaxJump() <= 3) {
+                                gleep.setMaxJump(gleep.getMaxJump() + 1);
+
+                                if (player.fallDistance > 0.5F) {
+                                    player.motionY = 4F;
+
+                                } else {
+                                    player.motionY = 2F;
+                                }
+                                player.velocityChanged = true;
+                                BeastSlayerPacketHandler.WRAPPER.sendToServer(new MessageExtraJump());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void RenderOverlay(RenderGameOverlayEvent.Pre event) {
+
+        if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE) {
+
+            EntityPlayerSP player = Minecraft.getMinecraft().player;
+            if(player.isBeingRidden()) {
+                if(player.getPassengers().get(0) instanceof EntityGloop) {
+                    event.setCanceled(true);
+                    GuiGloopBar guiGloopBar = new GuiGloopBar(Minecraft.getMinecraft());
+                    guiGloopBar.renderGameOverlay();
+                }
+            }
+        }
     }
 }

@@ -85,6 +85,13 @@ public class ModSounds {
     public static final SoundEvent EARTHLING_DEATH = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "earthling_death")).setRegistryName("earthling_death");
     public static final SoundEvent EARTHLING_IDLE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "earthling_idle")).setRegistryName("earthling_idle");
     public static final SoundEvent EARTHLING_BONEMEAL = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "earthling_bonemeal")).setRegistryName("earthling_bonemeal");
+    public static final SoundEvent GLOOP_IDLE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "gloop_ambient")).setRegistryName("gloop_ambient");
+    public static final SoundEvent GLOOP_HURT = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "gloop_hurt")).setRegistryName("gloop_hurt");
+    public static final SoundEvent GLOOP_DEATH = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "gloop_death")).setRegistryName("gloop_death");
+    public static final SoundEvent GLOOP_JUMP = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "gloop_jump")).setRegistryName("gloop_jump");
+    public static final SoundEvent GLOOP_INFLATE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "gloop_inflate")).setRegistryName("gloop_inflate");
+    public static final SoundEvent GLOOP_DEFLATE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "gloop_deflate")).setRegistryName("gloop_deflate");
+    public static final SoundEvent GLOOP_BUBBLE = new SoundEvent(new ResourceLocation(BeastSlayer.MODID, "gloop_bubble")).setRegistryName("gloop_bubble");
 
     @Mod.EventBusSubscriber
     public static class RegistrationHandler {
@@ -158,6 +165,13 @@ public class ModSounds {
             event.getRegistry().register(EARTHLING_HURT);
             event.getRegistry().register(EARTHLING_DEATH);
             event.getRegistry().register(EARTHLING_IDLE);
+            event.getRegistry().register(GLOOP_IDLE);
+            event.getRegistry().register(GLOOP_HURT);
+            event.getRegistry().register(GLOOP_DEATH);
+            event.getRegistry().register(GLOOP_JUMP);
+            event.getRegistry().register(GLOOP_INFLATE);
+            event.getRegistry().register(GLOOP_DEFLATE);
+            event.getRegistry().register(GLOOP_BUBBLE);
         }
 
     }

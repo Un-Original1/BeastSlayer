@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "ancientbeasts:gloop_bucket"
+    },
+    "title": {
+      "translate": "advancements.ancientbeasts.catch_gloop.title"
+    },
+    "description": {
+      "translate": "advancements.ancientbeasts.catch_gloop.description"
+    }
+  },
+  "parent": "ancientbeasts:root",
+  "criteria": {
+    "Boulderer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "ancientbeasts:gloop_bucket"
+          }
+        ]
+
+      }
+    }
+  }
+}

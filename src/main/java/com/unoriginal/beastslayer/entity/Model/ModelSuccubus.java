@@ -13,137 +13,145 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelSuccubus extends ModelBase {
-	private final ModelRenderer body;
-	private final ModelRenderer head;
-	private final ModelRenderer earr;
-	private final ModelRenderer earl;
-	private final ModelRenderer horn_r;
-	private final ModelRenderer horn_l;
-	private final ModelRenderer hair;
-	private final ModelRenderer arm_r;
-	private final ModelRenderer arm_l;
-	private final ModelRenderer awooga;
-	private final ModelRenderer wing_r;
-	private final ModelRenderer wing_l;
-	private final ModelRenderer tail;
-	private final ModelRenderer point;
-	private final ModelRenderer leg_l;
-	private final ModelRenderer leg_r;
-
+    private final ModelRenderer body;
+    private final ModelRenderer head;
+    private final ModelRenderer earr;
+    private final ModelRenderer earl;
+    private final ModelRenderer horn_r;
+    private final ModelRenderer horn_l;
+    private final ModelRenderer hair;
+    private final ModelRenderer arm_r;
+    private final ModelRenderer arm_l;
+    private final ModelRenderer awooga;
+    private final ModelRenderer wing_r;
+    private final ModelRenderer wing_l;
+    private final ModelRenderer tail;
+    private final ModelRenderer point;
+    private final ModelRenderer butt;
+    private final ModelRenderer leg_l;
+    private final ModelRenderer leg_r;
 
     public ModelSuccubus() {
-		textureWidth = 128;
-		textureHeight = 128;
+        textureWidth = 128;
+        textureHeight = 128;
 
-		body = new ModelRenderer(this);
-		body.setRotationPoint(0.0F, 10.0F, 0.0F);
-		body.cubeList.add(new ModelBox(body, 32, 16, -4.0F, -13.0F, -2.1F, 8, 13, 4, 0.0F, false));
-		body.cubeList.add(new ModelBox(body, 104, 92, -4.0F, -13.0F, -2.1F, 8, 13, 4, 0.25F, false));
+        body = new ModelRenderer(this);
+        body.setRotationPoint(0.0F, 10.0F, 0.0F);
+        body.cubeList.add(new ModelBox(body, 32, 16, -4.0F, -13.0F, -2.1F, 8, 13, 4, 0.0F, false));
+        body.cubeList.add(new ModelBox(body, 104, 92, -4.0F, -13.0F, -2.1F, 8, 13, 4, 0.25F, false));
 
-		head = new ModelRenderer(this);
-		head.setRotationPoint(0.0F, -13.0F, 0.0F);
-		body.addChild(head);
-		head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F, false));
-		head.cubeList.add(new ModelBox(head, 72, 12, -4.0F, -8.0F, -4.0F, 8, 10, 8, 0.25F, false));
+        head = new ModelRenderer(this);
+        head.setRotationPoint(0.0F, -13.0F, 0.0F);
+        body.addChild(head);
+        head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F, false));
+        head.cubeList.add(new ModelBox(head, 72, 12, -4.0F, -8.0F, -4.0F, 8, 10, 8, 0.25F, false));
 
-		earr = new ModelRenderer(this);
-		earr.setRotationPoint(-4.0F, -3.0F, -0.5F);
-		head.addChild(earr);
-		setRotationAngle(earr, 0.0F, 0.0F, -0.3054F);
-		earr.cubeList.add(new ModelBox(earr, 0, 70, -7.0F, -2.0F, -0.5F, 7, 4, 1, 0.0F, false));
-		earr.cubeList.add(new ModelBox(earr, 18, 70, -7.0F, -2.0F, -0.5F, 7, 4, 1, 0.25F, false));
+        earr = new ModelRenderer(this);
+        earr.setRotationPoint(-4.0F, -3.0F, -0.5F);
+        head.addChild(earr);
+        setRotationAngle(earr, 0.0F, 0.0F, -0.3054F);
+        earr.cubeList.add(new ModelBox(earr, 0, 70, -7.0F, -2.0F, -0.5F, 7, 4, 1, 0.0F, false));
+        earr.cubeList.add(new ModelBox(earr, 18, 70, -7.0F, -2.0F, -0.5F, 7, 4, 1, 0.25F, false));
 
-		earl = new ModelRenderer(this);
-		earl.setRotationPoint(4.0F, -3.0F, -0.5F);
-		head.addChild(earl);
-		setRotationAngle(earl, 0.0F, 0.0F, 0.3054F);
-		earl.cubeList.add(new ModelBox(earl, 0, 70, 0.0F, -2.0F, -0.5F, 7, 4, 1, 0.0F, true));
+        earl = new ModelRenderer(this);
+        earl.setRotationPoint(4.0F, -3.0F, -0.5F);
+        head.addChild(earl);
+        setRotationAngle(earl, 0.0F, 0.0F, 0.3054F);
+        earl.cubeList.add(new ModelBox(earl, 0, 70, 0.0F, -2.0F, -0.5F, 7, 4, 1, 0.0F, true));
 
-		horn_r = new ModelRenderer(this);
-		horn_r.setRotationPoint(2.0F, -7.0F, 1.0F);
-		head.addChild(horn_r);
-		setRotationAngle(horn_r, 0.0F, -0.3927F, -0.3927F);
-		horn_r.cubeList.add(new ModelBox(horn_r, 0, 120, 0.0F, -2.0F, -2.0F, 10, 4, 4, 0.0F, false));
-		horn_r.cubeList.add(new ModelBox(horn_r, 30, 116, 6.0F, -10.0F, -2.0F, 4, 8, 4, 0.0F, false));
-		horn_r.cubeList.add(new ModelBox(horn_r, 50, 123, 10.0F, -10.0F, -2.0F, 2, 1, 4, 0.0F, false));
+        horn_r = new ModelRenderer(this);
+        horn_r.setRotationPoint(2.0F, -7.0F, 1.0F);
+        head.addChild(horn_r);
+        setRotationAngle(horn_r, 0.0F, -0.3927F, -0.3927F);
+        horn_r.cubeList.add(new ModelBox(horn_r, 0, 120, 0.0F, -2.0F, -2.0F, 10, 4, 4, 0.0F, false));
+        horn_r.cubeList.add(new ModelBox(horn_r, 30, 116, 6.0F, -10.0F, -2.0F, 4, 8, 4, 0.0F, false));
+        horn_r.cubeList.add(new ModelBox(horn_r, 50, 123, 10.0F, -10.0F, -2.0F, 2, 1, 4, 0.0F, false));
 
-		horn_l = new ModelRenderer(this);
-		horn_l.setRotationPoint(-2.0F, -7.0F, 1.0F);
-		head.addChild(horn_l);
-		setRotationAngle(horn_l, 0.0F, 0.3927F, 0.3927F);
-		horn_l.cubeList.add(new ModelBox(horn_l, 0, 120, -10.0F, -2.0F, -2.0F, 10, 4, 4, 0.0F, true));
-		horn_l.cubeList.add(new ModelBox(horn_l, 30, 116, -10.0F, -10.0F, -2.0F, 4, 8, 4, 0.0F, true));
-		horn_l.cubeList.add(new ModelBox(horn_l, 50, 123, -12.0F, -10.0F, -2.0F, 2, 1, 4, 0.0F, true));
+        horn_l = new ModelRenderer(this);
+        horn_l.setRotationPoint(-2.0F, -7.0F, 1.0F);
+        head.addChild(horn_l);
+        setRotationAngle(horn_l, 0.0F, 0.3927F, 0.3927F);
+        horn_l.cubeList.add(new ModelBox(horn_l, 0, 120, -10.0F, -2.0F, -2.0F, 10, 4, 4, 0.0F, true));
+        horn_l.cubeList.add(new ModelBox(horn_l, 30, 116, -10.0F, -10.0F, -2.0F, 4, 8, 4, 0.0F, true));
+        horn_l.cubeList.add(new ModelBox(horn_l, 50, 123, -12.0F, -10.0F, -2.0F, 2, 1, 4, 0.0F, true));
 
-		hair = new ModelRenderer(this);
-		hair.setRotationPoint(0.0F, -3.0F, 4.0F);
-		head.addChild(hair);
-		setRotationAngle(hair, 0.3927F, 0.0F, 0.0F);
-		hair.cubeList.add(new ModelBox(hair, 0, 89, -6.0F, 9.0F, -1.0F, 12, 3, 2, 0.0F, false));
-		hair.cubeList.add(new ModelBox(hair, 0, 77, -6.0F, 0.0F, -1.0F, 12, 9, 2, 0.0F, false));
+        hair = new ModelRenderer(this);
+        hair.setRotationPoint(0.0F, -3.0F, 4.0F);
+        head.addChild(hair);
+        setRotationAngle(hair, 0.3927F, 0.0F, 0.0F);
+        hair.cubeList.add(new ModelBox(hair, 0, 89, -6.0F, 9.0F, -1.0F, 12, 3, 2, 0.0F, false));
+        hair.cubeList.add(new ModelBox(hair, 0, 77, -6.0F, 0.0F, -1.0F, 12, 9, 2, 0.0F, false));
 
-		arm_r = new ModelRenderer(this);
-		arm_r.setRotationPoint(-4.0F, -11.0F, 0.0F);
-		body.addChild(arm_r);
-		setRotationAngle(arm_r, 0.0F, 0.0F, 0.3054F);
-		arm_r.cubeList.add(new ModelBox(arm_r, 56, 16, -3.0F, -2.0F, -2.0F, 3, 13, 4, 0.0F, false));
-		arm_r.cubeList.add(new ModelBox(arm_r, 38, 66, -3.0F, -2.0F, -2.0F, 3, 13, 4, 0.25F, false));
+        arm_r = new ModelRenderer(this);
+        arm_r.setRotationPoint(-4.0F, -11.0F, 0.0F);
+        body.addChild(arm_r);
+        setRotationAngle(arm_r, 0.0F, 0.0F, 0.3054F);
+        arm_r.cubeList.add(new ModelBox(arm_r, 56, 16, -3.0F, -2.0F, -2.0F, 3, 13, 4, 0.0F, false));
+        arm_r.cubeList.add(new ModelBox(arm_r, 38, 66, -3.0F, -2.0F, -2.0F, 3, 13, 4, 0.25F, false));
 
-		arm_l = new ModelRenderer(this);
-		arm_l.setRotationPoint(4.0F, -11.0F, 0.0F);
-		body.addChild(arm_l);
-		setRotationAngle(arm_l, 0.0F, 0.0F, -0.3054F);
-		arm_l.cubeList.add(new ModelBox(arm_l, 56, 16, 0.0F, -2.0F, -2.0F, 3, 13, 4, 0.0F, true));
-		arm_l.cubeList.add(new ModelBox(arm_l, 38, 66, 0.0F, -2.0F, -2.0F, 3, 13, 4, 0.25F, true));
+        arm_l = new ModelRenderer(this);
+        arm_l.setRotationPoint(4.0F, -11.0F, 0.0F);
+        body.addChild(arm_l);
+        setRotationAngle(arm_l, 0.0F, 0.0F, -0.3054F);
+        arm_l.cubeList.add(new ModelBox(arm_l, 56, 16, 0.0F, -2.0F, -2.0F, 3, 13, 4, 0.0F, true));
+        arm_l.cubeList.add(new ModelBox(arm_l, 38, 66, 0.0F, -2.0F, -2.0F, 3, 13, 4, 0.25F, true));
 
-		awooga = new ModelRenderer(this);
-		awooga.setRotationPoint(0.0F, -10.0F, -2.0F);
-		body.addChild(awooga);
-		setRotationAngle(awooga, 0.3927F, 0.0F, 0.0F);
-		awooga.cubeList.add(new ModelBox(awooga, 35, 0, -6.5F, -2.0F, -7.0F, 13, 7, 8, 0.0F, false));
-		awooga.cubeList.add(new ModelBox(awooga, 86, 57, -6.5F, -2.0F, -7.0F, 13, 7, 8, 0.25F, false));
+        awooga = new ModelRenderer(this);
+        awooga.setRotationPoint(0.0F, -10.0F, -2.0F);
+        body.addChild(awooga);
+        setRotationAngle(awooga, 0.3927F, 0.0F, 0.0F);
+        awooga.cubeList.add(new ModelBox(awooga, 35, 0, -6.5F, -2.0F, -7.0F, 13, 7, 8, 0.0F, false));
+        awooga.cubeList.add(new ModelBox(awooga, 86, 57, -6.5F, -2.0F, -7.0F, 13, 7, 8, 0.25F, false));
 
         wing_r = new ModelRenderer(this);
-		wing_r.setRotationPoint(-4.0F, -4.0F, 1.0F);
-		body.addChild(wing_r);
-		setRotationAngle(wing_r, 0.0F, 0.5236F, 0.6109F);
-		wing_r.cubeList.add(new ModelBox(wing_r, 0, 115, -12.0F, -1.0F, 0.0F, 14, 2, 2, 0.0F, false));
-		wing_r.cubeList.add(new ModelBox(wing_r, 30, 83, -14.0F, -1.0F, 0.0F, 2, 14, 2, 0.0F, false));
-		wing_r.cubeList.add(new ModelBox(wing_r, 59, 76, -14.0F, -5.0F, 1.0F, 14, 20, 0, 0.0F, false));
+        wing_r.setRotationPoint(-4.0F, -4.0F, 1.0F);
+        body.addChild(wing_r);
+        setRotationAngle(wing_r, 0.0F, 0.5236F, 0.6109F);
+        wing_r.cubeList.add(new ModelBox(wing_r, 0, 115, -12.0F, -1.0F, 0.0F, 14, 2, 2, 0.0F, false));
+        wing_r.cubeList.add(new ModelBox(wing_r, 30, 83, -14.0F, -1.0F, 0.0F, 2, 14, 2, 0.0F, false));
+        wing_r.cubeList.add(new ModelBox(wing_r, 59, 76, -14.0F, -5.0F, 1.0F, 14, 20, 0, 0.0F, false));
 
-		wing_l = new ModelRenderer(this);
-		wing_l.setRotationPoint(4.0F, -4.0F, 1.0F);
-		body.addChild(wing_l);
-		setRotationAngle(wing_l, 0.0F, -0.5236F, -0.6109F);
-		wing_l.cubeList.add(new ModelBox(wing_l, 0, 115, -2.0F, -1.0F, 0.0F, 14, 2, 2, 0.0F, true));
-		wing_l.cubeList.add(new ModelBox(wing_l, 30, 83, 12.0F, -1.0F, 0.0F, 2, 14, 2, 0.0F, true));
-		wing_l.cubeList.add(new ModelBox(wing_l, 59, 76, 0.0F, -5.0F, 1.0F, 14, 20, 0, 0.0F, true));
+        wing_l = new ModelRenderer(this);
+        wing_l.setRotationPoint(4.0F, -4.0F, 1.0F);
+        body.addChild(wing_l);
+        setRotationAngle(wing_l, 0.0F, -0.5236F, -0.6109F);
+        wing_l.cubeList.add(new ModelBox(wing_l, 0, 115, -2.0F, -1.0F, 0.0F, 14, 2, 2, 0.0F, true));
+        wing_l.cubeList.add(new ModelBox(wing_l, 30, 83, 12.0F, -1.0F, 0.0F, 2, 14, 2, 0.0F, true));
+        wing_l.cubeList.add(new ModelBox(wing_l, 59, 76, 0.0F, -5.0F, 1.0F, 14, 20, 0, 0.0F, true));
 
-		tail = new ModelRenderer(this);
-		tail.setRotationPoint(0.0F, -3.0F, 2.0F);
-		body.addChild(tail);
-		tail.cubeList.add(new ModelBox(tail, 26, 87, -1.5F, 0.0F, 5.0F, 3, 13, 14, 0.0F, false));
-		tail.cubeList.add(new ModelBox(tail, -5, 27, -1.5F, 0.0F, -1.0F, 3, 0, 6, 0.0F, false));
+        tail = new ModelRenderer(this);
+        tail.setRotationPoint(0.0F, -3.0F, 2.0F);
+        body.addChild(tail);
+        tail.cubeList.add(new ModelBox(tail, 26, 87, -1.5F, 0.0F, 5.0F, 3, 13, 14, 0.0F, false));
+        tail.cubeList.add(new ModelBox(tail, -5, 27, -1.5F, 0.0F, -1.0F, 3, 0, 6, 0.0F, false));
 
-		point = new ModelRenderer(this);
-		point.setRotationPoint(0.0F, 13.0F, 19.0F);
-		tail.addChild(point);
-		point.cubeList.add(new ModelBox(point, -9, 16, -4.5F, 0.0F, -3.0F, 9, 0, 10, 0.0F, false));
+        point = new ModelRenderer(this);
+        point.setRotationPoint(0.0F, 13.0F, 19.0F);
+        tail.addChild(point);
+        point.cubeList.add(new ModelBox(point, -9, 16, -4.5F, 0.0F, -3.0F, 9, 0, 10, 0.0F, false));
 
-		leg_l = new ModelRenderer(this);
-		leg_l.setRotationPoint(2.0F, 10.0F, 0.0F);
-		leg_l.cubeList.add(new ModelBox(leg_l, 30, 39, -2.0F, 6.0F, -2.0F, 4, 8, 4, 0.0F, true));
-		leg_l.cubeList.add(new ModelBox(leg_l, 14, 36, -2.0F, 6.0F, -2.0F, 4, 8, 4, 0.25F, false));
-		leg_l.cubeList.add(new ModelBox(leg_l, 22, 51, -2.0F, -2.0F, -2.0F, 6, 8, 5, 0.0F, false));
-		leg_l.cubeList.add(new ModelBox(leg_l, 0, 96, -2.0F, -2.0F, -2.0F, 6, 8, 5, 0.25F, false));
+        butt = new ModelRenderer(this);
+        butt.setRotationPoint(-0.5F, -2.5F, -2.0F);
+        body.addChild(butt);
+        setRotationAngle(butt, -0.3927F, 0.0F, 0.0F);
+        butt.cubeList.add(new ModelBox(butt, 52, 55, -5.0F, -2.5F, 2.5F, 11, 6, 5, 0.25F, false));
+        butt.cubeList.add(new ModelBox(butt, 53, 42, -5.0F, -2.5F, 2.5F, 11, 6, 5, 0.0F, false));
 
-		leg_r = new ModelRenderer(this);
-		leg_r.setRotationPoint(-2.0F, 10.0F, 0.0F);
-		leg_r.cubeList.add(new ModelBox(leg_r, 0, 48, -4.0F, -2.0F, -2.0F, 6, 8, 5, 0.0F, true));
-		leg_r.cubeList.add(new ModelBox(leg_r, 0, 96, -4.0F, -2.0F, -2.0F, 6, 8, 5, 0.25F, true));
-		leg_r.cubeList.add(new ModelBox(leg_r, 30, 39, -2.0F, 6.0F, -2.0F, 4, 8, 4, 0.0F, false));
-		leg_r.cubeList.add(new ModelBox(leg_r, 14, 36, -2.0F, 6.0F, -2.0F, 4, 8, 4, 0.25F, true));
-	}
+        leg_l = new ModelRenderer(this);
+        leg_l.setRotationPoint(2.0F, 10.0F, 0.0F);
+        leg_l.cubeList.add(new ModelBox(leg_l, 30, 39, -2.0F, 6.0F, -2.0F, 4, 8, 4, 0.0F, true));
+        leg_l.cubeList.add(new ModelBox(leg_l, 14, 36, -2.0F, 6.0F, -2.0F, 4, 8, 4, 0.25F, false));
+        leg_l.cubeList.add(new ModelBox(leg_l, 22, 51, -2.0F, -2.0F, -2.0F, 6, 8, 5, 0.0F, false));
+        leg_l.cubeList.add(new ModelBox(leg_l, 0, 96, -2.0F, -2.0F, -2.0F, 6, 8, 5, 0.25F, false));
+
+        leg_r = new ModelRenderer(this);
+        leg_r.setRotationPoint(-2.0F, 10.0F, 0.0F);
+        leg_r.cubeList.add(new ModelBox(leg_r, 0, 48, -4.0F, -2.0F, -2.0F, 6, 8, 5, 0.0F, true));
+        leg_r.cubeList.add(new ModelBox(leg_r, 0, 96, -4.0F, -2.0F, -2.0F, 6, 8, 5, 0.25F, true));
+        leg_r.cubeList.add(new ModelBox(leg_r, 30, 39, -2.0F, 6.0F, -2.0F, 4, 8, 4, 0.0F, false));
+        leg_r.cubeList.add(new ModelBox(leg_r, 14, 36, -2.0F, 6.0F, -2.0F, 4, 8, 4, 0.25F, true));
+
+    }
 
 	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -229,6 +237,10 @@ public class ModelSuccubus extends ModelBase {
         //NOTE: I HAVE NO CLUE WHY IT MOVES SO MUCH HELPPPPP
         this.awooga.rotationPointY = -10.0F + MathHelper.cos(ageInTicks * 0.2F) * 0.05F;
         this.awooga.rotationPointY += MathHelper.cos(limbSwing * 0.5F) *  limbSwingAmount * 0.6F;
+
+
+        this.butt.rotationPointY = -2.5F + MathHelper.cos(ageInTicks * 0.15F) * 0.05F;
+        this.butt.rotationPointY += MathHelper.cos(limbSwing * 0.5F) *  limbSwingAmount * 0.5F;
         if (this.isRiding)
         {
             this.arm_r.rotateAngleX += -((float)Math.PI / 5F);

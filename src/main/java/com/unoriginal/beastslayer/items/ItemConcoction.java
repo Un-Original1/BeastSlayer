@@ -62,12 +62,14 @@ public class ItemConcoction extends Item {
             for (int i = 0; i < 3; i++) {
                 if (!(entityLiving instanceof EntityPlayer) || !((EntityPlayer) entityLiving).getCooldownTracker().hasCooldown(this)) {
 
-                     Potion potion = Iterables.get(ForgeRegistries.POTIONS, itemRand.nextInt(ForgeRegistries.POTIONS.getValuesCollection().size()));
-                     if(blacklist.contains(potion.getRegistryName().toString())) {
-                         potion = Iterables.get(ForgeRegistries.POTIONS, itemRand.nextInt(ForgeRegistries.POTIONS.getValuesCollection().size()));
-                     }
-                     entityLiving.addPotionEffect(new PotionEffect(potion, 800));
+                    Potion potion;
+                    //never used this before hopefully won't do funky things
+                    do {
+                        potion = Iterables.get(ForgeRegistries.POTIONS, itemRand.nextInt(ForgeRegistries.POTIONS.getValuesCollection().size())
+                        );
+                    } while (blacklist.contains(potion.getRegistryName().toString()));
 
+                    entityLiving.addPotionEffect(new PotionEffect(potion, 800));
 
                 }
                 ///   MobEffects randomEffect = effects.get(new Random().nextInt(effects.size()));

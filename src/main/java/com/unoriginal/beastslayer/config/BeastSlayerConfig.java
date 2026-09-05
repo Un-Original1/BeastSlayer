@@ -311,12 +311,12 @@ public class BeastSlayerConfig {
     @Name("Earthling spawn Chance")
     @Comment("Modifies earthlings spawn weight")
     @RequiresMcRestart
-    public static int earthlingSpawnChance = 5;
+    public static int earthlingSpawnChance = 8;
 
     @Name("Earthling Flower forest spawn Chance")
     @Comment("Modifies earthlings spawn weight on flower forest biome")
     @RequiresMcRestart
-    public static int earthlingFlowerForestSpawnChance = 15;
+    public static int earthlingFlowerForestSpawnChance = 25;
 
     @Name("Earthling dimension spawn")
     @Comment("Dimensions Earthling is allowed to spawn in")
@@ -325,4 +325,8 @@ public class BeastSlayerConfig {
             0
     };
 
+    @Name("Gloop spawn chance")
+    @Comment("Modifies gloop's spawn chance")
+    @RequiresMcRestart
+    public static int gloopSpawnChance = 10;
 }

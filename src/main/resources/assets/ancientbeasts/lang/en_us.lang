@@ -530,3 +530,34 @@ subtitle.earthling.hurt=Earthling hurts
 subtitle.earthling.death=Earthling dies
 subtitle.earthling.idle=Earthling hums
 subtitle.earthling.interact=Earthling is powered up
+entity.gloop.name=Gloop
+item.gloop_bucket.name=Bucket of Gloop
+subtitle.gloop.ambient=Gloop croaks
+subtitle.gloop.hurt=Gloop hurts
+subtitle.gloop.death=Gloop dies
+subtitle.gloop.jump=Gloop jumps
+subtitle.gloop.inflate=Gloop inflates
+subtitle.gloop.deflate=Gloop deflates
+subtitle.gloop.bubble=Gloop spews bubbles
+advancements.ancientbeasts.catch_gloop.title=Bucket up
+advancements.ancientbeasts.catch_gloop.description=Catch a gloop using a bucket
+
+bestiary.hint17_0top=Green thumb
+bestiary.hint17_0bottom=Give bonemeal to an earthling to make them grow foliage nearby!
+bestiary.hint17_1top=Groundwork
+bestiary.hint17_1bottom=When it starts raining you can use earthlings to patch small holes with dirt.
+bestiary.hint17_2top=Blooming Paradise
+bestiary.hint17_2bottom=They rarely spawn with it. Place the flower nearby crops to make them grow faster!
+
+bestiary.hint18_0top=Unusual transportation
+bestiary.hint18_0bottom=Use a gloop to glide around for a short span of time
+bestiary.hint18_1top=Bubbly boy
+bestiary.hint18_1bottom=Gloops shoot bubbles randomly at nearby mobs, embrace chaos!
+bestiary.hint18_2top=Hellish fate
+bestiary.hint18_2bottom=Don't bring gloops to the Nether
+
+beastslayer.gui.left_info.20=Gloops are magical water-based creatures that are found in beaches.\n \nWhilst usually harmless, gloops can shoot bubbles at nearby entities, making them float for a short span of time.\n \nIf one wants to, they can be collected with a bucket and breed with fish.
+beastslayer.gui.right_info.20=Surprisingly, gloops can be used as a means of transportation.\n \nWhen used in land, their bodies fill with air and can be used to glide slowly. Keep in mind their frail nature, though.\n \nIf in water, they can also be used as a panic button if drowning, being able to quickly bring you to the surface.
+
+beastslayer.gui.left_info.21=Earthlings are friendly spirits found in forests.\n \nEarthlings are superb at growing plants. All by simply placing a plant on their head and giving them bonemeal.\n \nWhen bonemealed, earthlings will grow foliage, flowers and saplings on nearby blocks!
+beastslayer.gui.right_info.21=They are significantly more common on flower forests, and can spawn with flowers more often too!\n \nThe flower they can be seen with, the "Blooming Paradise" seems exclusively found in earthlings\n \n If one happens to place blooming paradise nearby crops, it will make them grow significantly faster.

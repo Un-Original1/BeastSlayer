@@ -2,10 +2,7 @@ package com.unoriginal.beastslayer.proxy;
 
 import com.unoriginal.beastslayer.animation.IAnimatedEntity;
 import com.unoriginal.beastslayer.gui.GuiWiki;
-import com.unoriginal.beastslayer.init.ModColorHandler;
-import com.unoriginal.beastslayer.init.ModEntities;
-import com.unoriginal.beastslayer.init.ModItems;
-import com.unoriginal.beastslayer.init.ModParticles;
+import com.unoriginal.beastslayer.init.*;
 import com.unoriginal.beastslayer.items.models.*;
 import com.unoriginal.beastslayer.particles.*;
 import net.minecraft.client.Minecraft;

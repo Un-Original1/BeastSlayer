@@ -12,10 +12,14 @@ import com.unoriginal.beastslayer.items.ItemArtifact;
 import com.unoriginal.beastslayer.items.ItemSpear;
 import com.unoriginal.beastslayer.network.BeastSlayerPacketHandler;
 import com.unoriginal.beastslayer.network.MessageAttackER;
+import com.unoriginal.beastslayer.network.MessageExtraJump;
 import com.unoriginal.beastslayer.network.MessageUndeadClient;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -51,11 +55,12 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class ModEvents {
     List<String> succubusWhitelist = Arrays.asList(BeastSlayerConfig.SuccubusTargetingWhitelist);
@@ -209,6 +214,17 @@ public class ModEvents {
                 world.playSound(null, entity.posX, entity.posY, entity.posZ, ModSounds.MAGIC_SHIELD, SoundCategory.NEUTRAL, 1.0F, 1.0F / world.rand.nextFloat() * 0.4F + 0.9F);
                 e.setCanceled(true);
 
+            }
+        }
+        if(entity.isBeingRidden()){
+            Entity entity1 = entity.getPassengers().get(0);
+            if(!world.isRemote && entity1 instanceof EntityGloop){
+                EntityGloop entitygloop = (EntityGloop) entity1;
+                if(entitygloop.getBalloon() > 0){
+                    if(e.getSource() == DamageSource.FALL){
+                        e.setCanceled(true);
+                    }
+                }
             }
         }
         if(getActiveItem(entity)!= null ){
@@ -536,6 +552,21 @@ public class ModEvents {
         World world = event.getEntity().getEntityWorld();
         EntityLivingBase entityLiving = event.getEntityLiving();
         Random rand = new Random();
+
+
+        if(entityLiving instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            if(player.isBeingRidden()){
+                Entity riding = player.getPassengers().get(0);
+                if(riding instanceof EntityGloop) {
+                    if(player.fallDistance > 0.5F) {
+                        player.motionY = player.motionY *
+                                0.6F;
+                    }
+                }
+            }
+        }
+
 
         if (!entityLiving.world.isRemote && BeastSlayerConfig.MinerHelmetLight)
         {
@@ -1008,5 +1039,22 @@ public class ModEvents {
         }
         return item;
     }
+
+    @SubscribeEvent
+    public void jumpEvents(LivingEvent.LivingJumpEvent e){
+        EntityLivingBase entityLivingBase = e.getEntityLiving();
+        if(entityLivingBase instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entityLivingBase;
+            if(player.isBeingRidden()){
+                Entity riding = player.getPassengers().get(0);
+                if(riding instanceof EntityGloop) {
+                    EntityGloop entityGloop = (EntityGloop) riding;
+                    player.motionY= player.motionY * 1.1F;
+
+                }
+            }
+        }
+    }
+    //I would LOVE to move this to ModClientEvents, however only here it works
 
 }

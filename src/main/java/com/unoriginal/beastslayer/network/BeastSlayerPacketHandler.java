@@ -23,6 +23,7 @@ public class BeastSlayerPacketHandler {
 
         WRAPPER.registerMessage(AnimationMessage.Handler.class, AnimationMessage.class, id++, Side.CLIENT);
         WRAPPER.registerMessage(MessageUndeadClient.Handler.class, MessageUndeadClient.class, id++, Side.CLIENT);
+        WRAPPER.registerMessage(MessageExtraJump.MessageHandler.class, MessageExtraJump.class, id++, Side.SERVER);
        // WRAPPER.registerMessage(MessageForceMovePlayer.Handler.class, MessageForceMovePlayer.class, id++, Side.CLIENT);
       //  WRAPPER.registerMessage(MessageDismountRidingEntity.MessageHandler.class, MessageDismountRidingEntity.class, id++, Side.SERVER);
     }
